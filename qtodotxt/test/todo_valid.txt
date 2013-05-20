@@ -1,0 +1,5 @@
+do something +project1 @context1
+(A) do something else +project1 @context2
+(B) go somewhere @context1
+something I forgot +project2
+something else I forgot +project2

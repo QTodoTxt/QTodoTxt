@@ -1,0 +1,96 @@
+﻿========================================
+Test Setup and Helper Methods
+========================================
+>>> import os, sys, doctest
+>>> sys.path.insert(0, os.path.join('.', '..', '..'))
+>>> from qtodotxt.lib import todolib, task_htmlizer
+
+========================================
+1. Simple task should return simple html
+========================================
+>>> task = todolib.Task('this is my task')
+>>> htmlizer = task_htmlizer.TaskHtmlizer()
+>>> htmlizer.task2html(task)
+'this is my task'
+
+========================================
+2. Test task with a single context at the end
+========================================
+>>> task = todolib.Task('this is my task @context')
+>>> htmlizer = task_htmlizer.TaskHtmlizer()
+>>> htmlizer.task2html(task)
+'this is my task <b><font color="green">@context</font></b>'
+
+========================================
+3. Test task with a single context at the center
+========================================
+>>> task = todolib.Task('this is my task @context and some more words')
+>>> htmlizer = task_htmlizer.TaskHtmlizer()
+>>> htmlizer.task2html(task)
+'this is my task <b><font color="green">@context</font></b> and some more words'
+
+========================================
+4. Test task with a single project at the end
+========================================
+>>> task = todolib.Task('this is my task +project')
+>>> htmlizer = task_htmlizer.TaskHtmlizer()
+>>> htmlizer.task2html(task)
+'this is my task <b><font color="blue">+project</font></b>'
+
+========================================
+5. Test task with a single project at the center
+========================================
+>>> task = todolib.Task('this is my task +project and some more words')
+>>> htmlizer = task_htmlizer.TaskHtmlizer()
+>>> htmlizer.task2html(task)
+'this is my task <b><font color="blue">+project</font></b> and some more words'
+
+========================================
+6. Test task with a single context and a single project
+========================================
+>>> task = todolib.Task('this is my task @context and +project and some more words')
+>>> htmlizer = task_htmlizer.TaskHtmlizer()
+>>> htmlizer.task2html(task)
+'this is my task <b><font color="green">@context</font></b> and <b><font color="blue">+project</font></b> and some more words'
+
+
+========================================
+7. Test task with a two contexts and a three projects
+========================================
+>>> task = todolib.Task('this is my task @context1 and @context2 and +project1 +project2 and +project3 some more words')
+>>> htmlizer = task_htmlizer.TaskHtmlizer()
+>>> htmlizer.task2html(task)
+'this is my task <b><font color="green">@context1</font></b> and <b><font color="green">@context2</font></b> and <b><font color="blue">+project1</font></b> <b><font color="blue">+project2</font></b> and <b><font color="blue">+project3</font></b> some more words'
+
+========================================
+8. Test task with priority A
+========================================
+>>> task = todolib.Task('(A) this is my task')
+>>> htmlizer = task_htmlizer.TaskHtmlizer()
+>>> htmlizer.task2html(task)
+'<b><font color="red">(A)</font></b> this is my task'
+
+========================================
+9. Test task with priority B
+========================================
+>>> task = todolib.Task('(B) this is my task')
+>>> htmlizer = task_htmlizer.TaskHtmlizer()
+>>> htmlizer.task2html(task)
+'<b><font color="green">(B)</font></b> this is my task'
+
+========================================
+10. Test task with priority C
+========================================
+>>> task = todolib.Task('(C) this is my task')
+>>> htmlizer = task_htmlizer.TaskHtmlizer()
+>>> htmlizer.task2html(task)
+'<b><font color="cyan">(C)</font></b> this is my task'
+
+========================================
+11. Test task with priority D
+========================================
+>>> task = todolib.Task('(D) this is my task')
+>>> htmlizer = task_htmlizer.TaskHtmlizer()
+>>> htmlizer.task2html(task)
+'<b>(D)</b> this is my task'
+

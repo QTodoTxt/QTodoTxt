@@ -1,0 +1,18 @@
+﻿========================================
+Test Setup and Helper Methods
+========================================
+>>> import os, sys, doctest
+>>> sys.path.insert(0, os.path.join('.', '..', '..', '..'))
+>>> from qtodotxt.ui.controls.autocomplete_lineedit import AutoCompleteEdit
+>>> from PySide import QtCore, QtGui
+>>> app = QtGui.QApplication([])
+
+========================================
+1. Check ctor
+========================================
+>>> model = ['one', 'two']
+>>> edit = AutoCompleteEdit(model)
+>>> edit._separator
+' '
+>>> edit._addSpaceAfterCompleting
+False

@@ -1,0 +1,3 @@
+from filters_tree_view import FiltersTreeView
+from main_view import MainView
+from tasks_list_view import TasksListView

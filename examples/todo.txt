@@ -1,0 +1,5 @@
+(A) Make peace between Cylons and humans +PeaceProject
+(B) Seal ship's cracks with biomatter +GalacticaRepairs
+(B) Report to Admiral Adama about FTL @CIC +GalacticaRepairs
+(C) Upgrade jump drives with Cylon technology +GalacticaRepairs
+Check for DRADIS contact @CIC

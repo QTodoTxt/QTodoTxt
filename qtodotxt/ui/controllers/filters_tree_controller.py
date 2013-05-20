@@ -1,0 +1,54 @@
+from PySide import QtCore
+from qtodotxt.lib.filters import ContextFilter, ProjectFilter
+
+#class IFiltersTreeView(object):
+#    def addFilter(self, filter): pass
+#    def clear(self): pass
+#    def clearSelection(self): pass
+#    def selectFilter(self, filter): pass
+#    def getSelectedFilters(self): pass
+#    filterSelectionChanged = QtCore.Signal()
+#    def selectAllTasksFilter(self): pass    
+
+class FiltersTreeController(QtCore.QObject):
+    
+    filterSelectionChanged = QtCore.Signal(list)
+    
+    def __init__(self, view):
+        QtCore.QObject.__init__(self)
+        self._view = view
+        self._view.filterSelectionChanged.connect(self._view_filterSelectionChanged)
+        self._is_showing_filters = False
+        
+    def _view_filterSelectionChanged(self, filters):
+        if not self._is_showing_filters:
+            self.filterSelectionChanged.emit(filters)
+        
+    def showFilters(self, file):
+        self._is_showing_filters = True
+        previouslySelectedFilters = self._view.getSelectedFilters()
+        self._view.clearSelection()
+        self._view.clear()
+        self._addAllContexts(file)
+        self._addAllProjects(file)
+        self._is_showing_filters = False
+        self._reselect(previouslySelectedFilters)
+
+    def _addAllContexts(self, file):
+        contexts = file.getAllContexts()
+        for context in contexts:
+            filter = ContextFilter(context)
+            self._view.addFilter(filter)
+
+    def _addAllProjects(self, file):
+        projects = file.getAllProjects()
+        for project in projects:
+            filter = ProjectFilter(project)
+            self._view.addFilter(filter)
+        
+    def _reselect(self, previouslySelectedFilters):
+        for filter in previouslySelectedFilters:
+            self._view.selectFilter(filter)
+        if not self._view.getSelectedFilters():
+            self._view.selectAllTasksFilter()
+        

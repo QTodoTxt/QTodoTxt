@@ -1,0 +1,63 @@
+﻿========================================
+Test Setup and Helper Methods
+========================================
+>>> import os, sys, doctest
+>>> sys.path.insert(0, os.path.join('.', '..', '..'))
+>>> from qtodotxt.lib import todolib
+
+
+========================================
+1. Identical tasks should return 0
+========================================
+>>> task1 = todolib.Task('task')
+>>> task2 = todolib.Task('task')
+>>> todolib.compareTasks(task1, task2)
+0
+
+========================================
+2. Task1.text > Task2.text should return -1
+========================================
+>>> task1 = todolib.Task('task1')
+>>> task2 = todolib.Task('task2')
+>>> todolib.compareTasks(task1, task2)
+-1
+
+========================================
+3. Task1.text < Task2.text should return 1
+========================================
+>>> task1 = todolib.Task('task2')
+>>> task2 = todolib.Task('task1')
+>>> todolib.compareTasks(task1, task2)
+1
+
+========================================
+4. Task1 has priority A, Task2 has no priority, should return -1
+========================================
+>>> task1 = todolib.Task('(A) task2')
+>>> task2 = todolib.Task('task1')
+>>> todolib.compareTasks(task1, task2)
+-1
+
+========================================
+5. Task1 has priority B, Task2 has priority A, should return 1
+========================================
+>>> task1 = todolib.Task('(B) task2')
+>>> task2 = todolib.Task('(A) task1')
+>>> todolib.compareTasks(task1, task2)
+1
+
+========================================
+5. Task1 is complete, Task2 is incomplete, should return 1
+========================================
+>>> task1 = todolib.Task('X task1')
+>>> task2 = todolib.Task('task2')
+>>> todolib.compareTasks(task1, task2)
+1
+
+========================================
+6. Task1 is incomplete, Task2 is complete, should return -1
+========================================
+>>> task1 = todolib.Task('task1')
+>>> task2 = todolib.Task('X task2')
+>>> todolib.compareTasks(task1, task2)
+-1
