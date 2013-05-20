@@ -40,6 +40,7 @@ class TasksListView(QtGui.QWidget):
     def _createLabel(self, task):
         label = QtGui.QLabel()
         label.setTextFormat(QtCore.Qt.RichText)
+        label.setOpenExternalLinks(True)
         text = self._task_htmlizer.task2html(task)
         label.setText(text)
         return label
