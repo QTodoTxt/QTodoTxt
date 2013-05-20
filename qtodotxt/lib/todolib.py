@@ -1,4 +1,5 @@
 import re
+import codecs
 from argparse import ArgumentError
 
 USE_LAST_FILENAME = 1
@@ -51,7 +52,7 @@ class File(object):
         lines = []
         fd = None
         try:
-            fd = open(filename)
+            fd = codecs.open(filename,'r','utf-8')
             lines = fd.readlines()
             fd.close()
         except IOError as e:
@@ -73,8 +74,8 @@ class File(object):
     def _saveTasks(self):
         fd = None
         try:
-            fd = open(self.filename, 'wt')
-            lines = [(task.text + self.newline) for task in self.tasks]
+            fd = open(self.filename, 'w')
+            lines = [(task.text.encode('utf8') + self.newline) for task in self.tasks]
             fd.writelines(lines)
         except IOError as e:
             raise ErrorSavingFile("Error saving to file '%s'" % self.filename, e)
