@@ -1,3 +1,4 @@
+from datetime import datetime,date
 import re
 
 class TaskHtmlizer(object):
@@ -15,6 +16,8 @@ class TaskHtmlizer(object):
             text = text.replace('+' + project, self._htmlizeProject(project))
         if task.priority is not None:
             text = text.replace('(%s)' % task.priority, self._htmlizePriority(task.priority))
+        if task.due is not None:
+            text = text.replace('due:%s' % task.due, self._htmlizeDueDate(task.due))
         return self._htmlizeURL(text)
     
     def _htmlizeContext(self, context):
@@ -29,6 +32,17 @@ class TaskHtmlizer(object):
             return '<b><font color="%s">(%s)</font></b>' % (color, priority)
         return '<b>(%s)</b>' % priority
 
+    def _htmlizeDueDate(self,dueDateString):
+        due_date = datetime.strptime(dueDateString, '%Y-%m-%d').date()
+        date_now = date.today()
+        tdelta = due_date - date_now
+        if tdelta.days > 7:
+            return '<b>due:%s</b>' %dueDateString
+        elif tdelta.days > 0:
+            return '<b><font color="orange">due:%s</font></b>' % dueDateString
+        else:
+            return '<b><font color="red">due:%s</font></b>' % dueDateString
+		
     def _htmlizeURL(self,text):
         regex = re.compile(
             r'((?:http|ftp)s?://' # http:// or https://

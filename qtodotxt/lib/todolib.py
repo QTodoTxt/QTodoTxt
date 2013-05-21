@@ -115,6 +115,7 @@ class Task(object):
         self.priority = None
         self.is_complete = False
         self._text = ''
+        self.due = None
     
     def parseLine(self, line):
         words = line.split(' ')
@@ -136,6 +137,8 @@ class Task(object):
                 self.contexts.append(word[1:])
             elif word.startswith('+'):
                 self.projects.append(word[1:])
+            elif word.startswith('due:'):
+                self.due = word[4:]
 
     def _getText(self):
         return self._text
