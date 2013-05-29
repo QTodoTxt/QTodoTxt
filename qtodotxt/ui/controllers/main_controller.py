@@ -58,6 +58,7 @@ class MainController(QtCore.QObject):
         self._view.show()
         self._updateTitle()
         self._settings.load()
+        self._updateCreatePref()
 
         filename = None
         if self._args.file:
@@ -174,7 +175,7 @@ class MainController(QtCore.QObject):
     def new(self):
         if self._canExit():
             self._openFile(todolib.File())
-            
+
     def revert(self):
         if self._dialogs_service.showConfirm('Revert to saved file (and lose unsaved changes)?'):
             self.openFileByName(self._file.filename)
@@ -194,6 +195,16 @@ class MainController(QtCore.QObject):
         self._setIsModified(False)
         self._filters_tree_controller.showFilters(file)
         self._task_editor_service.updateValues(file)
+
+    def _updateCreatePref(self):
+        self._menu_controller.changeCreatedDateState(bool(self._settings.getCreateDate()))
+
+    def createdDate(self):
+        if self._settings.getCreateDate():
+            self._settings.setCreateDate(False)
+        else:
+            self._settings.setCreateDate(True)
+
 
     def toggleVisible(self):
         if self._view.isMinimized():

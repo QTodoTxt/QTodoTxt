@@ -23,6 +23,9 @@ class MenuController(QtCore.QObject):
         fileMenu.addAction(self._createSaveAction())
         fileMenu.addAction(self._createRevertAction())
         fileMenu.addSeparator()
+        preferenceMenu = fileMenu.addMenu(getIcon('wrench.png'),'&Preferences')
+        preferenceMenu.addAction(self._createPreferenceAction())
+        fileMenu.addSeparator()
         fileMenu.addAction(self._createExitAction())
      
     def _initEditMenu(self):
@@ -69,6 +72,15 @@ class MenuController(QtCore.QObject):
         action.triggered.connect(self._main_controller.revert)
         self.revertAction = action
         return action
+
+    def _createPreferenceAction(self):
+        action = QtGui.QAction('Add created date', self,checkable=True)
+        action.triggered.connect(self._main_controller.createdDate)
+        self.prefAction = action
+        return action
+
+    def changeCreatedDateState(self,value=False):
+        self.prefAction.setChecked(value)
 
     def _createExitAction(self):
         action = QtGui.QAction(getIcon('door_in.png'), 'E&xit', self)

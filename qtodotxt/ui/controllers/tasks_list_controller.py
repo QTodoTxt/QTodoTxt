@@ -4,6 +4,7 @@ from qtodotxt.lib import todolib
 from qtodotxt.ui.resource_manager import getIcon
 from datetime import date
 from qtodotxt.ui.controls.autocomplete_inputdialog import AutoCompleteInputDialog
+from qtodotxt.lib import settings
 
 class TasksListController(QtCore.QObject):
     
@@ -19,6 +20,7 @@ class TasksListController(QtCore.QObject):
         self._initCreateTaskAction()
         self._initDeleteSelectedTasksAction()
         self._initCompleteSelectedTasksAction()
+        self._settings = settings.Settings()
         
     def _initCreateTaskAction(self):
         action = QtGui.QAction(getIcon('add.png'), '&Create Task', self)
@@ -90,9 +92,21 @@ class TasksListController(QtCore.QObject):
     def _sortTasks(self, tasks):
         tasks.sort(cmp=todolib.compareTasks)
     
+    def _addCreationDate(self,text): 
+        date_string = date.today().strftime('%Y-%m-%d')
+        if text[:3] in self._task_editor_service._priorities:
+            text = '%s %s %s' % (text[:3],date_string,text[4:])
+        else:
+            text = '%s %s' % (date_string,text)
+        return text
+
+
     def createTask(self):
         (text, ok) = self._task_editor_service.createTask()
         if ok and text:
+            self._settings.load()
+            if self._settings.getCreateDate():
+                text = self._addCreationDate(text)
             task = todolib.Task(text)
             self._view.addTask(task)
             self._view.clearSelection()

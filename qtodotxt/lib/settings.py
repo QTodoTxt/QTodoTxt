@@ -20,9 +20,15 @@ class Settings(object):
     def setLastOpenFile(self, last_open_file):
         self._setData('last_open_file', last_open_file)
 
+    def getCreateDate(self):
+        return self._getData('add_create_date')
+
+    def setCreateDate(self,addCreationDate):
+        self._setData('add_create_date',addCreationDate)
+
     def _getData(self, key):
         if self._data:
-            return self._data['last_open_file']
+            return self._data.get(key)
         return None
 
     def _setData(self, key, value):
