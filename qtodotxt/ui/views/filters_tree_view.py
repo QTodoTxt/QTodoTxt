@@ -74,6 +74,8 @@ class FiltersTreeView(QtGui.QWidget):
     def _addDefaultTreeItems(self, tree):
         self._incompleteTasksItem = \
             FilterTreeWidgetItem(None, ['Pending'], IncompleteTasksFilter(), getIcon('time.png'))
+        self._uncategorizedTasksItem = \
+            FilterTreeWidgetItem(None, ['Uncategorized'], UncategorizedTasksFilter(), getIcon('help.png'))
         self._contextsItem = \
             FilterTreeWidgetItem(None, ['Contexts'], HasContextsFilter(), getIcon('at.png'))
         self._projectsItem = \
@@ -82,6 +84,7 @@ class FiltersTreeView(QtGui.QWidget):
             FilterTreeWidgetItem(None, ['Complete'], CompleteTasksFilter(), getIcon('x.png'))
         tree.addTopLevelItems([
             self._incompleteTasksItem,
+            self._uncategorizedTasksItem,
             self._contextsItem,
             self._projectsItem,
             self._completeTasksItem])
@@ -92,6 +95,7 @@ class FiltersTreeView(QtGui.QWidget):
         self._filterIconByFilterType[ContextFilter] = getIcon('at.png')
         self._filterIconByFilterType[ProjectFilter] = getIcon('plus.png')
         self._treeItemByFilterType[IncompleteTasksFilter] = self._incompleteTasksItem
+        self._treeItemByFilterType[UncategorizedTasksFilter] = self._uncategorizedTasksItem
         self._treeItemByFilterType[CompleteTasksFilter] = self._completeTasksItem
         self._treeItemByFilterType[HasProjectsFilter] = self._projectsItem
         self._treeItemByFilterType[HasContextsFilter] = self._contextsItem

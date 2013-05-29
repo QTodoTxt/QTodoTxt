@@ -16,6 +16,12 @@ class IncompleteTasksFilter(BaseFilter):
     def isMatch(self, task):
         return not task.is_complete
 
+class UncategorizedTasksFilter(BaseFilter):
+    def __init__(self):
+        BaseFilter.__init__(self, 'Uncategorized')
+    def isMatch(self, task):
+        return (not task.is_complete) and (not task.contexts) and (not task.projects)
+
 class CompleteTasksFilter(BaseFilter):
     def __init__(self):
         BaseFilter.__init__(self, 'Complete')
