@@ -2,9 +2,9 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "QTodoTxt"
-#define MyAppVersion "0.1.0"
-#define MyAppPublisher "David Elentok"
-#define MyAppURL "http://elentok.blogspot.com"
+#define MyAppVersion "0.9.0"
+#define MyAppPublisher "Matthieu Nantern"
+#define MyAppURL "https://github.com/mNantern/QTodoTxt"
 #define MyAppExeName "qtodotxt.exe"
 
 [Setup]

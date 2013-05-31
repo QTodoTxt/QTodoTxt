@@ -116,7 +116,7 @@ folderName = uncompressFile(fileName)
 makeMd5sums(buildDir,debianDir+'md5sums')
 
 # Step 5: generate DEBIAN/control file
-generateControl('Debian/control.tpl',version,debianDir+'control')
+generateControl('control.tpl',version,debianDir+'control')
 
 # Step 6: build the deb package
 buildDeb(version,buildDir)

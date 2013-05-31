@@ -10,7 +10,7 @@ try:
 except ImportError:
 	pass
 # allow py2exe find the required Visual C++ DLLs:
-sys.path.append('C:\\Program Files\\Common Files\\Microsoft Shared\\VSTO\\10.0')
+# sys.path.append('C:\\Program Files\\Common Files\\Microsoft Shared\\VSTO\\10.0')
 
 # ======================================
 # Data files
