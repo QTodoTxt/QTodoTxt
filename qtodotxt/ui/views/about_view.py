@@ -1,14 +1,14 @@
-__version__ = "0.1.0"
+__version__ = "1.0.0"
 
 description = """<p>QTodoTxt is a cross-platform UI client for todo.txt files
  (see <a href="http://todotxt.com">http://todotxt.com</a>)</p>
 
 <p>Copyright &copy; David Elentok 2011</p>
+<p>Copyright &copy; Matthieu Nantern 2013</p>
 
 <h2>Links</h2>
 <ul>
-<li>Project Page: <a href="https://bitbucket.org/3david/qtodotxt">https://bitbucket.org/3david/qtodotxt</a></li>
-<li>My blog: <a href="http://elentok.blogspot.com">http://elentok.blogspot.com</a></li>
+<li>Project Page: <a href="https://github.com/mNantern/QTodoTxt">https://github.com/mNantern/QTodoTxt</a></li>
 </ul>
 
 <h2>Credits</h2>
@@ -17,6 +17,7 @@ description = """<p>QTodoTxt is a cross-platform UI client for todo.txt files
     <li>Concept by <a href="http://ginatrapani.org/">Gina Trapani</a></li>
     <li>Icons by <a href="http://www.famfamfam.com/lab/icons/silk/">Mark James</a>
         and <a href="http://sekkyumu.deviantart.com/art/Developpers-Icons-63052312">Sekkyumu</a></li>
+    <li>Original code by <a href="http://elentok.blogspot.com">David Elentok</a></li>
 </ul>
 
 <h2>License</h2>
