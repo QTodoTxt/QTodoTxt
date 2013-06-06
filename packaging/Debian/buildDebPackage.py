@@ -4,7 +4,7 @@ import os.path
 import sys
 import tarfile
 import shutil
-import stat
+from stat import *
 import fnmatch
 import re
 import hashlib
@@ -53,7 +53,7 @@ def buildPackageFolder(folderName):
         filePath=os.path.join(buildBinDir,file)
         if os.path.isfile(filePath):
             st = os.stat(filePath)
-            os.chmod(filePath, st.st_mode | os.stat.S_IEXEC)
+            os.chmod(filePath, st.st_mode | S_IEXEC)
 
     # Adding symlink to bin folder
     os.chdir(tmpDir+folderName+'_build'+'/usr/bin/')
@@ -102,7 +102,7 @@ def clean(fileName,folderName):
 
 
 version=sys.argv[1]
-
+scriptDir = os.path.dirname(os.path.realpath(sys.argv[0]))
 # Step 1: download tag from github
 fileName = dlTagFromGitHub(version)
 
@@ -116,7 +116,7 @@ folderName = uncompressFile(fileName)
 makeMd5sums(buildDir,debianDir+'md5sums')
 
 # Step 5: generate DEBIAN/control file
-generateControl('control.tpl',version,debianDir+'control')
+generateControl(scriptDir+'/control.tpl',version,debianDir+'control')
 
 # Step 6: build the deb package
 buildDeb(version,buildDir)
