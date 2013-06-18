@@ -8,8 +8,12 @@ class TaskHtmlizer(object):
             B='green',
             C='cyan')
     
-    def task2html(self, task):
+    def task2html(self, task,selected = False):
         text = task.text
+        if selected:
+            text = '<font color="white">%s</font>' % text
+	else:
+	    text = '<font color="black">%s</font>' % text
         for context in task.contexts:
             text = text.replace('@' + context, self._htmlizeContext(context))
         for project in task.projects:
@@ -24,7 +28,7 @@ class TaskHtmlizer(object):
         return '<b><font color="green">@%s</font></b>' % context
 
     def _htmlizeProject(self, project):
-        return '<b><font color="blue">+%s</font></b>' % project
+        return '<b><font style="color:#64AAD0">+%s</font></b>' % project
     
     def _htmlizePriority(self, priority):
         if priority in self.priority_colors:
@@ -41,7 +45,7 @@ class TaskHtmlizer(object):
         elif tdelta.days > 0:
             return '<b><font color="orange">due:%s</font></b>' % dueDateString
         else:
-            return '<b><font color="red">due:%s</font></b>' % dueDateString
+            return '<b><font style="color:red">due:%s</font></b>' % dueDateString
 		
     def _htmlizeURL(self,text):
         regex = re.compile(

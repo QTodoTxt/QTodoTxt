@@ -11,6 +11,7 @@ class TasksListView(QtGui.QWidget):
         super(TasksListView, self).__init__(parent)
         self._task_htmlizer = TaskHtmlizer()        
         self._initUI()
+        self._oldSelected = []
 
     def clear(self):
         self._list.clear()
@@ -33,6 +34,7 @@ class TasksListView(QtGui.QWidget):
         self._list.setSelectionMode(
             QtGui.QAbstractItemView.SelectionMode.ExtendedSelection)
         self._list.itemActivated.connect(self._list_itemActivated)
+        self._list.itemSelectionChanged.connect(self._list_itemPressed)
         layout.addWidget(self._list)
         
         self.setLayout(layout)
@@ -90,6 +92,20 @@ class TasksListView(QtGui.QWidget):
     def getSelectedTasks(self):
         items = self._list.selectedItems()
         return [item.task for item in items]
+
+    def _list_itemPressed(self):
+        
+        for oldSelected in self._oldSelected:
+            label = self._list.itemWidget(oldSelected)
+            text = self._task_htmlizer.task2html(oldSelected.task,False)
+            label.setText(text)
+        self._oldSelected = []
+        items = self._list.selectedItems()
+        for item in items:
+            self._oldSelected.append(item)
+            label = self._list.itemWidget(item)
+            text = self._task_htmlizer.task2html(item.task,True)
+            label.setText(text)
             
 class TaskListWidgetItem(QtGui.QListWidgetItem):
     
