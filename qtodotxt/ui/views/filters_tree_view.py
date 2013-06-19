@@ -20,8 +20,9 @@ class FiltersTreeView(QtGui.QWidget):
         return filters
 
     def clear(self):
-        self._contextsItem.takeChildren()
-        self._projectsItem.takeChildren()
+        self._tree.clear()
+        self._addDefaultTreeItems(self._tree)
+        self._initFilterTypeMappings()
 
     def clearSelection(self):
         self._tree.clearSelection()
