@@ -11,9 +11,9 @@ Be sure to have all [prerequisites](http://github.com/mNantern/QTodoTxt/wiki/Use
 
 #### Downloads
 Latest stable release:
-- For Ubuntu:
-- For Windows:
-- Linux:
+- For Ubuntu: [deb package](http://dl.bintray.com/mnantern/deb/qtodotxt_1.0.0_all.deb?direct)
+- For Windows: [Windows installer](http://dl.bintray.com/mnantern/generic/qtodotxt.exe?direct)
+- Linux: [tar.gz archive](https://github.com/mNantern/QTodoTxt/archive/1.0.0.tar.gz)
 
 #### Documentation
 
