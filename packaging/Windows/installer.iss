@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "QTodoTxt"
-#define MyAppVersion "0.9.0"
+#define MyAppVersion "1.0.0"
 #define MyAppPublisher "Matthieu Nantern"
 #define MyAppURL "https://github.com/mNantern/QTodoTxt"
 #define MyAppExeName "qtodotxt.exe"
@@ -22,7 +22,7 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
-LicenseFile=gpl.txt
+LicenseFile=..\..\gpl.txt
 OutputDir=build\installer
 OutputBaseFilename=qtodotxt
 Compression=lzma

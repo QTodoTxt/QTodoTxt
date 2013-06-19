@@ -13,6 +13,8 @@ except ImportError:
 # sys.path.append('C:\\Program Files\\Common Files\\Microsoft Shared\\VSTO\\10.0')
 
 # ======================================
+current_dir=os.getcwd()
+os.chdir(os.path.join('..','..'))
 # Data files
 resources = []
 resources_root = os.path.join(os.path.dirname(__file__), 'qtodotxt', 'ui', 'resources')
@@ -40,16 +42,16 @@ collect_packages('.', '', packages, excludes=['test'])
 # ======================================
 # Setup parameters
 setup(name='qtodotxt',
-        version='0.1.0',
-        author='David Elentok',
-        author_email='3david@gmail.com',
-        url='http://www.bitbucket.org/3david/qtodotxt',
+        version='1.0.0',
+        author='Matthieu Nantern',
+        author_email='matthieu.nantern@gmail.com',
+        url='https://github.com/mNantern/QTodoTxt',
         packages=packages,
 	app=["qtodotxt/app.py"],
         setup_requires=["py2app"],
 
         data_files=[
-            ('resources', resources)],
+            ('resources', resources),('imageformats',[r'C:\Python27\Lib\site-packages\PySide\plugins\imageformats\qico4.dll'])],
         
         # py2exe parameters
         windows=[
@@ -60,12 +62,16 @@ setup(name='qtodotxt',
         ],
         options={
             "py2exe": {
-                "includes": ["argparse"]
+                "includes": ["argparse"],
+                "dist_dir": os.path.join(current_dir,'dist')
             },
 	    "py2app": {
 	        "iconfile": "artwork/icon/icon.icns",
 		"includes": ['PySide.QtCore', 'PySide.QtGui'],
 		"resources": resources,
 	    },
+            "build": {
+                "build_base": os.path.join(current_dir,'build')
+            },
         }
     )
