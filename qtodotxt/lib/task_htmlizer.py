@@ -10,10 +10,14 @@ class TaskHtmlizer(object):
     
     def task2html(self, task,selected = False):
         text = task.text
+        if task.is_complete:
+            text = '<s>%s</s>' % text
+        
         if selected:
             text = '<font color="white">%s</font>' % text
-	else:
-	    text = '<font color="black">%s</font>' % text
+        else:
+            text = '<font color="black">%s</font>' % text
+        
         for context in task.contexts:
             text = text.replace('@' + context, self._htmlizeContext(context))
         for project in task.projects:
@@ -22,6 +26,7 @@ class TaskHtmlizer(object):
             text = text.replace('(%s)' % task.priority, self._htmlizePriority(task.priority))
         if task.due is not None:
             text = text.replace('due:%s' % task.due, self._htmlizeDueDate(task.due))
+        
         return self._htmlizeURL(text)
     
     def _htmlizeContext(self, context):
