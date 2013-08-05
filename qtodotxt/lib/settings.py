@@ -26,6 +26,12 @@ class Settings(object):
     def setCreateDate(self,addCreationDate):
         self._setData('add_create_date',addCreationDate)
 
+    def getAutoSave(self):
+        return self._getData('auto_save')
+        
+    def setAutoSave(self,autoSave):
+        self._setData('auto_save',autoSave)
+        
     def _getData(self, key):
         if self._data:
             return self._data.get(key)

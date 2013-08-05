@@ -28,7 +28,14 @@ class MainController(QtCore.QObject):
         self._setIsModified(False)
         self._view.closeEventSignal.connect(self._view_onCloseEvent)
         self._args = self._parseArgs()
+        timer = QtCore.QTimer(self)
+        self.connect(timer, QtCore.SIGNAL("timeout()"), self.autoSave)
+        timer.start(10000)
 
+    def autoSave(self):
+        if self._settings.getAutoSave():
+            self.save()
+        
     def _parseArgs(self):
 	if len(sys.argv) > 1 and sys.argv[1].startswith('-psn'):
             del sys.argv[1]
@@ -59,6 +66,7 @@ class MainController(QtCore.QObject):
         self._updateTitle()
         self._settings.load()
         self._updateCreatePref()
+        self._updateAutoSavePref()
 
         filename = None
         if self._args.file:
@@ -199,12 +207,20 @@ class MainController(QtCore.QObject):
     def _updateCreatePref(self):
         self._menu_controller.changeCreatedDateState(bool(self._settings.getCreateDate()))
 
+    def _updateAutoSavePref(self):
+        self._menu_controller.changeAutoSaveState(bool(self._settings.getAutoSave()))
+        
     def createdDate(self):
         if self._settings.getCreateDate():
             self._settings.setCreateDate(False)
         else:
             self._settings.setCreateDate(True)
 
+    def toggleAutoSave(self):
+        if self._settings.getAutoSave():
+            self._settings.setAutoSave(False)
+        else:
+            self._settings.setAutoSave(True)
 
     def toggleVisible(self):
         if self._view.isMinimized():

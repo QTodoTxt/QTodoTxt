@@ -25,6 +25,7 @@ class MenuController(QtCore.QObject):
         fileMenu.addSeparator()
         preferenceMenu = fileMenu.addMenu(getIcon('wrench.png'),'&Preferences')
         preferenceMenu.addAction(self._createPreferenceAction())
+        preferenceMenu.addAction(self._autoSavePreferenceAction())
         fileMenu.addSeparator()
         fileMenu.addAction(self._createExitAction())
      
@@ -78,7 +79,16 @@ class MenuController(QtCore.QObject):
         action.triggered.connect(self._main_controller.createdDate)
         self.prefAction = action
         return action
+        
+    def _autoSavePreferenceAction(self):
+        action = QtGui.QAction('Enable auto save', self,checkable=True)
+        action.triggered.connect(self._main_controller.toggleAutoSave)
+        self.autoSaveAction = action
+        return action
 
+    def changeAutoSaveState(self, value=False):
+        self.autoSaveAction.setChecked(value)
+        
     def changeCreatedDateState(self,value=False):
         self.prefAction.setChecked(value)
 
