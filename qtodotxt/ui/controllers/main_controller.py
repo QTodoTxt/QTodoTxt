@@ -67,6 +67,7 @@ class MainController(QtCore.QObject):
         self._settings.load()
         self._updateCreatePref()
         self._updateAutoSavePref()
+        self._updateAutoArchivePref()
 
         filename = None
         if self._args.file:
@@ -99,6 +100,7 @@ class MainController(QtCore.QObject):
         controller.taskCreated.connect(self._tasks_list_taskCreated)
         controller.taskModified.connect(self._tasks_list_taskModified)
         controller.taskDeleted.connect(self._tasks_list_taskDeleted)
+        controller.taskArchived.connect(self._tasks_list_taskArchived)
 
     def _tasks_list_taskDeleted(self, task):
         self._file.tasks.remove(task)
@@ -111,6 +113,11 @@ class MainController(QtCore.QObject):
     def _tasks_list_taskModified(self, task):
         self._onFileUpdated()
 
+    def _tasks_list_taskArchived(self, task):
+        self._file.saveDoneTask(task)
+        self._file.tasks.remove(task)
+        self._onFileUpdated()
+        
     def _onFileUpdated(self):
         self._filters_tree_controller.showFilters(self._file)
         self._task_editor_service.updateValues(self._file)
@@ -210,6 +217,9 @@ class MainController(QtCore.QObject):
     def _updateAutoSavePref(self):
         self._menu_controller.changeAutoSaveState(bool(self._settings.getAutoSave()))
         
+    def _updateAutoArchivePref(self):
+        self._menu_controller.changeAutoArchiveState(bool(self._settings.getAutoArchive()))
+        
     def createdDate(self):
         if self._settings.getCreateDate():
             self._settings.setCreateDate(False)
@@ -221,6 +231,12 @@ class MainController(QtCore.QObject):
             self._settings.setAutoSave(False)
         else:
             self._settings.setAutoSave(True)
+            
+    def toggleAutoArchive(self):
+        if self._settings.getAutoArchive():
+            self._settings.setAutoArchive(False)
+        else:
+            self._settings.setAutoArchive(True)
 
     def toggleVisible(self):
         if self._view.isMinimized():

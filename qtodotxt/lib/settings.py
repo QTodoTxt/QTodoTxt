@@ -32,6 +32,12 @@ class Settings(object):
     def setAutoSave(self,autoSave):
         self._setData('auto_save',autoSave)
         
+    def getAutoArchive(self):
+        return self._getData('auto_archive')
+    
+    def setAutoArchive(self,autoArchive):
+        self._setData('auto_archive',autoArchive)
+        
     def _getData(self, key):
         if self._data:
             return self._data.get(key)

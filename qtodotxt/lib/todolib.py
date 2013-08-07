@@ -1,4 +1,5 @@
 import re
+import os
 import codecs
 from argparse import ArgumentError
 
@@ -83,6 +84,19 @@ class File(object):
             if fd:
                 fd.close()
                 
+    def saveDoneTask(self,task):
+        fdDone = None
+        doneFilename = os.path.join(os.path.dirname(self.filename),'done.txt')
+        try:
+            fdDone = open(doneFilename,'a')
+            fdDone.write(task.text.encode('utf8') + self.newline)
+        except IOError as e:
+            raise ErrorSavingFile("Error saving to file '%s'" % doneFilename, e)
+        finally:
+            if fdDone:
+                fdDone.close()
+        
+        
     def getAllContexts(self):
         contexts = []
         for task in self.tasks:

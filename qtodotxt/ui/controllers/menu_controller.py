@@ -26,6 +26,7 @@ class MenuController(QtCore.QObject):
         preferenceMenu = fileMenu.addMenu(getIcon('wrench.png'),'&Preferences')
         preferenceMenu.addAction(self._createPreferenceAction())
         preferenceMenu.addAction(self._autoSavePreferenceAction())
+        preferenceMenu.addAction(self._autoArchivePreferenceAction())
         fileMenu.addSeparator()
         fileMenu.addAction(self._createExitAction())
      
@@ -86,11 +87,20 @@ class MenuController(QtCore.QObject):
         self.autoSaveAction = action
         return action
 
+    def _autoArchivePreferenceAction(self):
+        action = QtGui.QAction('Enable auto archive', self,checkable=True)
+        action.triggered.connect(self._main_controller.toggleAutoArchive)
+        self.autoArchiveAction = action
+        return action
+        
     def changeAutoSaveState(self, value=False):
         self.autoSaveAction.setChecked(value)
         
     def changeCreatedDateState(self,value=False):
         self.prefAction.setChecked(value)
+        
+    def changeAutoArchiveState(self, value=False):
+        self.autoArchiveAction.setChecked(value)
 
     def _createExitAction(self):
         action = QtGui.QAction(getIcon('door_in.png'), 'E&xit', self)

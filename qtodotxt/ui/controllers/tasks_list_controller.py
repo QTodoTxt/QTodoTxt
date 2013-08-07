@@ -10,6 +10,7 @@ class TasksListController(QtCore.QObject):
     
     taskModified = QtCore.Signal(todolib.Task)
     taskCreated = QtCore.Signal(todolib.Task)
+    taskArchived = QtCore.Signal(todolib.Task)
     taskDeleted = QtCore.Signal(todolib.Task)
     
     def __init__(self, view, task_editor_service):
@@ -47,7 +48,11 @@ class TasksListController(QtCore.QObject):
         date_string = date.today().strftime('%Y-%m-%d') 
         if not task.is_complete:
             task.text = 'x %s %s' % (date_string, task.text)
-            self.taskModified.emit(task)
+            self._settings.load()
+            if self._settings.getAutoArchive():
+                self.taskArchived.emit(task)
+            else:
+                self.taskModified.emit(task)
         
     def _completeSelectedTasks(self):
         tasks = self._view.getSelectedTasks()
