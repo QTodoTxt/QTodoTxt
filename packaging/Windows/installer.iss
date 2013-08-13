@@ -24,7 +24,7 @@ DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 LicenseFile=..\..\gpl.txt
 OutputDir=build\installer
-OutputBaseFilename=qtodotxt
+OutputBaseFilename=qtodotxt_{#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
 
