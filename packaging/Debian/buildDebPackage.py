@@ -104,7 +104,8 @@ def clean(fileName,folderName):
 version=sys.argv[1]
 scriptDir = os.path.dirname(os.path.realpath(sys.argv[0]))
 # Step 1: download tag from github
-fileName = dlTagFromGitHub(version)
+#fileName = dlTagFromGitHub(version)
+fileName = "QTodoTxt-1.1.0.tar.gz"
 
 # Step 2: uncompress tag's archive
 folderName = uncompressFile(fileName)

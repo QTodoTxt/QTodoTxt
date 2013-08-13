@@ -21,13 +21,12 @@ class AutoCompleteEdit(QtGui.QLineEdit):
         This is the event handler for the QCompleter.activated(QString) signal,
         it is called when the user selects an item in the completer popup.
         """
-	
-	currentText = self.text()
-	completionPrefixSize = len(self._completer.completionPrefix())
-	textFirstPart = self.cursorPosition() - completionPrefixSize
-	textLastPart = textFirstPart+completionPrefixSize
-	newtext = currentText[:textFirstPart] + completion + " " + currentText[textLastPart:]
-	self.setText(newtext)
+        currentText = self.text()
+        completionPrefixSize = len(self._completer.completionPrefix())
+        textFirstPart = self.cursorPosition() - completionPrefixSize
+        textLastPart = textFirstPart+completionPrefixSize
+        newtext = currentText[:textFirstPart] + completion + " " + currentText[textLastPart:]
+        self.setText(newtext)
 
     def textUnderCursor(self):
         text = self.text()
