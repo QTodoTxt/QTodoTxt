@@ -23,8 +23,8 @@ class AutoCompleteEdit(QtGui.QLineEdit):
         """
 	
 	currentText = self.text()
-	textFirstPart = self.cursorPosition() - 1
 	completionPrefixSize = len(self._completer.completionPrefix())
+	textFirstPart = self.cursorPosition() - completionPrefixSize
 	textLastPart = textFirstPart+completionPrefixSize
 	newtext = currentText[:textFirstPart] + completion + " " + currentText[textLastPart:]
 	self.setText(newtext)
