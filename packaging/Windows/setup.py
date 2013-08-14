@@ -17,7 +17,7 @@ current_dir=os.getcwd()
 os.chdir(os.path.join('..','..'))
 # Data files
 resources = []
-resources_root = os.path.join(os.path.dirname(__file__), 'qtodotxt', 'ui', 'resources')
+resources_root = os.path.join(os.getcwd(), 'qtodotxt', 'ui', 'resources')
 for file in os.listdir(resources_root):
     resources.append(os.path.join(resources_root, file))
 
@@ -42,7 +42,7 @@ collect_packages('.', '', packages, excludes=['test'])
 # ======================================
 # Setup parameters
 setup(name='qtodotxt',
-        version='1.0.0',
+        version='1.1.0',
         author='Matthieu Nantern',
         author_email='matthieu.nantern@gmail.com',
         url='https://github.com/mNantern/QTodoTxt',
