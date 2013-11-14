@@ -32,6 +32,7 @@ class FiltersTreeView(QtGui.QWidget):
         icon = self._filterIconByFilterType[type(filter)]
         FilterTreeWidgetItem(parentItem, [filter.text], filter=filter, icon=icon)
         parentItem.setExpanded(True)
+	parentItem.sortChildren(0,QtCore.Qt.AscendingOrder)
             
     def selectAllTasksFilter(self):
         self._incompleteTasksItem.setSelected(True)
