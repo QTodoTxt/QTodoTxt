@@ -1,5 +1,4 @@
 ﻿from PySide import QtCore, QtGui
-from re import sub, escape
 
 class AutoCompleteEdit(QtGui.QLineEdit):
     def __init__(self, model, separator = ' '):

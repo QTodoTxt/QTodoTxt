@@ -51,7 +51,7 @@ class TaskHtmlizer(object):
             return '<b><font color="orange">due:%s</font></b>' % dueDateString
         else:
             return '<b><font style="color:red">due:%s</font></b>' % dueDateString
-		
+
     def _htmlizeURL(self,text):
         regex = re.compile(
             r'((?:http|ftp)s?://' # http:// or https://

@@ -1,5 +1,4 @@
 import sys
-from PySide import QtCore
 from PySide import QtGui
 from autocomplete_lineedit import AutoCompleteEdit
 

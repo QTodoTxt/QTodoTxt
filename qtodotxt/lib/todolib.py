@@ -1,7 +1,7 @@
 import re
 import os
 import codecs
-from argparse import ArgumentError
+
 
 USE_LAST_FILENAME = 1
 
