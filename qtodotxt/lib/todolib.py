@@ -98,22 +98,48 @@ class File(object):
         
         
     def getAllContexts(self):
-        contexts = []
+        contexts = dict()
         for task in self.tasks:
             if not task.is_complete:
                 for context in task.contexts:
-                    if context not in contexts:
-                        contexts.append(context)
+                    if context in contexts:
+                        contexts[context] += 1
+                    else:
+                        contexts[context] = 1
         return contexts
 
     def getAllProjects(self):
-        projects = []
+        projects = dict()
         for task in self.tasks:
             if not task.is_complete:
                 for project in task.projects:
-                    if project not in projects:
-                        projects.append(project)
+                    if project in projects:
+                        projects[project] +=1
+                    else:
+                        projects[project] = 1
         return projects
+
+    def getTasksCounters(self):
+        counters = dict({'Pending':0, 
+                         'Uncategorized':0,
+                         'Contexts':0,
+                         'Projects':0,
+                         'Complete':0})
+        for task in self.tasks:
+            if not task.is_complete:
+                counters['Pending'] += 1
+                nbProjects = len(task.projects)
+                nbContexts = len(task.contexts)
+                if  nbProjects > 0:
+                    counters['Projects'] += 1
+                if nbContexts >0:
+                    counters['Contexts'] += 1
+                if nbContexts == 0 and nbProjects == 0:
+                    counters['Uncategorized'] += 1
+            else:
+                counters['Complete'] += 1
+        return counters    
+            
 
     
 class Task(object):
