@@ -26,7 +26,9 @@ class TaskHtmlizer(object):
             text = text.replace('(%s)' % task.priority, self._htmlizePriority(task.priority))
         if task.due is not None:
             text = text.replace('due:%s' % task.due, self._htmlizeDueDate(task.due))
-        
+        if task.threshold is not None:
+            text = text.replace('t:%s' % task.threshold, self._htmlizeThresholdDate(task.threshold))
+
         return self._htmlizeURL(text)
     
     def _htmlizeContext(self, context):
@@ -51,7 +53,16 @@ class TaskHtmlizer(object):
             return '<b><font color="orange">due:%s</font></b>' % dueDateString
         else:
             return '<b><font style="color:red">due:%s</font></b>' % dueDateString
-		
+
+    def _htmlizeThresholdDate(self,thresholdDateString):
+        threshold_date = datetime.strptime(thresholdDateString, '%Y-%m-%d').date()
+        date_now = date.today()
+        tdelta = threshold_date - date_now
+        if tdelta.days > 0:
+            return '<i><font style="color:grey">t:%s</font></i>' % thresholdDateString
+        else:
+            return '<font style="color:orange">t:%s</font>' % thresholdDateString
+
     def _htmlizeURL(self,text):
         regex = re.compile(
             r'((?:http|ftp)s?://' # http:// or https://

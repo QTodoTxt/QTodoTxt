@@ -37,7 +37,13 @@ class Settings(object):
     
     def setAutoArchive(self,autoArchive):
         self._setData('auto_archive',autoArchive)
-        
+
+    def getHideFutureTasks(self):
+        return self._getData('hide_future_tasks')
+
+    def setHideFutureTasks(self,hideFutureTasks):
+        self._setData('hide_future_tasks',hideFutureTasks)
+
     def _getData(self, key):
         if self._data:
             return self._data.get(key)
