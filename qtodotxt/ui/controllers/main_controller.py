@@ -68,6 +68,7 @@ class MainController(QtCore.QObject):
         self._updateCreatePref()
         self._updateAutoSavePref()
         self._updateAutoArchivePref()
+        self._updateHideFutureTasksPref()
 
         filename = None
         if self._args.file:
@@ -124,15 +125,20 @@ class MainController(QtCore.QObject):
         self._setIsModified(True)
 
     def _getTasks(self, filters):
-        if None in filters:
-            return self._file.tasks
-        
+        hide_future_tasks = self._settings.getHideFutureTasks()
+
         tasks = []
         for task in self._file.tasks:
-            for filter in filters:
-                if filter.isMatch(task):
-                    tasks.append(task)
-                    break
+            if hide_future_tasks and task.is_future:
+                continue
+            elif None in filters:
+                tasks.append(task)
+            else:
+                for filter in filters:
+                    if filter.isMatch(task):
+                        tasks.append(task)
+                        break
+
         return tasks
  
     def _canExit(self):
@@ -219,7 +225,10 @@ class MainController(QtCore.QObject):
         
     def _updateAutoArchivePref(self):
         self._menu_controller.changeAutoArchiveState(bool(self._settings.getAutoArchive()))
-        
+
+    def _updateHideFutureTasksPref(self):
+        self._menu_controller.changeHideFutureTasksState(bool(self._settings.getHideFutureTasks()))
+
     def createdDate(self):
         if self._settings.getCreateDate():
             self._settings.setCreateDate(False)
@@ -237,6 +246,13 @@ class MainController(QtCore.QObject):
             self._settings.setAutoArchive(False)
         else:
             self._settings.setAutoArchive(True)
+
+    def toggleHideFutureTasks(self):
+        if self._settings.getHideFutureTasks():
+            self._settings.setHideFutureTasks(False)
+        else:
+            self._settings.setHideFutureTasks(True)
+        self._onFilterSelectionChanged(self._filters_tree_controller._view.getSelectedFilters())
 
     def toggleVisible(self):
         if self._view.isMinimized():
