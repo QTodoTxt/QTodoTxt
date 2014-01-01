@@ -23,20 +23,20 @@ class Settings(object):
     def getCreateDate(self):
         return self._getData('add_create_date')
 
-    def setCreateDate(self,addCreationDate):
-        self._setData('add_create_date',addCreationDate)
+    def setCreateDate(self, addCreationDate):
+        self._setData('add_create_date', addCreationDate)
 
     def getAutoSave(self):
         return self._getData('auto_save')
         
-    def setAutoSave(self,autoSave):
-        self._setData('auto_save',autoSave)
+    def setAutoSave(self, autoSave):
+        self._setData('auto_save', autoSave)
         
     def getAutoArchive(self):
         return self._getData('auto_archive')
     
-    def setAutoArchive(self,autoArchive):
-        self._setData('auto_archive',autoArchive)
+    def setAutoArchive(self, autoArchive):
+        self._setData('auto_archive', autoArchive)
         
     def _getData(self, key):
         if self._data:

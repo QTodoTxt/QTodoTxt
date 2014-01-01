@@ -1,4 +1,4 @@
-﻿import sys
+import sys
 from PySide import QtCore
 from PySide import QtGui
 

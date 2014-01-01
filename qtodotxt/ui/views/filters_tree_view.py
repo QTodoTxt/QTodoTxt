@@ -30,21 +30,21 @@ class FiltersTreeView(QtGui.QWidget):
     def addFilter(self, filter, number=0):
         parentItem = self._filterItemByFilterType[type(filter)]
         icon = self._filterIconByFilterType[type(filter)]
-        FilterTreeWidgetItem(parentItem, ["%s (%d)" % (filter.text,number)], filter=filter, icon=icon)
+        FilterTreeWidgetItem(parentItem, ["%s (%d)" % (filter.text, number)], filter=filter, icon=icon)
         parentItem.setExpanded(True)
-        parentItem.sortChildren(0,QtCore.Qt.AscendingOrder)
+        parentItem.sortChildren(0, QtCore.Qt.AscendingOrder)
             
-    def updateTopLevelTitles(self,counters):
+    def updateTopLevelTitles(self, counters):
         nbPending = counters['Pending']
         nbUncategorized = counters['Uncategorized']
         nbContexts = counters['Contexts']
         nbProjects = counters['Projects']
         nbComplete = counters['Complete']
-        self._incompleteTasksItem.setText(0,"Pending (%d)" % nbPending)
-        self._uncategorizedTasksItem.setText(0,"Uncategorized (%d)" % nbUncategorized)
-        self._contextsItem.setText(0,"Contexts (%d)" % nbContexts)
-        self._projectsItem.setText(0,"Projects (%d)" % nbProjects)
-        self._completeTasksItem.setText(0,"Complete (%d)" % nbComplete)
+        self._incompleteTasksItem.setText(0, "Pending (%d)" % nbPending)
+        self._uncategorizedTasksItem.setText(0, "Uncategorized (%d)" % nbUncategorized)
+        self._contextsItem.setText(0, "Contexts (%d)" % nbContexts)
+        self._projectsItem.setText(0, "Projects (%d)" % nbProjects)
+        self._completeTasksItem.setText(0, "Complete (%d)" % nbComplete)
         
     def selectAllTasksFilter(self):
         self._incompleteTasksItem.setSelected(True)

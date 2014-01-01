@@ -1,4 +1,4 @@
-﻿from qtodotxt.ui.controls.autocomplete_inputdialog import AutoCompleteInputDialog
+from qtodotxt.ui.controls.autocomplete_inputdialog import AutoCompleteInputDialog
 
 class TaskEditorService(object):
     def __init__(self, parent_window):

@@ -1,7 +1,7 @@
-﻿from PySide import QtCore, QtGui
+from PySide import QtCore, QtGui
 
 class AutoCompleteEdit(QtGui.QLineEdit):
-    def __init__(self, model, separator = ' '):
+    def __init__(self, model, separator=' '):
         super(AutoCompleteEdit, self).__init__()
         self._separator = separator
         self._completer = QtGui.QCompleter(model)
@@ -23,7 +23,7 @@ class AutoCompleteEdit(QtGui.QLineEdit):
         currentText = self.text()
         completionPrefixSize = len(self._completer.completionPrefix())
         textFirstPart = self.cursorPosition() - completionPrefixSize
-        textLastPart = textFirstPart+completionPrefixSize
+        textLastPart = textFirstPart + completionPrefixSize
         newtext = currentText[:textFirstPart] + completion + " " + currentText[textLastPart:]
         self.setText(newtext)
 
@@ -31,7 +31,7 @@ class AutoCompleteEdit(QtGui.QLineEdit):
         text = self.text()
         textUnderCursor = ''
         i = self.cursorPosition() - 1
-        while i >=0 and text[i] != self._separator:
+        while i >= 0 and text[i] != self._separator:
             textUnderCursor = text[i] + textUnderCursor
             i -= 1
         return textUnderCursor
@@ -58,7 +58,7 @@ class AutoCompleteEdit(QtGui.QLineEdit):
         """
         self._completer.setCompletionPrefix(completionPrefix)
         self._completer.popup().setCurrentIndex(
-                self._completer.completionModel().index(0,0))
+                self._completer.completionModel().index(0, 0))
 
 if __name__ == '__main__':
     def demo():

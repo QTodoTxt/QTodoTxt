@@ -53,7 +53,7 @@ class File(object):
         lines = []
         fd = None
         try:
-            fd = codecs.open(filename,'r','utf-8')
+            fd = codecs.open(filename, 'r', 'utf-8')
             lines = fd.readlines()
             fd.close()
         except IOError as e:
@@ -84,11 +84,11 @@ class File(object):
             if fd:
                 fd.close()
                 
-    def saveDoneTask(self,task):
+    def saveDoneTask(self, task):
         fdDone = None
-        doneFilename = os.path.join(os.path.dirname(self.filename),'done.txt')
+        doneFilename = os.path.join(os.path.dirname(self.filename), 'done.txt')
         try:
-            fdDone = open(doneFilename,'a')
+            fdDone = open(doneFilename, 'a')
             fdDone.write(task.text.encode('utf8') + self.newline)
         except IOError as e:
             raise ErrorSavingFile("Error saving to file '%s'" % doneFilename, e)
@@ -114,13 +114,13 @@ class File(object):
             if not task.is_complete:
                 for project in task.projects:
                     if project in projects:
-                        projects[project] +=1
+                        projects[project] += 1
                     else:
                         projects[project] = 1
         return projects
 
     def getTasksCounters(self):
-        counters = dict({'Pending':0, 
+        counters = dict({'Pending':0,
                          'Uncategorized':0,
                          'Contexts':0,
                          'Projects':0,
@@ -132,7 +132,7 @@ class File(object):
                 nbContexts = len(task.contexts)
                 if  nbProjects > 0:
                     counters['Projects'] += 1
-                if nbContexts >0:
+                if nbContexts > 0:
                     counters['Contexts'] += 1
                 if nbContexts == 0 and nbProjects == 0:
                     counters['Uncategorized'] += 1
