@@ -2,14 +2,17 @@ from PySide import QtCore
 from PySide import QtGui
 from qtodotxt.lib.task_htmlizer import TaskHtmlizer
 from qtodotxt.lib import todolib
+from filter_tasks_view import FilterTasksView
+from qtodotxt.ui.resource_manager import getIcon
 
 class TasksListView(QtGui.QWidget):
     
     taskActivated = QtCore.Signal(todolib.Task)
     
-    def __init__(self,parent=None):
+    def __init__(self, parent=None):
         super(TasksListView, self).__init__(parent)
-        self._task_htmlizer = TaskHtmlizer()        
+        self._task_htmlizer = TaskHtmlizer()
+        self.filter_tasks = FilterTasksView(getIcon("zoom.png"),getIcon("cross.png"),self)      
         self._initUI()
         self._oldSelected = []
 
@@ -29,13 +32,18 @@ class TasksListView(QtGui.QWidget):
         
     def _initUI(self):
         layout = QtGui.QGridLayout()
+        layout.setSpacing(5)
+        
+        _list_filter = self.filter_tasks
         
         self._list = QtGui.QListWidget(self)
         self._list.setSelectionMode(
             QtGui.QAbstractItemView.SelectionMode.ExtendedSelection)
         self._list.itemActivated.connect(self._list_itemActivated)
         self._list.itemSelectionChanged.connect(self._list_itemPressed)
-        layout.addWidget(self._list)
+        
+        layout.addWidget(_list_filter, 1, 0)
+        layout.addWidget(self._list, 2, 0)
         
         self.setLayout(layout)
         
@@ -97,14 +105,14 @@ class TasksListView(QtGui.QWidget):
         
         for oldSelected in self._oldSelected:
             label = self._list.itemWidget(oldSelected)
-            text = self._task_htmlizer.task2html(oldSelected.task,False)
+            text = self._task_htmlizer.task2html(oldSelected.task, False)
             label.setText(text)
         self._oldSelected = []
         items = self._list.selectedItems()
         for item in items:
             self._oldSelected.append(item)
             label = self._list.itemWidget(item)
-            text = self._task_htmlizer.task2html(item.task,True)
+            text = self._task_htmlizer.task2html(item.task, True)
             label.setText(text)
             
 class TaskListWidgetItem(QtGui.QListWidgetItem):

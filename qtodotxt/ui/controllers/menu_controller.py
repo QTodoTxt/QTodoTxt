@@ -51,7 +51,7 @@ class MenuController(QtCore.QObject):
         
     def _createNewAction(self):
         action = QtGui.QAction(getIcon('page.png'), '&New', self)
-	# infrequent action, I prefer to use ctrl+n for new task.
+        # infrequent action, I prefer to use ctrl+n for new task.
         action.setShortcuts(["Ctrl+Shift+N"])
         action.triggered.connect(self._main_controller.new)
         return action
