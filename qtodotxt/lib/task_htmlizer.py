@@ -7,11 +7,18 @@ class TaskHtmlizer(object):
             A='red',
             B='green',
             C='cyan')
+        # regex matching creation and completion dates and priority
+        self.regex = re.compile(
+            r'^(x (?P<completed>\d{4}-\d{2}-\d{2} )?)?(\((?P<priority>[A-Z])\) )?(?P<created>\d{4}-\d{2}-\d{2} )?.*$')
     
     def task2html(self, task,selected = False):
         text = task.text
+        priority = task.priority
+
         if task.is_complete:
-            text = '<s>%s</s>' % text
+            text = '<s>%s</s>' % text.replace('x ', '', 1)
+            # when the task is complete, the Task object has no priority. We find the original priority from the text
+            priority = re.match(self.regex, task.text).group('priority')
         
         if selected:
             text = '<font color="white">%s</font>' % text
@@ -22,24 +29,29 @@ class TaskHtmlizer(object):
             text = text.replace('@' + context, self._htmlizeContext(context))
         for project in task.projects:
             text = text.replace('+' + project, self._htmlizeProject(project))
-        if task.priority is not None:
-            text = text.replace('(%s)' % task.priority, self._htmlizePriority(task.priority))
+        if priority is not None:
+            text = text.replace('(%s) ' % priority, self._htmlizePriority(priority))
+        else:
+            # add 3 spaces, so tasks get evenly aligned when there's no priority
+            text = '<font face="mono">&nbsp;&nbsp;&nbsp;</font>' + text
         if task.due is not None:
             text = text.replace('due:%s' % task.due, self._htmlizeDueDate(task.due))
+
+        text = self._htmlizeCreatedCompleted(text, task.text)
         
         return self._htmlizeURL(text)
     
     def _htmlizeContext(self, context):
-        return '<b><font color="green">@%s</font></b>' % context
+        return '<font color="green">@%s</font>' % context
 
     def _htmlizeProject(self, project):
-        return '<b><font style="color:#64AAD0">+%s</font></b>' % project
+        return '<font style="color:#64AAD0">+%s</font>' % project
     
     def _htmlizePriority(self, priority):
         if priority in self.priority_colors:
             color = self.priority_colors[priority]
-            return '<b><font color="%s">(%s)</font></b>' % (color, priority)
-        return '<b>(%s)</b>' % priority
+            return '<font face="mono" color="%s">&nbsp;%s&nbsp;</font>' % (color, priority)
+        return '<font face="mono">&nbsp;%s&nbsp;</font>' % priority
 
     def _htmlizeDueDate(self,dueDateString):
         due_date = datetime.strptime(dueDateString, '%Y-%m-%d').date()
@@ -61,3 +73,28 @@ class TaskHtmlizer(object):
             r'(?::\d+)?' # optional port
             r'(?:[-_/?a-zA-Z0-9]*))', re.IGNORECASE)
         return regex.sub(r'<a href="\1">\1</a>',text)
+
+    def _htmlizeCreatedCompleted(self, text, raw_text):
+        created = ''
+        completed = ''
+        match = re.match(self.regex, raw_text)
+        if match.group("completed"):
+            completed = match.group("completed")
+            text = text.replace(completed, '', 1)
+        if match.group("created"):
+            created = match.group("created")
+            text = text.replace(created, '', 1)
+        if created or completed:
+            first = True
+            text += ' <font color="gray">('
+            if created:
+                text += created.rstrip()
+                first = False
+            if completed:
+                if not first:
+                    text += ', '
+                text += 'completed: %s' % completed.rstrip()
+            text = text + ')</font>'
+
+        return text
+
