@@ -49,7 +49,7 @@ Test Setup and Helper Methods
 ========================================
 5. Task1 is complete, Task2 is incomplete, should return 1
 ========================================
->>> task1 = todolib.Task('X task1')
+>>> task1 = todolib.Task('x task1')
 >>> task2 = todolib.Task('task2')
 >>> todolib.compareTasks(task1, task2)
 1
@@ -58,6 +58,6 @@ Test Setup and Helper Methods
 6. Task1 is incomplete, Task2 is complete, should return -1
 ========================================
 >>> task1 = todolib.Task('task1')
->>> task2 = todolib.Task('X task2')
+>>> task2 = todolib.Task('x task2')
 >>> todolib.compareTasks(task1, task2)
 -1

@@ -102,9 +102,9 @@ False
 7. task with X at the beginning is complete
 ========================================
 
->>> task = todolib.Task('X this task is complete')
+>>> task = todolib.Task('x this task is complete')
 >>> task.text
-'X this task is complete'
+'x this task is complete'
 >>> task.contexts
 []
 >>> task.projects
