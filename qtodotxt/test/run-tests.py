@@ -15,7 +15,7 @@ def run_doctests(testsdir):
         fullname = os.path.join(testsdir, filename)
         if filename.endswith('.doctest'):
             print "- Running", fullname
-            result = doctest.testfile(fullname)
+            result = doctest.testfile(fullname, module_relative=False)
             print "  => ran {0} results, {1} failed".format(result.attempted, result.failed)
         elif os.path.isdir(fullname):
             exit_code = run_doctests(fullname)

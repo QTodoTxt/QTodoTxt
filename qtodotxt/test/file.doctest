@@ -34,8 +34,8 @@ Test Setup and Helper Methods
 >>> file = saveAndReload(file)
 >>> printTask(file.tasks[0])
 Text: do something +project1 @context1
-  Contexts: ['context1']
-  Projects: ['project1']
+  Contexts: [u'context1']
+  Projects: [u'project1']
   Is Complete: False
   Priority: None
 

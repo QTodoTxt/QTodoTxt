@@ -14,5 +14,3 @@ Test Setup and Helper Methods
 >>> edit = AutoCompleteEdit(model)
 >>> edit._separator
 ' '
->>> edit._addSpaceAfterCompleting
-False
