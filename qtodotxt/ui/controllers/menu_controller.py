@@ -27,6 +27,7 @@ class MenuController(QtCore.QObject):
         preferenceMenu.addAction(self._createPreferenceAction())
         preferenceMenu.addAction(self._autoSavePreferenceAction())
         preferenceMenu.addAction(self._autoArchivePreferenceAction())
+        preferenceMenu.addAction(self._hideFutureTasksAction())
         fileMenu.addSeparator()
         fileMenu.addAction(self._createExitAction())
      
@@ -92,7 +93,13 @@ class MenuController(QtCore.QObject):
         action.triggered.connect(self._main_controller.toggleAutoArchive)
         self.autoArchiveAction = action
         return action
-        
+
+    def _hideFutureTasksAction(self):
+        action = QtGui.QAction('Hide future tasks', self,checkable=True)
+        action.triggered.connect(self._main_controller.toggleHideFutureTasks)
+        self.hideFutureTasksAction = action
+        return action
+
     def changeAutoSaveState(self, value=False):
         self.autoSaveAction.setChecked(value)
         
@@ -101,6 +108,9 @@ class MenuController(QtCore.QObject):
         
     def changeAutoArchiveState(self, value=False):
         self.autoArchiveAction.setChecked(value)
+
+    def changeHideFutureTasksState(self, value=False):
+        self.hideFutureTasksAction.setChecked(value)
 
     def _createExitAction(self):
         action = QtGui.QAction(getIcon('door_in.png'), 'E&xit', self)

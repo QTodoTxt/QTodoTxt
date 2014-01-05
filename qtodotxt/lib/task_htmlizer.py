@@ -36,8 +36,10 @@ class TaskHtmlizer(object):
             text = '<font face="mono,Ubuntu Mono">&nbsp;&nbsp;&nbsp;</font>' + text
         if task.due is not None:
             text = text.replace('due:%s' % task.due, self._htmlizeDueDate(task.due))
+        if task.threshold is not None:
+            text = text.replace('t:%s' % task.threshold, self._htmlizeThresholdDate(task.threshold))
         text = self._htmlizeCreatedCompleted(text, task.text)
-        
+
         return self._htmlizeURL(text)
     
     def _htmlizeContext(self, context):
@@ -63,7 +65,16 @@ class TaskHtmlizer(object):
         else:
             return '<b><font style="color:red">due:%s</font></b>' % dueDateString
 
-    def _htmlizeURL(self, text):
+    def _htmlizeThresholdDate(self,thresholdDateString):
+        threshold_date = datetime.strptime(thresholdDateString, '%Y-%m-%d').date()
+        date_now = date.today()
+        tdelta = threshold_date - date_now
+        if tdelta.days > 0:
+            return '<i><font style="color:grey">t:%s</font></i>' % thresholdDateString
+        else:
+            return '<font style="color:orange">t:%s</font>' % thresholdDateString
+
+    def _htmlizeURL(self,text):
         regex = re.compile(
             r'((?:http|ftp)s?://'  # http:// or https://
             r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # domain...

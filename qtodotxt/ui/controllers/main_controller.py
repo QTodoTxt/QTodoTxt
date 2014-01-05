@@ -9,7 +9,7 @@ from qtodotxt.lib import todolib, settings
 
 from tasks_list_controller import TasksListController
 from filters_tree_controller import FiltersTreeController
-from qtodotxt.lib.filters import SimpleTextFilter
+from qtodotxt.lib.filters import SimpleTextFilter, FutureFilter
 from menu_controller import MenuController
 
 FILENAME_FILTERS = ';;'.join([
@@ -70,6 +70,7 @@ class MainController(QtCore.QObject):
         self._updateCreatePref()
         self._updateAutoSavePref()
         self._updateAutoArchivePref()
+        self._updateHideFutureTasksPref()
 
         filename = None
         if self._args.file:
@@ -97,6 +98,10 @@ class MainController(QtCore.QObject):
         # Then with our filter text
         filterText = self._view.tasks_view.filter_tasks.getText()
         tasks = self._getTasks([SimpleTextFilter(filterText)],treeTasks)
+        # And finally with future filter if needed
+        # TODO: refactor all that filters
+        if (self._settings.getHideFutureTasks()):
+            tasks = self._getTasks([FutureFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
 
     def _initFilterText(self):
@@ -109,6 +114,10 @@ class MainController(QtCore.QObject):
         treeTasks = self._getTasks(filters,self._file.tasks)
         # Then with our filter text
         tasks = self._getTasks([SimpleTextFilter(text)],treeTasks)
+        # And finally with future filter if needed
+        # TODO: refactor all that filters
+        if (self._settings.getHideFutureTasks()):
+            tasks = self._getTasks([FutureFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
         
     def _initTasksList(self):
@@ -237,7 +246,10 @@ class MainController(QtCore.QObject):
         
     def _updateAutoArchivePref(self):
         self._menu_controller.changeAutoArchiveState(bool(self._settings.getAutoArchive()))
-        
+
+    def _updateHideFutureTasksPref(self):
+        self._menu_controller.changeHideFutureTasksState(bool(self._settings.getHideFutureTasks()))
+
     def createdDate(self):
         if self._settings.getCreateDate():
             self._settings.setCreateDate(False)
@@ -255,6 +267,13 @@ class MainController(QtCore.QObject):
             self._settings.setAutoArchive(False)
         else:
             self._settings.setAutoArchive(True)
+
+    def toggleHideFutureTasks(self):
+        if self._settings.getHideFutureTasks():
+            self._settings.setHideFutureTasks(False)
+        else:
+            self._settings.setHideFutureTasks(True)
+        self._onFilterSelectionChanged(self._filters_tree_controller._view.getSelectedFilters())
 
     def toggleVisible(self):
         if self._view.isMinimized():

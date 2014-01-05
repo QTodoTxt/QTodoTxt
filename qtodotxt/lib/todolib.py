@@ -1,7 +1,7 @@
 import re
 import os
 import codecs
-
+from datetime import datetime,date
 
 USE_LAST_FILENAME = 1
 
@@ -154,9 +154,11 @@ class Task(object):
         self.projects = []
         self.priority = None
         self.is_complete = False
+        self.is_future = False
         self._text = ''
         self.due = None
-    
+        self.threshold = None
+
     def parseLine(self, line):
         words = line.split(' ')
         i = 0
@@ -179,6 +181,9 @@ class Task(object):
                 self.projects.append(word[1:])
             elif word.startswith('due:'):
                 self.due = word[4:]
+            elif word.startswith('t:'):
+                self.threshold = word[2:]
+                self.is_future = datetime.strptime(self.threshold, '%Y-%m-%d').date() > date.today()
 
     def _getText(self):
         return self._text
