@@ -1,7 +1,7 @@
 from PySide import QtCore
 from PySide import QtGui
 
-from ..resource_manager import getIcon
+from ..resource_manager import getIcon, getFonts
 from filters_tree_view import FiltersTreeView
 from tasks_view import TasksView
 
@@ -19,6 +19,7 @@ class MainView(QtGui.QMainWindow):
     def _initUI(self):
         
         splitter = QtGui.QSplitter()
+        getFonts()
         
         self.filters_tree_view = FiltersTreeView(splitter)
         self.tasks_view = TasksView(splitter)
