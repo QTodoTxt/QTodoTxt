@@ -95,12 +95,12 @@ class MainController(QtCore.QObject):
         # First we filter with filters tree
         treeTasks = self._getTasks(filters,self._file.tasks)
         # Then with our filter text
-        filterText = self._view.tasks_list_view.filter_tasks.getText()
+        filterText = self._view.tasks_view.filter_tasks.getText()
         tasks = self._getTasks([SimpleTextFilter(filterText)],treeTasks)
         self._tasks_list_controller.showTasks(tasks)
 
     def _initFilterText(self):
-        self._view.tasks_list_view.filter_tasks.filterTextChanged.connect(
+        self._view.tasks_view.filter_tasks.filterTextChanged.connect(
             self._onFilterTextChanged)
 
     def _onFilterTextChanged(self,text):
@@ -113,7 +113,7 @@ class MainController(QtCore.QObject):
         
     def _initTasksList(self):
         controller = self._tasks_list_controller = \
-            TasksListController(self._view.tasks_list_view, self._task_editor_service)
+            TasksListController(self._view.tasks_view.tasks_list_view, self._task_editor_service)
         
         controller.taskCreated.connect(self._tasks_list_taskCreated)
         controller.taskModified.connect(self._tasks_list_taskModified)
