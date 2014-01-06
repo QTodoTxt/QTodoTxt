@@ -33,7 +33,7 @@ class TaskHtmlizer(object):
             text = text.replace('(%s) ' % priority, self._htmlizePriority(priority))
         else:
             # add 3 spaces, so tasks get evenly aligned when there's no priority
-            text = '<font face="mono,Ubuntu Mono">&nbsp;&nbsp;&nbsp;</font>' + text
+            text = '<font face="Lucida Console,monospace,Ubuntu Mono">&nbsp;&nbsp;&nbsp;</font>' + text
         if task.due is not None:
             text = text.replace('due:%s' % task.due, self._htmlizeDueDate(task.due))
         if task.threshold is not None:
@@ -51,8 +51,8 @@ class TaskHtmlizer(object):
     def _htmlizePriority(self, priority):
         if priority in self.priority_colors:
             color = self.priority_colors[priority]
-            return '<font face="mono,Ubuntu Mono" color="%s">&nbsp;%s&nbsp;</font>' % (color, priority)
-        return '<font face="mono,Ubuntu Mono">&nbsp;%s&nbsp;</font>' % priority
+            return '<font face="Lucida Console,monospace,Ubuntu Mono" color="%s">&nbsp;%s&nbsp;</font>' % (color, priority)
+        return '<font face="Lucida Console,monospace,Ubuntu Mono">&nbsp;%s&nbsp;</font>' % priority
 
     def _htmlizeDueDate(self, dueDateString):
         due_date = datetime.strptime(dueDateString, '%Y-%m-%d').date()
