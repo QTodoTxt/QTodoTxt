@@ -1,9 +1,6 @@
 import os
 import sys
-import platform
-from PySide.QtGui import QIcon, QFontDatabase
-from PySide.QtCore import QFile, QIODevice
-from os import listdir
+from PySide.QtGui import QIcon
 
 def _getRoot():
     root = ''
@@ -30,15 +27,3 @@ def getResourcePath(resource_name):
 
 def getIcon(resource_name):
     return QIcon(getResourcePath(resource_name))
-
-def getFonts():
-    font_dir = os.path.join(_getRoot(),'fonts')
-    for ttf_filename in listdir(font_dir):
-        ttf_path=os.path.join(font_dir,ttf_filename)
-        if platform.system() == 'Windows':
-            ttf_path = ttf_path.replace("\\","/")
-        ttf_file = QFile(ttf_path)
-        ttf_file.open(QIODevice.ReadOnly)
-        byte_array = ttf_file.readAll()
-        QFontDatabase.addApplicationFontFromData(byte_array)
-        byte_array = ttf_file.readAll()
