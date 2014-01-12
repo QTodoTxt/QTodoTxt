@@ -40,7 +40,7 @@ collect_packages('.', '', packages, excludes=['test'])
 # ======================================
 # Setup parameters
 setup(name='qtodotxt',
-        version='1.1.0',
+        version='1.2.0',
         author='Matthieu Nantern',
         author_email='matthieu.nantern@gmail.com',
         url='https://github.com/mNantern/QTodoTxt',
