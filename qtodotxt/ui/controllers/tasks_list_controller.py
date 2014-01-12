@@ -76,7 +76,7 @@ class TasksListController(QtCore.QObject):
         else:
             message = '%s %d tasks?' % (messagePrefix, len(tasks))
          
-        result = QtGui.QMessageBox.question(self._view, 'Confirm', message, 
+        result = QtGui.QMessageBox.question(self._view, 'Confirm', message,
             buttons=QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
             defaultButton=QtGui.QMessageBox.Yes)
         
@@ -97,12 +97,12 @@ class TasksListController(QtCore.QObject):
     def _sortTasks(self, tasks):
         tasks.sort(cmp=todolib.compareTasks)
     
-    def _addCreationDate(self,text): 
+    def _addCreationDate(self, text): 
         date_string = date.today().strftime('%Y-%m-%d')
         if text[:3] in self._task_editor_service._priorities:
-            text = '%s %s %s' % (text[:3],date_string,text[4:])
+            text = '%s %s %s' % (text[:3], date_string, text[4:])
         else:
-            text = '%s %s' % (date_string,text)
+            text = '%s %s' % (date_string, text)
         return text
 
 

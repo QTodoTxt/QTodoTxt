@@ -1,4 +1,3 @@
-from PySide import QtCore
 from PySide import QtGui
 
 class DialogsService(object):
@@ -30,17 +29,17 @@ class DialogsService(object):
         dialog.setWindowTitle('%s - Confirm' % self._default_title)
         dialog.setText(message)
         dialog.setStandardButtons(
-            QtGui.QMessageBox.Save |
-            QtGui.QMessageBox.Discard |
+            QtGui.QMessageBox.Save | 
+            QtGui.QMessageBox.Discard | 
             QtGui.QMessageBox.Cancel)
         return dialog.exec_()
 
     def showConfirm(self, message):
         result = QtGui.QMessageBox.question(
             self._parent_window
-            , 
-            '%s - Confirm' % self._default_title, 
-            message, 
+            ,
+            '%s - Confirm' % self._default_title,
+            message,
             buttons=QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
             defaultButton=QtGui.QMessageBox.Yes)
         

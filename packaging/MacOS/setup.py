@@ -4,11 +4,11 @@ from setuptools import setup
 
 # ======================================
 # Py2exe
-# use "python setup.py py2exe" to generate a windows package
+# use "python setup.py py2app" to generate a windows package
 try:
     import py2exe
 except ImportError:
-	pass
+    pass
 
 # ======================================
 current_dir=os.getcwd()
@@ -45,29 +45,21 @@ setup(name='qtodotxt',
         author_email='matthieu.nantern@gmail.com',
         url='https://github.com/mNantern/QTodoTxt',
         packages=packages,
-	app=["qtodotxt/app.py"],
+    app=["qtodotxt/app.py"],
         setup_requires=["py2app"],
-
-        data_files=[
-            ('resources', resources),('imageformats',[r'C:\Python27\Lib\site-packages\PySide\plugins\imageformats\qico4.dll'])],
         
-        # py2exe parameters
-        windows=[
-            {
-                "script": "bin/qtodotxt.pyw",
-                "icon_resources": [(0, icon)]
-            }
-        ],
+        data_files=[('resources', resources)],
+        
         options={
             "py2exe": {
                 "includes": ["argparse"],
                 "dist_dir": os.path.join(current_dir,'dist')
             },
-	    "py2app": {
-	        "iconfile": "artwork/icon/icon.icns",
-		"includes": ['PySide.QtCore', 'PySide.QtGui'],
-		"resources": resources,
-	    },
+        "py2app": {
+            "iconfile": "artwork/icon/icon.icns",
+        "includes": ['PySide.QtCore', 'PySide.QtGui'],
+        "resources": resources,
+        },
             "build": {
                 "build_base": os.path.join(current_dir,'build')
             },

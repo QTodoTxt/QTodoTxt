@@ -17,11 +17,12 @@ Be sure to have all [prerequisites](http://github.com/mNantern/QTodoTxt/wiki/Use
 
 ## Downloads
 
-Latest stable release (v1.1.0):
+Latest stable release (v1.2.0):
 
-- For Ubuntu: [deb package](http://dl.bintray.com/mnantern/deb/qtodotxt_1.1.0_all.deb?direct)
-- For Windows: [Windows installer](http://dl.bintray.com/mnantern/generic/qtodotxt_1.1.0.exe)
-- Linux: [tar.gz archive](https://github.com/mNantern/QTodoTxt/archive/1.1.0.tar.gz)
+- For Ubuntu: [deb package]()
+- For Windows: [Windows installer]()
+- For Mac OS X: [Mac OS X](dl.bintray.com/mnantern/generic/QTodoTxt.dmg)
+- Linux: [tar.gz archive]()
 
 ## Documentation
 

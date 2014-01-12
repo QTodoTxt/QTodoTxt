@@ -23,10 +23,11 @@ class MenuController(QtCore.QObject):
         fileMenu.addAction(self._createSaveAction())
         fileMenu.addAction(self._createRevertAction())
         fileMenu.addSeparator()
-        preferenceMenu = fileMenu.addMenu(getIcon('wrench.png'),'&Preferences')
+        preferenceMenu = fileMenu.addMenu(getIcon('wrench.png'), '&Preferences')
         preferenceMenu.addAction(self._createPreferenceAction())
         preferenceMenu.addAction(self._autoSavePreferenceAction())
         preferenceMenu.addAction(self._autoArchivePreferenceAction())
+        preferenceMenu.addAction(self._hideFutureTasksAction())
         fileMenu.addSeparator()
         fileMenu.addAction(self._createExitAction())
      
@@ -51,7 +52,7 @@ class MenuController(QtCore.QObject):
         
     def _createNewAction(self):
         action = QtGui.QAction(getIcon('page.png'), '&New', self)
-	# infrequent action, I prefer to use ctrl+n for new task.
+        # infrequent action, I prefer to use ctrl+n for new task.
         action.setShortcuts(["Ctrl+Shift+N"])
         action.triggered.connect(self._main_controller.new)
         return action
@@ -76,31 +77,40 @@ class MenuController(QtCore.QObject):
         return action
 
     def _createPreferenceAction(self):
-        action = QtGui.QAction('Add created date', self,checkable=True)
+        action = QtGui.QAction('Add created date', self, checkable=True)
         action.triggered.connect(self._main_controller.createdDate)
         self.prefAction = action
         return action
         
     def _autoSavePreferenceAction(self):
-        action = QtGui.QAction('Enable auto save', self,checkable=True)
+        action = QtGui.QAction('Enable auto save', self, checkable=True)
         action.triggered.connect(self._main_controller.toggleAutoSave)
         self.autoSaveAction = action
         return action
 
     def _autoArchivePreferenceAction(self):
-        action = QtGui.QAction('Enable auto archive', self,checkable=True)
+        action = QtGui.QAction('Enable auto archive', self, checkable=True)
         action.triggered.connect(self._main_controller.toggleAutoArchive)
         self.autoArchiveAction = action
         return action
-        
+
+    def _hideFutureTasksAction(self):
+        action = QtGui.QAction('Hide future tasks', self,checkable=True)
+        action.triggered.connect(self._main_controller.toggleHideFutureTasks)
+        self.hideFutureTasksAction = action
+        return action
+
     def changeAutoSaveState(self, value=False):
         self.autoSaveAction.setChecked(value)
         
-    def changeCreatedDateState(self,value=False):
+    def changeCreatedDateState(self, value=False):
         self.prefAction.setChecked(value)
         
     def changeAutoArchiveState(self, value=False):
         self.autoArchiveAction.setChecked(value)
+
+    def changeHideFutureTasksState(self, value=False):
+        self.hideFutureTasksAction.setChecked(value)
 
     def _createExitAction(self):
         action = QtGui.QAction(getIcon('door_in.png'), 'E&xit', self)

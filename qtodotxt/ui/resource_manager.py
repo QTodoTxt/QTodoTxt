@@ -2,8 +2,7 @@ import os
 import sys
 from PySide.QtGui import QIcon
 
-
-def __getResourcesRoot():
+def _getRoot():
     root = ''
     if sys.argv[0].lower().endswith('.exe'):
         root = os.path.dirname(sys.argv[0])
@@ -16,8 +15,10 @@ def __getResourcesRoot():
         except NameError:
             file = sys.argv[0]
         root = os.path.dirname(os.path.abspath(file))
+    return root
 
-    return os.path.join(root, 'resources')
+def __getResourcesRoot():
+    return os.path.join(_getRoot(), 'resources')
 
 resources_root = __getResourcesRoot()
 
@@ -26,4 +27,3 @@ def getResourcePath(resource_name):
 
 def getIcon(resource_name):
     return QIcon(getResourcePath(resource_name))
-    

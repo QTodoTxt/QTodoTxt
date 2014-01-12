@@ -70,3 +70,25 @@ class HasContextsFilter(BaseFilter):
 
     def __str__(self):
         return "HasContextsFilter" % self.text
+
+class SimpleTextFilter(BaseFilter):
+    
+    def __init__(self,text):
+        BaseFilter.__init__(self, text)
+        
+    def isMatch(self,task):
+        return (self.text in task.text)
+    
+    def __str__(self):
+        return "SimpleTextFilter(%s)" % self.text
+    
+class FutureFilter(BaseFilter):
+    
+    def __init__(self):
+        BaseFilter.__init__(self,'Future')
+
+    def isMatch(self, task):
+        return not task.is_future
+    
+    def __str__(self):
+        return "FutureFilter " % self.text

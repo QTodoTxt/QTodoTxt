@@ -52,29 +52,29 @@ class Test(unittest.TestCase):
         controller.showFilters(file)
         
         # assert
-        self.assertEqual(1, len(view.selectedFilters), 
+        self.assertEqual(1, len(view.selectedFilters),
             'There should be only 1 selected filter (actual: %s)' % view.selectedFilters)
-        self.assertIsInstance(view.selectedFilters[0], IncompleteTasksFilter, 
+        self.assertIsInstance(view.selectedFilters[0], IncompleteTasksFilter,
             'selected filter #1 should be instance of IncompleteTasksFilter (actual: %s)' % view.selectedFilters[0])
         
         self.assertEqual(3, len(view.filters),
             'There should be 3 filters (actual: %d)' % len(view.filters))
         filter = view.filters[0]
-        self.assertIsInstance(filter, ContextFilter, 
+        self.assertIsInstance(filter, ContextFilter,
             'Filter #1 should be instance of ContextFilter (actual: %s)' % str(type(filter)))
-        self.assertEqual(filter.text, 'context1', 
+        self.assertEqual(filter.text, 'context1',
             'Filter #1 text should be "%s" (actual: context1)' % filter.text)
 
         filter = view.filters[1]
-        self.assertIsInstance(filter, ContextFilter, 
+        self.assertIsInstance(filter, ContextFilter,
             'Filter #2 should be instance of ContextFilter (actual: %s)' % str(type(filter)))
-        self.assertEqual(filter.text, 'context2', 
+        self.assertEqual(filter.text, 'context2',
             'Filter #2 text should be "%s" (actual: context2)' % filter.text)
         
         filter = view.filters[2]
-        self.assertIsInstance(filter, ProjectFilter, 
+        self.assertIsInstance(filter, ProjectFilter,
             'Filter #2 should be instance of ProjectFilter (actual: %s)' % str(type(filter)))
-        self.assertEqual(filter.text, 'project1', 
+        self.assertEqual(filter.text, 'project1',
             'Filter #2 text should be "%s" (actual: project1)' % filter.text)
         
     def test_showFilters_afterAddingNewContext(self):
@@ -92,24 +92,24 @@ class Test(unittest.TestCase):
         controller.showFilters(file)
         
         # assert
-        self.assertNotEqual(view.filters[0], original_filter0, 
+        self.assertNotEqual(view.filters[0], original_filter0,
             'A new filter was not created (expected: %s, actual: %s)' % 
                 (view.filters[0], original_filter0))
 
-        #self.assertNotEqual(view.selectedFilters[0], original_filter0, 
+        # self.assertNotEqual(view.selectedFilters[0], original_filter0, 
         #    'The old selected filter is still selected (expected: %s, actual: %s)' % 
         #        (view.selectedFilters[0], original_filter0))
         
         self.assertEquals(
-            4, len(view.filters),  
+            4, len(view.filters),
             'There should be 4 filters (actual: %s)' % view.selectedFilters)
 
         filter1_text = view.filters[0].text
-        self.assertEqual("context1", filter1_text, 
+        self.assertEqual("context1", filter1_text,
             'Filter #1 context should be "context1" (actual: "%s")' % filter1_text)
 
         self.assertEquals(
-            1, len(view.selectedFilters),  
+            1, len(view.selectedFilters),
             'There should be 1 selected filters (actual: %s)' % view.selectedFilters)
         
         expectedSelectedFilters = [view.filters[0]]

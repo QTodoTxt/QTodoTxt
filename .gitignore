@@ -23,8 +23,10 @@ pip-log.txt
 
 # Unit test / coverage reports
 .coverage
+.testOutput
 .tox
 nosetests.xml
+tempfile.txt
 
 # Tmp file
 *.*~
@@ -36,3 +38,4 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+.settings

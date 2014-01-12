@@ -3,7 +3,7 @@ from PySide import QtGui
 
 from ..resource_manager import getIcon
 from filters_tree_view import FiltersTreeView
-from tasks_list_view import TasksListView
+from tasks_view import TasksView
 
 class MainView(QtGui.QMainWindow):
     
@@ -21,12 +21,12 @@ class MainView(QtGui.QMainWindow):
         splitter = QtGui.QSplitter()
         
         self.filters_tree_view = FiltersTreeView(splitter)
-        self.tasks_list_view = TasksListView(splitter)
+        self.tasks_view = TasksView(splitter)
         
         self.setCentralWidget(splitter)
 
-        self.resize(700, 400)
-        splitter.setSizes([200, 500])
+        self.resize(800, 400)
+        splitter.setSizes([250, 550])
         self.setWindowIcon(getIcon('qtodotxt.ico'))
                 
     def closeEvent(self, closeEvent):

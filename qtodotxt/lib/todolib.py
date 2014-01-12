@@ -1,7 +1,7 @@
 import re
 import os
 import codecs
-from argparse import ArgumentError
+from datetime import datetime,date
 
 USE_LAST_FILENAME = 1
 
@@ -53,7 +53,7 @@ class File(object):
         lines = []
         fd = None
         try:
-            fd = codecs.open(filename,'r','utf-8')
+            fd = codecs.open(filename, 'r', 'utf-8')
             lines = fd.readlines()
             fd.close()
         except IOError as e:
@@ -84,11 +84,11 @@ class File(object):
             if fd:
                 fd.close()
                 
-    def saveDoneTask(self,task):
+    def saveDoneTask(self, task):
         fdDone = None
-        doneFilename = os.path.join(os.path.dirname(self.filename),'done.txt')
+        doneFilename = os.path.join(os.path.dirname(self.filename), 'done.txt')
         try:
-            fdDone = open(doneFilename,'a')
+            fdDone = open(doneFilename, 'a')
             fdDone.write(task.text.encode('utf8') + self.newline)
         except IOError as e:
             raise ErrorSavingFile("Error saving to file '%s'" % doneFilename, e)
@@ -98,22 +98,48 @@ class File(object):
         
         
     def getAllContexts(self):
-        contexts = []
+        contexts = dict()
         for task in self.tasks:
             if not task.is_complete:
                 for context in task.contexts:
-                    if context not in contexts:
-                        contexts.append(context)
+                    if context in contexts:
+                        contexts[context] += 1
+                    else:
+                        contexts[context] = 1
         return contexts
 
     def getAllProjects(self):
-        projects = []
+        projects = dict()
         for task in self.tasks:
             if not task.is_complete:
                 for project in task.projects:
-                    if project not in projects:
-                        projects.append(project)
+                    if project in projects:
+                        projects[project] += 1
+                    else:
+                        projects[project] = 1
         return projects
+
+    def getTasksCounters(self):
+        counters = dict({'Pending':0,
+                         'Uncategorized':0,
+                         'Contexts':0,
+                         'Projects':0,
+                         'Complete':0})
+        for task in self.tasks:
+            if not task.is_complete:
+                counters['Pending'] += 1
+                nbProjects = len(task.projects)
+                nbContexts = len(task.contexts)
+                if  nbProjects > 0:
+                    counters['Projects'] += 1
+                if nbContexts > 0:
+                    counters['Contexts'] += 1
+                if nbContexts == 0 and nbProjects == 0:
+                    counters['Uncategorized'] += 1
+            else:
+                counters['Complete'] += 1
+        return counters    
+            
 
     
 class Task(object):
@@ -128,9 +154,11 @@ class Task(object):
         self.projects = []
         self.priority = None
         self.is_complete = False
+        self.is_future = False
         self._text = ''
         self.due = None
-    
+        self.threshold = None
+
     def parseLine(self, line):
         words = line.split(' ')
         i = 0
@@ -153,6 +181,9 @@ class Task(object):
                 self.projects.append(word[1:])
             elif word.startswith('due:'):
                 self.due = word[4:]
+            elif word.startswith('t:'):
+                self.threshold = word[2:]
+                self.is_future = datetime.strptime(self.threshold, '%Y-%m-%d').date() > date.today()
 
     def _getText(self):
         return self._text

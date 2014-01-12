@@ -1,7 +1,7 @@
 from PySide import QtCore
 from qtodotxt.lib.filters import ContextFilter, ProjectFilter
 
-#class IFiltersTreeView(object):
+# class IFiltersTreeView(object):
 #    def addFilter(self, filter): pass
 #    def clear(self): pass
 #    def clearSelection(self): pass
@@ -31,20 +31,26 @@ class FiltersTreeController(QtCore.QObject):
         self._view.clear()
         self._addAllContexts(file)
         self._addAllProjects(file)
+        self._updateCounter(file)
         self._is_showing_filters = False
         self._reselect(previouslySelectedFilters)
 
+    def _updateCounter(self, file):
+        rootCounters = file.getTasksCounters()
+        self._view.updateTopLevelTitles(rootCounters)
+        
+
     def _addAllContexts(self, file):
         contexts = file.getAllContexts()
-        for context in contexts:
+        for context, number in contexts.iteritems():
             filter = ContextFilter(context)
-            self._view.addFilter(filter)
+            self._view.addFilter(filter, number)
 
     def _addAllProjects(self, file):
         projects = file.getAllProjects()
-        for project in projects:
+        for project, number in projects.iteritems():
             filter = ProjectFilter(project)
-            self._view.addFilter(filter)
+            self._view.addFilter(filter, number)
         
     def _reselect(self, previouslySelectedFilters):
         for filter in previouslySelectedFilters:
