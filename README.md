@@ -4,6 +4,15 @@ QTodoTxt is a cross-platform UI client for todo.txt files (see [todo.txt](http:/
 
 ![Main view](https://github.com/mNantern/QTodoTxt/wiki/screenshots/QTodoTxt.png)
 
+## Downloads
+
+Latest stable release (v1.2.0):
+
+- For Ubuntu: [deb package](http://dl.bintray.com/mnantern/deb/qtodotxt_1.2.0_all.deb)
+- For Windows: [Windows installer](http://dl.bintray.com/mnantern/generic/qtodotxt_1.2.0.exe)
+- For Mac OS X: [Mac OS X](dl.bintray.com/mnantern/generic/QTodoTxt.dmg)
+- Linux: [tar.gz archive](https://github.com/mNantern/QTodoTxt/archive/1.2.0.tar.gz)
+
 ## Quick Run
 
 To run the application without installing just:
@@ -14,15 +23,6 @@ To run the application without installing just:
   * On Windows: bin/qtodotxt.pyw
  
 Be sure to have all [prerequisites](http://github.com/mNantern/QTodoTxt/wiki/User-documentation) installed !
-
-## Downloads
-
-Latest stable release (v1.2.0):
-
-- For Ubuntu: [deb package](http://dl.bintray.com/mnantern/deb/qtodotxt_1.2.0_all.deb)
-- For Windows: [Windows installer](http://dl.bintray.com/mnantern/generic/qtodotxt_1.1.0.exe?direct)
-- For Mac OS X: [Mac OS X](dl.bintray.com/mnantern/generic/QTodoTxt.dmg)
-- Linux: [tar.gz archive](https://github.com/mNantern/QTodoTxt/archive/1.2.0.tar.gz)
 
 ## Documentation
 
