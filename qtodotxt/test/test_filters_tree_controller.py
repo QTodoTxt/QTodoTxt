@@ -11,7 +11,8 @@ class FakeTreeView(QtCore.QObject):
         self.filters = []
         self.selectedFilters = []
         
-    def addFilter(self, filter):
+    def addFilter(self, filter, number=0):
+        filter.text = "%s (%d)" % (filter.text, number)
         self.filters.append(filter)
         
     def clear(self):
@@ -32,6 +33,9 @@ class FakeTreeView(QtCore.QObject):
     def selectAllTasksFilter(self):
         self.selectedFilters = [IncompleteTasksFilter()]
         
+    def updateTopLevelTitles(self, counters):
+        return
+        
         
 class Test(unittest.TestCase):
     
@@ -51,6 +55,8 @@ class Test(unittest.TestCase):
         # act
         controller.showFilters(file)
         
+        sortedFilter = sorted(view.filters, key=lambda filter: filter.text)
+        
         # assert
         self.assertEqual(1, len(view.selectedFilters),
             'There should be only 1 selected filter (actual: %s)' % view.selectedFilters)
@@ -59,22 +65,22 @@ class Test(unittest.TestCase):
         
         self.assertEqual(3, len(view.filters),
             'There should be 3 filters (actual: %d)' % len(view.filters))
-        filter = view.filters[0]
+        filter = sortedFilter[0]
         self.assertIsInstance(filter, ContextFilter,
             'Filter #1 should be instance of ContextFilter (actual: %s)' % str(type(filter)))
-        self.assertEqual(filter.text, 'context1',
-            'Filter #1 text should be "%s" (actual: context1)' % filter.text)
+        self.assertEqual(filter.text, 'context1 (2)',
+            'Filter #1 text should be "context1" (actual: "%s")' % filter.text)
 
-        filter = view.filters[1]
+        filter = sortedFilter[1]
         self.assertIsInstance(filter, ContextFilter,
             'Filter #2 should be instance of ContextFilter (actual: %s)' % str(type(filter)))
-        self.assertEqual(filter.text, 'context2',
+        self.assertEqual(filter.text, 'context2 (2)',
             'Filter #2 text should be "%s" (actual: context2)' % filter.text)
         
-        filter = view.filters[2]
+        filter = sortedFilter[2]
         self.assertIsInstance(filter, ProjectFilter,
             'Filter #2 should be instance of ProjectFilter (actual: %s)' % str(type(filter)))
-        self.assertEqual(filter.text, 'project1',
+        self.assertEqual(filter.text, 'project1 (1)',
             'Filter #2 text should be "%s" (actual: project1)' % filter.text)
         
     def test_showFilters_afterAddingNewContext(self):
@@ -104,15 +110,17 @@ class Test(unittest.TestCase):
             4, len(view.filters),
             'There should be 4 filters (actual: %s)' % view.selectedFilters)
 
-        filter1_text = view.filters[0].text
-        self.assertEqual("context1", filter1_text,
-            'Filter #1 context should be "context1" (actual: "%s")' % filter1_text)
+        sortedFilter = sorted(view.filters, key=lambda filter: filter.text)
+
+        filter1_text = sortedFilter[0].text
+        self.assertEqual("context1 (2)", filter1_text,
+            'Filter #1 context should be "context1 (2)" (actual: "%s")' % filter1_text)
 
         self.assertEquals(
             1, len(view.selectedFilters),
             'There should be 1 selected filters (actual: %s)' % view.selectedFilters)
         
-        expectedSelectedFilters = [view.filters[0]]
+        expectedSelectedFilters = [sortedFilter[1]]
         self.assertSequenceEqual(
             expectedSelectedFilters,
             view.selectedFilters,

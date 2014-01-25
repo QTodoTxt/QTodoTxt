@@ -65,7 +65,9 @@ class FiltersTreeView(QtGui.QWidget):
     def _findItem(self, text, parentItem):
         for index in range(parentItem.childCount()):
             child = parentItem.child(index)
-            if child.text(0) == text:
+            #Remove counter on the tree: context (3) for example
+            childText = child.text(0).rpartition(' ')[0]
+            if childText == text:
                 return child
         return None
 

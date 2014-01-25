@@ -6,7 +6,7 @@ from setuptools import setup
 # Py2exe
 # use "python setup.py py2app" to generate a windows package
 try:
-    import py2exe
+    import py2app
 except ImportError:
     pass
 

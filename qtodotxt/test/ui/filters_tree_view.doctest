@@ -1,0 +1,22 @@
+========================================
+Test Settings
+========================================
+>>> import os, sys
+>>> sys.path.insert(0, os.path.join('.', '..', '..'))
+>>> from qtodotxt.ui.views.filters_tree_view import FiltersTreeView,FilterTreeWidgetItem
+>>> from qtodotxt.lib.filters import ContextFilter
+>>> from PySide import QtGui,QtCore
+>>> splitter = QtGui.QSplitter()
+>>> filters_tree_view = FiltersTreeView(splitter)
+>>> filter = ContextFilter("work")
+>>> filters_tree_view.addFilter(filter,2)
+
+========================================
+Test _findItem
+========================================
+>>> expected = FilterTreeWidgetItem(None,["work (2)"],filter,None)
+>>> result = filters_tree_view._findItem("work",filters_tree_view._contextsItem)
+>>> expected.text(0) == result.text(0) 
+True
+>>> expected.filter == result.filter
+True

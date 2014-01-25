@@ -83,8 +83,8 @@ something else +project1 @context2
 ...   todolib.Task('task with @context2'),
 ...   todolib.Task('task with @context1 and @context2'),
 ...   todolib.Task('task with @context1 and @context2 and @context3')])
->>> file.getAllContexts()
-['context1', 'context2', 'context3']
+>>> file.getAllContexts() == {'context1': 3, 'context2': 3, 'context3': 1}
+True
 
 ========================================
 5. Test getAllProjects()
@@ -96,8 +96,8 @@ something else +project1 @context2
 ...   todolib.Task('task with +project2'),
 ...   todolib.Task('task with +project1 and +project2'),
 ...   todolib.Task('task with +project1 and +project2 and +project3')])
->>> file.getAllProjects()
-['project1', 'project2', 'project3']
+>>> file.getAllProjects() == {'project1': 3, 'project2': 3, 'project3': 1}
+True
 
 ========================================
 6. File.load('') throws exception
