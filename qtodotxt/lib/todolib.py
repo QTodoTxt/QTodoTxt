@@ -183,7 +183,10 @@ class Task(object):
                 self.due = word[4:]
             elif word.startswith('t:'):
                 self.threshold = word[2:]
-                self.is_future = datetime.strptime(self.threshold, '%Y-%m-%d').date() > date.today()
+                try:
+                    self.is_future = datetime.strptime(self.threshold, '%Y-%m-%d').date() > date.today()
+                except ValueError:
+                    self.is_future = False
 
     def _getText(self):
         return self._text
