@@ -1,4 +1,4 @@
-# QTodoTxt
+# QTodoTxt [![Build Status](https://travis-ci.org/mNantern/QTodoTxt.png?branch=master)](https://travis-ci.org/mNantern/QTodoTxt)
 
 QTodoTxt is a cross-platform UI client for todo.txt files (see [todo.txt](http://todotxt.com)).
 
