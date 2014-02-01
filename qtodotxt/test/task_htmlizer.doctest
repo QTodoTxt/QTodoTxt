@@ -94,3 +94,18 @@ Test Setup and Helper Methods
 >>> htmlizer.task2html(task)
 '<font color="black"><tt>&nbsp;D&nbsp;</tt>this is my task</font>'
 
+========================================
+12. Test task with an invalid due date
+========================================
+>>> task = todolib.Task('this is my task due:2014-04')
+>>> htmlizer = task_htmlizer.TaskHtmlizer()
+>>> htmlizer.task2html(task)
+'<tt>&nbsp;&nbsp;&nbsp;</tt><font color="black">this is my task <b><font style="color:red">*** Invalid date format, expected: YYYY-mm-dd! due:2014-04 ***</font></b></font>'
+
+========================================
+13. Test task with an invalid Threshold date
+========================================
+>>> task = todolib.Task('this is my task t:2014-04')
+>>> htmlizer = task_htmlizer.TaskHtmlizer()
+>>> htmlizer.task2html(task)
+'<tt>&nbsp;&nbsp;&nbsp;</tt><font color="black">this is my task <b><font style="color:red">*** Invalid date format, expected: YYYY-mm-dd! t:2014-04 ***</font></b></font>'
