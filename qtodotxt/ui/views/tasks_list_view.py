@@ -24,7 +24,7 @@ class TasksListView(QtGui.QListWidget):
     def _initUI(self):
         self.setSelectionMode(
             QtGui.QAbstractItemView.SelectionMode.ExtendedSelection)
-        self.itemActivated.connect(self._list_itemActivated)
+        self.itemDoubleClicked.connect(self._list_itemActivated)
         self.itemSelectionChanged.connect(self._list_itemPressed)
         
     def _createLabel(self, task):
