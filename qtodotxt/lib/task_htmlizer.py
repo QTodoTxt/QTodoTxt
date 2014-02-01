@@ -55,7 +55,10 @@ class TaskHtmlizer(object):
         return '<tt>&nbsp;%s&nbsp;</tt>' % priority
 
     def _htmlizeDueDate(self, dueDateString):
-        due_date = datetime.strptime(dueDateString, '%Y-%m-%d').date()
+        try:
+            due_date = datetime.strptime(dueDateString, '%Y-%m-%d').date()
+        except ValueError:
+            return '<b><font style="color:red">*** Invalid date format! due:%s ***</font></b>' % dueDateString
         date_now = date.today()
         tdelta = due_date - date_now
         if tdelta.days > 7:
@@ -66,7 +69,10 @@ class TaskHtmlizer(object):
             return '<b><font style="color:red">due:%s</font></b>' % dueDateString
 
     def _htmlizeThresholdDate(self,thresholdDateString):
-        threshold_date = datetime.strptime(thresholdDateString, '%Y-%m-%d').date()
+        try:
+            threshold_date = datetime.strptime(thresholdDateString, '%Y-%m-%d').date()
+        except ValueError:
+            return '<b><font style="color:red">*** Invalid date format! t:%s ***</font></b>' % thresholdDateString
         date_now = date.today()
         tdelta = threshold_date - date_now
         if tdelta.days > 0:
