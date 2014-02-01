@@ -6,6 +6,9 @@ Test Settings
 >>> from qtodotxt.ui.views.filters_tree_view import FiltersTreeView,FilterTreeWidgetItem
 >>> from qtodotxt.lib.filters import ContextFilter
 >>> from PySide import QtGui,QtCore
+>>> app=QtGui.QApplication.instance() 
+>>> if not app:
+...     app = QtGui.QApplication([])
 >>> splitter = QtGui.QSplitter()
 >>> filters_tree_view = FiltersTreeView(splitter)
 >>> filter = ContextFilter("work")

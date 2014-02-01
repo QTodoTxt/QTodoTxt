@@ -5,7 +5,9 @@ Test Setup and Helper Methods
 >>> sys.path.insert(0, os.path.join('.', '..', '..', '..'))
 >>> from qtodotxt.ui.controls.autocomplete_lineedit import AutoCompleteEdit
 >>> from PySide import QtCore, QtGui
->>> app = QtGui.QApplication([])
+>>> app=QtGui.QApplication.instance() 
+>>> if not app:
+...     app = QtGui.QApplication([])
 
 ========================================
 1. Check ctor
