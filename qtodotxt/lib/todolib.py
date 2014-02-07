@@ -226,4 +226,16 @@ def compareTasksByCompleteness(task1, task2):
         return -1
     else:
         return 1
+    
+def filterTasks(filters,tasks):
+    if None in filters:
+        return tasks
+    
+    filteredTasks = []
+    for task in tasks:
+        for filter in filters:
+            if filter.isMatch(task):
+                filteredTasks.append(task)
+                break
+    return filteredTasks
         

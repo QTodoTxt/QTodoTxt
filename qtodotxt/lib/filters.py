@@ -77,7 +77,7 @@ class SimpleTextFilter(BaseFilter):
         BaseFilter.__init__(self, text)
         
     def isMatch(self,task):
-        return (self.text in task.text)
+        return (self.text.lower() in task.text.lower())
     
     def __str__(self):
         return "SimpleTextFilter(%s)" % self.text

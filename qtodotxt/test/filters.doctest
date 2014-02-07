@@ -1,0 +1,28 @@
+>>> import sys, os 
+>>> sys.path.insert(0, os.path.join('.', '..', '..'))
+>>> from qtodotxt.lib import filters,todolib
+>>> import qtodotxt.ui.controllers.main_controller
+>>> from qtodotxt.lib.filters import SimpleTextFilter, FutureFilter
+
+========================================
+1. SimpleTextFilter
+========================================
+
+>>> task = todolib.Task('do Something')
+>>> filterSTF = SimpleTextFilter("Som")
+>>> resultTasks = todolib.filterTasks([filterSTF],[task])
+>>> len(resultTasks)
+1
+>>> resultTasks[0].text
+'do Something'
+
+========================================
+1. SimpleTextFilter case insensitive
+========================================
+
+>>> filterSTFi = SimpleTextFilter("som")
+>>> resultTasks = todolib.filterTasks([filterSTFi],[task])
+>>> len(resultTasks)
+1
+>>> resultTasks[0].text
+'do Something'
