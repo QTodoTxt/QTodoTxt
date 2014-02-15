@@ -4,6 +4,8 @@ import codecs
 from datetime import datetime,date
 
 USE_LAST_FILENAME = 1
+HIGHER_PRIORITY = 'A'
+LOWER_PRIORITY = 'C'
 
 class Error(Exception):
     pass
@@ -195,6 +197,31 @@ class Task(object):
         self.reset()
         if line:
             self.parseLine(line)
+            
+    def increasePriority(self):
+        if self.priority is None:
+            self.priority = LOWER_PRIORITY
+            self.text = '(%s) %s' % (LOWER_PRIORITY, self.text)
+        elif self.priority == HIGHER_PRIORITY:
+            self.priority = None
+            self.text = self.text[4:]
+        else:
+            newPriority = chr(ord(self.priority)-1)
+            self.text = re.sub('^\(%s\) ' % self.priority,'(%s) ' % newPriority,self.text)
+            self.priority = newPriority
+
+    def decreasePriority(self):
+        if self.priority is None:
+            self.priority = HIGHER_PRIORITY
+            self.text = '(%s) %s' % (HIGHER_PRIORITY, self.text)
+        elif self.priority == LOWER_PRIORITY:
+            self.text = self.text[4:]
+            self.priority = None
+        else:
+            newPriority = chr(ord(self.priority)+1)
+            self.text = re.sub('^\(%s\) ' % self.priority,'(%s) ' % newPriority,self.text)
+            self.priority = newPriority
+            
     
     text = property(_getText, _setText)
 

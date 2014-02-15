@@ -21,6 +21,8 @@ class TasksListController(QtCore.QObject):
         self._initCreateTaskAction()
         self._initDeleteSelectedTasksAction()
         self._initCompleteSelectedTasksAction()
+        self._initDecreasePrioritySelectedTasksAction()
+        self._initIncreasePrioritySelectedTasksAction()
         self._settings = settings.Settings()
         
     def _initCreateTaskAction(self):
@@ -43,6 +45,21 @@ class TasksListController(QtCore.QObject):
         action.triggered.connect(self._completeSelectedTasks)
         self._view.addListAction(action)
         self.completeSelectedTasksAction = action
+        
+    def _initDecreasePrioritySelectedTasksAction(self):
+        action = QtGui.QAction(getIcon('decrease.png'), 'Decrease priority',self)
+        action.setShortcuts(['-','<'])
+        action.triggered.connect(self._decreasePriority)
+        self._view.addListAction(action)
+        self.decreasePrioritySelectedTasksAction = action
+    
+    def _initIncreasePrioritySelectedTasksAction(self):
+        action = QtGui.QAction(getIcon('increase.png'), 'Increase priority',self)
+        action.setShortcuts(['+','>'])
+        action.triggered.connect(self._increasePriority)
+        self._view.addListAction(action)
+        self.increasePrioritySelectedTasksAction = action
+    
         
     def completeTask(self, task):
         date_string = date.today().strftime('%Y-%m-%d') 
@@ -81,6 +98,22 @@ class TasksListController(QtCore.QObject):
             defaultButton=QtGui.QMessageBox.Yes)
         
         return result == QtGui.QMessageBox.Yes
+        
+    def _decreasePriority(self):
+        tasks = self._view.getSelectedTasks()
+        if tasks:
+            for task in tasks:
+                task.decreasePriority()
+                self._view.updateTask(task)
+                self.taskModified.emit(task)        
+    
+    def _increasePriority(self):
+        tasks = self._view.getSelectedTasks()
+        if tasks:
+            for task in tasks:
+                task.increasePriority()
+                self._view.updateTask(task)
+                self.taskModified.emit(task)
         
     def showTasks(self, tasks):
         previouslySelectedTasks = self._view.getSelectedTasks()
