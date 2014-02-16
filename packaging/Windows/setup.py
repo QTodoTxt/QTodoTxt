@@ -45,8 +45,6 @@ setup(name='qtodotxt',
         author_email='matthieu.nantern@gmail.com',
         url='https://github.com/mNantern/QTodoTxt',
         packages=packages,
-	app=["qtodotxt/app.py"],
-        setup_requires=["py2app"],
 
         data_files=[
             ('resources', resources),('imageformats',[r'C:\Python27\Lib\site-packages\PySide\plugins\imageformats\qico4.dll'])],
@@ -63,11 +61,6 @@ setup(name='qtodotxt',
                 "includes": ["argparse"],
                 "dist_dir": os.path.join(current_dir,'dist')
             },
-	    "py2app": {
-	        "iconfile": "artwork/icon/icon.icns",
-		"includes": ['PySide.QtCore', 'PySide.QtGui'],
-		"resources": resources,
-	    },
             "build": {
                 "build_base": os.path.join(current_dir,'build')
             },
