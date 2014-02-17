@@ -94,14 +94,14 @@ class MainController(QtCore.QObject):
 
     def _onFilterSelectionChanged(self, filters):
         # First we filter with filters tree
-        treeTasks = self._getTasks(filters,self._file.tasks)
+        treeTasks = todolib.filterTasks(filters, self._file.tasks)
         # Then with our filter text
         filterText = self._view.tasks_view.filter_tasks.getText()
-        tasks = self._getTasks([SimpleTextFilter(filterText)],treeTasks)
+        tasks = todolib.filterTasks([SimpleTextFilter(filterText)],treeTasks)
         # And finally with future filter if needed
         # TODO: refactor all that filters
         if (self._settings.getHideFutureTasks()):
-            tasks = self._getTasks([FutureFilter()], tasks)
+            tasks = todolib.filterTasks([FutureFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
 
     def _initFilterText(self):
@@ -111,13 +111,13 @@ class MainController(QtCore.QObject):
     def _onFilterTextChanged(self,text):
         # First we filter with filters tree
         filters = self._filters_tree_controller._view.getSelectedFilters()
-        treeTasks = self._getTasks(filters,self._file.tasks)
+        treeTasks = todolib.filterTasks(filters,self._file.tasks)
         # Then with our filter text
-        tasks = self._getTasks([SimpleTextFilter(text)],treeTasks)
+        tasks = todolib.filterTasks([SimpleTextFilter(text)],treeTasks)
         # And finally with future filter if needed
         # TODO: refactor all that filters
         if (self._settings.getHideFutureTasks()):
-            tasks = self._getTasks([FutureFilter()], tasks)
+            tasks = todolib.filterTasks([FutureFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
         
     def _initTasksList(self):
@@ -150,17 +150,7 @@ class MainController(QtCore.QObject):
         self._task_editor_service.updateValues(self._file)
         self._setIsModified(True)
 
-    def _getTasks(self, filters,tasks):
-        if None in filters:
-            return self._file.tasks
-        
-        filteredTasks = []
-        for task in tasks:
-            for filter in filters:
-                if filter.isMatch(task):
-                    filteredTasks.append(task)
-                    break
-        return filteredTasks
+
  
     def _canExit(self):
         if not self._is_modified:

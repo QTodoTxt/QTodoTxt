@@ -130,4 +130,56 @@ True
 >>> task.is_complete
 False
 
+========================================
+9. increase task priority
+========================================
+>>> task = todolib.Task('this task has no Priority')
+>>> task.priority is None
+True
+>>> task.increasePriority()
+>>> task.priority
+'C'
+>>> task.text
+'(C) this task has no Priority'
+>>> task.increasePriority()
+>>> task.priority
+'B'
+>>> task.text
+'(B) this task has no Priority'
+>>> task.increasePriority()
+>>> task.priority
+'A'
+>>> task.text
+'(A) this task has no Priority'
+>>> task.increasePriority()
+>>> task.priority is None
+True
+>>> task.text
+'this task has no Priority'
 
+========================================
+10. decrease task priority
+========================================
+>>> task = todolib.Task('this task has no Priority')
+>>> task.priority is None
+True
+>>> task.decreasePriority()
+>>> task.priority
+'A'
+>>> task.text
+'(A) this task has no Priority'
+>>> task.decreasePriority()
+>>> task.priority
+'B'
+>>> task.text
+'(B) this task has no Priority'
+>>> task.decreasePriority()
+>>> task.priority
+'C'
+>>> task.text
+'(C) this task has no Priority'
+>>> task.decreasePriority()
+>>> task.priority is None
+True
+>>> task.text
+'this task has no Priority'

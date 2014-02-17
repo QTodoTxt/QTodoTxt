@@ -80,6 +80,17 @@ class SimpleTextFilter(BaseFilter):
 
     def isMatch(self,task):
         """
+        Return a boolean based on whether the supplied task satisfies self.text.
+
+        This filter can handle basic and/or/not conditions. The syntax is as
+        follows:
+            - AND is indicated by a comma (,) or by a space
+            - OR is indicated by |
+            - NOT is indicated by prefixing any string with ~ or !
+        These operators follow the following order of precedence: OR, AND, NOT.
+        So, for example:
+            '@work +job1 | @home' means "Either
+
         """
         mymatch = False
         or_conditions = self.text.split('|')
