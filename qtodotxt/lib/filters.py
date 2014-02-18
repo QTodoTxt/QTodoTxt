@@ -75,10 +75,10 @@ class HasContextsFilter(BaseFilter):
 
 class SimpleTextFilter(BaseFilter):
 
-    def __init__(self,text):
+    def __init__(self, text):
         BaseFilter.__init__(self, text)
 
-    def isMatch(self,task):
+    def isMatch(self, task):
         """
         Return a boolean based on whether the supplied task satisfies self.text.
 
@@ -96,14 +96,17 @@ class SimpleTextFilter(BaseFilter):
         or_conditions = self.text.split('|')
         for or_c in or_conditions:
             or_c = or_c.strip()
-            and_conditions = re.split('\s{1,3}|,|+|\sand\s', or_c)
+            and_conditions = re.split(r'\s|,', or_c)
             positives = [c.strip() for c in and_conditions
-                         if c[0] not in ['~', '!'] and c not in ['', ' ']]
+                         if c not in ['', ' '] and c[0] not in ['~', '!']]
             negatives = [c.strip() for c in and_conditions
-                         if c[0] in ['~', '!'] and c not in ['', ' ']]
-            negmatch = any([re.search(neg, task) for neg in negatives])
-            posmatch = all([re.search(pos, task) for pos in positives])
-            if posmatch and not negmatch:
+                         if c not in ['', ' '] and c[0] in ['~', '!']]
+            negmatch = any([re.search(neg, task.text, re.I) for neg in negatives]) \
+                if negatives else False
+            posmatch = all([re.search(pos, task.text, re.I) for pos in positives]) \
+                if positives else None
+            if posmatch and (not negmatch):
+                mymatch = True
                 break
         return mymatch
 

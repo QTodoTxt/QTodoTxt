@@ -26,3 +26,59 @@
 1
 >>> resultTasks[0].text
 'do Something'
+
+========================================
+SimpleTextFilter OR condition
+========================================
+
+>>> filterSTF_or1 = SimpleTextFilter("Som | zzz")
+>>> filterSTF_or1.isMatch(task)
+True
+
+>>> filterSTF_or1 = SimpleTextFilter("yyy | zzz")
+>>> filterSTF_or1.isMatch(task)
+False
+
+========================================
+SimpleTextFilter AND condition (case insensitive)
+========================================
+
+>>> filterSTF_and1 = SimpleTextFilter("som thing")
+>>> filterSTF_and1.isMatch(task)
+True
+
+>>> filterSTF_and2 = SimpleTextFilter("som, thing")
+>>> filterSTF_and2.isMatch(task)
+True
+
+>>> filterSTF_and3 = SimpleTextFilter("zzz thing")
+>>> filterSTF_and3.isMatch(task)
+False
+
+========================================
+SimpleTextFilter AND and NOT conditions 
+========================================
+
+>>> filterSTF_and3 = SimpleTextFilter("!zzz thing")
+>>> filterSTF_and3.isMatch(task)
+True
+
+>>> filterSTF_and4 = SimpleTextFilter("~zzz thing")
+>>> filterSTF_and4.isMatch(task)
+True
+
+>>> filterSTF_and5 = SimpleTextFilter("~zzz !thing")
+>>> filterSTF_and5.isMatch(task)
+False
+
+========================================
+SimpleTextFilter AND, OR, and NOT conditions 
+========================================
+
+>>> filterSTF_and6 = SimpleTextFilter("zzz | thing ~yyy")
+>>> filterSTF_and6.isMatch(task)
+True
+
+>>> filterSTF_and7 = SimpleTextFilter("zzz | !thing yyy")
+>>> filterSTF_and7.isMatch(task)
+False
