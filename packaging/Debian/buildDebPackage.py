@@ -41,6 +41,7 @@ def buildPackageFolder(folderName):
     os.makedirs(debianDir)
     os.makedirs(buildDir+'/usr/bin/')
     os.makedirs(buildDir+'/usr/share/doc/qtodotxt')
+    os.makedirs(buildDir+'/usr/share/applications')
 
     #Copy tag folder to build folder
     shutil.copytree(tmpDir+folderName,buildDir+'/usr/share/qtodotxt')
@@ -53,6 +54,8 @@ def buildPackageFolder(folderName):
 
     # Adding copyright file
     shutil.copy(scriptDir+'/copyright',buildDir+'/usr/share/doc/qtodotxt/copyright')
+    # Adding desktop file
+    shutil.copy(scriptDir+'/qtodotxt.desktop',buildDir+'/usr/share/applications/qtodotxt.desktop')
     # Adding changelog file
     f_in = open(scriptDir+'/changelog', 'rb')
     f_out = gzip.open(buildDir+'/usr/share/doc/qtodotxt/changelog.gz', 'wb')
