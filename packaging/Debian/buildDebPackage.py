@@ -8,6 +8,7 @@ from stat import *
 import fnmatch
 import re
 import hashlib
+import gzip
 from string import Template
 from subprocess import call
 
@@ -25,16 +26,10 @@ def dlTagFromGitHub(version):
     return fileName
 
 
-def purgeArchive(members):
-    for tarinfo in members:
-        if os.path.split(tarinfo.name)[1] not in [".gitignore",".gitattributes"]:
-            yield tarinfo
-
 def uncompressFile(fileName):
     os.chdir(tmpDir)
-    tar = tarfile.open(tmpDir+fileName)
-    tar.extractall(members=purgeArchive(tar))
-    tar.close()
+    bashCmd=" ".join(["tar xzf",tmpDir+fileName,"--exclude-vcs --no-same-permissions"])
+    call(bashCmd,shell=True)
     return fileName.rsplit(".",2)[0]
 
 def buildPackageFolder(folderName):
@@ -45,6 +40,7 @@ def buildPackageFolder(folderName):
     # Tree structure
     os.makedirs(debianDir)
     os.makedirs(buildDir+'/usr/bin/')
+    os.makedirs(buildDir+'/usr/share/doc/qtodotxt')
 
     #Copy tag folder to build folder
     shutil.copytree(tmpDir+folderName,buildDir+'/usr/share/qtodotxt')
@@ -55,9 +51,15 @@ def buildPackageFolder(folderName):
             st = os.stat(filePath)
             os.chmod(filePath, st.st_mode | S_IEXEC)
 
-    # Adding symlink to bin folder
-    os.chdir(tmpDir+folderName+'_build'+'/usr/bin/')
-    os.symlink('../share/qtodotxt/bin/qtodotxt','qtodotxt')
+    # Adding copyright file
+    shutil.copy(scriptDir+'/copyright',buildDir+'/usr/share/doc/qtodotxt/copyright')
+    # Adding changelog file
+    f_in = open(scriptDir+'/changelog', 'rb')
+    f_out = gzip.open(buildDir+'/usr/share/doc/qtodotxt/changelog.gz', 'wb')
+    f_out.writelines(f_in)
+    f_out.close()
+    f_in.close()
+
     return (buildDir,debianDir)
 
 
@@ -75,7 +77,7 @@ def makeMd5sums(baseDir,outputFilePath):
         for fn in files:
             path = os.path.join(root,fn)
             md5 = hashlib.md5(open(path,'rb').read()).hexdigest()
-            relativePath = root.replace(baseDir,"",1) + os.sep + fn
+            relativePath = root.replace(baseDir+'/',"",1) + os.sep + fn
             outputFile.write("%s %s\n" % (md5,relativePath))
             
     outputFile.close()
@@ -87,8 +89,14 @@ def generateControl(templateFile,packageVersion,outputFilePath):
 
     substitute=template.safe_substitute(version=packageVersion)
     open(outputFilePath,'w').write(substitute)
+    #Control file must be owned by root
+    os.chown(outputFilePath,0,0)
 
 def buildDeb(version,buildDir):
+    # Adding symlink to bin folder
+    os.chdir(buildDir+'/usr/bin/')
+    os.symlink('../share/qtodotxt/bin/qtodotxt','qtodotxt')
+
     bashCmd=" ".join(["dpkg -b",buildDir,tmpDir+"qtodotxt_"+version+"_all.deb"])
     call(bashCmd,shell=True)
 
