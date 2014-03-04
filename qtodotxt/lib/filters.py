@@ -94,20 +94,24 @@ class SimpleTextFilter(BaseFilter):
         """
         mymatch = False
         or_conditions = self.text.split('|')
-        for or_c in or_conditions:
-            or_c = or_c.strip()
-            and_conditions = re.split(r'\s|,', or_c)
-            positives = [c.strip() for c in and_conditions
-                         if c not in ['', ' '] and c[0] not in ['~', '!']]
-            negatives = [c.strip() for c in and_conditions
-                         if c not in ['', ' '] and c[0] in ['~', '!']]
-            negmatch = any([re.search(neg, task.text, re.I) for neg in negatives]) \
-                if negatives else False
-            posmatch = all([re.search(pos, task.text, re.I) for pos in positives]) \
-                if positives else None
-            if posmatch and (not negmatch):
-                mymatch = True
-                break
+        or_conditions = [o for o in or_conditions if o not in ['', ' ']]
+        if or_conditions in [[], ['']]:
+            mymatch = True
+        else:
+            for or_c in or_conditions:
+                or_c = or_c.strip()
+                and_conditions = re.split(r'\s+|,\s?', or_c)
+                positives = [c.strip() for c in and_conditions
+                            if c not in ['', ' '] and c[0] not in ['~', '!']]
+                negatives = [c.strip() for c in and_conditions
+                            if c not in ['', ' '] and c[0] in ['~', '!']]
+                negmatch = any([re.search(neg, task.text, re.I) for neg in negatives]) \
+                    if negatives else False
+                posmatch = all([re.search(pos, task.text, re.I) for pos in positives]) \
+                    if positives else None
+                if posmatch and (not negmatch):
+                    mymatch = True
+                    break
         return mymatch
 
     def __str__(self):
