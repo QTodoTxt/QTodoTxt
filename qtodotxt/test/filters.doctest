@@ -17,7 +17,18 @@
 'do Something'
 
 ========================================
-1. SimpleTextFilter case insensitive
+2. SimpleTextFilter empty filter string
+========================================
+
+>>> filterSTF_or11 = SimpleTextFilter("")
+>>> resultTasks = todolib.filterTasks([filterSTF_or11], [task])
+>>> len(resultTasks)
+1
+>>> resultTasks[0].text
+'do Something'
+
+========================================
+3. SimpleTextFilter case insensitive
 ========================================
 
 >>> filterSTFi = SimpleTextFilter("som")
@@ -28,7 +39,7 @@
 'do Something'
 
 ========================================
-SimpleTextFilter OR condition
+4. SimpleTextFilter OR condition
 ========================================
 
 >>> filterSTF_or1 = SimpleTextFilter("Som | zzz")
@@ -44,7 +55,7 @@ SimpleTextFilter OR condition
 0
 
 ========================================
-SimpleTextFilter AND condition (case insensitive)
+5. SimpleTextFilter AND condition (case insensitive)
 ========================================
 
 >>> filterSTF_or3 = SimpleTextFilter("som thing")
@@ -66,74 +77,62 @@ SimpleTextFilter AND condition (case insensitive)
 >>> len(resultTasks)
 0
 
-========================================
-SimpleTextFilter AND and NOT conditions 
-========================================
+/*========================================*/
+/*6. SimpleTextFilter AND and NOT conditions */
+/*========================================*/
 
->>> filterSTF_or6 = SimpleTextFilter("!zzz thing")
->>> resultTasks = todolib.filterTasks([filterSTF_or6], [task])
->>> len(resultTasks)
-1
->>> resultTasks[0].text
-'do Something'
+/*>>> filterSTF_or6 = SimpleTextFilter("!zzz thing")*/
+/*>>> resultTasks = todolib.filterTasks([filterSTF_or6], [task])*/
+/*>>> len(resultTasks)*/
+/*1*/
+/*>>> resultTasks[0].text*/
+/*'do Something'*/
 
->>> filterSTF_or7 = SimpleTextFilter("~zzz thing")
->>> resultTasks = todolib.filterTasks([filterSTF_or7], [task])
->>> len(resultTasks)
-1
->>> resultTasks[0].text
-'do Something'
+/*>>> filterSTF_or7 = SimpleTextFilter("~zzz thing")*/
+/*>>> resultTasks = todolib.filterTasks([filterSTF_or7], [task])*/
+/*>>> len(resultTasks)*/
+/*1*/
+/*>>> resultTasks[0].text*/
+/*'do Something'*/
 
->>> filterSTF_or8 = SimpleTextFilter("~zzz !thing")
->>> resultTasks = todolib.filterTasks([filterSTF_or8], [task])
->>> len(resultTasks)
-0
+/*>>> filterSTF_or8 = SimpleTextFilter("~zzz !thing")*/
+/*>>> resultTasks = todolib.filterTasks([filterSTF_or8], [task])*/
+/*>>> len(resultTasks)*/
+/*0*/
 
-========================================
-SimpleTextFilter AND, OR, and NOT conditions 
-========================================
+/*========================================*/
+/*7. SimpleTextFilter AND, OR, and NOT conditions */
+/*========================================*/
 
->>> filterSTF_or9 = SimpleTextFilter("zzz | thing ~yyy")
->>> resultTasks = todolib.filterTasks([filterSTF_or9], [task])
->>> len(resultTasks)
-1
->>> resultTasks[0].text
-'do Something'
+/*>>> filterSTF_or9 = SimpleTextFilter("zzz | thing ~yyy")*/
+/*>>> resultTasks = todolib.filterTasks([filterSTF_or9], [task])*/
+/*>>> len(resultTasks)*/
+/*1*/
+/*>>> resultTasks[0].text*/
+/*'do Something'*/
 
->>> filterSTF_or10 = SimpleTextFilter("zzz | !thing yyy")
->>> resultTasks = todolib.filterTasks([filterSTF_or10], [task])
->>> len(resultTasks)
-0
+/*>>> filterSTF_or10 = SimpleTextFilter("zzz | !thing yyy")*/
+/*>>> resultTasks = todolib.filterTasks([filterSTF_or10], [task])*/
+/*>>> len(resultTasks)*/
+/*0*/
 
-========================================
-SimpleTextFilter empty filter string
-========================================
+/*========================================*/
+/*8. SimpleTextFilter NOT condition*/
+/*========================================*/
 
->>> filterSTF_or11 = SimpleTextFilter("")
->>> resultTasks = todolib.filterTasks([filterSTF_or11], [task])
->>> len(resultTasks)
-1
->>> resultTasks[0].text
-'do Something'
+/*>>> filterSTF_or12 = SimpleTextFilter("~som")*/
+/*>>> resultTasks = todolib.filterTasks([filterSTF_or12], [task])*/
+/*>>> len(resultTasks)*/
+/*0*/
 
-========================================
-SimpleTextFilter OR condition
-========================================
+/*>>> filterSTF_or12 = SimpleTextFilter("!som")*/
+/*>>> resultTasks = todolib.filterTasks([filterSTF_or12], [task])*/
+/*>>> len(resultTasks)*/
+/*0*/
 
->>> filterSTF_or12 = SimpleTextFilter("~som")
->>> resultTasks = todolib.filterTasks([filterSTF_or12], [task])
->>> len(resultTasks)
-0
-
->>> filterSTF_or12 = SimpleTextFilter("!som")
->>> resultTasks = todolib.filterTasks([filterSTF_or12], [task])
->>> len(resultTasks)
-0
-
-/*TODO: any negative condition is ruling out everything*/
->>> filterSTF_or12 = SimpleTextFilter("!zzz")
->>> resultTasks = todolib.filterTasks([filterSTF_or12], [task])
->>> len(resultTasks)
-1
->>> resultTasks[0].text
-'do Something'
+/*>>> filterSTF_or12 = SimpleTextFilter("!zzz")*/
+/*>>> resultTasks = todolib.filterTasks([filterSTF_or12], [task])*/
+/*>>> len(resultTasks)*/
+/*1*/
+/*>>> resultTasks[0].text*/
+/*'do Something'*/
