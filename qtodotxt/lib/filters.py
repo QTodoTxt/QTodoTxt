@@ -158,7 +158,7 @@ class SimpleTextFilter(BaseFilter):
 
         :AND   :   ',' or whitespace (' ')
         :OR    :   '|'
-        :NOT   :   prefixed '~' or '!'
+        :NOT   :   prefixed '~' or '!'  {not yet implemented}
 
         These operators follow the following order of precedence: OR, AND, NOT.
         So, for example:
@@ -172,12 +172,17 @@ class SimpleTextFilter(BaseFilter):
                                                      AND does NOT match 'dead')
                                             OR      (does NOT match 'parrot')
 
+        Since the python re module is used, most of the escaped regex
+        characters will also work when attached to one of the (comma- or space-
+        delimited) strings. E.g.:
+        - \bcleese\b will match 'cleese' but not 'johncleese'
+        - 2014-\d\d-07 will match '2014-03-07' but not '2014-ja-07'
+
         """
         mymatch = False
-        comp = re.compile(r'\s*([\w\\-]+)[\s,]*', re.I)
-        restring = comp.sub(r'^(?=.*\1)',
-                            self.text)
-        mymatch = re.search(restring, task.text, re.I|re.U)
+        comp = re.compile(r'\s*([\w\\-]+)[\s,]*', re.U)
+        restring = comp.sub(r'^(?=.*\1)', self.text, re.U)
+        mymatch = re.search(restring, task.text, re.I | re.U)
         return mymatch
 
     def __str__(self):
