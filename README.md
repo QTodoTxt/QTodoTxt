@@ -13,6 +13,13 @@ Latest stable release (v1.2.0):
 - For Mac OS X: [Mac Os X installer](http://dl.bintray.com/mnantern/generic/QTodoTxt.dmg)
 - Linux: [tar.gz archive](https://github.com/mNantern/QTodoTxt/archive/1.2.0.tar.gz)
 
+For Debian/Ubuntu you can also add the following repo to your sources.list:
+
+
+```
+sudo echo "deb http://dl.bintray.com/mnantern/deb /" >> /etc/apt/sources.list.d/qtodotxt.list
+```
+
 ## Quick Run
 
 To run the application without installing just:
