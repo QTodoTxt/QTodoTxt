@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Qtodotxt by mNantern</title>
+    <title>Qtodotxt - Cross Platform Todo manager</title>
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
@@ -15,15 +15,16 @@
     <link rel="stylesheet" href="stylesheets/ie.css">
     <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
+    <link rel="shortcut icon" href="favicon.png" />
   </head>
   <body>
       <div id="header">
         <nav>
-          <li class="fork"><a href="https://github.com/mNantern/QTodoTxt">View On GitHub</a></li>
-          <li class="downloads"><a href="https://github.com/mNantern/QTodoTxt/zipball/master">ZIP</a></li>
-          <li class="downloads"><a href="https://github.com/mNantern/QTodoTxt/tarball/master">TAR</a></li>
-          <li class="title">DOWNLOADS</li>
+          <li class="fork"><a href="#downloads">Download</a></li>
+          <li class="downloads"><a href="https://github.com/mNantern/QTodoTxt">GitHub</a></li>
+          <li class="downloads"><a href="#documentation">Documentation</a></li>
+          <li class="downloads"><a href="#news">News</a></li>
+          <li class="downloads"><a href="#qtodotxt-">About</a></li>
         </nav>
       </div><!-- end header -->
 
@@ -32,19 +33,42 @@
       <section>
         <div id="title">
           <h1>Qtodotxt</h1>
-          <p>Cross Platform todo.txt GUI </p>
+          <p>Cross Platform Todo manager</p>
           <hr>
-          <span class="credits left">Project maintained by <a href="https://github.com/mNantern">mNantern</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+          <span class="credits left">Project maintained by <a href="https://github.com/mNantern">Matthieu Nantern</a></span>
         </div>
 
         <h1>
 <a name="qtodotxt-" class="anchor" href="#qtodotxt-"><span class="octicon octicon-link"></span></a>QTodoTxt <a href="https://travis-ci.org/mNantern/QTodoTxt"><img src="https://travis-ci.org/mNantern/QTodoTxt.png?branch=master" alt="Build Status"></a>
 </h1>
 
-<p>QTodoTxt is a cross-platform UI client for todo.txt files (see <a href="http://todotxt.com">todo.txt</a>).</p>
+<p><br/>QTodoTxt is a cross-platform UI client for todo.txt files (see <a href="http://todotxt.com">todo.txt</a>).<br/><br/> It allows you to manage projects, contexts in a <a href="http://en.wikipedia.org/wiki/Getting_Things_Done">GTD</a> way.<br/> You can use it on Linux, Windows, Mac Os X and there are even IPhone and Android mobile App (<a href="http://todotxt.com/">right here</a>) !<br/><br/> Your todo.txt file can be sync with Dropbox, Owncloud or what you want, it's just a text file !</p>
 
-<p><img src="https://github.com/mNantern/QTodoTxt/wiki/screenshots/QTodoTxt.png" alt="Main view"></p>
+<p><img src="https://github.com/mNantern/QTodoTxt/wiki/screenshots/QTodoTxt_main_view.png" alt="Main view"></p>
+
+<h2>
+<a name="news" class="anchor" href="#news"><span class="octicon octicon-link"></span></a>News</h2>
+<h3>12 Jan. 2014: Version 1.2.0 released!</h3>
+<p> I've just released v1.2.0 of QTodoTxt a cross-platform GUI for todo.txt.<br/>
+New features include support of FutureTasks, a Mac Os X package, a filter bar and <a href="https://github.com/mNantern/QTodoTxt/wiki/Changelog#v120">a lot more.</a><br/>
+You can download this latest version on <a href="#downloads">the project page.</a><br/>
+<br/>
+Feel free to try !<br/>
+I would also thank new contributors to QTodoTxt: chaghi, mgushee and CalumJEadie.</p>
+<h3>13 Aug. 2013: Version 1.1.0 released!</h3>
+<p> I've just released v1.1.0 of QTodoTxt.
+<br/>
+New features include an option to auto-archive done tasks, another one to enable auto-save of todo.txt <a href="https://github.com/mNantern/QTodoTxt/wiki/Changelog#v110"> and more.</a>
+<br/>
+You can download this version <a href="https://github.com/mNantern/QTodoTxt/wiki/Releases#v110">on my GitHub page</a> and some screenshots are available <a href="https://github.com/mNantern/QTodoTxt/wiki/Screenshots">here</a>.
+<br/>
+Feel free to try !</p>
+<h3>19 Jun. 2013: Version 1.0.0 released!</h3>
+<p>I've been searching for a cross-platform GUI for todo.txt for a while now but found nothing that match my criteria (utf8, due date, ...).
+<br/>
+So I've improved an initial work by David Elentok (thanks to him!) and I released v1.0.0 last week: <a href="https://github.com/mNantern/QTodoTxt/wiki/Releases#v100">download page</a>
+<br/>
+Feel free to try !</p>
 
 <h2>
 <a name="downloads" class="anchor" href="#downloads"><span class="octicon octicon-link"></span></a>Downloads</h2>
@@ -66,23 +90,6 @@
 </code></pre>
 
 <h2>
-<a name="quick-run" class="anchor" href="#quick-run"><span class="octicon octicon-link"></span></a>Quick Run</h2>
-
-<p>To run the application without installing just:</p>
-
-<ul>
-<li>Download <a href="https://github.com/mNantern/QTodoTxt/archive/master.zip">latest code archive</a>
-</li>
-<li>Run:
-
-<ul>
-<li>On Linux/Mac: bin/qtodotxt</li>
-<li>On Windows: bin/qtodotxt.pyw</li>
-</ul>
-</li>
-</ul><p>Be sure to have all <a href="http://github.com/mNantern/QTodoTxt/wiki/User-documentation">prerequisites</a> installed !</p>
-
-<h2>
 <a name="documentation" class="anchor" href="#documentation"><span class="octicon octicon-link"></span></a>Documentation</h2>
 
 <ul>
@@ -93,6 +100,8 @@
 <li><a href="https://github.com/mNantern/QTodoTxt/issues">Defects and Enhancements</a></li>
 <li><a href="https://github.com/mNantern/QTodoTxt/wiki/Screenshots">Screenshots</a></li>
 </ul>
+
+<p>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></p>
       </section>
 
     </div>

@@ -595,6 +595,13 @@ a small {
   display: block;
 }
 
+a.anchor{
+  display: block; 
+  position: relative; 
+  top: -4em; 
+  visibility: hidden;
+}
+
 ul {
   list-style-image: url("../images/bullet.png");
 }
