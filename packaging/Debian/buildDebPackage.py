@@ -3,7 +3,7 @@ import os
 import os.path 
 import sys
 import tarfile
-import shutil
+from shutil import copytree,ignore_patterns,copy,rmtree
 from stat import *
 import fnmatch
 import re
@@ -43,8 +43,8 @@ def buildPackageFolder(folderName):
     os.makedirs(buildDir+'/usr/share/doc/qtodotxt')
     os.makedirs(buildDir+'/usr/share/applications')
 
-    #Copy tag folder to build folder
-    shutil.copytree(tmpDir+folderName,buildDir+'/usr/share/qtodotxt')
+    #Copy tag folder to build folder except the windows script
+    copytree(tmpDir+folderName,buildDir+'/usr/share/qtodotxt',False,ignore_patterns('qtodotxt.pyw'))
     #Fix execution rights on bin folder
     for file in os.listdir(buildBinDir):
         filePath=os.path.join(buildBinDir,file)
@@ -53,9 +53,9 @@ def buildPackageFolder(folderName):
             os.chmod(filePath, st.st_mode | S_IEXEC)
 
     # Adding copyright file
-    shutil.copy(scriptDir+'/copyright',buildDir+'/usr/share/doc/qtodotxt/copyright')
+    copy(scriptDir+'/copyright',buildDir+'/usr/share/doc/qtodotxt/copyright')
     # Adding desktop file
-    shutil.copy(scriptDir+'/qtodotxt.desktop',buildDir+'/usr/share/applications/qtodotxt.desktop')
+    copy(scriptDir+'/qtodotxt.desktop',buildDir+'/usr/share/applications/qtodotxt.desktop')
     # Adding changelog file
     f_in = open(scriptDir+'/changelog', 'rb')
     f_out = gzip.open(buildDir+'/usr/share/doc/qtodotxt/changelog.gz', 'wb')
@@ -107,9 +107,9 @@ def clean(fileName,folderName):
     # Removing tar.gz
     os.remove(tmpDir+fileName)
     # Removing untar folder
-    shutil.rmtree(tmpDir+folderName)
+    rmtree(tmpDir+folderName)
     #Removing build folder
-    shutil.rmtree(tmpDir+folderName+'_build')
+    rmtree(tmpDir+folderName+'_build')
 
 
 version=sys.argv[1]
