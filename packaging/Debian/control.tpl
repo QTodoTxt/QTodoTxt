@@ -3,7 +3,7 @@ Version: $version
 Architecture: all
 Maintainer: Matthieu Nantern <matthieu.nantern@gmail.com>
 Installed-Size: 3
-Depends: python2, python-pyside
+Depends: python2.7, python-pyside
 Section: utils
 Priority: optional
 Homepage: https://github.com/mNantern/QTodoTxt.git
