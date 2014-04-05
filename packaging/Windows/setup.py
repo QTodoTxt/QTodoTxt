@@ -8,18 +8,20 @@ from setuptools import setup
 try:
     import py2exe
 except ImportError:
-	pass
+    pass
 
 # ======================================
-current_dir=os.getcwd()
-os.chdir(os.path.join('..','..'))
+current_dir = os.getcwd()
+os.chdir(os.path.join('..', '..'))
 # Data files
 resources = []
 resources_root = os.path.join(os.getcwd(), 'qtodotxt', 'ui', 'resources')
 for file in os.listdir(resources_root):
     resources.append(os.path.join(resources_root, file))
 
-icon = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'qtodotxt', 'ui', 'resources', 'qtodotxt.ico')
+icon = os.path.join(os.path.abspath(os.path.dirname(__file__)),
+                    'qtodotxt', 'ui', 'resources', 'qtodotxt.ico')
+
 
 def collect_packages(path, package_name, packages, excludes=None):
     for dir in os.listdir(path):
@@ -40,29 +42,29 @@ collect_packages('.', '', packages, excludes=['test'])
 # ======================================
 # Setup parameters
 setup(name='qtodotxt',
-        version='1.2.0',
-        author='Matthieu Nantern',
-        author_email='matthieu.nantern@gmail.com',
-        url='https://github.com/mNantern/QTodoTxt',
-        packages=packages,
+      version='1.3.0',
+      author='Matthieu Nantern',
+      author_email='matthieu.nantern@gmail.com',
+      url='https://github.com/mNantern/QTodoTxt',
+      packages=packages,
 
-        data_files=[
-            ('resources', resources),('imageformats',[r'C:\Python27\Lib\site-packages\PySide\plugins\imageformats\qico4.dll'])],
-        
-        # py2exe parameters
-        windows=[
-            {
-                "script": "bin/qtodotxt.pyw",
+      data_files=[
+          ('resources', resources), ('imageformats', [r'C:\Python27\Lib\site-packages\PySide\plugins\imageformats\qico4.dll'])],
+
+      # py2exe parameters
+      windows=[
+          {
+    "script": "bin/qtodotxt.pyw",
                 "icon_resources": [(0, icon)]
             }
         ],
         options={
             "py2exe": {
                 "includes": ["argparse"],
-                "dist_dir": os.path.join(current_dir,'dist')
+                "dist_dir": os.path.join(current_dir, 'dist')
             },
             "build": {
-                "build_base": os.path.join(current_dir,'build')
+                "build_base": os.path.join(current_dir, 'build')
             },
         }
     )

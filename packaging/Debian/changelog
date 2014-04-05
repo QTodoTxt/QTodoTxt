@@ -1,5 +1,7 @@
-qtodotxt (1.2.0) unstable; urgency=low
+qtodotxt (1.3.0) unstable; urgency=low
 
+  * Publication of v1.3.0: see changelog here 
+    https://github.com/mNantern/QTodoTxt/wiki/Changelog#v130
   * Initial release.
 
  -- Matthieu Nantern <matthieu.nantern@gmail.com>  Sun, 02 Mar 2014 18:20:00 +0100

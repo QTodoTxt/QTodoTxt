@@ -1,4 +1,4 @@
-__version__ = "1.2.0"
+__version__ = "1.3.0"
 
 description = """<p>QTodoTxt is a cross-platform UI client for todo.txt files
  (see <a href="http://todotxt.com">http://todotxt.com</a>)</p>
