@@ -180,8 +180,11 @@ class SimpleTextFilter(BaseFilter):
 
         """
         mymatch = False
+        mytext = self.text.replace('(', '\(')
+        mytext = self.text.replace(')', '\)')
+        print mytext
         comp = re.compile(r'\s*([\w\\-]+)[\s,]*', re.U)
-        restring = comp.sub(r'^(?=.*\1)', self.text, re.U)
+        restring = comp.sub(r'^(?=.*\1)', mytext, re.U)
         mymatch = re.search(restring, task.text, re.I | re.U)
         return mymatch
 
