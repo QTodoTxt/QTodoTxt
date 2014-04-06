@@ -1,4 +1,8 @@
->>> import sys, os 
+"""
+To run tests: python run-tests.py
+"""
+
+>>> import sys, os
 >>> sys.path.insert(0, os.path.join('.', '..', '..'))
 >>> from qtodotxt.lib import filters,todolib
 >>> import qtodotxt.ui.controllers.main_controller
@@ -15,6 +19,25 @@
 1
 >>> resultTasks[0].text
 'do Something'
+
+========================================
+1. SimpleTextFilter with parentheses
+========================================
+
+>>> task_parenth = todolib.Task('(A) do Something')
+>>> filterSTF_par1 = SimpleTextFilter("(A")
+>>> resultTasks = todolib.filterTasks([filterSTF],[task_parenth])
+>>> len(resultTasks)
+1
+>>> resultTasks[0].text
+'(A) do Something'
+
+>>> filterSTF_par2 = SimpleTextFilter("(A)")
+>>> resultTasks = todolib.filterTasks([filterSTF_par2],[task_parenth])
+>>> len(resultTasks)
+1
+>>> resultTasks[0].text
+'(A) do Something'
 
 ========================================
 2. SimpleTextFilter empty filter string

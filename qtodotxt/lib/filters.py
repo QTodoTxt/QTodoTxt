@@ -178,14 +178,19 @@ class SimpleTextFilter(BaseFilter):
         - \bcleese\b will match 'cleese' but not 'johncleese'
         - 2014-\d\d-07 will match '2014-03-07' but not '2014-ja-07'
 
+        The method can handle parentheses in the search strings. Unlike most
+        regex characters, these don't need to be escaped since they are escaped
+        automatically. So the search string '(B)' will match '(B) nail its
+        feet to the perch'.
         """
         mymatch = False
-        mytext = self.text.replace('(', '\(')
-        mytext = self.text.replace(')', '\)')
-        print mytext
-        comp = re.compile(r'\s*([\w\\-]+)[\s,]*', re.U)
-        restring = comp.sub(r'^(?=.*\1)', mytext, re.U)
-        mymatch = re.search(restring, task.text, re.I | re.U)
+        comp = re.compile(r'\s*([\(\)\w\\\-]+)[\s,]*', re.U)
+        restring = comp.sub(r'^(?=.*\1)', self.text, re.U)
+        comp2 = re.compile(r'\s*\((?=[^?])', re.U)
+        restring2 = comp2.sub(r'\\(', restring, re.U)
+        comp3 = re.compile(r'(?<!\))\)(?=\))', re.U)
+        restring3 = comp3.sub(r'\\)', restring2, re.U)
+        mymatch = re.search(restring3, task.text, re.I | re.U)
         return mymatch
 
     def __str__(self):
