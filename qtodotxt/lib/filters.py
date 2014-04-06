@@ -183,14 +183,22 @@ class SimpleTextFilter(BaseFilter):
         automatically. So the search string '(B)' will match '(B) nail its
         feet to the perch'.
         """
+        # TODO: implement NOT conditions
         mymatch = False
         comp = re.compile(r'\s*([\(\)\w\\\-]+)[\s,]*', re.U)
         restring = comp.sub(r'^(?=.*\1)', self.text, re.U)
-        comp2 = re.compile(r'\s*\((?=[^?])', re.U)
-        restring2 = comp2.sub(r'\\(', restring, re.U)
-        comp3 = re.compile(r'(?<!\))\)(?=\))', re.U)
-        restring3 = comp3.sub(r'\\)', restring2, re.U)
-        mymatch = re.search(restring3, task.text, re.I | re.U)
+        try:
+            if ')' in restring:
+                raise re.error  # otherwise adding closing parenth avoids error here
+            mymatch = re.search(restring, task.text, re.I | re.U)
+        except re.error:
+            comp2 = re.compile(r'\s*\((?=[^?])', re.U)
+            restring2 = comp2.sub(r'\\(', restring, re.U)
+            comp3 = re.compile(r'(?<!\))\)(?=\))', re.U)
+            restring3 = comp3.sub(r'\\)', restring2, re.U)
+            print restring3
+            mymatch = re.search(restring3, task.text, re.I | re.U)
+
         return mymatch
 
     def __str__(self):
