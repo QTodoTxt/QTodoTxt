@@ -196,7 +196,6 @@ class SimpleTextFilter(BaseFilter):
             restring2 = comp2.sub(r'\\(', restring, re.U)
             comp3 = re.compile(r'(?<!\))\)(?=\))', re.U)
             restring3 = comp3.sub(r'\\)', restring2, re.U)
-            print restring3
             mymatch = re.search(restring3, task.text, re.I | re.U)
 
         return mymatch
