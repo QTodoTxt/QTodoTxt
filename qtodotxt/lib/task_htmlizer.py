@@ -87,7 +87,7 @@ class TaskHtmlizer(object):
             r'localhost|'  # localhost...
             r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
             r'(?::\d+)?'  # optional port
-            r'(?:[-_/?a-zA-Z0-9]*))', re.IGNORECASE)
+            r'(?:[-_/?a-zA-Z0-9\.]*))', re.IGNORECASE)
         return regex.sub(r'<a href="\1">\1</a>', text)
 
     def _htmlizeCreatedCompleted(self, text, raw_text):
