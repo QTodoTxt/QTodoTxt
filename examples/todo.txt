@@ -4,3 +4,5 @@
 (C) Upgrade jump drives with Cylon technology +GalacticaRepairs
 Check for DRADIS contact @CIC
 Check if http://google.com is available
+Think about __future__ t:2099-12-31
+Download code https://github.com/mNantern/QTodoTxt/archive/master.zip

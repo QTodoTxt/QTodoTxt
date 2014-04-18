@@ -11,7 +11,7 @@ Test Setup and Helper Methods
 >>> task = todolib.Task('this is my task')
 >>> htmlizer = task_htmlizer.TaskHtmlizer()
 >>> htmlizer.task2html(task)
-'<tt>&nbsp;&nbsp;&nbsp;</tt><font color="black">this is my task</font>'
+'<font color="black"><tt>&nbsp;&nbsp;&nbsp;</tt>this is my task</font>'
 
 ========================================
 2. Test task with a single context at the end
@@ -19,7 +19,7 @@ Test Setup and Helper Methods
 >>> task = todolib.Task('this is my task @context')
 >>> htmlizer = task_htmlizer.TaskHtmlizer()
 >>> htmlizer.task2html(task)
-'<tt>&nbsp;&nbsp;&nbsp;</tt><font color="black">this is my task <font color="green">@context</font></font>'
+'<font color="black"><tt>&nbsp;&nbsp;&nbsp;</tt>this is my task <font color="green">@context</font></font>'
 
 ========================================
 3. Test task with a single context at the center
@@ -27,7 +27,7 @@ Test Setup and Helper Methods
 >>> task = todolib.Task('this is my task @context and some more words')
 >>> htmlizer = task_htmlizer.TaskHtmlizer()
 >>> htmlizer.task2html(task)
-'<tt>&nbsp;&nbsp;&nbsp;</tt><font color="black">this is my task <font color="green">@context</font> and some more words</font>'
+'<font color="black"><tt>&nbsp;&nbsp;&nbsp;</tt>this is my task <font color="green">@context</font> and some more words</font>'
 
 ========================================
 4. Test task with a single project at the end
@@ -35,7 +35,7 @@ Test Setup and Helper Methods
 >>> task = todolib.Task('this is my task +project')
 >>> htmlizer = task_htmlizer.TaskHtmlizer()
 >>> htmlizer.task2html(task)
-'<tt>&nbsp;&nbsp;&nbsp;</tt><font color="black">this is my task <font style="color:#64AAD0">+project</font></font>'
+'<font color="black"><tt>&nbsp;&nbsp;&nbsp;</tt>this is my task <font style="color:#64AAD0">+project</font></font>'
 
 ========================================
 5. Test task with a single project at the center
@@ -43,7 +43,7 @@ Test Setup and Helper Methods
 >>> task = todolib.Task('this is my task +project and some more words')
 >>> htmlizer = task_htmlizer.TaskHtmlizer()
 >>> htmlizer.task2html(task)
-'<tt>&nbsp;&nbsp;&nbsp;</tt><font color="black">this is my task <font style="color:#64AAD0">+project</font> and some more words</font>'
+'<font color="black"><tt>&nbsp;&nbsp;&nbsp;</tt>this is my task <font style="color:#64AAD0">+project</font> and some more words</font>'
 
 ========================================
 6. Test task with a single context and a single project
@@ -51,7 +51,7 @@ Test Setup and Helper Methods
 >>> task = todolib.Task('this is my task @context and +project and some more words')
 >>> htmlizer = task_htmlizer.TaskHtmlizer()
 >>> htmlizer.task2html(task)
-'<tt>&nbsp;&nbsp;&nbsp;</tt><font color="black">this is my task <font color="green">@context</font> and <font style="color:#64AAD0">+project</font> and some more words</font>'
+'<font color="black"><tt>&nbsp;&nbsp;&nbsp;</tt>this is my task <font color="green">@context</font> and <font style="color:#64AAD0">+project</font> and some more words</font>'
 
 
 ========================================
@@ -60,7 +60,7 @@ Test Setup and Helper Methods
 >>> task = todolib.Task('this is my task @context1 and @context2 and +project1 +project2 and +project3 some more words')
 >>> htmlizer = task_htmlizer.TaskHtmlizer()
 >>> htmlizer.task2html(task)
-'<tt>&nbsp;&nbsp;&nbsp;</tt><font color="black">this is my task <font color="green">@context1</font> and <font color="green">@context2</font> and <font style="color:#64AAD0">+project1</font> <font style="color:#64AAD0">+project2</font> and <font style="color:#64AAD0">+project3</font> some more words</font>'
+'<font color="black"><tt>&nbsp;&nbsp;&nbsp;</tt>this is my task <font color="green">@context1</font> and <font color="green">@context2</font> and <font style="color:#64AAD0">+project1</font> <font style="color:#64AAD0">+project2</font> and <font style="color:#64AAD0">+project3</font> some more words</font>'
 
 ========================================
 8. Test task with priority A
@@ -100,7 +100,7 @@ Test Setup and Helper Methods
 >>> task = todolib.Task('this is my task due:2014-04')
 >>> htmlizer = task_htmlizer.TaskHtmlizer()
 >>> htmlizer.task2html(task)
-'<tt>&nbsp;&nbsp;&nbsp;</tt><font color="black">this is my task <b><font style="color:red">*** Invalid date format, expected: YYYY-mm-dd! due:2014-04 ***</font></b></font>'
+'<font color="black"><tt>&nbsp;&nbsp;&nbsp;</tt>this is my task <b><font style="color:red">*** Invalid date format, expected: YYYY-mm-dd! due:2014-04 ***</font></b></font>'
 
 ========================================
 13. Test task with an invalid Threshold date
@@ -108,4 +108,12 @@ Test Setup and Helper Methods
 >>> task = todolib.Task('this is my task t:2014-04')
 >>> htmlizer = task_htmlizer.TaskHtmlizer()
 >>> htmlizer.task2html(task)
-'<tt>&nbsp;&nbsp;&nbsp;</tt><font color="black">this is my task <b><font style="color:red">*** Invalid date format, expected: YYYY-mm-dd! t:2014-04 ***</font></b></font>'
+'<font color="black"><tt>&nbsp;&nbsp;&nbsp;</tt>this is my task <b><font style="color:red">*** Invalid date format, expected: YYYY-mm-dd! t:2014-04 ***</font></b></font>'
+
+========================================
+14. Test task with an URL
+========================================
+>>> task = todolib.Task('Download code https://github.com/mNantern/QTodoTxt/archive/master.zip')
+>>> htmlizer = task_htmlizer.TaskHtmlizer()
+>>> htmlizer.task2html(task)
+'<font color="black"><tt>&nbsp;&nbsp;&nbsp;</tt>Download code <a href="https://github.com/mNantern/QTodoTxt/archive/master.zip">https://github.com/mNantern/QTodoTxt/archive/master.zip</a></font>'
