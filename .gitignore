@@ -1,42 +1,48 @@
 # C extensions
 *.so
 
-# Packages
-*.egg
-*.egg-info
-dist
-build
-eggs
-parts
-var
-sdist
-develop-eggs
-.installed.cfg
-lib
-lib64
-__pycache__
+# Eric IDE
+*.e4p
+.eric5project/
+.issues/
 
-# Installer logs
-pip-log.txt
-
-# Unit test / coverage reports
-.coverage
-.testOutput
-.tox
-nosetests.xml
-tempfile.txt
-
-# Tmp file
+# Miscellaneous
 *.*~
-
-# Translations
-*.mo
+*.py[cod]
+*.un~
+*.sw[op]
 
 # Mr Developer
-*.e4p
-.eric5project
-.issues
 .mr.developer.cfg
 .project
 .pydevproject
 .settings
+
+# Packages
+__pycache__
+build
+develop-eggs
+dist
+*.egg
+*.egg-info
+eggs
+.installed.cfg
+lib
+lib64
+parts
+pip-log.txt
+sdist
+var
+
+# Rope
+.ropeproject
+
+# Translations
+*.mo
+
+# Unit test / coverage reports
+.coverage
+nosetests.xml
+tempfile.txt
+.testOutput
+.tox
