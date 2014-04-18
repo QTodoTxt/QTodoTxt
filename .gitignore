@@ -1,5 +1,3 @@
-*.py[cod]
-
 # C extensions
 *.so
 
@@ -35,6 +33,9 @@ tempfile.txt
 *.mo
 
 # Mr Developer
+*.e4p
+.eric5project
+.issues
 .mr.developer.cfg
 .project
 .pydevproject
