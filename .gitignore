@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+=======
+*.py[cod]
+*.sw[op]
+*.un~
+.ropeproject/
+
+>>>>>>> upstream/master
 # C extensions
 *.so
 
