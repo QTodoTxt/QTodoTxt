@@ -113,7 +113,7 @@ Test Setup and Helper Methods
 ========================================
 14. Test task with an URL
 ========================================
->>> task = todolib.Task('Download code https://github.com/mNantern/QTodoTxt/archive/master.zip')
+>>> task = todolib.Task('Download https://github.com/mNantern/QTodoTxt/archive/master.zip and extract')
 >>> htmlizer = task_htmlizer.TaskHtmlizer()
 >>> htmlizer.task2html(task)
-'<font color="black"><tt>&nbsp;&nbsp;&nbsp;</tt>Download code <a href="https://github.com/mNantern/QTodoTxt/archive/master.zip">https://github.com/mNantern/QTodoTxt/archive/master.zip</a></font>'
+'<font color="black"><tt>&nbsp;&nbsp;&nbsp;</tt>Download <a href="https://github.com/mNantern/QTodoTxt/archive/master.zip">https://github.com/mNantern/QTodoTxt/archive/master.zip</a> and extract</font>'
