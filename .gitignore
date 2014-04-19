@@ -11,6 +11,7 @@
 *.*~
 *.py[cod]
 *.sw[op]
+.venv
 
 # Mr Developer
 .mr.developer.cfg
