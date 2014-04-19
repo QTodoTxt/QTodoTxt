@@ -7,9 +7,9 @@
 .issues/
 
 # Miscellaneous
+*~
 *.*~
 *.py[cod]
-*.un~
 *.sw[op]
 
 # Mr Developer
@@ -20,12 +20,12 @@
 
 # Packages
 __pycache__
-build
+build/
 develop-eggs
-dist
+dist/
 *.egg
 *.egg-info
-eggs
+eggs/
 .installed.cfg
 lib
 lib64
@@ -35,7 +35,7 @@ sdist
 var
 
 # Rope
-.ropeproject
+.ropeproject/
 
 # Translations
 *.mo
