@@ -97,8 +97,29 @@ class File(object):
         finally:
             if fdDone:
                 fdDone.close()
-        
-        
+
+    def getAllCompletedContexts(self):
+        contexts = dict()
+        for task in self.tasks:
+            if task.is_complete:
+                for context in task.contexts:
+                    if context in contexts:
+                        contexts[context] += 1
+                    else:
+                        contexts[context] = 1
+        return contexts
+
+    def getAllCompletedProjects(self):
+        projects = dict()
+        for task in self.tasks:
+            if task.is_complete:
+                for project in task.projects:
+                    if project in projects:
+                        projects[project] += 1
+                    else:
+                        projects[project] = 1
+        return projects
+
     def getAllContexts(self):
         contexts = dict()
         for task in self.tasks:

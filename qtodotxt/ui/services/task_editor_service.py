@@ -8,16 +8,29 @@ class TaskEditorService(object):
 
     def _resetValues(self):
         self._values = []
+        self._completedValues = []
         self._values.extend(self._priorities)
 
-    def updateValues(self, file):
-        self._resetValues()
+    def updateTodoValues(self, file):
         contexts = file.getAllContexts()
         projects = file.getAllProjects()
         for context in contexts:
             self._values.append('@' + context)
         for project in projects:
             self._values.append('+' + project)
+
+    def updateCompletedValues(self, file):
+        contexts = file.getAllCompletedContexts()
+        projects = file.getAllCompletedProjects()
+        for context in contexts:
+            self._completedValues.append('@' + context)
+        for project in projects:
+            self._completedValues.append('+' + project)
+
+    def updateValues(self, file):
+        self._resetValues()
+        self.updateTodoValues(file)
+        self.updateCompletedValues(file)
 
     def createTask(self):
         (text, ok) = self._openTaskEditor("Create Task")
@@ -28,7 +41,7 @@ class TaskEditorService(object):
         return (text, ok)
 
     def _openTaskEditor(self, title, task=None):
-        dialog = AutoCompleteInputDialog(self._values, self._parent_window)
+        dialog = AutoCompleteInputDialog(self._values + self._completedValues, self._parent_window)
         dialog.setWindowTitle(title)
         dialog.setLabelText('Task:')
         dialog.resize(500, 100)
