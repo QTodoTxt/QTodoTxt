@@ -4,15 +4,15 @@ from qtodotxt.lib.task_htmlizer import TaskHtmlizer
 from qtodotxt.lib import todolib
 
 class TasksListView(QtGui.QListWidget):
-    
+
     taskActivated = QtCore.Signal(todolib.Task)
-    
+
     def __init__(self, parent=None):
         super(TasksListView, self).__init__(parent)
-        self._task_htmlizer = TaskHtmlizer()      
+        self._task_htmlizer = TaskHtmlizer()
         self._initUI()
         self._oldSelected = []
-        
+
     def addTask(self, task):
         item = TaskListWidgetItem(task, self)
         label = self._createLabel(task)
@@ -20,13 +20,13 @@ class TasksListView(QtGui.QListWidget):
 
     def addListAction(self, action):
         self.addAction(action)
-        
+
     def _initUI(self):
         self.setSelectionMode(
             QtGui.QAbstractItemView.SelectionMode.ExtendedSelection)
         self.itemDoubleClicked.connect(self._list_itemActivated)
         self.itemSelectionChanged.connect(self._list_itemPressed)
-        
+
     def _createLabel(self, task):
         label = QtGui.QLabel()
         label.setTextFormat(QtCore.Qt.RichText)
@@ -34,32 +34,32 @@ class TasksListView(QtGui.QListWidget):
         text = self._task_htmlizer.task2html(task)
         label.setText(text)
         return label
-    
+
     def _findItemByTask(self, task):
         for index in range(self.count()):
             item = self.item(index)
             if item.task == task:
                 return item
         return None
-    
+
     def _findItemByTaskText(self, text):
         for index in range(self.count()):
             item = self.item(index)
             if item.task.text == text:
                 return item
         return None
-    
+
     def updateTask(self, task):
         item = self._findItemByTask(task)
         label = self.itemWidget(item)
         text = self._task_htmlizer.task2html(item.task)
         label.setText(text)
-        
+
     def _selectItem(self, item):
         if item:
             item.setSelected(True)
             self.setCurrentItem(item)
-        
+
     def selectTask(self, task):
         item = self._findItemByTask(task)
         self._selectItem(item)
@@ -67,16 +67,16 @@ class TasksListView(QtGui.QListWidget):
     def selectTaskByText(self, text):
         item = self._findItemByTaskText(text)
         self._selectItem(item)
-    
+
     def removeTask(self, task):
         item = self._findItemByTask(task)
         if item:
+            self._oldSelected.remove(item)
             self.removeItemWidget(item)
-            self.takeItem(self.row(item))
-    
+
     def _list_itemActivated(self, item):
         self.taskActivated.emit(item.task)
-        
+
     def getSelectedTasks(self):
         items = self.selectedItems()
         return [item.task for item in items]
@@ -93,8 +93,8 @@ class TasksListView(QtGui.QListWidget):
             label = self.itemWidget(item)
             text = self._task_htmlizer.task2html(item.task, True)
             label.setText(text)
-            
-            
+
+
     def keyPressEvent(self,event):
         key = event.key()
         if key == QtCore.Qt.Key_Return:
@@ -104,9 +104,9 @@ class TasksListView(QtGui.QListWidget):
         else:
             QtGui.QListWidget.keyPressEvent(self, event)
             return
-                    
+
 class TaskListWidgetItem(QtGui.QListWidgetItem):
-    
+
     def __init__(self, task, list):
         QtGui.QListWidgetItem.__init__(self, '', list)
         self.task = task
