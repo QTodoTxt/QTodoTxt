@@ -10,7 +10,7 @@ class TaskHtmlizer(object):
         # regex matching creation and completion dates and priority
         self.regex = re.compile(
             r'^(x (?P<completed>\d{4}-\d{2}-\d{2} )?)?(\((?P<priority>[A-Z])\) )?(?P<created>\d{4}-\d{2}-\d{2} )?.*$')
-    
+
     def task2html(self, task, selected = False):
         text = task.text
         priority = task.priority
@@ -19,12 +19,6 @@ class TaskHtmlizer(object):
             text = '<s>%s</s>' % text.replace('x ', '', 1)
             # when the task is complete, the Task object has no priority. We find the original priority from the text
             priority = re.match(self.regex, task.text).group('priority')
-        
-        if selected:
-            text = '<font color="white">%s</font>' % text
-        else:
-            text = '<font color="black">%s</font>' % text
-        
         for context in task.contexts:
             text = text.replace('@' + context, self._htmlizeContext(context))
         for project in task.projects:
@@ -39,15 +33,19 @@ class TaskHtmlizer(object):
         if task.threshold is not None:
             text = text.replace('t:%s' % task.threshold, self._htmlizeThresholdDate(task.threshold))
         text = self._htmlizeCreatedCompleted(text, task.text)
+        text = self._htmlizeURL(text)
+        if selected:
+            return '<font color="white">%s</font>' % text
+        else:
+            return '<font color="black">%s</font>' % text
 
-        return self._htmlizeURL(text)
-    
+
     def _htmlizeContext(self, context):
         return '<font color="green">@%s</font>' % context
 
     def _htmlizeProject(self, project):
         return '<font style="color:#64AAD0">+%s</font>' % project
-    
+
     def _htmlizePriority(self, priority):
         if priority in self.priority_colors:
             color = self.priority_colors[priority]
@@ -82,13 +80,15 @@ class TaskHtmlizer(object):
 
     def _htmlizeURL(self,text):
         regex = re.compile(
-            r'((?:http|ftp)s?://'  # http:// or https://
+            r'((?:http|ftp)s?://'  # TODO what else is supported by xgd-open?
+            #TODO add support for user:password@-scheme
             r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # domain...
             r'localhost|'  # localhost...
-            r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
+            r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|'  # ...or ipv4
+            r'\[?[A-F0-9]*:[A-F0-9:]+\]?)'  # ...or ipv6
             r'(?::\d+)?'  # optional port
-            r'(?:[-_/?a-zA-Z0-9]*))', re.IGNORECASE)
-        return regex.sub(r'<a href="\1">\1</a>', text)
+            r'(?:/?|[/?]\S+))(\s)', re.IGNORECASE)
+        return regex.sub(r'<a href="\1">\1</a>\2', text)
 
     def _htmlizeCreatedCompleted(self, text, raw_text):
         created = ''
