@@ -1,6 +1,7 @@
 from datetime import datetime, date
 import re
 
+
 class TaskHtmlizer(object):
     def __init__(self):
         self.priority_colors = dict(
@@ -11,7 +12,7 @@ class TaskHtmlizer(object):
         self.regex = re.compile(
             r'^(x (?P<completed>\d{4}-\d{2}-\d{2} )?)?(\((?P<priority>[A-Z])\) )?(?P<created>\d{4}-\d{2}-\d{2} )?.*$')
 
-    def task2html(self, task, selected = False):
+    def task2html(self, task, selected=False):
         text = task.text
         priority = task.priority
 
@@ -39,7 +40,6 @@ class TaskHtmlizer(object):
         else:
             return '<font color="black">%s</font>' % text
 
-
     def _htmlizeContext(self, context):
         return '<font color="green">@%s</font>' % context
 
@@ -56,7 +56,8 @@ class TaskHtmlizer(object):
         try:
             due_date = datetime.strptime(dueDateString, '%Y-%m-%d').date()
         except ValueError:
-            return '<b><font style="color:red">*** Invalid date format, expected: YYYY-mm-dd! due:%s ***</font></b>' % dueDateString
+            return '<b><font style="color:red">*** Invalid date format, expected: YYYY-mm-dd! due:%s ***</font></b>' \
+                   % dueDateString
         date_now = date.today()
         tdelta = due_date - date_now
         if tdelta.days > 7:
@@ -66,11 +67,12 @@ class TaskHtmlizer(object):
         else:
             return '<b><font style="color:red">due:%s</font></b>' % dueDateString
 
-    def _htmlizeThresholdDate(self,thresholdDateString):
+    def _htmlizeThresholdDate(self, thresholdDateString):
         try:
             threshold_date = datetime.strptime(thresholdDateString, '%Y-%m-%d').date()
         except ValueError:
-            return '<b><font style="color:red">*** Invalid date format, expected: YYYY-mm-dd! t:%s ***</font></b>' % thresholdDateString
+            return '<b><font style="color:red">*** Invalid date format, expected: YYYY-mm-dd! t:%s ***</font></b>' \
+                   % thresholdDateString
         date_now = date.today()
         tdelta = threshold_date - date_now
         if tdelta.days > 0:
@@ -78,7 +80,7 @@ class TaskHtmlizer(object):
         else:
             return '<font style="color:orange">t:%s</font>' % thresholdDateString
 
-    def _htmlizeURL(self,text):
+    def _htmlizeURL(self, text):
         regex = re.compile(
             r'((?:http|ftp)s?://'  # TODO what else is supported by xgd-open?
             #TODO add support for user:password@-scheme

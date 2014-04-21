@@ -39,11 +39,11 @@ along with this program.  If not, see
 
 from PySide import QtGui
 
+
 def _getAboutText():
-    parts = ["<h1>About QTodoTxt %s</h1>\n" % __version__,
-        description
-    ]
+    parts = ["<h1>About QTodoTxt %s</h1>\n" % __version__, description]
     return ''.join(parts)
+
 
 def show(parent=None):
     text = _getAboutText()

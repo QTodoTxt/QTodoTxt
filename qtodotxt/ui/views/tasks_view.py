@@ -3,6 +3,7 @@ from filter_tasks_view import FilterTasksView
 from tasks_list_view import TasksListView
 from qtodotxt.ui.resource_manager import getIcon
 
+
 class TasksView(QtGui.QWidget):
     
     def __init__(self, parent=None):
@@ -13,7 +14,7 @@ class TasksView(QtGui.QWidget):
         layout = QtGui.QGridLayout(self)
         layout.setSpacing(10)
         
-        self.filter_tasks = FilterTasksView(getIcon("zoom.png"),getIcon("cross.png"),self)
+        self.filter_tasks = FilterTasksView(getIcon("zoom.png"), getIcon("cross.png"), self)
         self.tasks_list_view = TasksListView(self)
         
         layout.addWidget(self.filter_tasks, 1, 0)

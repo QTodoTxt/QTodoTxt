@@ -9,6 +9,7 @@ sys.path.insert(0, os.path.abspath(root))
 
 tests = unittest.defaultTestLoader.discover('.', pattern='test*.py')
 
+
 def run_doctests(testsdir):
     exit_code = 0
     for filename in os.listdir(testsdir):
@@ -48,7 +49,6 @@ if __name__ == "__main__":
         print "========================================"
         print "Unit tests failed"
         print "========================================"
-
 
     sys.exit(exit_code)
 

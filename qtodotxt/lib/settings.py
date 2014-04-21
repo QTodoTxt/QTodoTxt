@@ -3,6 +3,7 @@ import pickle
 
 DEFAULT_SETTINGS_FILE = os.path.expanduser("~/.qtodotxt.cfg")
 
+
 class Settings(object):
     def __init__(self):
         self._file = DEFAULT_SETTINGS_FILE
@@ -41,8 +42,8 @@ class Settings(object):
     def getHideFutureTasks(self):
         return self._getData('hide_future_tasks')
 
-    def setHideFutureTasks(self,hideFutureTasks):
-        self._setData('hide_future_tasks',hideFutureTasks)
+    def setHideFutureTasks(self, hideFutureTasks):
+        self._setData('hide_future_tasks', hideFutureTasks)
 
     def _getData(self, key):
         if self._data:
@@ -60,4 +61,3 @@ class Settings(object):
             with open(self._file, 'w') as file:
                 file = open(self._file, 'w') 
                 pickle.dump(self._data, file)
-    

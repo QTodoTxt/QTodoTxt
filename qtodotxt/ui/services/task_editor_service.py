@@ -1,5 +1,6 @@
 from qtodotxt.ui.controls.autocomplete_inputdialog import AutoCompleteInputDialog
 
+
 class TaskEditorService(object):
     def __init__(self, parent_window):
         self._parent_window = parent_window
@@ -34,11 +35,11 @@ class TaskEditorService(object):
 
     def createTask(self):
         (text, ok) = self._openTaskEditor("Create Task")
-        return (text, ok)
+        return text, ok
     
     def editTask(self, task):
         (text, ok) = self._openTaskEditor('Edit Task', task)
-        return (text, ok)
+        return text, ok
 
     def _openTaskEditor(self, title, task=None):
         dialog = AutoCompleteInputDialog(self._values + self._completedValues, self._parent_window)
@@ -49,6 +50,6 @@ class TaskEditorService(object):
             dialog.setTextValue(task.text)
         dialog.setModal(True)
         if dialog.exec_():
-            return (dialog.textValue(), True)
-        return (None, False)
+            return dialog.textValue(), True
+        return None, False
 

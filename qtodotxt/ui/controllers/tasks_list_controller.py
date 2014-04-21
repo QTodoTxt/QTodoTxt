@@ -6,6 +6,7 @@ from datetime import date
 from qtodotxt.ui.controls.autocomplete_inputdialog import AutoCompleteInputDialog
 from qtodotxt.lib import settings
 
+
 class TasksListController(QtCore.QObject):
     
     taskModified = QtCore.Signal(todolib.Task)
@@ -47,20 +48,19 @@ class TasksListController(QtCore.QObject):
         self.completeSelectedTasksAction = action
         
     def _initDecreasePrioritySelectedTasksAction(self):
-        action = QtGui.QAction(getIcon('decrease.png'), 'Decrease priority',self)
-        action.setShortcuts(['-','<'])
+        action = QtGui.QAction(getIcon('decrease.png'), 'Decrease priority', self)
+        action.setShortcuts(['-', '<'])
         action.triggered.connect(self._decreasePriority)
         self._view.addListAction(action)
         self.decreasePrioritySelectedTasksAction = action
     
     def _initIncreasePrioritySelectedTasksAction(self):
-        action = QtGui.QAction(getIcon('increase.png'), 'Increase priority',self)
-        action.setShortcuts(['+','>'])
+        action = QtGui.QAction(getIcon('increase.png'), 'Increase priority', self)
+        action.setShortcuts(['+', '>'])
         action.triggered.connect(self._increasePriority)
         self._view.addListAction(action)
         self.increasePrioritySelectedTasksAction = action
-    
-        
+
     def completeTask(self, task):
         date_string = date.today().strftime('%Y-%m-%d') 
         if not task.is_complete:
@@ -94,8 +94,8 @@ class TasksListController(QtCore.QObject):
             message = '%s %d tasks?' % (messagePrefix, len(tasks))
          
         result = QtGui.QMessageBox.question(self._view, 'Confirm', message,
-            buttons=QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
-            defaultButton=QtGui.QMessageBox.Yes)
+                                            buttons=QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
+                                            defaultButton=QtGui.QMessageBox.Yes)
         
         return result == QtGui.QMessageBox.Yes
         
@@ -137,7 +137,6 @@ class TasksListController(QtCore.QObject):
         else:
             text = '%s %s' % (date_string, text)
         return text
-
 
     def createTask(self):
         (text, ok) = self._task_editor_service.createTask()

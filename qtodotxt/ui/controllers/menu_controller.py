@@ -4,6 +4,7 @@ from PySide import QtGui
 from qtodotxt.ui.resource_manager import getIcon
 from qtodotxt.ui.views import about_view
 
+
 class MenuController(QtCore.QObject):
     def __init__(self, main_controller, menu):
         super(MenuController, self).__init__()
@@ -97,7 +98,7 @@ class MenuController(QtCore.QObject):
         return action
 
     def _hideFutureTasksAction(self):
-        action = QtGui.QAction('Hide future tasks', self,checkable=True)
+        action = QtGui.QAction('Hide future tasks', self, checkable=True)
         action.triggered.connect(self._main_controller.toggleHideFutureTasks)
         self.hideFutureTasksAction = action
         return action
@@ -119,4 +120,3 @@ class MenuController(QtCore.QObject):
         action.setShortcuts(["Alt+F4"])
         action.triggered.connect(self._main_controller.exit)
         return action
-    

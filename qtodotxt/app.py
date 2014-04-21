@@ -7,6 +7,7 @@ from qtodotxt.ui.views import MainView
 from qtodotxt.ui.controllers import MainController
 from qtodotxt.ui.resource_manager import getIcon
 
+
 def run():
     app = QtGui.QApplication(sys.argv)
     controller = _createController()
@@ -15,11 +16,13 @@ def run():
     app.exec_()
     sys.exit()
 
+
 def _createController():
     window = MainView()
     dialogs_service = DialogsService(window, 'QTodoTxt')
     task_editor_service = TaskEditorService(window)
     return MainController(window, dialogs_service, task_editor_service)
+
 
 class TrayIcon(QtGui.QSystemTrayIcon):
     def __init__(self, main_controller):

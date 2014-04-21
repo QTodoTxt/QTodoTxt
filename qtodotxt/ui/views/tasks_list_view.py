@@ -3,6 +3,7 @@ from PySide import QtGui
 from qtodotxt.lib.task_htmlizer import TaskHtmlizer
 from qtodotxt.lib import todolib
 
+
 class TasksListView(QtGui.QListWidget):
 
     taskActivated = QtCore.Signal(todolib.Task)
@@ -94,8 +95,7 @@ class TasksListView(QtGui.QListWidget):
             text = self._task_htmlizer.task2html(item.task, True)
             label.setText(text)
 
-
-    def keyPressEvent(self,event):
+    def keyPressEvent(self, event):
         key = event.key()
         if key == QtCore.Qt.Key_Return:
             items = self.selectedItems()
@@ -104,6 +104,7 @@ class TasksListView(QtGui.QListWidget):
         else:
             QtGui.QListWidget.keyPressEvent(self, event)
             return
+
 
 class TaskListWidgetItem(QtGui.QListWidgetItem):
 

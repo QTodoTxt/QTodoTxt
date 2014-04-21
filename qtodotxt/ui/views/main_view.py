@@ -5,6 +5,7 @@ from ..resource_manager import getIcon
 from filters_tree_view import FiltersTreeView
 from tasks_view import TasksView
 
+
 class MainView(QtGui.QMainWindow):
     
     closeEventSignal = QtCore.Signal(QtGui.QCloseEvent)

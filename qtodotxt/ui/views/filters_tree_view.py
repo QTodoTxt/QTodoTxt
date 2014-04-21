@@ -3,6 +3,7 @@ from PySide import QtGui
 from qtodotxt.lib.filters import *
 from qtodotxt.ui.resource_manager import getIcon
 
+
 class FiltersTreeView(QtGui.QWidget):
     
     filterSelectionChanged = QtCore.Signal(list)
@@ -127,7 +128,8 @@ class FiltersTreeView(QtGui.QWidget):
         else:
             item = self._treeItemByFilterType[type(filter)]
             self._selectItem(item)
-            
+
+
 class FilterTreeWidgetItem(QtGui.QTreeWidgetItem):
     def __init__(self, parent, strings, filter=None, icon=None):
         QtGui.QTreeWidgetItem.__init__(self, parent, strings)
