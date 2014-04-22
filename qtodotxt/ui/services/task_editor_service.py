@@ -42,7 +42,8 @@ class TaskEditorService(object):
         return text, ok
 
     def _openTaskEditor(self, title, task=None):
-        dialog = AutoCompleteInputDialog(self._values + self._completedValues, self._parent_window)
+        uniqlist = list(set(self._completedValues+self._values))
+        dialog = AutoCompleteInputDialog(uniqlist, self._parent_window)
         dialog.setWindowTitle(title)
         dialog.setLabelText('Task:')
         dialog.resize(500, 100)
