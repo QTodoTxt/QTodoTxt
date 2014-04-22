@@ -16,7 +16,7 @@ class AutoCompleteInputDialog(QtGui.QDialog):
 
         self._edit = AutoCompleteEdit(values)
         vbox.addWidget(self._edit)
-        
+
         hbox = QtGui.QHBoxLayout()
         okButton = QtGui.QPushButton("Ok")
         okButton.clicked.connect(self.accept)
@@ -45,6 +45,6 @@ if __name__ == '__main__':
     view = AutoCompleteInputDialog(values)
     view.show()
     sys.exit(app.exec_())
-    
-    
+
+
 
