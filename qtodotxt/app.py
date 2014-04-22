@@ -33,9 +33,9 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         QtGui.QSystemTrayIcon.__init__(self, icon, view)
         self.activated.connect(self._onActivated)
         self.setToolTip('QTodoTxt')
-    
+
     def _onActivated(self):
         self._controller._tasks_list_controller.createTask()
-    
+
 if __name__ == "__main__":
     run()
