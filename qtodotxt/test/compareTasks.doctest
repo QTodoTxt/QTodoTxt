@@ -7,7 +7,7 @@ Test Setup and Helper Methods
 
 
 ========================================
-1. Identical tasks should return 0
+1a. Identical tasks should return 0
 ========================================
 >>> task1 = todolib.Task('task')
 >>> task2 = todolib.Task('task')
@@ -15,7 +15,23 @@ Test Setup and Helper Methods
 0
 
 ========================================
-2. Task1.text > Task2.text should return -1
+1b. Identical, uncompleted tasks should return 0
+========================================
+>>> task1 = todolib.Task('task')
+>>> task2 = todolib.Task('task')
+>>> todolib.compareTasksByCompleteness(task1, task2)
+0
+
+========================================
+1c. Identical, unprioritized tasks should return 0
+========================================
+>>> task1 = todolib.Task('task')
+>>> task2 = todolib.Task('task')
+>>> todolib.compareTasksByPriority(task1, task2)
+0
+
+========================================
+2a. task1.text < task2.text should return -1
 ========================================
 >>> task1 = todolib.Task('task1')
 >>> task2 = todolib.Task('task2')
@@ -23,12 +39,44 @@ Test Setup and Helper Methods
 -1
 
 ========================================
-3. Task1.text < Task2.text should return 1
+2b. Different, uncompleted tasks should return 0
+========================================
+>>> task1 = todolib.Task('task1')
+>>> task2 = todolib.Task('task2')
+>>> todolib.compareTasksByCompleteness(task1, task2)
+0
+
+========================================
+2c. Different, unprioritized tasks should return 0
+========================================
+>>> task1 = todolib.Task('task1')
+>>> task2 = todolib.Task('task2')
+>>> todolib.compareTasksByPriority(task1, task2)
+0
+
+========================================
+3a. Task1.text > Task2.text should return 1
 ========================================
 >>> task1 = todolib.Task('task2')
 >>> task2 = todolib.Task('task1')
 >>> todolib.compareTasks(task1, task2)
 1
+
+========================================
+3b. Different, uncompleted tasks should return 0
+========================================
+>>> task1 = todolib.Task('task2')
+>>> task2 = todolib.Task('task1')
+>>> todolib.compareTasksByCompleteness(task1, task2)
+0
+
+========================================
+3c. Different, unprioritized tasks should return 0
+========================================
+>>> task1 = todolib.Task('task2')
+>>> task2 = todolib.Task('task1')
+>>> todolib.compareTasksByPriority(task1, task2)
+0
 
 ========================================
 4. Task1 has priority A, Task2 has no priority, should return -1

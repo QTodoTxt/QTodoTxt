@@ -42,13 +42,13 @@ class FiltersTreeController(QtCore.QObject):
 
     def _addAllContexts(self, file):
         contexts = file.getAllContexts()
-        for context, number in contexts.iteritems():
+        for context, number in contexts.items():
             filter = ContextFilter(context)
             self._view.addFilter(filter, number)
 
     def _addAllProjects(self, file):
         projects = file.getAllProjects()
-        for project, number in projects.iteritems():
+        for project, number in projects.items():
             filter = ProjectFilter(project)
             self._view.addFilter(filter, number)
         

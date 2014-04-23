@@ -1,6 +1,6 @@
 from PySide import QtGui
-from filter_tasks_view import FilterTasksView
-from tasks_list_view import TasksListView
+from qtodotxt.ui.views.filter_tasks_view import FilterTasksView
+from qtodotxt.ui.views.tasks_list_view import TasksListView
 from qtodotxt.ui.resource_manager import getIcon
 
 class TasksView(QtGui.QWidget):

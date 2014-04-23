@@ -1,6 +1,6 @@
 import sys
 from PySide import QtGui
-from autocomplete_lineedit import AutoCompleteEdit
+from qtodotxt.ui.controls.autocomplete_lineedit import AutoCompleteEdit
 
 class AutoCompleteInputDialog(QtGui.QDialog):
     def __init__(self, values, parent=None):
@@ -45,6 +45,3 @@ if __name__ == '__main__':
     view = AutoCompleteInputDialog(values)
     view.show()
     sys.exit(app.exec_())
-
-
-

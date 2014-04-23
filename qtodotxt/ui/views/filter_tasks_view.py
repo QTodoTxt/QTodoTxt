@@ -1,14 +1,14 @@
 from PySide import QtCore, QtGui
 
 class FilterTasksView(QtGui.QLineEdit):
-    
-    filterTextChanged = QtCore.Signal(unicode)
-    
+
+    filterTextChanged = QtCore.Signal()
+
     def __init__(self, searchIcon, clearIcon, parent=None):
         QtGui.QLineEdit.__init__(self, parent)
-        
+
         self._text = ""
-    
+
         self.clearButton = QtGui.QToolButton(self)
         self.clearButton.setIcon(clearIcon)
         self.clearButton.setCursor(QtCore.Qt.ArrowCursor)
@@ -16,17 +16,17 @@ class FilterTasksView(QtGui.QLineEdit):
         self.clearButton.hide()
         self.clearButton.clicked.connect(self.clear)
         self.textChanged.connect(self.updateText)
-    
+
         self.searchButton = QtGui.QToolButton(self)
         self.searchButton.setIcon(searchIcon)
         self.searchButton.setStyleSheet("QToolButton { border: none; padding: 0px; }")
-    
+
         frameWidth = self.style().pixelMetric(QtGui.QStyle.PM_DefaultFrameWidth)
         self.setStyleSheet("QLineEdit { padding-left: %spx; padding-right: %spx; } " % (self.searchButton.sizeHint().width() + frameWidth + 1, self.clearButton.sizeHint().width() + frameWidth + 1))
         msz = self.minimumSizeHint()
         self.setMinimumSize(max(msz.width(), self.searchButton.sizeHint().width() + self.clearButton.sizeHint().width() + frameWidth * 2 + 2), max(msz.height(), self.clearButton.sizeHint().height() + frameWidth * 2 + 2))
         self.setPlaceholderText("filter")
-        
+
         focusShortcut = QtGui.QShortcut(QtGui.QKeySequence("Ctrl+F"), self)
         focusShortcut.activated.connect(self.setFocus)
 

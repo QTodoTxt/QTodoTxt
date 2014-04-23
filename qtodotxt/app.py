@@ -12,6 +12,7 @@ def run():
     controller = _createController()
     icon = TrayIcon(controller)
     controller.show()
+    icon.show()
     app.exec_()
     sys.exit()
 
@@ -25,7 +26,6 @@ class TrayIcon(QtGui.QSystemTrayIcon):
     def __init__(self, main_controller):
         self._controller = main_controller
         self._initIcon()
-        self.show()
 
     def _initIcon(self):
         view = self._controller.getView()
