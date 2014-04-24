@@ -1,8 +1,5 @@
 import os
-try:
-    import cPickle as pickle
-except:
-    import pickle
+import pickle
 
 DEFAULT_SETTINGS_FILE = os.path.expanduser("~/.qtodotxt.cfg")
 
