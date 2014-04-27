@@ -1,5 +1,5 @@
+import json
 import os
-import pickle
 
 DEFAULT_SETTINGS_FILE = os.path.expanduser("~/.qtodotxt.cfg")
 
@@ -11,7 +11,15 @@ class Settings(object):
 
     def load(self, filename=DEFAULT_SETTINGS_FILE):
         self._file = filename
-        if os.path.exists(self._file):
+        if not os.path.exists(self._file):
+            self._data = {}
+        try:
+            with open(self._file, 'tr') as file:
+                self._data = json.load(file)
+                print('loaded json-data')
+        except:
+            import pickle
+            print('Loading pickled data.')
             with open(self._file, 'br') as file:
                 self._data = pickle.load(file)
 
@@ -58,5 +66,5 @@ class Settings(object):
 
     def _save(self):
         if self._data:
-            with open(self._file, 'bw') as file:
-                pickle.dump(self._data, file)
+            with open(self._file, 'tw') as file:
+                json.dump(self._data, file, indent=4, sort_keys=True)
