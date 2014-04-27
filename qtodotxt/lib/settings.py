@@ -16,10 +16,8 @@ class Settings(object):
         try:
             with open(self._file, 'tr') as file:
                 self._data = json.load(file)
-                print('loaded json-data')
         except:
             import pickle
-            print('Loading pickled data.')
             with open(self._file, 'br') as file:
                 self._data = pickle.load(file)
 
