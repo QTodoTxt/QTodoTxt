@@ -48,19 +48,18 @@ class TasksListController(QtCore.QObject):
         self.completeSelectedTasksAction = action
 
     def _initDecreasePrioritySelectedTasksAction(self):
-        action = QtGui.QAction(getIcon('decrease.png'), 'Decrease priority',self)
-        action.setShortcuts(['-','<'])
+        action = QtGui.QAction(getIcon('decrease.png'), 'Decrease priority', self)
+        action.setShortcuts(['-', '<'])
         action.triggered.connect(self._decreasePriority)
         self._view.addListAction(action)
         self.decreasePrioritySelectedTasksAction = action
 
     def _initIncreasePrioritySelectedTasksAction(self):
-        action = QtGui.QAction(getIcon('increase.png'), 'Increase priority',self)
-        action.setShortcuts(['+','>'])
+        action = QtGui.QAction(getIcon('increase.png'), 'Increase priority', self)
+        action.setShortcuts(['+', '>'])
         action.triggered.connect(self._increasePriority)
         self._view.addListAction(action)
         self.increasePrioritySelectedTasksAction = action
-
 
     def completeTask(self, task):
         date_string = date.today().strftime('%Y-%m-%d')
@@ -95,8 +94,8 @@ class TasksListController(QtCore.QObject):
             message = '%s %d tasks?' % (messagePrefix, len(tasks))
 
         result = QtGui.QMessageBox.question(self._view, 'Confirm', message,
-            buttons=QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
-            defaultButton=QtGui.QMessageBox.Yes)
+                                            buttons=QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
+                                            defaultButton=QtGui.QMessageBox.Yes)
 
         return result == QtGui.QMessageBox.Yes
 

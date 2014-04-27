@@ -16,6 +16,7 @@ FILENAME_FILTERS = ';;'.join([
     'Text Files (*.txt)',
     'All Files (*.*)'])
 
+
 class MainController(QtCore.QObject):
     def __init__(self, view, dialogs_service, task_editor_service):
         super(MainController, self).__init__()
@@ -42,8 +43,8 @@ class MainController(QtCore.QObject):
             del sys.argv[1]
         parser = argparse.ArgumentParser(description='QTodoTxt')
         parser.add_argument('-f', '--file', type=str, nargs=1, metavar='TEXTFILE')
-        parser.add_argument('-q', '--quickadd', action='store_true', \
-                help='opens the add task dialog and exit the application when done')
+        parser.add_argument('-q', '--quickadd', action='store_true',
+                            help='opens the add task dialog and exit the application when done')
         return parser.parse_args()
 
     def _initControllers(self):
@@ -97,10 +98,10 @@ class MainController(QtCore.QObject):
         treeTasks = todolib.filterTasks(filters, self._file.tasks)
         # Then with our filter text
         filterText = self._view.tasks_view.filter_tasks.getText()
-        tasks = todolib.filterTasks([SimpleTextFilter(filterText)],treeTasks)
+        tasks = todolib.filterTasks([SimpleTextFilter(filterText)], treeTasks)
         # And finally with future filter if needed
         # TODO: refactor all that filters
-        if (self._settings.getHideFutureTasks()):
+        if self._settings.getHideFutureTasks():
             tasks = todolib.filterTasks([FutureFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
 
@@ -108,15 +109,15 @@ class MainController(QtCore.QObject):
         self._view.tasks_view.filter_tasks.filterTextChanged.connect(
             self._onFilterTextChanged)
 
-    def _onFilterTextChanged(self,text):
+    def _onFilterTextChanged(self, text):
         # First we filter with filters tree
         filters = self._filters_tree_controller._view.getSelectedFilters()
-        treeTasks = todolib.filterTasks(filters,self._file.tasks)
+        treeTasks = todolib.filterTasks(filters, self._file.tasks)
         # Then with our filter text
-        tasks = todolib.filterTasks([SimpleTextFilter(text)],treeTasks)
+        tasks = todolib.filterTasks([SimpleTextFilter(text)], treeTasks)
         # And finally with future filter if needed
         # TODO: refactor all that filters
-        if (self._settings.getHideFutureTasks()):
+        if self._settings.getHideFutureTasks():
             tasks = todolib.filterTasks([FutureFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
 
@@ -149,8 +150,6 @@ class MainController(QtCore.QObject):
         self._filters_tree_controller.showFilters(self._file)
         self._task_editor_service.updateValues(self._file)
         self._setIsModified(True)
-
-
 
     def _canExit(self):
         if not self._is_modified:

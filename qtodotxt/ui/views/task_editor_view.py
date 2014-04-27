@@ -2,6 +2,7 @@ import sys
 from PySide import QtCore
 from PySide import QtGui
 
+
 class TaskEditorView(QtGui.QDialog):
     def __init__(self):
         super(TaskEditorView, self).__init__()

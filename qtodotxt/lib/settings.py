@@ -3,6 +3,7 @@ import pickle
 
 DEFAULT_SETTINGS_FILE = os.path.expanduser("~/.qtodotxt.cfg")
 
+
 class Settings(object):
     def __init__(self):
         self._file = DEFAULT_SETTINGS_FILE

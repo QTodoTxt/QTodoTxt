@@ -2,6 +2,7 @@ import sys
 from PySide import QtGui
 from qtodotxt.ui.controls.autocomplete_lineedit import AutoCompleteEdit
 
+
 class AutoCompleteInputDialog(QtGui.QDialog):
     def __init__(self, values, parent=None):
         super(AutoCompleteInputDialog, self).__init__(parent)

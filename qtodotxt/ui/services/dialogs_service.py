@@ -1,5 +1,6 @@
 from PySide import QtGui
 
+
 class DialogsService(object):
     
     def __init__(self, parent_window, default_title):
@@ -60,4 +61,3 @@ if __name__ == "__main__":
         message += '"Cancel"'
     service.showMessage(message)
     service.showConfirm('Sure?')
-    

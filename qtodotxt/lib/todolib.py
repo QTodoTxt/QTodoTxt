@@ -19,6 +19,7 @@ class ErrorLoadingFile(Error):
     def __str__(self):
         return self.message
 
+
 class ErrorSavingFile(Error):
 
     def __init__(self, message, innerException=None):
@@ -144,17 +145,17 @@ class File(object):
         return projects
 
     def getTasksCounters(self):
-        counters = dict({'Pending':0,
-                         'Uncategorized':0,
-                         'Contexts':0,
-                         'Projects':0,
-                         'Complete':0})
+        counters = dict({'Pending': 0,
+                         'Uncategorized': 0,
+                         'Contexts': 0,
+                         'Projects': 0,
+                         'Complete': 0})
         for task in self.tasks:
             if not task.is_complete:
                 counters['Pending'] += 1
                 nbProjects = len(task.projects)
                 nbContexts = len(task.contexts)
-                if  nbProjects > 0:
+                if nbProjects > 0:
                     counters['Projects'] += 1
                 if nbContexts > 0:
                     counters['Contexts'] += 1
@@ -162,8 +163,7 @@ class File(object):
                     counters['Uncategorized'] += 1
             else:
                 counters['Complete'] += 1
-        return counters
-
+        return counters    
 
 
 class Task(object):
@@ -229,7 +229,7 @@ class Task(object):
             self.text = self.text[4:]
         else:
             newPriority = chr(ord(self.priority)-1)
-            self.text = re.sub('^\(%s\) ' % self.priority,'(%s) ' % newPriority,self.text)
+            self.text = re.sub('^\(%s\) ' % self.priority, '(%s) ' % newPriority, self.text)
             self.priority = newPriority
 
     def decreasePriority(self):
@@ -241,11 +241,11 @@ class Task(object):
             self.priority = None
         else:
             newPriority = chr(ord(self.priority)+1)
-            self.text = re.sub('^\(%s\) ' % self.priority,'(%s) ' % newPriority,self.text)
+            self.text = re.sub('^\(%s\) ' % self.priority, '(%s) ' % newPriority, self.text)
             self.priority = newPriority
-
-
     text = property(_getText, _setText)
+
+
 
 def compareTasks(task1, task2):
     comparison = compareTasksByCompleteness(task1, task2)
@@ -282,8 +282,10 @@ def compareTasksByCompleteness(task1, task2):
         return 1
     if task2.is_complete:
         return -1
-
-def filterTasks(filters,tasks):
+    else:
+        return 1
+    
+def filterTasks(filters, tasks):
     if None in filters:
         return tasks
 
