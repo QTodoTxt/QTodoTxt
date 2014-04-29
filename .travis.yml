@@ -13,7 +13,9 @@ before_install:
 install:
   - sudo apt-get -y update
   - sudo apt-get -y install python3-pyside
-  - toggleglobalsitepackages
+
+after_install:
+  - python -c "import sys ; print(sys.path)"
 
 # command to run tests
 script:
