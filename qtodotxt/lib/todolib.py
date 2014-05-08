@@ -1,6 +1,5 @@
 import re
 import os
-import codecs
 from datetime import datetime,date
 from functools import cmp_to_key
 
@@ -57,7 +56,7 @@ class File(object):
         lines = []
         fd = None
         try:
-            fd = codecs.open(filename, 'r', 'utf-8')
+            fd = open(filename, 'r', encoding='utf-8')
             lines = fd.readlines()
             fd.close()
         except IOError as e:
@@ -79,7 +78,7 @@ class File(object):
     def _saveTasks(self):
         fd = None
         try:
-            fd = open(self.filename, 'w')
+            fd = open(self.filename, 'w', encoding='utf-8')
             lines = [(task.text + self.NEWLINE) for task in self.tasks]
             fd.writelines(lines)
         except IOError as e:
@@ -92,7 +91,7 @@ class File(object):
         fdDone = None
         doneFilename = os.path.join(os.path.dirname(self.filename), 'done.txt')
         try:
-            fdDone = open(doneFilename, 'a')
+            fdDone = open(doneFilename, 'a', encoding='utf-8')
             fdDone.write(task.text + self.NEWLINE)
         except IOError as e:
             raise ErrorSavingFile("Error saving to file '%s'" % doneFilename, e)
