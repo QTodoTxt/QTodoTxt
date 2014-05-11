@@ -3,7 +3,7 @@ from PySide import QtCore, QtGui
 
 class FilterTasksView(QtGui.QLineEdit):
 
-    filterTextChanged = QtCore.Signal()
+    filterTextChanged = QtCore.Signal(str)
 
     def __init__(self, searchIcon, clearIcon, parent=None):
         QtGui.QLineEdit.__init__(self, parent)
