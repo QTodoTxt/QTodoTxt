@@ -12,8 +12,9 @@ install:
   - sudo apt-get -y install python3-pyside
   - export PYTHONPATH="$PYTHONPATH:/usr/lib/python3/dist-packages/"
 
-after_install:
+before_script:
   - python -c "import sys ; print(sys.path)"
+  - ls /usr/lib/python3/dist-packages/
 
 # command to run tests
 script:
