@@ -17,6 +17,7 @@ before_script:
   - ls /usr/lib/python3/dist-packages/PySide
   - python --version
   - python -c "from PySide import QtCore"
+  - cat /home/travis/build.sh
 
 # command to run tests
 script:
