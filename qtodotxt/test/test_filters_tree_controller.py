@@ -98,32 +98,24 @@ class Test(unittest.TestCase):
         controller.showFilters(file)
 
         # assert
-        # FIXME the following tests fail most times, but not always
-        # self.assertNotEqual(view.filters[0], original_filter0,
-        #                     'A new filter was not created (expected: %s, actual: %s)' %
-        #                     (view.filters[0], original_filter0))
-
-        # self.assertNotEqual(view.selectedFilters[0], original_filter0,
-        #    'The old selected filter is still selected (expected: %s, actual: %s)' %
-        #        (view.selectedFilters[0], original_filter0))
-
         self.assertEquals(
             4, len(view.filters),
             'There should be 4 filters (actual: %s)' % view.selectedFilters)
 
         sortedFilter = sorted(view.filters, key=lambda filter: filter.text)
-
-        filter1_text = sortedFilter[0].text
-        self.assertEqual("context1 (2)", filter1_text,
-                         'Filter #1 context should be "context1 (2)" (actual: "%s")' % filter1_text)
+        print(sortedFilter)
 
         self.assertEquals(
             1, len(view.selectedFilters),
             'There should be 1 selected filters (actual: %s)' % view.selectedFilters)
 
-        expectedSelectedFilters = [sortedFilter[1]]
+        filter1_text = sortedFilter[0].text
+        self.assertEqual("context1 (2)", filter1_text,
+                         'Filter #1 context should be "context1 (2)" (actual: "%s")' % filter1_text)
+
+        expectedselectedfilter = original_filter0.text
         self.assertSequenceEqual(
-            expectedSelectedFilters,
-            view.selectedFilters,
+            expectedselectedfilter,
+            view.selectedFilters[0].text,
             'Wrong selected filters (expected: %s, actual: %s)' %
-            (str(expectedSelectedFilters), view.selectedFilters))
+            (expectedselectedfilter, view.selectedFilters))
