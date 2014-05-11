@@ -14,10 +14,7 @@ install:
 
 before_script:
   - python -c "import sys ; print(sys.path)"
-  - ls /usr/lib/python3/dist-packages/PySide
   - python --version
-  - python -c "from PySide import QtCore"
-  - cat /home/travis/build.sh
 
 # command to run tests
 script:
