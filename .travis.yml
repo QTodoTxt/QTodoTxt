@@ -12,10 +12,6 @@ install:
   - sudo apt-get -y install python3-pyside
   - export PYTHONPATH="$PYTHONPATH:/usr/lib/python3/dist-packages/"
 
-before_script:
-  - python -c "import sys ; print(sys.path)"
-  - python --version
-
 # command to run tests
 script:
   - python qtodotxt/test/run-tests.py
