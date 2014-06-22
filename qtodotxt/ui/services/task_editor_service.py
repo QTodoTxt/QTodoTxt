@@ -1,4 +1,6 @@
 from qtodotxt.ui.controls.autocomplete_inputdialog import AutoCompleteInputDialog
+from collections import OrderedDict
+
 
 
 class TaskEditorService(object):
@@ -42,7 +44,7 @@ class TaskEditorService(object):
         return text, ok
 
     def _openTaskEditor(self, title, task=None):
-        uniqlist = list(set(self._completedValues+self._values))
+        uniqlist = sorted(list(OrderedDict.fromkeys(self._completedValues+self._values)))
         dialog = AutoCompleteInputDialog(uniqlist, self._parent_window)
         dialog.setWindowTitle(title)
         dialog.setLabelText('Task:')
