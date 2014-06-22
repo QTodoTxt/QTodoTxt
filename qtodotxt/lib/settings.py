@@ -13,13 +13,14 @@ class Settings(object):
         self._file = filename
         if not os.path.exists(self._file):
             self._data = {}
-        try:
-            with open(self._file, 'tr') as file:
-                self._data = json.load(file)
-        except:
-            import pickle
-            with open(self._file, 'br') as file:
-                self._data = pickle.load(file)
+        else:
+            try:
+                with open(self._file, 'tr') as file:
+                    self._data = json.load(file)
+            except:
+                import pickle
+                with open(self._file, 'br') as file:
+                    self._data = pickle.load(file)
 
     def getLastOpenFile(self):
         return self._getData('last_open_file')
