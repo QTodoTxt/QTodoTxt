@@ -5,7 +5,7 @@ from functools import cmp_to_key
 
 USE_LAST_FILENAME = 1
 HIGHER_PRIORITY = 'A'
-LOWER_PRIORITY = 'C'
+LOWER_PRIORITY = 'Z'
 
 class Error(Exception):
     pass

@@ -1,3 +1,4 @@
+import string
 from qtodotxt.ui.controls.autocomplete_inputdialog import AutoCompleteInputDialog
 from collections import OrderedDict
 
@@ -6,7 +7,7 @@ from collections import OrderedDict
 class TaskEditorService(object):
     def __init__(self, parent_window):
         self._parent_window = parent_window
-        self._priorities = ['(A)', '(B)', '(C)']
+        self._priorities = ["("+i+")" for i in string.ascii_uppercase ]
         self._resetValues()
 
     def _resetValues(self):

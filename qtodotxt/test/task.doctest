@@ -138,24 +138,19 @@ False
 True
 >>> task.increasePriority()
 >>> task.priority
-'C'
+'Z'
 >>> task.text
-'(C) this task has no Priority'
+'(Z) this task has no Priority'
 >>> task.increasePriority()
 >>> task.priority
-'B'
+'Y'
 >>> task.text
-'(B) this task has no Priority'
+'(Y) this task has no Priority'
 >>> task.increasePriority()
 >>> task.priority
-'A'
+'X'
 >>> task.text
-'(A) this task has no Priority'
->>> task.increasePriority()
->>> task.priority is None
-True
->>> task.text
-'this task has no Priority'
+'(X) this task has no Priority'
 
 ========================================
 10. decrease task priority
@@ -178,8 +173,3 @@ True
 'C'
 >>> task.text
 '(C) this task has no Priority'
->>> task.decreasePriority()
->>> task.priority is None
-True
->>> task.text
-'this task has no Priority'
