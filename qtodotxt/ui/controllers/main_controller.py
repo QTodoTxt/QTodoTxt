@@ -72,6 +72,7 @@ class MainController(QtCore.QObject):
         self._updateAutoSavePref()
         self._updateAutoArchivePref()
         self._updateHideFutureTasksPref()
+        self._updateView()
 
         filename = None
         if self._args.file:
@@ -163,9 +164,20 @@ class MainController(QtCore.QObject):
 
     def _view_onCloseEvent(self, closeEvent):
         if self._canExit():
+            self._saveView()
             closeEvent.accept()
         else:
             closeEvent.ignore()
+
+    def _saveView(self):
+        viewSize = self._view.size()
+        viewPosition = self._view.pos()
+        splitterPosition = self._view.centralWidget().sizes()
+        self._settings.setViewHeight(viewSize.height())
+        self._settings.setViewWidth(viewSize.width())
+        self._settings.setViewPositionX(viewPosition.x())
+        self._settings.setViewPositionY(viewPosition.y())
+        self._settings.setViewSlidderPosition(splitterPosition)
 
     def _setIsModified(self, is_modified):
         self._is_modified = is_modified
@@ -238,6 +250,21 @@ class MainController(QtCore.QObject):
 
     def _updateHideFutureTasksPref(self):
         self._menu_controller.changeHideFutureTasksState(bool(self._settings.getHideFutureTasks()))
+
+    def _updateView(self):
+        height = self._settings.getViewHeight()
+        width = self._settings.getViewWidth()
+        if height and width:
+            self._view.resize(width, height)
+
+        positionX = self._settings.getViewPositionX()
+        positionY = self._settings.getViewPositionY()
+        if positionX and positionY:
+            self._view.move(positionX,positionY)
+
+        slidderPosition = self._settings.getViewSlidderPosition()
+        if slidderPosition:
+            self._view.centralWidget().setSizes(slidderPosition)
 
     def createdDate(self):
         if self._settings.getCreateDate():
