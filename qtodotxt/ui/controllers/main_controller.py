@@ -4,6 +4,7 @@ import argparse
 
 from PySide import QtCore
 from PySide import QtGui
+import time
 
 from qtodotxt.lib import todolib, settings
 
@@ -30,9 +31,6 @@ class MainController(QtCore.QObject):
         self._setIsModified(False)
         self._view.closeEventSignal.connect(self._view_onCloseEvent)
         self._args = self._parseArgs()
-        timer = QtCore.QTimer(self)
-        self.connect(timer, QtCore.SIGNAL("timeout()"), self.autoSave)
-        timer.start(10000)
 
     def autoSave(self):
         if self._settings.getAutoSave():
@@ -151,6 +149,7 @@ class MainController(QtCore.QObject):
         self._filters_tree_controller.showFilters(self._file)
         self._task_editor_service.updateValues(self._file)
         self._setIsModified(True)
+        self.autoSave()
 
     def _canExit(self):
         if not self._is_modified:
