@@ -95,6 +95,6 @@ class Settings(object):
         self._save()
 
     def _save(self):
-        if self._data:	#TODO don't save if it's just widget-properties?
+        if self._data:
             with open(self._file, 'tw') as file:
                 json.dump(self._data, file, indent=4, sort_keys=True)
