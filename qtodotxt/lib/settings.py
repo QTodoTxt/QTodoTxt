@@ -11,16 +11,17 @@ class Settings(object):
 
     def load(self, filename=DEFAULT_SETTINGS_FILE):
         self._file = filename
-        if not os.path.exists(self._file):
+        try:
+            with open(self._file, 'tr') as file:
+                self._data = json.load(file)
+        except (ValueError, UnicodeDecodeError):
+            import pickle
+            with open(self._file, 'br') as file:
+                self._data = pickle.load(file)
+        except FileNotFoundError:
             self._data = {}
-        else:
-            try:
-                with open(self._file, 'tr') as file:
-                    self._data = json.load(file)
-            except:
-                import pickle
-                with open(self._file, 'br') as file:
-                    self._data = pickle.load(file)
+        except:
+            raise
 
     def getLastOpenFile(self):
         return self._getData('last_open_file')
@@ -94,6 +95,6 @@ class Settings(object):
         self._save()
 
     def _save(self):
-        if self._data:
+        if self._data:	#TODO don't save if it's just widget-properties?
             with open(self._file, 'tw') as file:
                 json.dump(self._data, file, indent=4, sort_keys=True)

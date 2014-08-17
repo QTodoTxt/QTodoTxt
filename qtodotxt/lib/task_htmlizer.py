@@ -89,7 +89,7 @@ class TaskHtmlizer(object):
             r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|'  # ...or ipv4
             r'\[?[A-F0-9]*:[A-F0-9:]+\]?)'  # ...or ipv6
             r'(?::\d+)?'  # optional port
-            r'(?:/?|[/?]\S+))(\s)', re.IGNORECASE)
+            r'(?:/?|[/?]\S+))(\s|$)', re.IGNORECASE)
         return regex.sub(r'<a href="\1">\1</a>\2', text)
 
     def _htmlizeCreatedCompleted(self, text, raw_text):
