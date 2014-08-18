@@ -20,6 +20,7 @@ class MainView(QtGui.QMainWindow):
     def _initUI(self):
 
         splitter = QtGui.QSplitter()
+        splitter.setHandleWidth(1)
 
         self.filters_tree_view = FiltersTreeView(splitter)
         self.tasks_view = TasksView(splitter)

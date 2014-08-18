@@ -2,6 +2,7 @@ import json
 import os
 
 DEFAULT_SETTINGS_FILE = os.path.expanduser("~/.qtodotxt.cfg")
+UI_MARGINS_OFFSET = -4
 
 
 class Settings(object):
