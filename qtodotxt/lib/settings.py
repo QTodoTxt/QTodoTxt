@@ -1,22 +1,30 @@
+import json
 import os
-import pickle
 
 DEFAULT_SETTINGS_FILE = os.path.expanduser("~/.qtodotxt.cfg")
+
 
 class Settings(object):
     def __init__(self):
         self._file = DEFAULT_SETTINGS_FILE
-        self._data = dict()
-            
+        self._data = {}
+
     def load(self, filename=DEFAULT_SETTINGS_FILE):
         self._file = filename
-        if os.path.exists(self._file):
-            with open(self._file) as file:
-                self._data = pickle.load(file)
-            
+        if not os.path.exists(self._file):
+            self._data = {}
+        else:
+            try:
+                with open(self._file, 'tr') as file:
+                    self._data = json.load(file)
+            except:
+                import pickle
+                with open(self._file, 'br') as file:
+                    self._data = pickle.load(file)
+
     def getLastOpenFile(self):
         return self._getData('last_open_file')
-    
+
     def setLastOpenFile(self, last_open_file):
         self._setData('last_open_file', last_open_file)
 
@@ -28,21 +36,51 @@ class Settings(object):
 
     def getAutoSave(self):
         return self._getData('auto_save')
-        
+
     def setAutoSave(self, autoSave):
         self._setData('auto_save', autoSave)
-        
+
     def getAutoArchive(self):
         return self._getData('auto_archive')
-    
+
     def setAutoArchive(self, autoArchive):
         self._setData('auto_archive', autoArchive)
 
     def getHideFutureTasks(self):
         return self._getData('hide_future_tasks')
 
-    def setHideFutureTasks(self,hideFutureTasks):
-        self._setData('hide_future_tasks',hideFutureTasks)
+    def setHideFutureTasks(self, hideFutureTasks):
+        self._setData('hide_future_tasks', hideFutureTasks)
+
+    def setViewHeight(self,height):
+        self._setData('view_size_height', height)
+
+    def setViewWidth(self,width):
+        self._setData('view_size_width', width)
+
+    def getViewHeight(self):
+        return self._getData('view_size_height')
+
+    def getViewWidth(self):
+        return self._getData('view_size_width')
+
+    def setViewPositionX(self,x):
+        self._setData('view_position_x', x)
+
+    def setViewPositionY(self,y):
+        self._setData('view_position_y', y)
+
+    def getViewPositionX(self):
+        return self._getData('view_position_x')
+
+    def getViewPositionY(self):
+        return self._getData('view_position_y')
+
+    def setViewSlidderPosition(self,position):
+        self._setData('view_slidder_position', position)
+
+    def getViewSlidderPosition(self):
+        return self._getData('view_slidder_position')
 
     def _getData(self, key):
         if self._data:
@@ -54,10 +92,8 @@ class Settings(object):
             self._data = dict()
         self._data[key] = value
         self._save()
-    
+
     def _save(self):
         if self._data:
-            with open(self._file, 'w') as file:
-                file = open(self._file, 'w') 
-                pickle.dump(self._data, file)
-    
+            with open(self._file, 'tw') as file:
+                json.dump(self._data, file, indent=4, sort_keys=True)

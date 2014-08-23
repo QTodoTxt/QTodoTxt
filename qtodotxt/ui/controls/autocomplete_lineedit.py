@@ -1,5 +1,6 @@
 from PySide import QtCore, QtGui
 
+
 class AutoCompleteEdit(QtGui.QLineEdit):
     def __init__(self, model, separator=' '):
         super(AutoCompleteEdit, self).__init__()
@@ -8,9 +9,9 @@ class AutoCompleteEdit(QtGui.QLineEdit):
         self._completer.setWidget(self)
         self._completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
         self.connect(
-                self._completer,
-                QtCore.SIGNAL('activated(QString)'),
-                self._insertCompletion)
+            self._completer,
+            QtCore.SIGNAL('activated(QString)'),
+            self._insertCompletion)
         self._keysToIgnore = [QtCore.Qt.Key_Enter,
                               QtCore.Qt.Key_Return,
                               QtCore.Qt.Key_Escape,
@@ -59,7 +60,7 @@ class AutoCompleteEdit(QtGui.QLineEdit):
         """
         self._completer.setCompletionPrefix(completionPrefix)
         self._completer.popup().setCurrentIndex(
-                self._completer.completionModel().index(0, 0))
+            self._completer.completionModel().index(0, 0))
 
 if __name__ == '__main__':
     def demo():
@@ -76,5 +77,3 @@ if __name__ == '__main__':
         sys.exit(app.exec_())
 
     demo()
-
-        

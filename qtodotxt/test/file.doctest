@@ -10,11 +10,11 @@ Test Setup and Helper Methods
 ...     os.remove(file)
 ...   return file
 >>> def printTask(task):
-...   print 'Text:', task.text
-...   print '  Contexts:', task.contexts
-...   print '  Projects:', task.projects
-...   print '  Is Complete:', task.is_complete
-...   print '  Priority:', task.priority
+...   print('Text:', task.text)
+...   print('  Contexts:', task.contexts)
+...   print('  Projects:', task.projects)
+...   print('  Is Complete:', task.is_complete)
+...   print('  Priority:', task.priority)
 >>> def saveAndReload(file):
 ...   filename = getNonExistingTempFile()
 ...   file.save(filename)
@@ -23,7 +23,7 @@ Test Setup and Helper Methods
 ...   return loadedfile
 >>> def printTaskNames(file):
 ...   for task in file.tasks:
-...     print task.text
+...     print(task.text)
 
 ========================================
 1. Test save with a single task
@@ -34,8 +34,8 @@ Test Setup and Helper Methods
 >>> file = saveAndReload(file)
 >>> printTask(file.tasks[0])
 Text: do something +project1 @context1
-  Contexts: [u'context1']
-  Projects: [u'project1']
+  Contexts: ['context1']
+  Projects: ['project1']
   Is Complete: False
   Priority: None
 
@@ -45,7 +45,7 @@ Text: do something +project1 @context1
 
 >>> file = todolib.File()
 >>> file.tasks.extend([
-...   todolib.Task('do something +project1 @context1'), 
+...   todolib.Task('do something +project1 @context1'),
 ...   todolib.Task('(A) do something else +project1 @context2'), #first task
 ... ])
 >>> file = saveAndReload(file)
@@ -59,7 +59,7 @@ do something +project1 @context1
 
 >>> file = todolib.File()
 >>> file.tasks.extend([
-...   todolib.Task('do something +project1 @context1'),         
+...   todolib.Task('do something +project1 @context1'),
 ...   todolib.Task('(A) do something else +project1 @context2'), # will become task #1
 ...   todolib.Task('do something else +project1 @context2'),
 ...   todolib.Task('something else +project1 @context2'),
@@ -106,7 +106,7 @@ True
 >>> file.load('')
 Traceback (most recent call last):
 ...
-Error: Trying to load a file with an empty filename.
+qtodotxt.lib.todolib.Error: Trying to load a file with an empty filename.
 
 ========================================
 7. File.load(non-existing-file) throws exception
@@ -115,10 +115,10 @@ Error: Trying to load a file with an empty filename.
 >>> filename = 'file-does-not-exist'
 >>> if os.path.exists(filename):
 ...   os.remove(filename)
->>> file.load(filename)   
+>>> file.load(filename)
 Traceback (most recent call last):
 ...
-ErrorLoadingFile: [Errno 2] No such file or directory: 'file-does-not-exist'
+qtodotxt.lib.todolib.ErrorLoadingFile: [Errno 2] No such file or directory: 'file-does-not-exist'
 
 ========================================
 8. File.save() throws exception (when the 'filename' isn't set)
@@ -127,7 +127,7 @@ ErrorLoadingFile: [Errno 2] No such file or directory: 'file-does-not-exist'
 >>> file.save()
 Traceback (most recent call last):
 ...
-ErrorSavingFile: 'Filename is None'
+qtodotxt.lib.todolib.ErrorSavingFile: 'Filename is None'
 
 ========================================
 9. Test getAllCompletedContexts()

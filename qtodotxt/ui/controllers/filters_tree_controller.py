@@ -10,6 +10,7 @@ from qtodotxt.lib.filters import ContextFilter, ProjectFilter
 #    filterSelectionChanged = QtCore.Signal()
 #    def selectAllTasksFilter(self): pass    
 
+
 class FiltersTreeController(QtCore.QObject):
     
     filterSelectionChanged = QtCore.Signal(list)
@@ -38,17 +39,16 @@ class FiltersTreeController(QtCore.QObject):
     def _updateCounter(self, file):
         rootCounters = file.getTasksCounters()
         self._view.updateTopLevelTitles(rootCounters)
-        
 
     def _addAllContexts(self, file):
         contexts = file.getAllContexts()
-        for context, number in contexts.iteritems():
+        for context, number in contexts.items():
             filter = ContextFilter(context)
             self._view.addFilter(filter, number)
 
     def _addAllProjects(self, file):
         projects = file.getAllProjects()
-        for project, number in projects.iteritems():
+        for project, number in projects.items():
             filter = ProjectFilter(project)
             self._view.addFilter(filter, number)
         
@@ -57,4 +57,3 @@ class FiltersTreeController(QtCore.QObject):
             self._view.selectFilter(filter)
         if not self._view.getSelectedFilters():
             self._view.selectAllTasksFilter()
-        

@@ -1,11 +1,11 @@
 import re
 import os
-import codecs
 from datetime import datetime,date
+from functools import cmp_to_key
 
 USE_LAST_FILENAME = 1
 HIGHER_PRIORITY = 'A'
-LOWER_PRIORITY = 'C'
+LOWER_PRIORITY = 'Z'
 
 class Error(Exception):
     pass
@@ -14,28 +14,29 @@ class ErrorLoadingFile(Error):
 
     def __init__(self, message):
         self.message = message
-        
+
     def __str__(self):
         return self.message
-    
+
+
 class ErrorSavingFile(Error):
 
     def __init__(self, message, innerException=None):
         self.message = message
         self.innerException = innerException
-        
+
     def __str__(self):
         lines = [repr(self.message)]
         if self.innerException:
             lines.append(repr(self.innerException))
-        return '\n'.join(lines)    
+        return '\n'.join(lines)
 
 class File(object):
     def __init__(self):
-        self.newline = '\n'
+        self.NEWLINE = '\n'
         self.tasks = []
         self.filename = None
-    
+
     def load(self, filename):
         if filename.strip() == '':
             raise Error("Trying to load a file with an empty filename.")
@@ -55,7 +56,7 @@ class File(object):
         lines = []
         fd = None
         try:
-            fd = codecs.open(filename, 'r', 'utf-8')
+            fd = open(filename, 'r', encoding='utf-8')
             lines = fd.readlines()
             fd.close()
         except IOError as e:
@@ -71,27 +72,27 @@ class File(object):
         if not filename:
             raise ErrorSavingFile("Filename is None")
         self.filename = filename
-        self.tasks.sort(compareTasks)
+        self.tasks.sort(key=cmp_to_key(compareTasks))
         self._saveTasks()
-        
+
     def _saveTasks(self):
         fd = None
         try:
-            fd = open(self.filename, 'w')
-            lines = [(task.text.encode('utf8') + self.newline) for task in self.tasks]
+            fd = open(self.filename, 'w', encoding='utf-8')
+            lines = [(task.text + self.NEWLINE) for task in self.tasks]
             fd.writelines(lines)
         except IOError as e:
             raise ErrorSavingFile("Error saving to file '%s'" % self.filename, e)
         finally:
             if fd:
                 fd.close()
-                
+
     def saveDoneTask(self, task):
         fdDone = None
         doneFilename = os.path.join(os.path.dirname(self.filename), 'done.txt')
         try:
-            fdDone = open(doneFilename, 'a')
-            fdDone.write(task.text.encode('utf8') + self.newline)
+            fdDone = open(doneFilename, 'a', encoding='utf-8')
+            fdDone.write(task.text + self.NEWLINE)
         except IOError as e:
             raise ErrorSavingFile("Error saving to file '%s'" % doneFilename, e)
         finally:
@@ -143,17 +144,17 @@ class File(object):
         return projects
 
     def getTasksCounters(self):
-        counters = dict({'Pending':0,
-                         'Uncategorized':0,
-                         'Contexts':0,
-                         'Projects':0,
-                         'Complete':0})
+        counters = dict({'Pending': 0,
+                         'Uncategorized': 0,
+                         'Contexts': 0,
+                         'Projects': 0,
+                         'Complete': 0})
         for task in self.tasks:
             if not task.is_complete:
                 counters['Pending'] += 1
                 nbProjects = len(task.projects)
                 nbContexts = len(task.contexts)
-                if  nbProjects > 0:
+                if nbProjects > 0:
                     counters['Projects'] += 1
                 if nbContexts > 0:
                     counters['Contexts'] += 1
@@ -162,16 +163,15 @@ class File(object):
             else:
                 counters['Complete'] += 1
         return counters    
-            
 
-    
+
 class Task(object):
-    
+
     def __init__(self, line):
         self.reset()
         if line:
             self.parseLine(line)
-            
+
     def reset(self):
         self.contexts = []
         self.projects = []
@@ -188,7 +188,7 @@ class Task(object):
         while i < len(words):
             self.parseWord(words[i], i)
             i += 1
-        
+
         self._text = ' '.join(words)
 
     def parseWord(self, word, index):
@@ -213,12 +213,12 @@ class Task(object):
 
     def _getText(self):
         return self._text
-    
+
     def _setText(self, line):
         self.reset()
         if line:
             self.parseLine(line)
-            
+
     def increasePriority(self):
         if self.priority is None:
             self.priority = LOWER_PRIORITY
@@ -228,7 +228,7 @@ class Task(object):
             self.text = self.text[4:]
         else:
             newPriority = chr(ord(self.priority)-1)
-            self.text = re.sub('^\(%s\) ' % self.priority,'(%s) ' % newPriority,self.text)
+            self.text = re.sub('^\(%s\) ' % self.priority, '(%s) ' % newPriority, self.text)
             self.priority = newPriority
 
     def decreasePriority(self):
@@ -240,45 +240,54 @@ class Task(object):
             self.priority = None
         else:
             newPriority = chr(ord(self.priority)+1)
-            self.text = re.sub('^\(%s\) ' % self.priority,'(%s) ' % newPriority,self.text)
+            self.text = re.sub('^\(%s\) ' % self.priority, '(%s) ' % newPriority, self.text)
             self.priority = newPriority
-            
-    
     text = property(_getText, _setText)
+
+
 
 def compareTasks(task1, task2):
     comparison = compareTasksByCompleteness(task1, task2)
-    if comparison != 0:
+    if comparison:
         return comparison
     comparison = compareTasksByPriority(task1, task2)
-    if comparison != 0:
+    if comparison:
         return comparison
-    return cmp(task1.text, task2.text)
-    
-def compareTasksByPriority(task1, task2):
-    if task1.priority is None:
-        if task2.priority is None:
-            return 0
-        else:
-            return 1
+    if task1.text < task2.text:
+        return -1
+    elif task1.text > task2.text:
+        return 1
     else:
-        if task2.priority is None:
-            return -1
-        else:
-            return cmp(task1.priority, task2.priority)
+        return 0
+
+def compareTasksByPriority(task1, task2):
+    if (not task1.priority and not task2.priority) \
+        or \
+        (task1.priority == task2.priority):
+            return 0
+    if not task1.priority:
+        return 1
+    if not task2.priority:
+        return -1
+    if task1.priority > task2.priority:
+        return 1
+    if task2.priority < task2.priority:
+        return -1
 
 def compareTasksByCompleteness(task1, task2):
     if task1.is_complete == task2.is_complete:
         return 0
-    elif task2.is_complete:
+    if task1.is_complete:
+        return 1
+    if task2.is_complete:
         return -1
     else:
         return 1
     
-def filterTasks(filters,tasks):
+def filterTasks(filters, tasks):
     if None in filters:
         return tasks
-    
+
     filteredTasks = []
     for task in tasks:
         for filter in filters:
@@ -286,4 +295,3 @@ def filterTasks(filters,tasks):
                 filteredTasks.append(task)
                 break
     return filteredTasks
-        

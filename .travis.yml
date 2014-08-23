@@ -1,11 +1,16 @@
 language: python
+
 python:
-  - "2.7"
+  - "3.2"
+  - "3.3"
+  - "3.4"
+
 before_install:
-    - export DISPLAY=:99.0
-    - sh -e /etc/init.d/xvfb start
-# command to install dependencies
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+
 install: "pip install PySide"
+
 # command to run tests
 script:
   - python qtodotxt/test/run-tests.py
