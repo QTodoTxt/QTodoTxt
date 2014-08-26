@@ -7,6 +7,7 @@ from PySide import QtGui
 import time
 
 from qtodotxt.lib import todolib, settings
+from qtodotxt.lib.file import File, ErrorLoadingFile
 
 from qtodotxt.ui.controllers.tasks_list_controller import TasksListController
 from qtodotxt.ui.controllers.filters_tree_controller import FiltersTreeController
@@ -25,7 +26,7 @@ class MainController(QtCore.QObject):
         self._dialogs_service = dialogs_service
         self._task_editor_service = task_editor_service
         self._initControllers()
-        self._file = todolib.File()
+        self._file = File()
         self._is_modified = False
         self._settings = settings.Settings()
         self._setIsModified(False)
@@ -216,17 +217,17 @@ class MainController(QtCore.QObject):
 
     def new(self):
         if self._canExit():
-            self._openFile(todolib.File())
+            self._openFile(File())
 
     def revert(self):
         if self._dialogs_service.showConfirm('Revert to saved file (and lose unsaved changes)?'):
             self.openFileByName(self._file.filename)
 
     def openFileByName(self, filename):
-        file = todolib.File()
+        file = File()
         try:
             file.load(filename)
-        except todolib.ErrorLoadingFile as ex:
+        except ErrorLoadingFile as ex:
             self._dialogs_service.showError(str(ex))
             return
         self._openFile(file)
