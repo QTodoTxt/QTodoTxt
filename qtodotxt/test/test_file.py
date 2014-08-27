@@ -8,10 +8,15 @@ from qtodotxt.lib.todolib import Task
 class TestFile(unittest.TestCase):
     def setUp(self):
         self.file = File()
-        self.tmpfile = mkstemp(text=True)
+        self.tmpfile = mkstemp(text=True)[1]
 
     def tearDown(self):
-        remove(self.tmpfile)
+        try:
+            remove(self.tmpfile)
+        except FileNotFoundError:
+            pass
+        except:
+            raise
 
     def saveAndReaload(self):
         self.file.save(self.tmpfile)
@@ -40,18 +45,18 @@ class TestFile(unittest.TestCase):
         self.assertEqual(self.file.tasks[1].text, task1)
 
     def test_five_tasks(self):
-        task1 = Task('do something +project1 @context1'),
-        task2 = Task('(A) do something else +project1 @context2'),  # will become task #1
-        task3 = Task('do something else +project1 @context2'),
-        task4 = Task('something else +project1 @context2'),
-        task5 = Task('abc +project1 @context2')  # will become task #2
+        task1 = Task('do something +project1 @context1')
+        task2 = Task('(A) do something else +project1 @context2')
+        task3 = Task('do something else +project1 @context2')
+        task4 = Task('something else +project1 @context2')
+        task5 = Task('abc +project1 @context2')
         self.file.tasks.extend([task1, task2, task3, task4, task5])
         self.saveAndReaload()
-        self.assertEqual(self.file.tasks[0], task2)
-        self.assertEqual(self.file.tasks[1], task5)
-        self.assertEqual(self.file.tasks[2], task1)
-        self.assertEqual(self.file.tasks[3], task3)
-        self.assertEqual(self.file.tasks[4], task4)
+        self.assertEqual(self.file.tasks[0].text, task2.text)
+        self.assertEqual(self.file.tasks[1].text, task5.text)
+        self.assertEqual(self.file.tasks[2].text, task1.text)
+        self.assertEqual(self.file.tasks[3].text, task3.text)
+        self.assertEqual(self.file.tasks[4].text, task4.text)
 
     def test_get_all_contexts(self):
         self.file.tasks.extend([
@@ -71,27 +76,27 @@ class TestFile(unittest.TestCase):
             Task('x task with @context1 and @context2 and @context3')
         ])
         self.saveAndReaload()
-        self.assertEqual(self.file.getAllContexts(), {'context1': 2, 'context2': 1, 'context3': 1})
+        self.assertEqual(self.file.getAllCompletedContexts(), {'context1': 2, 'context2': 1, 'context3': 1})
 
     def test_get_all_projects(self):
         self.file.tasks.extend([
-            Task('x task with @project1'),
-            Task('task with @project2'),
-            Task('task with @project1 and @project2'),
-            Task('task with @project1 and @project2 and @project3')
+            Task('x task with +project1'),
+            Task('task with +project2'),
+            Task('task with +project1 and +project2'),
+            Task('task with +project1 and +project2 and +project3')
         ])
         self.saveAndReaload()
         self.assertEqual(self.file.getAllProjects(), {'project1': 2, 'project2': 3, 'project3': 1})
 
     def test_get_all_completed_projects(self):
         self.file.tasks.extend([
-            Task('x task with @project1'),
-            Task('task with @project2'),
-            Task('task with @project1 and @project2'),
-            Task('x task with @project1 and @project2 and @project3')
+            Task('x task with +project1'),
+            Task('task with +project2'),
+            Task('task with +project1 and +project2'),
+            Task('x task with +project1 and +project2 and +project3')
         ])
         self.saveAndReaload()
-        self.assertEqual(self.file.getAllProjects(), {'project1': 2, 'project2': 1, 'project3': 1})
+        self.assertEqual(self.file.getAllCompletedProjects(), {'project1': 2, 'project2': 1, 'project3': 1})
 
     def test_load_empty_filename(self):
         self.assertRaises(ErrorLoadingFile, self.file.load, '')

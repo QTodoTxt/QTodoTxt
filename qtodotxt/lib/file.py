@@ -74,7 +74,7 @@ class File(object):
     def _saveTasks(self):
         try:
             with open(self.filename, 'wt', encoding='utf-8') as fd:
-                fd.writelines(lines=[(task.text + self.NEWLINE) for task in self.tasks])
+                fd.writelines([(task.text + self.NEWLINE) for task in self.tasks])
         except IOError as e:
             raise ErrorSavingFile("Error saving to file '{}'".format(self.filename), e)
 
