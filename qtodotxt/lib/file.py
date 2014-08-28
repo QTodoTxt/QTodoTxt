@@ -38,10 +38,10 @@ class File(object):
         try:
             with open(filename, 'rt', encoding='utf-8') as fd:
                 lines = fd.readlines()
-        except FileNotFoundError as e:
+        except FileNotFoundError:
             raise ErrorLoadingFile("Trying to load a non-existing file: '{}".format(filename))
-        except IOError as e:                # deprecated since Python 3.3, it would be OSError for =>3.3-support
-            raise ErrorLoadingFile(str(e))
+        except IOError as ex:                # deprecated since Python 3.3, it would be OSError for =>3.3-support
+            raise ErrorLoadingFile(str(ex))
         self.filename = filename
         self._createTasksFromLines(lines)
 

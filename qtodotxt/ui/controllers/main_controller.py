@@ -4,7 +4,6 @@ import argparse
 
 from PySide import QtCore
 from PySide import QtGui
-import time
 
 from qtodotxt.lib import todolib, settings
 from qtodotxt.lib.file import ErrorLoadingFile, File, FileObserver
@@ -74,7 +73,6 @@ class MainController(QtCore.QObject):
         self._updateHideFutureTasksPref()
         self._updateView()
 
-        filename = None
         if self._args.file:
             filename = self._args.file[0]
         else:
@@ -225,7 +223,8 @@ class MainController(QtCore.QObject):
 
     def new(self):
         if self._canExit():
-            self._loadFileToUI(File())
+            self._file = File()
+            self._loadFileToUI()
 
     def revert(self):
         if self._dialogs_service.showConfirm('Revert to saved file (and lose unsaved changes)?'):
@@ -267,7 +266,7 @@ class MainController(QtCore.QObject):
         positionX = self._settings.getViewPositionX()
         positionY = self._settings.getViewPositionY()
         if positionX and positionY:
-            self._view.move(positionX,positionY)
+            self._view.move(positionX, positionY)
 
         slidderPosition = self._settings.getViewSlidderPosition()
         if slidderPosition:
