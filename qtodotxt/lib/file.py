@@ -1,5 +1,6 @@
 from functools import cmp_to_key
 import os
+from PySide import QtCore
 from qtodotxt.lib.todolib import Task, compareTasks
 
 
@@ -150,3 +151,23 @@ class File(object):
             else:
                 counters['Complete'] += 1
         return counters
+
+
+class FileObserver(QtCore.QFileSystemWatcher):
+    def __init__(self, parent, file):
+        super().__init__(parent)
+        self._file = file
+        self.fileChanged.connect(self.fileChangedHandler)
+
+    @QtCore.Slot(str)
+    def fileChangedHandler(self, path):
+        self.removePath(path)
+        if path == self._file.filename:
+            try:
+                self.parent().openFileByName(self._file.filename)
+            except ErrorLoadingFile:
+                pass    # let auto-reload errors pass silently
+
+    def clear(self):
+        if self.files():
+            self.removePaths(self.files())
