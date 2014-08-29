@@ -10,8 +10,7 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 
 install:
-  - sudo apt-get -y update
-  - sudo apt-get -y install python3-pyside
+  - pip install PySide
 
 # command to run tests
 script:
