@@ -1,6 +1,6 @@
 from functools import cmp_to_key
 import os
-#from PySide import QtCore
+from PySide import QtCore
 from qtodotxt.lib.todolib import Task, compareTasks
 from sys import version
 
