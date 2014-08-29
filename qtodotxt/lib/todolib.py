@@ -1,168 +1,9 @@
 import re
-import os
 from datetime import datetime,date
-from functools import cmp_to_key
 
-USE_LAST_FILENAME = 1
+
 HIGHER_PRIORITY = 'A'
 LOWER_PRIORITY = 'Z'
-
-class Error(Exception):
-    pass
-
-class ErrorLoadingFile(Error):
-
-    def __init__(self, message):
-        self.message = message
-
-    def __str__(self):
-        return self.message
-
-
-class ErrorSavingFile(Error):
-
-    def __init__(self, message, innerException=None):
-        self.message = message
-        self.innerException = innerException
-
-    def __str__(self):
-        lines = [repr(self.message)]
-        if self.innerException:
-            lines.append(repr(self.innerException))
-        return '\n'.join(lines)
-
-class File(object):
-    def __init__(self):
-        self.NEWLINE = '\n'
-        self.tasks = []
-        self.filename = None
-
-    def load(self, filename):
-        if filename.strip() == '':
-            raise Error("Trying to load a file with an empty filename.")
-        self.filename = filename
-        lines = self._loadLinesFromFile(filename)
-        self._createTasksFromLines(lines)
-
-    def _createTasksFromLines(self, lines):
-        self.tasks = []
-        for line in lines:
-            task_text = line.strip()
-            if task_text:
-                task = Task(task_text)
-                self.tasks.append(task)
-
-    def _loadLinesFromFile(self, filename):
-        lines = []
-        fd = None
-        try:
-            fd = open(filename, 'r', encoding='utf-8')
-            lines = fd.readlines()
-            fd.close()
-        except IOError as e:
-            raise ErrorLoadingFile(str(e))
-        finally:
-            if fd:
-                fd.close()
-        return lines
-
-    def save(self, filename=USE_LAST_FILENAME):
-        if filename == USE_LAST_FILENAME:
-            filename = self.filename
-        if not filename:
-            raise ErrorSavingFile("Filename is None")
-        self.filename = filename
-        self.tasks.sort(key=cmp_to_key(compareTasks))
-        self._saveTasks()
-
-    def _saveTasks(self):
-        fd = None
-        try:
-            fd = open(self.filename, 'w', encoding='utf-8')
-            lines = [(task.text + self.NEWLINE) for task in self.tasks]
-            fd.writelines(lines)
-        except IOError as e:
-            raise ErrorSavingFile("Error saving to file '%s'" % self.filename, e)
-        finally:
-            if fd:
-                fd.close()
-
-    def saveDoneTask(self, task):
-        fdDone = None
-        doneFilename = os.path.join(os.path.dirname(self.filename), 'done.txt')
-        try:
-            fdDone = open(doneFilename, 'a', encoding='utf-8')
-            fdDone.write(task.text + self.NEWLINE)
-        except IOError as e:
-            raise ErrorSavingFile("Error saving to file '%s'" % doneFilename, e)
-        finally:
-            if fdDone:
-                fdDone.close()
-
-    def getAllCompletedContexts(self):
-        contexts = dict()
-        for task in self.tasks:
-            if task.is_complete:
-                for context in task.contexts:
-                    if context in contexts:
-                        contexts[context] += 1
-                    else:
-                        contexts[context] = 1
-        return contexts
-
-    def getAllCompletedProjects(self):
-        projects = dict()
-        for task in self.tasks:
-            if task.is_complete:
-                for project in task.projects:
-                    if project in projects:
-                        projects[project] += 1
-                    else:
-                        projects[project] = 1
-        return projects
-
-    def getAllContexts(self):
-        contexts = dict()
-        for task in self.tasks:
-            if not task.is_complete:
-                for context in task.contexts:
-                    if context in contexts:
-                        contexts[context] += 1
-                    else:
-                        contexts[context] = 1
-        return contexts
-
-    def getAllProjects(self):
-        projects = dict()
-        for task in self.tasks:
-            if not task.is_complete:
-                for project in task.projects:
-                    if project in projects:
-                        projects[project] += 1
-                    else:
-                        projects[project] = 1
-        return projects
-
-    def getTasksCounters(self):
-        counters = dict({'Pending': 0,
-                         'Uncategorized': 0,
-                         'Contexts': 0,
-                         'Projects': 0,
-                         'Complete': 0})
-        for task in self.tasks:
-            if not task.is_complete:
-                counters['Pending'] += 1
-                nbProjects = len(task.projects)
-                nbContexts = len(task.contexts)
-                if nbProjects > 0:
-                    counters['Projects'] += 1
-                if nbContexts > 0:
-                    counters['Contexts'] += 1
-                if nbContexts == 0 and nbProjects == 0:
-                    counters['Uncategorized'] += 1
-            else:
-                counters['Complete'] += 1
-        return counters    
 
 
 class Task(object):
@@ -283,7 +124,7 @@ def compareTasksByCompleteness(task1, task2):
         return -1
     else:
         return 1
-    
+
 def filterTasks(filters, tasks):
     if None in filters:
         return tasks
