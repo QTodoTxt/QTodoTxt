@@ -3,6 +3,13 @@ from tempfile import mkstemp
 from os import remove
 from qtodotxt.lib.file import File, ErrorLoadingFile
 from qtodotxt.lib.todolib import Task
+from sys import version
+
+
+PYTHON_VERSION = version[:3]
+
+if PYTHON_VERSION < '3.3':
+    FileNotFoundError = BaseException
 
 
 class TestFile(unittest.TestCase):
@@ -15,6 +22,9 @@ class TestFile(unittest.TestCase):
             remove(self.tmpfile)
         except FileNotFoundError:
             pass
+        except OSError as ex:    # maintain compatibility with Python 3.2
+            if ex.errno != 2:
+                raise
         except:
             raise
 

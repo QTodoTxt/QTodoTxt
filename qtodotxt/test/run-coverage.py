@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os
 
 os.system('coverage run run-tests.py')
