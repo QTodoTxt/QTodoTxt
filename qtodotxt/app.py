@@ -4,11 +4,11 @@
 import sys
 
 from PySide import QtGui
+from qtodotxt.ui.controllers import MainController
+from qtodotxt.ui.resource_manager import getIcon
 from qtodotxt.ui.services.dialogs_service import DialogsService
 from qtodotxt.ui.services.task_editor_service import TaskEditorService
 from qtodotxt.ui.views import MainView
-from qtodotxt.ui.controllers import MainController
-from qtodotxt.ui.resource_manager import getIcon
 
 
 def run():

@@ -1,13 +1,14 @@
 from PySide import QtCore
 from PySide import QtGui
-from qtodotxt.lib.filters import *
+from qtodotxt.lib.filters import *  #FIXME
+from qtodotxt.lib.settings import UI_MARGINS_OFFSET
 from qtodotxt.ui.resource_manager import getIcon
 
 
 class FiltersTreeView(QtGui.QWidget):
-    
+
     filterSelectionChanged = QtCore.Signal(list)
-    
+
     def __init__(self, parent=None):
         super(FiltersTreeView, self).__init__(parent)
         self._filterItemByFilterType = dict()
@@ -34,7 +35,7 @@ class FiltersTreeView(QtGui.QWidget):
         FilterTreeWidgetItem(parentItem, ["%s (%d)" % (filter.text, number)], filter=filter, icon=icon)
         parentItem.setExpanded(True)
         parentItem.sortChildren(0, QtCore.Qt.AscendingOrder)
-            
+
     def updateTopLevelTitles(self, counters):
         nbPending = counters['Pending']
         nbUncategorized = counters['Uncategorized']
@@ -46,19 +47,19 @@ class FiltersTreeView(QtGui.QWidget):
         self._contextsItem.setText(0, "Contexts (%d)" % nbContexts)
         self._projectsItem.setText(0, "Projects (%d)" % nbProjects)
         self._completeTasksItem.setText(0, "Complete (%d)" % nbComplete)
-        
+
     def selectAllTasksFilter(self):
         self._incompleteTasksItem.setSelected(True)
 
     def _selectItem(self, item):
         if item:
             item.setSelected(True)
-            self._tree.setCurrentItem(item)        
+            self._tree.setCurrentItem(item)
 
     def _selectContext(self, context):
         item = self._findItem(context, self._contextsItem)
         self._selectItem(item)
-              
+
     def _selectProject(self, project):
         item = self._findItem(project, self._projectsItem)
         self._selectItem(item)
@@ -75,6 +76,8 @@ class FiltersTreeView(QtGui.QWidget):
     def _initUI(self):
         layout = QtGui.QGridLayout()
         self.setLayout(layout)
+        self.setContentsMargins(UI_MARGINS_OFFSET, UI_MARGINS_OFFSET,
+                                2*UI_MARGINS_OFFSET, UI_MARGINS_OFFSET)
         self._tree = self._createTreeWidget()
         layout.addWidget(self._tree)
 
@@ -87,7 +90,7 @@ class FiltersTreeView(QtGui.QWidget):
         self._addDefaultTreeItems(tree)
         self._initFilterTypeMappings()
         return tree
-        
+
     def _addDefaultTreeItems(self, tree):
         self._incompleteTasksItem = \
             FilterTreeWidgetItem(None, ['Pending'], IncompleteTasksFilter(), getIcon('time.png'))
@@ -105,7 +108,7 @@ class FiltersTreeView(QtGui.QWidget):
             self._contextsItem,
             self._projectsItem,
             self._completeTasksItem])
-        
+
     def _initFilterTypeMappings(self):
         self._filterItemByFilterType[ContextFilter] = self._contextsItem
         self._filterItemByFilterType[ProjectFilter] = self._projectsItem
