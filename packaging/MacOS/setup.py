@@ -19,10 +19,6 @@ resources_root = os.path.join(os.getcwd(), 'qtodotxt', 'ui', 'resources')
 for file in os.listdir(resources_root):
     resources.append(os.path.join(resources_root, file))
 
-icon = os.path.join(os.path.abspath(os.path.dirname(__file__)),
-                    'qtodotxt', 'ui', 'resources', 'qtodotxt.ico')
-
-
 def collect_packages(path, package_name, packages, excludes=None):
     for dir in os.listdir(path):
         if excludes and dir in excludes:
@@ -42,7 +38,7 @@ collect_packages('.', '', packages, excludes=['test'])
 # ======================================
 # Setup parameters
 setup(name='qtodotxt',
-      version='1.3.0',
+      version='1.4.0',
       author='Matthieu Nantern',
       author_email='matthieu.nantern@gmail.com',
       url='https://github.com/mNantern/QTodoTxt',
@@ -53,17 +49,13 @@ setup(name='qtodotxt',
       data_files=[('resources', resources)],
 
       options={
-          "py2exe": {
-    "includes": ["argparse"],
-                "dist_dir": os.path.join(current_dir, 'dist')
-            },
-        "py2app": {
-            "iconfile": "artwork/icon/icon.icns",
-        "includes": ['PySide.QtCore', 'PySide.QtGui'],
-        "resources": resources,
-        },
-            "build": {
-                "build_base": os.path.join(current_dir, 'build')
-            },
-        }
+          "py2app": {
+              "iconfile": "artwork/icon/icon.icns",
+              "includes": ['PySide.QtCore', 'PySide.QtGui'],
+              "resources": resources,
+          },
+          "build": {
+              "build_base": os.path.join(current_dir, 'build')
+          },
+      }
     )
