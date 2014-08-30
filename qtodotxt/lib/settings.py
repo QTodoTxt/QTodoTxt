@@ -2,6 +2,7 @@ import json
 import os
 
 DEFAULT_SETTINGS_FILE = os.path.expanduser("~/.qtodotxt.cfg")
+UI_MARGINS_OFFSET = -4
 
 
 class Settings(object):
@@ -11,16 +12,17 @@ class Settings(object):
 
     def load(self, filename=DEFAULT_SETTINGS_FILE):
         self._file = filename
-        if not os.path.exists(self._file):
+        try:
+            with open(self._file, 'tr') as file:
+                self._data = json.load(file)
+        except (ValueError, UnicodeDecodeError):
+            import pickle
+            with open(self._file, 'br') as file:
+                self._data = pickle.load(file)
+        except FileNotFoundError:
             self._data = {}
-        else:
-            try:
-                with open(self._file, 'tr') as file:
-                    self._data = json.load(file)
-            except:
-                import pickle
-                with open(self._file, 'br') as file:
-                    self._data = pickle.load(file)
+        except:
+            raise
 
     def getLastOpenFile(self):
         return self._getData('last_open_file')
