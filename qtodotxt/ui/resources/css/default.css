@@ -1,0 +1,7 @@
+QListWidget {
+    selection-background-color: lightblue;
+}
+
+QTreeWidget {
+    selection-background-color: lightblue;
+}

@@ -85,14 +85,14 @@ class TasksListView(QtGui.QListWidget):
     def _list_itemPressed(self):
         for oldSelected in self._oldSelected:
             label = self.itemWidget(oldSelected)
-            text = self._task_htmlizer.task2html(oldSelected.task, False)
+            text = self._task_htmlizer.task2html(oldSelected.task)
             label.setText(text)
         self._oldSelected = []
         items = self.selectedItems()
         for item in items:
             self._oldSelected.append(item)
             label = self.itemWidget(item)
-            text = self._task_htmlizer.task2html(item.task, True)
+            text = self._task_htmlizer.task2html(item.task)
             label.setText(text)
 
     def keyPressEvent(self, event):
