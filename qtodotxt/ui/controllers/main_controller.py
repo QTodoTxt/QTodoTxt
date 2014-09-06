@@ -4,9 +4,9 @@ import argparse
 
 from PySide import QtCore
 from PySide import QtGui
-import time
 
 from qtodotxt.lib import todolib, settings
+from qtodotxt.lib.file import ErrorLoadingFile, File, FileObserver
 
 from qtodotxt.ui.controllers.tasks_list_controller import TasksListController
 from qtodotxt.ui.controllers.filters_tree_controller import FiltersTreeController
@@ -25,7 +25,8 @@ class MainController(QtCore.QObject):
         self._dialogs_service = dialogs_service
         self._task_editor_service = task_editor_service
         self._initControllers()
-        self._file = todolib.File()
+        self._file = File()
+        self._fileObserver = FileObserver(self, self._file)
         self._is_modified = False
         self._settings = settings.Settings()
         self._setIsModified(False)
@@ -72,14 +73,16 @@ class MainController(QtCore.QObject):
         self._updateHideFutureTasksPref()
         self._updateView()
 
-        filename = None
         if self._args.file:
             filename = self._args.file[0]
         else:
             filename = self._settings.getLastOpenFile()
 
         if filename:
-            self.openFileByName(filename)
+            try:
+                self.openFileByName(filename)
+            except ErrorLoadingFile as ex:
+                self._dialogs_service.showError(str(ex))
 
         if self._args.quickadd:
             self._tasks_list_controller.createTask()
@@ -185,16 +188,17 @@ class MainController(QtCore.QObject):
         self._menu_controller.revertAction.setEnabled(is_modified)
 
     def save(self):
-        if self._file.filename:
-            self._file.save()
-            self._setIsModified(False)
-        else:
+        self._fileObserver.clear()
+        filename = self._file.filename
+        ok = True
+        if not filename:
             (filename, ok) = \
                 QtGui.QFileDialog.getSaveFileName(self._view, filter=FILENAME_FILTERS)
-            if ok and filename:
-                self._file.save(filename)
-                self._settings.setLastOpenFile(filename)
-                self._setIsModified(False)
+        if ok and filename:
+            self._file.save(filename)
+            self._settings.setLastOpenFile(filename)
+            self._setIsModified(False)
+            self._fileObserver.addPath(self._file.filename)
 
     def _updateTitle(self):
         title = 'QTodoTxt - '
@@ -212,31 +216,34 @@ class MainController(QtCore.QObject):
             QtGui.QFileDialog.getOpenFileName(self._view, filter=FILENAME_FILTERS)
 
         if ok and filename:
-            self.openFileByName(filename)
+            try:
+                self.openFileByName(filename)
+            except ErrorLoadingFile as ex:
+                self._dialogs_service.showError(str(ex))
 
     def new(self):
         if self._canExit():
-            self._openFile(todolib.File())
+            self._file = File()
+            self._loadFileToUI()
 
     def revert(self):
         if self._dialogs_service.showConfirm('Revert to saved file (and lose unsaved changes)?'):
-            self.openFileByName(self._file.filename)
+            try:
+                self.openFileByName(self._file.filename)
+            except ErrorLoadingFile as ex:
+                self._dialogs_service.showError(str(ex))
 
     def openFileByName(self, filename):
-        file = todolib.File()
-        try:
-            file.load(filename)
-        except todolib.ErrorLoadingFile as ex:
-            self._dialogs_service.showError(str(ex))
-            return
-        self._openFile(file)
+        self._fileObserver.clear()
+        self._file.load(filename)
+        self._loadFileToUI()
         self._settings.setLastOpenFile(filename)
+        self._fileObserver.addPath(self._file.filename)
 
-    def _openFile(self, file):
-        self._file = file
+    def _loadFileToUI(self):
         self._setIsModified(False)
-        self._filters_tree_controller.showFilters(file)
-        self._task_editor_service.updateValues(file)
+        self._filters_tree_controller.showFilters(self._file)
+        self._task_editor_service.updateValues(self._file)
 
     def _updateCreatePref(self):
         self._menu_controller.changeCreatedDateState(bool(self._settings.getCreateDate()))
@@ -259,7 +266,7 @@ class MainController(QtCore.QObject):
         positionX = self._settings.getViewPositionX()
         positionY = self._settings.getViewPositionY()
         if positionX and positionY:
-            self._view.move(positionX,positionY)
+            self._view.move(positionX, positionY)
 
         slidderPosition = self._settings.getViewSlidderPosition()
         if slidderPosition:

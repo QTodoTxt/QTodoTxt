@@ -16,6 +16,8 @@
 *.sw[op]
 .venv
 
+.DS_Store
+
 # Mr Developer
 .mr.developer.cfg
 .project

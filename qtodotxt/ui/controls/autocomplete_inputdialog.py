@@ -45,4 +45,4 @@ if __name__ == '__main__':
     values = ['(A)', '(B)', '(C)', '@home', '@call', '@work', '+qtodotxt', '+sqlvisualizer']
     view = AutoCompleteInputDialog(values)
     view.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec_())  

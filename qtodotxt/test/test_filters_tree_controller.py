@@ -2,6 +2,7 @@ import unittest
 from PySide import QtCore
 
 from qtodotxt.lib import todolib
+from qtodotxt.lib.file import File
 from qtodotxt.lib.filters import IncompleteTasksFilter, ContextFilter, ProjectFilter
 from qtodotxt.ui.controllers import FiltersTreeController
 
@@ -41,7 +42,7 @@ class FakeTreeView(QtCore.QObject):
 class Test(unittest.TestCase):
 
     def _createMockFile(self):
-        file = todolib.File()
+        file = File()
         file.tasks.append(todolib.Task('my task1 @context1'))
         file.tasks.append(todolib.Task('my task2 @context1 @context2'))
         file.tasks.append(todolib.Task('my task3 +project1 @context2'))
