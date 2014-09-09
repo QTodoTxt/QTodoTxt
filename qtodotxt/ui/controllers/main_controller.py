@@ -1,6 +1,6 @@
+import logging
 import os
 import sys
-import argparse
 
 from PySide import QtCore
 from PySide import QtGui
@@ -13,14 +13,18 @@ from qtodotxt.ui.controllers.filters_tree_controller import FiltersTreeControlle
 from qtodotxt.lib.filters import SimpleTextFilter, FutureFilter
 from qtodotxt.ui.controllers.menu_controller import MenuController
 
+
+logger = logging.getLogger(__name__)
+
 FILENAME_FILTERS = ';;'.join([
     'Text Files (*.txt)',
     'All Files (*.*)'])
 
 
 class MainController(QtCore.QObject):
-    def __init__(self, view, dialogs_service, task_editor_service):
+    def __init__(self, view, dialogs_service, task_editor_service, args):
         super(MainController, self).__init__()
+        self._args = args
         self._view = view
         self._dialogs_service = dialogs_service
         self._task_editor_service = task_editor_service
@@ -31,20 +35,10 @@ class MainController(QtCore.QObject):
         self._settings = settings.Settings()
         self._setIsModified(False)
         self._view.closeEventSignal.connect(self._view_onCloseEvent)
-        self._args = self._parseArgs()
 
     def autoSave(self):
         if self._settings.getAutoSave():
             self.save()
-
-    def _parseArgs(self):
-        if len(sys.argv) > 1 and sys.argv[1].startswith('-psn'):
-            del sys.argv[1]
-        parser = argparse.ArgumentParser(description='QTodoTxt')
-        parser.add_argument('-f', '--file', type=str, nargs=1, metavar='TEXTFILE')
-        parser.add_argument('-q', '--quickadd', action='store_true',
-                            help='opens the add task dialog and exit the application when done')
-        return parser.parse_args()
 
     def _initControllers(self):
         self._initFiltersTree()
@@ -188,6 +182,7 @@ class MainController(QtCore.QObject):
         self._menu_controller.revertAction.setEnabled(is_modified)
 
     def save(self):
+        logger.debug('MainController.save called.')
         self._fileObserver.clear()
         filename = self._file.filename
         ok = True
@@ -198,6 +193,7 @@ class MainController(QtCore.QObject):
             self._file.save(filename)
             self._settings.setLastOpenFile(filename)
             self._setIsModified(False)
+            logger.debug('Adding {} to watchlist'.format(filename))
             self._fileObserver.addPath(self._file.filename)
 
     def _updateTitle(self):
@@ -234,10 +230,12 @@ class MainController(QtCore.QObject):
                 self._dialogs_service.showError(str(ex))
 
     def openFileByName(self, filename):
+        logger.debug('MainController.openFileByName called with filename="{}"'.format(filename))
         self._fileObserver.clear()
         self._file.load(filename)
         self._loadFileToUI()
         self._settings.setLastOpenFile(filename)
+        logger.debug('Adding {} to watchlist'.format(filename))
         self._fileObserver.addPath(self._file.filename)
 
     def _loadFileToUI(self):
