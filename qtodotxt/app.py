@@ -36,15 +36,16 @@ def _parseArgs():
                         help='open the specified file')
     parser.add_argument('-q', '--quickadd', action='store_true',
                         help='opens the add task dialog and exit the application when done')
-    parser.add_argument('-l', '--loglevel', type=str, nargs=1, metavar='LOGLEVEL', default='NOTSET',
+    parser.add_argument('-l', '--loglevel', type=str, nargs=1, metavar='LOGLEVEL', default=['NOTSET'],
                         choices=['DEBUG', 'INFO', 'WARNING', 'WARN', 'ERROR', 'CRITICAL'],
                         help='set one of these logging levels: DEBUG, INFO, WARNING, ERROR, CRITICAL')
     return parser.parse_args()
 
 def _setupLogging(loglevel):
-    LOGLEVEL = logging._nameToLevel[loglevel]
-    logging.basicConfig(format='{asctime}.{msecs:.0f} [{name}] {levelname}: {message}',
-                        level=LOGLEVEL, style='{', datefmt='%H:%M:%S')
+    loglevel = logging._nameToLevel[loglevel[0]]
+    if loglevel:
+        logging.basicConfig(format='{asctime}.{msecs:.0f} [{name}] {levelname}: {message}',
+                            level=loglevel, style='{', datefmt='%H:%M:%S')
 
 def _createController(args):
     window = MainView()
