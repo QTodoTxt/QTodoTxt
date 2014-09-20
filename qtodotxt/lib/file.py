@@ -4,6 +4,7 @@ import os
 from PySide import QtCore
 from qtodotxt.lib.todolib import Task, compareTasks
 from sys import version
+from time import sleep
 
 
 logger = logging.getLogger(__name__)
@@ -180,6 +181,8 @@ class FileObserver(QtCore.QFileSystemWatcher):
        self.removePath(path)
        if path == self._file.filename:
            try:
+               # Ugly fix for Windows : Permission denied without the sleep
+               sleep(0.01)
                self.parent().openFileByName(self._file.filename)
            except ErrorLoadingFile:
                pass    # let auto-reload errors pass silently
