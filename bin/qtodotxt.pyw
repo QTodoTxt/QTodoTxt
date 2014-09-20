@@ -18,7 +18,6 @@ def reroute_py2exe_logs():
 
 if sys.argv[0].lower().endswith('.exe'):
     reroute_py2exe_logs()
-    print __file__
     sys.path.insert(0, os.path.join(os.path.dirname(__file__)))
 
 
