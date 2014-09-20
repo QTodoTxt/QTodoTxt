@@ -1,9 +1,12 @@
 from functools import cmp_to_key
+import logging
 import os
 from PySide import QtCore
 from qtodotxt.lib.todolib import Task, compareTasks
 from sys import version
 
+
+logger = logging.getLogger(__name__)
 
 PYTHON_VERSION = version[:3]
 
@@ -42,6 +45,7 @@ class File(object):
         self.filename = ''
 
     def load(self, filename):
+
         try:
             with open(filename, 'rt', encoding='utf-8') as fd:
                 lines = fd.readlines()
@@ -61,6 +65,7 @@ class File(object):
                 self.tasks.append(task)
 
     def save(self, filename=''):
+        logger.debug('File.save called with filename="{}"'.format(filename))
         if not filename and not self.filename:
             self.filename = self._createNewFilename()
         elif filename:
@@ -83,6 +88,7 @@ class File(object):
         try:
             with open(self.filename, 'wt', encoding='utf-8') as fd:
                 fd.writelines([(task.text + self.NEWLINE) for task in self.tasks])
+            logger.debug('{} was saved to disk.'.format(self.filename))
         except IOError as e:
             raise ErrorSavingFile("Error saving to file '{}'".format(self.filename), e)
 
@@ -91,6 +97,7 @@ class File(object):
         try:
             with open(doneFilename, 'at', encoding='utf-8') as fd:
                 fd.write(task.text + self.NEWLINE)
+            logger.debug('"{}" was appended to "{}"'.format(task.text, doneFilename))
         except IOError as e:
             raise ErrorSavingFile("Error saving to file '%s'" % doneFilename, e)
 
@@ -162,12 +169,14 @@ class File(object):
 
 class FileObserver(QtCore.QFileSystemWatcher):
    def __init__(self, parent, file):
+       logger.debug('Setting up FileObserver instance.')
        super().__init__(parent)
        self._file = file
        self.fileChanged.connect(self.fileChangedHandler)
 
    @QtCore.Slot(str)
    def fileChangedHandler(self, path):
+       logger.debug('Detected change on {}\nremoving it from watchlist'.format(path))
        self.removePath(path)
        if path == self._file.filename:
            try:
@@ -177,4 +186,5 @@ class FileObserver(QtCore.QFileSystemWatcher):
 
    def clear(self):
        if self.files():
+           logger.debug('Clearing watchlist.')
            self.removePaths(self.files())
