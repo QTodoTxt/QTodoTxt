@@ -1,4 +1,4 @@
-import urllib2
+import urllib.request
 import os
 import os.path 
 import sys
@@ -16,7 +16,7 @@ from subprocess import call
 tmpDir="/tmp/"
 
 def dlTagFromGitHub(version):
-    remoteFile = urllib2.urlopen('https://github.com/mNantern/QTodoTxt/archive/'+version+'.tar.gz')
+    remoteFile = urllib.urlopen('https://github.com/mNantern/QTodoTxt/archive/'+version+'.tar.gz')
     contentDisposition=remoteFile.info()['Content-Disposition']
     fileName=contentDisposition.split('=')[1]
 
