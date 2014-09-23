@@ -4,6 +4,7 @@ import os
 from PySide import QtCore
 from qtodotxt.lib.todolib import Task, compareTasks
 from sys import version
+import time
 
 
 logger = logging.getLogger(__name__)
@@ -178,11 +179,17 @@ class FileObserver(QtCore.QFileSystemWatcher):
    def fileChangedHandler(self, path):
        logger.debug('Detected change on {}\nremoving it from watchlist'.format(path))
        self.removePath(path)
+       debug_counter = 0
        if path == self._file.filename:
-           try:
-               self.parent().openFileByName(self._file.filename)
-           except ErrorLoadingFile:
-               pass    # let auto-reload errors pass silently
+           max_time = time.time() + 1
+           while time.time() < max_time:
+               try:
+                   self.parent().openFileByName(self._file.filename)  # TODO make that emit a signal
+               except ErrorLoadingFile:
+                   time.sleep(0.01)
+                   debug_counter += 1
+               else:
+                   logger.debug('It took {} additional attempts until the file could be read.'.format(debug_counter))
 
    def clear(self):
        if self.files():
