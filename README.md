@@ -17,7 +17,7 @@ For Debian/Ubuntu you can also add the following repo to your sources.list:
 
 
 ```
-sudo echo "deb http://dl.bintray.com/mnantern/deb /" >> /etc/apt/sources.list.d/qtodotxt.list
+echo "deb http://dl.bintray.com/mnantern/deb /" | sudo tee -a /etc/apt/sources.list.d/qtodotxt.list
 ```
 
 ## Running from sources
