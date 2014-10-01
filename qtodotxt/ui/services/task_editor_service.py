@@ -3,7 +3,6 @@ from qtodotxt.ui.controls.autocomplete_inputdialog import AutoCompleteInputDialo
 from collections import OrderedDict
 
 
-
 class TaskEditorService(object):
     def __init__(self, parent_window):
         self._parent_window = parent_window
@@ -39,7 +38,7 @@ class TaskEditorService(object):
     def createTask(self):
         (text, ok) = self._openTaskEditor("Create Task")
         return text, ok
-    
+
     def editTask(self, task):
         (text, ok) = self._openTaskEditor('Edit Task', task)
         return text, ok
