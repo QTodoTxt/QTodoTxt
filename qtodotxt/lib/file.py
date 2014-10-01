@@ -6,7 +6,6 @@ from qtodotxt.lib.todolib import Task, compareTasks
 from sys import version
 import time
 
-
 logger = logging.getLogger(__name__)
 
 PYTHON_VERSION = version[:3]
@@ -190,6 +189,7 @@ class FileObserver(QtCore.QFileSystemWatcher):
                    debug_counter += 1
                else:
                    logger.debug('It took {} additional attempts until the file could be read.'.format(debug_counter))
+                   break
 
    def clear(self):
        if self.files():

@@ -7,12 +7,12 @@ class TaskHtmlizer(object):
         self.priority_colors = dict(
             A='red',
             B='green',
-            C='cyan')
+            C='navy')
         # regex matching creation and completion dates and priority
         self.regex = re.compile(
             r'^(x (?P<completed>\d{4}-\d{2}-\d{2} )?)?(\((?P<priority>[A-Z])\) )?(?P<created>\d{4}-\d{2}-\d{2} )?.*$')
 
-    def task2html(self, task, selected=False):
+    def task2html(self, task):
         text = task.text
         priority = task.priority
 
@@ -35,10 +35,7 @@ class TaskHtmlizer(object):
             text = text.replace('t:%s' % task.threshold, self._htmlizeThresholdDate(task.threshold))
         text = self._htmlizeCreatedCompleted(text, task.text)
         text = self._htmlizeURL(text)
-        if selected:
-            return '<font color="white">%s</font>' % text
-        else:
-            return '<font color="black">%s</font>' % text
+        return text
 
     def _htmlizeContext(self, context):
         return '<font color="green">@%s</font>' % context

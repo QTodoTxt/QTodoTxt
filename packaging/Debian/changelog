@@ -1,3 +1,11 @@
+qtodotxt (1.4.0) unstable; urgency=low
+
+  * Publication of v1.4.0: see changelog here
+    https://github.com/mNantern/QTodoTxt/wiki/Changelog#v140
+  * Initial release.
+
+ -- Matthieu Nantern <matthieu.nantern@gmail.com>  Sun, 28 Sep 2014 15:20:00 +0100
+
 qtodotxt (1.3.0) unstable; urgency=low
 
   * Publication of v1.3.0: see changelog here 

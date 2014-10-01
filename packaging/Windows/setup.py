@@ -13,16 +13,18 @@ except ImportError:
 # ======================================
 current_dir = os.getcwd()
 os.chdir(os.path.join('..', '..'))
-# Data files
-resources = []
-resources_root = os.path.join(os.getcwd(), 'qtodotxt', 'ui', 'resources')
-for file in os.listdir(resources_root):
-    resources.append(os.path.join(resources_root, file))
+sys.path.append(os.getcwd())
 
+# Data files
 icon = os.path.join(os.path.abspath(os.path.dirname(__file__)),
                     'qtodotxt', 'ui', 'resources', 'qtodotxt.ico')
 
-
+def collect_resources(resources_root,resources):					
+    for file in os.listdir(resources_root):
+        file_path=os.path.join(resources_root, file)
+        if os.path.isfile(file_path):
+            resources.append(file_path)
+		
 def collect_packages(path, package_name, packages, excludes=None):
     for dir in os.listdir(path):
         if excludes and dir in excludes:
@@ -39,6 +41,13 @@ def collect_packages(path, package_name, packages, excludes=None):
 packages = []
 collect_packages('.', '', packages, excludes=['test'])
 
+resources=[]
+resources_root = os.path.join(os.getcwd(), 'qtodotxt', 'ui', 'resources')
+collect_resources(resources_root,resources)
+
+css=[]
+resources_root = os.path.join(os.getcwd(), 'qtodotxt', 'ui', 'resources','css')
+collect_resources(resources_root,css)
 # ======================================
 # Setup parameters
 setup(name='qtodotxt',
@@ -47,16 +56,20 @@ setup(name='qtodotxt',
       author_email='matthieu.nantern@gmail.com',
       url='https://github.com/mNantern/QTodoTxt',
       packages=packages,
+      setup_requires=["py2exe"],
 
       data_files=[
-          ('resources', resources), ('imageformats', [r'C:\Python27\Lib\site-packages\PySide\plugins\imageformats\qico4.dll'])],
+              ('resources', resources), 
+			  ('imageformats', [r'C:\Python34\Lib\site-packages\PySide\plugins\imageformats\qico4.dll']), 
+			  ('resources/css', css)
+		  ],
 
       # py2exe parameters
       windows=[
           {
-    "script": "bin/qtodotxt.pyw",
+                "script": "bin/qtodotxt.pyw",
                 "icon_resources": [(0, icon)]
-            }
+          }
         ],
         options={
             "py2exe": {

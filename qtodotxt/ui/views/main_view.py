@@ -1,7 +1,7 @@
 from PySide import QtCore
 from PySide import QtGui
 
-from qtodotxt.ui.resource_manager import getIcon
+from qtodotxt.ui.resource_manager import getIcon, getResourcePath
 from qtodotxt.ui.views.filters_tree_view import FiltersTreeView
 from qtodotxt.ui.views.tasks_view import TasksView
 
@@ -21,6 +21,10 @@ class MainView(QtGui.QMainWindow):
 
         splitter = QtGui.QSplitter()
         splitter.setHandleWidth(1)
+
+        cssPath = getResourcePath("css/default.css")
+        css = open(cssPath,'r', encoding='utf-8').read();
+        self.setStyleSheet(css);
 
         self.filters_tree_view = FiltersTreeView(splitter)
         self.tasks_view = TasksView(splitter)
