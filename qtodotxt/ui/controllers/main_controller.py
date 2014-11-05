@@ -65,6 +65,7 @@ class MainController(QtCore.QObject):
         self._updateAutoSavePref()
         self._updateAutoArchivePref()
         self._updateHideFutureTasksPref()
+        self._updateSupportMultilineTasksPref()
         self._updateView()
 
         filename = None
@@ -256,6 +257,9 @@ class MainController(QtCore.QObject):
     def _updateHideFutureTasksPref(self):
         self._menu_controller.changeHideFutureTasksState(bool(self._settings.getHideFutureTasks()))
 
+    def _updateSupportMultilineTasksPref(self):
+        self._menu_controller.changeSupportMultilineTasksState(bool(self._settings.getSupportMultilineTasks()))
+    
     def _updateView(self):
         height = self._settings.getViewHeight()
         width = self._settings.getViewWidth()
@@ -294,6 +298,13 @@ class MainController(QtCore.QObject):
             self._settings.setHideFutureTasks(False)
         else:
             self._settings.setHideFutureTasks(True)
+        self._onFilterSelectionChanged(self._filters_tree_controller._view.getSelectedFilters())
+
+    def toggleSupportMultilineTasks(self):
+        if self._settings.getSupportMultilineTasks():
+            self._settings.setSupportMultilineTasks(False)
+        else:
+            self._settings.setSupportMultilineTasks(True)
         self._onFilterSelectionChanged(self._filters_tree_controller._view.getSelectedFilters())
 
     def toggleVisible(self):

@@ -29,6 +29,7 @@ class MenuController(QtCore.QObject):
         preferenceMenu.addAction(self._autoSavePreferenceAction())
         preferenceMenu.addAction(self._autoArchivePreferenceAction())
         preferenceMenu.addAction(self._hideFutureTasksAction())
+        preferenceMenu.addAction(self._supportMultilineTasksAction())
         fileMenu.addSeparator()
         fileMenu.addAction(self._createExitAction())
      
@@ -103,6 +104,12 @@ class MenuController(QtCore.QObject):
         self.hideFutureTasksAction = action
         return action
 
+    def _supportMultilineTasksAction(self):
+        action = QtGui.QAction('Support multiline tasks', self, checkable=True)
+        action.triggered.connect(self._main_controller.toggleSupportMultilineTasks)
+        self.supportMultilineTasksAction = action
+        return action
+
     def changeAutoSaveState(self, value=False):
         self.autoSaveAction.setChecked(value)
         
@@ -115,6 +122,9 @@ class MenuController(QtCore.QObject):
     def changeHideFutureTasksState(self, value=False):
         self.hideFutureTasksAction.setChecked(value)
 
+    def changeSupportMultilineTasksState(self, value=False):
+        self.supportMultilineTasksAction.setChecked(value)
+    
     def _createExitAction(self):
         action = QtGui.QAction(getIcon('door_in.png'), 'E&xit', self)
         action.setShortcuts(["Alt+F4"])

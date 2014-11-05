@@ -53,7 +53,13 @@ class Settings(object):
 
     def setHideFutureTasks(self, hideFutureTasks):
         self._setData('hide_future_tasks', hideFutureTasks)
-
+    
+    def getSupportMultilineTasks(self):
+        return self._getData('support_multiline_tasks')
+    
+    def setSupportMultilineTasks(self, supportMultilineTasks):
+        self._setData('support_multiline_tasks', supportMultilineTasks)
+    
     def setViewHeight(self,height):
         self._setData('view_size_height', height)
 
