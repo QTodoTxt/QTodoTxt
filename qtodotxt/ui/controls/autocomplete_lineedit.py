@@ -25,6 +25,7 @@ class AutoCompleteEdit(QtGui.QPlainTextEdit):
     def toPlainText(self):
         # Replace newlines with \\
         text = super(AutoCompleteEdit, self).toPlainText()
+        text = text.rstrip() # trailing empty lines cause issues
         text = text.replace('\n',r' \\ ')
         return text
     
