@@ -52,7 +52,12 @@ class AutoCompleteEdit(QtGui.QLineEdit):
                 self._completer.complete()
         if len(completionPrefix) == 0:
             self._completer.popup().hide()
-
+    def setTaskText(self, text):
+        return super(AutoCompleteEdit, self).setText(text)
+    
+    def toTaskText(self):
+        return super(AutoCompleteEdit, self).text()
+    
     def _updateCompleterPopupItems(self, completionPrefix):
         """
         Filters the completer's popup items to only show items

@@ -8,6 +8,7 @@ class TaskEditorService(object):
         self._parent_window = parent_window
         self._priorities = ["("+i+")" for i in string.ascii_uppercase ]
         self._resetValues()
+        self._multilineTasks = False
 
     def _resetValues(self):
         self._values = []
@@ -35,6 +36,9 @@ class TaskEditorService(object):
         self.updateTodoValues(file)
         self.updateCompletedValues(file)
 
+    def setMultilineTasks(self,multilineTasks):
+        self._multilineTasks = multilineTasks
+
     def createTask(self):
         (text, ok) = self._openTaskEditor("Create Task")
         return text, ok
@@ -45,7 +49,7 @@ class TaskEditorService(object):
 
     def _openTaskEditor(self, title, task=None):
         uniqlist = sorted(list(OrderedDict.fromkeys(self._completedValues+self._values)))
-        dialog = AutoCompleteInputDialog(uniqlist, self._parent_window)
+        dialog = AutoCompleteInputDialog(uniqlist, self._parent_window, self._multilineTasks)
         dialog.setWindowTitle(title)
         dialog.setLabelText('Task:')
         dialog.resize(500, 100)
@@ -55,4 +59,5 @@ class TaskEditorService(object):
         if dialog.exec_():
             return dialog.textValue(), True
         return None, False
+
 

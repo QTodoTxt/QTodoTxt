@@ -17,12 +17,12 @@ class AutoCompleteMultilineEdit(QtGui.QPlainTextEdit):
                               QtCore.Qt.Key_Escape,
                               QtCore.Qt.Key_Tab]
 
-    def setPlainText(self, text):
+    def setTaskText(self, text):
         # Replace \\ with newlines
         text = text.replace(r' \\ ','\n')
         return super(AutoCompleteMultilineEdit, self).setPlainText(text)
     
-    def toPlainText(self):
+    def toTaskText(self):
         # Replace newlines AutoCompleteMultilineEdit \\
         text = super(AutoCompleteMultilineEdit, self).toPlainText()
         text = text.rstrip() # trailing empty lines cause issues

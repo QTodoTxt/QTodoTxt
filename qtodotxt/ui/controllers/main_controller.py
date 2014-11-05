@@ -102,6 +102,9 @@ class MainController(QtCore.QObject):
         if self._settings.getHideFutureTasks():
             tasks = todolib.filterTasks([FutureFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
+    
+    def _onTodoFeaturesChanged(self):
+        self._initTodoFeatures()
 
     def _initFilterText(self):
         self._view.tasks_view.filter_tasks.filterTextChanged.connect(
@@ -127,6 +130,9 @@ class MainController(QtCore.QObject):
         controller.taskModified.connect(self._tasks_list_taskModified)
         controller.taskDeleted.connect(self._tasks_list_taskDeleted)
         controller.taskArchived.connect(self._tasks_list_taskArchived)
+    
+    def _initTodoFeatures(self):
+        self._task_editor_service.setMultilineTasks(self._settings.getSupportMultilineTasks())
 
     def _tasks_list_taskDeleted(self, task):
         self._file.tasks.remove(task)
@@ -305,7 +311,7 @@ class MainController(QtCore.QObject):
             self._settings.setSupportMultilineTasks(False)
         else:
             self._settings.setSupportMultilineTasks(True)
-        self._onFilterSelectionChanged(self._filters_tree_controller._view.getSelectedFilters())
+        self._onTodoFeaturesChanged()
 
     def toggleVisible(self):
         if self._view.isMinimized():

@@ -1,11 +1,13 @@
 import sys
 from PySide import QtGui
 from qtodotxt.ui.controls.autocomplete_multilineedit import AutoCompleteMultilineEdit
+from qtodotxt.ui.controls.autocomplete_lineedit import AutoCompleteEdit
 
 
 class AutoCompleteInputDialog(QtGui.QDialog):
-    def __init__(self, values, parent=None):
+    def __init__(self, values, parent=None, multilineTasks=False):
         super(AutoCompleteInputDialog, self).__init__(parent)
+        self._multilineTasks = multilineTasks
         self._initUI(values)
 
     def _initUI(self, values):
@@ -15,7 +17,11 @@ class AutoCompleteInputDialog(QtGui.QDialog):
         self._label = QtGui.QLabel("Task:")
         vbox.addWidget(self._label)
 
-        self._edit = AutoCompleteMultilineEdit(values)
+        if self._multilineTasks:
+            self._edit = AutoCompleteMultilineEdit(values)
+        else:
+            self._edit = AutoCompleteEdit(values)
+        
         vbox.addWidget(self._edit)
 
         hbox = QtGui.QHBoxLayout()
@@ -32,10 +38,10 @@ class AutoCompleteInputDialog(QtGui.QDialog):
         self.resize(500, 100)
 
     def textValue(self):
-        return self._edit.toPlainText()
+        return self._edit.toTaskText()
 
     def setTextValue(self, text):
-        self._edit.setPlainText(text)
+        self._edit.setTaskText(text)
 
     def setLabelText(self, text):
         self._label.setText(text)
