@@ -1,5 +1,6 @@
 import sys
-from PySide import QtGui
+from PySide import QtGui, QtCore
+from qtodotxt.ui.controls.autocomplete_multilineedit import AutoCompleteMultilineEdit
 from qtodotxt.ui.controls.autocomplete_lineedit import AutoCompleteEdit
 from datetime import date, timedelta
 import collections
@@ -25,8 +26,9 @@ class AutoCompleteInputDialog(QtGui.QDialog):
         ('due:December', '')
     ])
 
-    def __init__(self, values, parent=None):
+    def __init__(self, values, parent=None, multilineTasks=False):
         super(AutoCompleteInputDialog, self).__init__(parent)
+        self._multilineTasks = multilineTasks
         self._initUI(values)
         self._populateKeys(self.autocomplete_pairs)
 
@@ -71,7 +73,11 @@ class AutoCompleteInputDialog(QtGui.QDialog):
         self._label = QtGui.QLabel("Task:")
         vbox.addWidget(self._label)
 
-        self._edit = AutoCompleteEdit(values, self.autocomplete_pairs)
+        if self._multilineTasks:
+            self._edit = AutoCompleteMultilineEdit(values, self.autocomplete_pairs)
+        else:
+            self._edit = AutoCompleteEdit(values, self.autocomplete_pairs)
+        
         vbox.addWidget(self._edit)
 
         hbox = QtGui.QHBoxLayout()
@@ -86,12 +92,19 @@ class AutoCompleteInputDialog(QtGui.QDialog):
         vbox.addLayout(hbox)
         self.setLayout(vbox)
         self.resize(500, 100)
+        
+        """ select OK on CTRL + Return """
+        shortcut = QtGui.QShortcut(QtGui.QKeySequence('Ctrl+Return'), self)
+        self.connect(shortcut, QtCore.SIGNAL('activated()'), self.accept)
+        shortcut = QtGui.QShortcut(QtGui.QKeySequence('Ctrl+Enter'), self)
+        self.connect(shortcut, QtCore.SIGNAL('activated()'), self.accept)
+
 
     def textValue(self):
-        return self._edit.text()
+        return self._edit.toTaskText()
 
     def setTextValue(self, text):
-        self._edit.setText(text)
+        self._edit.setTaskText(text)
 
     def setLabelText(self, text):
         self._label.setText(text)
