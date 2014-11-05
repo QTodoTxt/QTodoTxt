@@ -11,6 +11,7 @@ class TaskHtmlizer(object):
         # regex matching creation and completion dates and priority
         self.regex = re.compile(
             r'^(x (?P<completed>\d{4}-\d{2}-\d{2} )?)?(\((?P<priority>[A-Z])\) )?(?P<created>\d{4}-\d{2}-\d{2} )?.*$')
+        self.newlineRegex = re.compile(r'( \\\\ .*)$')
 
     def task2html(self, task):
         text = task.text
@@ -33,6 +34,7 @@ class TaskHtmlizer(object):
             text = text.replace('due:%s' % task.due, self._htmlizeDueDate(task.due))
         if task.threshold is not None:
             text = text.replace('t:%s' % task.threshold, self._htmlizeThresholdDate(task.threshold))
+        text = self._htmlizeNewlines(text)
         text = self._htmlizeCreatedCompleted(text, task.text)
         text = self._htmlizeURL(text)
         return text
@@ -112,4 +114,10 @@ class TaskHtmlizer(object):
             text = text + ')</font>'
 
         return text
+
+    def _htmlizeNewlines(self, text):
+        color = "gray"
+        text = self.newlineRegex.sub('<font style="color:%s">\\1</font>' % color, text)
+        return text
+
 

@@ -96,3 +96,14 @@ class TestHtmlizer(unittest.TestCase):
         task = todolib.Task('https://github.com/mNantern/QTodoTxt/archive/master.zip')
         self.assertEqual(self.htmlizer.task2html(task),
         '<tt>&nbsp;&nbsp;&nbsp;</tt><a href="https://github.com/mNantern/QTodoTxt/archive/master.zip">https://github.com/mNantern/QTodoTxt/archive/master.zip</a>')
+
+    def test_16(self):
+        # Test task with newline
+        task = todolib.Task(r'this is my task \\ with additional description')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         r'<tt>&nbsp;&nbsp;&nbsp;</tt>this is my task<font style="color:gray"> \\ with additional description</font>')
+    def test_17(self):
+        # Test false positive task with newline
+        task = todolib.Task('this is my task \\ with additional description')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>this is my task \\ with additional description')

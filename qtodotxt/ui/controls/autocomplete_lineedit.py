@@ -1,7 +1,7 @@
 from PySide import QtCore, QtGui
 
 
-class AutoCompleteEdit(QtGui.QLineEdit):
+class AutoCompleteEdit(QtGui.QPlainTextEdit):
     def __init__(self, model, separator=' '):
         super(AutoCompleteEdit, self).__init__()
         self._separator = separator
@@ -17,22 +17,33 @@ class AutoCompleteEdit(QtGui.QLineEdit):
                               QtCore.Qt.Key_Escape,
                               QtCore.Qt.Key_Tab]
 
+    def setPlainText(self, text):
+        # Replace \\ with newlines
+        text = text.replace(r' \\ ','\n')
+        return super(AutoCompleteEdit, self).setPlainText(text)
+    
+    def toPlainText(self):
+        # Replace newlines with \\
+        text = super(AutoCompleteEdit, self).toPlainText()
+        text = text.replace('\n',r' \\ ')
+        return text
+    
     def _insertCompletion(self, completion):
         """
         This is the event handler for the QCompleter.activated(QString) signal,
         it is called when the user selects an item in the completer popup.
         """
-        currentText = self.text()
+        currentText = self.toPlainText()
         completionPrefixSize = len(self._completer.completionPrefix())
-        textFirstPart = self.cursorPosition() - completionPrefixSize
+        textFirstPart = self.textCursor().position() - completionPrefixSize
         textLastPart = textFirstPart + completionPrefixSize
         newtext = currentText[:textFirstPart] + completion + " " + currentText[textLastPart:]
-        self.setText(newtext)
+        self.setPlainText(newtext)
 
     def textUnderCursor(self):
-        text = self.text()
+        text = self.toPlainText()
         textUnderCursor = ''
-        i = self.cursorPosition() - 1
+        i = self.textCursor().position() - 1
         while i >= 0 and text[i] != self._separator:
             textUnderCursor = text[i] + textUnderCursor
             i -= 1
