@@ -34,9 +34,13 @@ class TaskHtmlizer(object):
             text = text.replace('due:%s' % task.due, self._htmlizeDueDate(task.due))
         if task.threshold is not None:
             text = text.replace('t:%s' % task.threshold, self._htmlizeThresholdDate(task.threshold))
-        text = self._htmlizeNewlines(text)
+        if task.taskFeatures.multiline:
+            text = self._htmlizeNewlines(text)
+
         text = self._htmlizeCreatedCompleted(text, task.text)
         text = self._htmlizeURL(text)
+
+
         return text
 
     def _htmlizeContext(self, context):

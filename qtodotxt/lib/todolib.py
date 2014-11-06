@@ -78,6 +78,9 @@ class Task(object):
                 text = text.replace('\n',r' \\ ')
             self.parseLine(line)
 
+    def _getTaskFeatures(self):
+        return self._taskFeatures
+    
     def increasePriority(self):
         if self.priority is None:
             self.priority = LOWER_PRIORITY
@@ -101,8 +104,10 @@ class Task(object):
             newPriority = chr(ord(self.priority)+1)
             self.text = re.sub('^\(%s\) ' % self.priority, '(%s) ' % newPriority, self.text)
             self.priority = newPriority
-    text = property(_getText, _setText)
 
+    text = property(_getText, _setText)
+    editText = property(_getEditText, _setEditText)
+    taskFeatures = property(_getTaskFeatures)
 
 class TaskFeatures(object):
     def __init__(self):
