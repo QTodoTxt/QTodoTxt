@@ -2,7 +2,7 @@ from functools import cmp_to_key
 import logging
 import os
 from PySide import QtCore
-from qtodotxt.lib.todolib import Task, compareTasks
+from qtodotxt.lib.todolib import Task, TaskFeatures, compareTasks
 from sys import version
 import time
 
@@ -39,7 +39,10 @@ class ErrorSavingFile(Error):
 
 
 class File(object):
-    def __init__(self):
+    def __init__(self, todoFeatures = None):
+        if todoFeatures == None:
+            todoFeatures = TaskFeatures()
+        self._todoFeatures = todoFeatures
         self.NEWLINE = '\n'
         self.tasks = []
         self.filename = ''
@@ -61,7 +64,7 @@ class File(object):
         for line in lines:
             task_text = line.strip()
             if task_text:
-                task = Task(task_text)
+                task = Task(task_text, self._todoFeatures)
                 self.tasks.append(task)
 
     def save(self, filename=''):

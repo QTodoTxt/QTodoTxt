@@ -28,11 +28,12 @@ class MainController(QtCore.QObject):
         self._view = view
         self._dialogs_service = dialogs_service
         self._task_editor_service = task_editor_service
+        self._settings = settings.Settings()
         self._initControllers()
-        self._file = File()
+        self._initTodoFeatures()
+        self._file = File(self._todoFeatures)
         self._fileObserver = FileObserver(self, self._file)
         self._is_modified = False
-        self._settings = settings.Settings()
         self._setIsModified(False)
         self._view.closeEventSignal.connect(self._view_onCloseEvent)
 
@@ -105,6 +106,7 @@ class MainController(QtCore.QObject):
     
     def _onTodoFeaturesChanged(self):
         self._initTodoFeatures()
+        self.revert()
 
     def _initFilterText(self):
         self._view.tasks_view.filter_tasks.filterTextChanged.connect(
@@ -132,7 +134,9 @@ class MainController(QtCore.QObject):
         controller.taskArchived.connect(self._tasks_list_taskArchived)
     
     def _initTodoFeatures(self):
-        self._task_editor_service.setMultilineTasks(self._settings.getSupportMultilineTasks())
+        self._settings.load()
+        self._todoFeatures = todolib.TaskFeatures()
+        self._todoFeatures.multiline = self._settings.getSupportMultilineTasks()
 
     def _tasks_list_taskDeleted(self, task):
         self._file.tasks.remove(task)
@@ -227,7 +231,7 @@ class MainController(QtCore.QObject):
 
     def new(self):
         if self._canExit():
-            self._file = File()
+            self._file = File(self._todoFeatures)
             self._loadFileToUI()
 
     def revert(self):
@@ -240,6 +244,7 @@ class MainController(QtCore.QObject):
     def openFileByName(self, filename):
         logger.debug('MainController.openFileByName called with filename="{}"'.format(filename))
         self._fileObserver.clear()
+        self._file = File(self._todoFeatures)
         self._file.load(filename)
         self._loadFileToUI()
         self._settings.setLastOpenFile(filename)
