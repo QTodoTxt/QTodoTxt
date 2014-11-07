@@ -4,12 +4,12 @@ from collections import OrderedDict
 from qtodotxt.lib import settings
 
 class TaskEditorService(object):
-    def __init__(self, parent_window):
+    def __init__(self, parent_window, settings):
         self._parent_window = parent_window
         self._priorities = ["("+i+")" for i in string.ascii_uppercase ]
         self._resetValues()
         self._multilineTasks = False
-        self._settings = settings.Settings()
+        self._settings = settings
 
     def _resetValues(self):
         self._values = []

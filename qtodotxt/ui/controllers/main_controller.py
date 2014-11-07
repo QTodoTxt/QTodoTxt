@@ -22,13 +22,13 @@ FILENAME_FILTERS = ';;'.join([
 
 
 class MainController(QtCore.QObject):
-    def __init__(self, view, dialogs_service, task_editor_service, args):
+    def __init__(self, view, dialogs_service, task_editor_service, args, settings):
         super(MainController, self).__init__()
         self._args = args
+        self._settings = settings
         self._view = view
         self._dialogs_service = dialogs_service
         self._task_editor_service = task_editor_service
-        self._settings = settings.Settings()
         self._initControllers()
         self._initTodoFeatures()
         self._file = File(self._todoFeatures)
@@ -126,7 +126,7 @@ class MainController(QtCore.QObject):
 
     def _initTasksList(self):
         controller = self._tasks_list_controller = \
-            TasksListController(self._view.tasks_view.tasks_list_view, self._task_editor_service)
+            TasksListController(self._view.tasks_view.tasks_list_view, self._task_editor_service, settings)
 
         controller.taskCreated.connect(self._tasks_list_taskCreated)
         controller.taskModified.connect(self._tasks_list_taskModified)
