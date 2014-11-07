@@ -99,11 +99,23 @@ class TestHtmlizer(unittest.TestCase):
 
     def test_16(self):
         # Test task with newline
-        task = todolib.Task(r'this is my task \\ with additional description')
+        features = todolib.TaskFeatures()
+        features.multiline = True
+        task = todolib.Task(r'this is my task \\ with additional description',features)
         self.assertEqual(self.htmlizer.task2html(task),
                          r'<tt>&nbsp;&nbsp;&nbsp;</tt>this is my task<font style="color:gray"> \\ with additional description</font>')
     def test_17(self):
         # Test false positive task with newline
-        task = todolib.Task('this is my task \\ with additional description')
+        features = todolib.TaskFeatures()
+        features.multiline = True
+        task = todolib.Task('this is my task \\ with additional description', features)
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>this is my task \\ with additional description')
+    def test_18(self):
+        # Test with disabled newline support
+        features = todolib.TaskFeatures()
+        features.multiline = False
+        task = todolib.Task('this is my task \\ with additional description', features)
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>this is my task \\ with additional description')
+
