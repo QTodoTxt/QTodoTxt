@@ -84,6 +84,18 @@ class Settings(object):
     def getViewPositionY(self):
         return self._getData('view_position_y')
 
+    def setEditViewHeight(self,height):
+        self._setData('editview_size_height', height)
+    
+    def setEditViewWidth(self,width):
+        self._setData('editview_size_width', width)
+
+    def getEditViewHeight(self):
+        return self._getData('editview_size_height')
+    
+    def getEditViewWidth(self):
+        return self._getData('editview_size_width')
+    
     def setViewSlidderPosition(self,position):
         self._setData('view_slidder_position', position)
 

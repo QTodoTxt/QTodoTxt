@@ -1,7 +1,7 @@
 import string
 from qtodotxt.ui.controls.autocomplete_inputdialog import AutoCompleteInputDialog
 from collections import OrderedDict
-
+from qtodotxt.lib import settings
 
 class TaskEditorService(object):
     def __init__(self, parent_window):
@@ -9,6 +9,7 @@ class TaskEditorService(object):
         self._priorities = ["("+i+")" for i in string.ascii_uppercase ]
         self._resetValues()
         self._multilineTasks = False
+        self._settings = settings.Settings()
 
     def _resetValues(self):
         self._values = []
@@ -48,16 +49,34 @@ class TaskEditorService(object):
         return text, ok
 
     def _openTaskEditor(self, title, task=None):
+        self._settings.load();
         uniqlist = sorted(list(OrderedDict.fromkeys(self._completedValues+self._values)))
-        dialog = AutoCompleteInputDialog(uniqlist, self._parent_window, self._multilineTasks)
+        dialog = AutoCompleteInputDialog(uniqlist, self._parent_window, self._settings.getSupportMultilineTasks())
         dialog.setWindowTitle(title)
         dialog.setLabelText('Task:')
-        dialog.resize(500, 100)
+        
+        self._restoreDialogDimensions(dialog)
+
         if task:
             dialog.setTextValue(task.text)
         dialog.setModal(True)
-        if dialog.exec_():
+        
+        dlgReturn = dialog.exec_()
+        
+        self._saveDialogDimensions(dialog)
+        
+        if dlgReturn:
             return dialog.textValue(), True
         return None, False
 
+    def _restoreDialogDimensions(self,dialog):
+        height = self._settings.getEditViewHeight()
+        width = self._settings.getEditViewWidth()
+        if height and width:
+            dialog.resize(width, height)
 
+    def _saveDialogDimensions(self,dialog):
+        height = dialog.size().height()
+        width = dialog.size().width()
+        self._settings.setEditViewHeight(height)
+        self._settings.setEditViewWidth(width)
