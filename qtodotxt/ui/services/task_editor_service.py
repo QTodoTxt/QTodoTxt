@@ -55,7 +55,7 @@ class TaskEditorService(object):
         dialog.setWindowTitle(title)
         dialog.setLabelText('Task:')
         
-        self._restoreDialogDimensions(dialog)
+        self._restoreMultilineDialogDimensions(dialog)
 
         if task:
             dialog.setTextValue(task.text)
@@ -63,20 +63,24 @@ class TaskEditorService(object):
         
         dlgReturn = dialog.exec_()
         
-        self._saveDialogDimensions(dialog)
+        self._saveMultilineDialogDimensions(dialog)
         
         if dlgReturn:
             return dialog.textValue(), True
         return None, False
 
-    def _restoreDialogDimensions(self,dialog):
-        height = self._settings.getEditViewHeight()
-        width = self._settings.getEditViewWidth()
-        if height and width:
-            dialog.resize(width, height)
+    def _restoreMultilineDialogDimensions(self,dialog):
+        if self._settings.getSupportMultilineTasks():
+            height = self._settings.getEditViewHeight()
+            width = self._settings.getEditViewWidth()
+            if height and width:
+                dialog.resize(width, height)
+        else:
+            dialog.resize(500,100)
 
-    def _saveDialogDimensions(self,dialog):
-        height = dialog.size().height()
-        width = dialog.size().width()
-        self._settings.setEditViewHeight(height)
-        self._settings.setEditViewWidth(width)
+    def _saveMultilineDialogDimensions(self,dialog):
+        if self._settings.getSupportMultilineTasks():
+            height = dialog.size().height()
+            width = dialog.size().width()
+            self._settings.setEditViewHeight(height)
+            self._settings.setEditViewWidth(width)
