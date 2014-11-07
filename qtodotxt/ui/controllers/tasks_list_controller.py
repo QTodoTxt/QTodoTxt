@@ -17,6 +17,7 @@ class TasksListController(QtCore.QObject):
     def __init__(self, view, task_editor_service, settings):
         QtCore.QObject.__init__(self)
         self._view = view
+        self._settings = settings
         self._task_editor_service = task_editor_service
         self._view.taskActivated.connect(self.editTask)
         self._initCreateTaskAction()
@@ -24,7 +25,6 @@ class TasksListController(QtCore.QObject):
         self._initCompleteSelectedTasksAction()
         self._initDecreasePrioritySelectedTasksAction()
         self._initIncreasePrioritySelectedTasksAction()
-        self._settings = settings
 
     def _initCreateTaskAction(self):
         action = QtGui.QAction(getIcon('add.png'), '&Create Task', self)

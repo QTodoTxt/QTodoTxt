@@ -49,7 +49,6 @@ class TaskEditorService(object):
         return text, ok
 
     def _openTaskEditor(self, title, task=None):
-        self._settings.load();
         uniqlist = sorted(list(OrderedDict.fromkeys(self._completedValues+self._values)))
         dialog = AutoCompleteInputDialog(uniqlist, self._parent_window, self._settings.getSupportMultilineTasks())
         dialog.setWindowTitle(title)
@@ -66,7 +65,9 @@ class TaskEditorService(object):
         self._saveMultilineDialogDimensions(dialog)
         
         if dlgReturn:
+            print("OK")
             return dialog.textValue(), True
+        print("CANCEL")
         return None, False
 
     def _restoreMultilineDialogDimensions(self,dialog):

@@ -126,7 +126,7 @@ class MainController(QtCore.QObject):
 
     def _initTasksList(self):
         controller = self._tasks_list_controller = \
-            TasksListController(self._view.tasks_view.tasks_list_view, self._task_editor_service, settings)
+            TasksListController(self._view.tasks_view.tasks_list_view, self._task_editor_service, self._settings)
 
         controller.taskCreated.connect(self._tasks_list_taskCreated)
         controller.taskModified.connect(self._tasks_list_taskModified)
