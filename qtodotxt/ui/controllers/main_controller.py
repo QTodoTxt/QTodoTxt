@@ -138,6 +138,7 @@ class MainController(QtCore.QObject):
         self._todoFeatures = todolib.TaskFeatures()
         self._todoFeatures.multiline = self._settings.getSupportMultilineTasks()
         self._task_editor_service.setMultilineTasks(self._todoFeatures.multiline)
+        self._tasks_list_controller.setTodoFeatures(self._todoFeatures)
 
     def _tasks_list_taskDeleted(self, task):
         self._file.tasks.remove(task)
