@@ -87,7 +87,6 @@ class TasksListController(QtCore.QObject):
                     self.taskDeleted.emit(task)
 
     def _confirmTasksAction(self, tasks, messagePrefix):
-        message = None
         if len(tasks) == 1:
             message = '%s "%s"?' % (messagePrefix, tasks[0].text)
         else:

@@ -10,6 +10,7 @@ class TasksListView(QtGui.QListWidget):
 
     def __init__(self, parent=None):
         super(TasksListView, self).__init__(parent)
+        self.setLayoutMode(self.LayoutMode.Batched)
         self._task_htmlizer = TaskHtmlizer()
         self._initUI()
         self._oldSelected = []
