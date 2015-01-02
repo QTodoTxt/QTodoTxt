@@ -53,7 +53,13 @@ class Settings(object):
 
     def setHideFutureTasks(self, hideFutureTasks):
         self._setData('hide_future_tasks', hideFutureTasks)
-
+    
+    def getSupportMultilineTasks(self):
+        return self._getData('support_multiline_tasks')
+    
+    def setSupportMultilineTasks(self, supportMultilineTasks):
+        self._setData('support_multiline_tasks', supportMultilineTasks)
+    
     def setViewHeight(self,height):
         self._setData('view_size_height', height)
 
@@ -78,6 +84,18 @@ class Settings(object):
     def getViewPositionY(self):
         return self._getData('view_position_y')
 
+    def setEditViewHeight(self,height):
+        self._setData('editview_size_height', height)
+    
+    def setEditViewWidth(self,width):
+        self._setData('editview_size_width', width)
+
+    def getEditViewHeight(self):
+        return self._getData('editview_size_height')
+    
+    def getEditViewWidth(self):
+        return self._getData('editview_size_width')
+    
     def setViewSlidderPosition(self,position):
         self._setData('view_slidder_position', position)
 

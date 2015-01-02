@@ -1,13 +1,15 @@
 import string
 from qtodotxt.ui.controls.autocomplete_inputdialog import AutoCompleteInputDialog
 from collections import OrderedDict
-
+from qtodotxt.lib import settings
 
 class TaskEditorService(object):
-    def __init__(self, parent_window):
+    def __init__(self, parent_window, settings):
         self._parent_window = parent_window
         self._priorities = ["("+i+")" for i in string.ascii_uppercase ]
         self._resetValues()
+        self._multilineTasks = False
+        self._settings = settings
 
     def _resetValues(self):
         self._values = []
@@ -35,6 +37,9 @@ class TaskEditorService(object):
         self.updateTodoValues(file)
         self.updateCompletedValues(file)
 
+    def setMultilineTasks(self,multilineTasks):
+        self._multilineTasks = multilineTasks
+
     def createTask(self):
         (text, ok) = self._openTaskEditor("Create Task")
         return text, ok
@@ -45,14 +50,38 @@ class TaskEditorService(object):
 
     def _openTaskEditor(self, title, task=None):
         uniqlist = sorted(list(OrderedDict.fromkeys(self._completedValues+self._values)))
-        dialog = AutoCompleteInputDialog(uniqlist, self._parent_window)
+        dialog = AutoCompleteInputDialog(uniqlist, self._parent_window, self._settings.getSupportMultilineTasks())
         dialog.setWindowTitle(title)
         dialog.setLabelText('Task:')
-        dialog.resize(500, 100)
+        
+        self._restoreMultilineDialogDimensions(dialog)
+
         if task:
             dialog.setTextValue(task.text)
         dialog.setModal(True)
-        if dialog.exec_():
+        
+        dlgReturn = dialog.exec_()
+        
+        self._saveMultilineDialogDimensions(dialog)
+        
+        if dlgReturn:
+            print("OK")
             return dialog.textValue(), True
+        print("CANCEL")
         return None, False
 
+    def _restoreMultilineDialogDimensions(self,dialog):
+        if self._settings.getSupportMultilineTasks():
+            height = self._settings.getEditViewHeight()
+            width = self._settings.getEditViewWidth()
+            if height and width:
+                dialog.resize(width, height)
+        else:
+            dialog.resize(500,100)
+
+    def _saveMultilineDialogDimensions(self,dialog):
+        if self._settings.getSupportMultilineTasks():
+            height = dialog.size().height()
+            width = dialog.size().width()
+            self._settings.setEditViewHeight(height)
+            self._settings.setEditViewWidth(width)

@@ -14,9 +14,11 @@ class TasksListController(QtCore.QObject):
     taskArchived = QtCore.Signal(todolib.Task)
     taskDeleted = QtCore.Signal(todolib.Task)
 
-    def __init__(self, view, task_editor_service):
+    def __init__(self, view, task_editor_service, settings):
         QtCore.QObject.__init__(self)
         self._view = view
+        self._settings = settings
+        self._todoFeatures = todolib.TaskFeatures()
         self._task_editor_service = task_editor_service
         self._view.taskActivated.connect(self.editTask)
         self._initCreateTaskAction()
@@ -24,7 +26,6 @@ class TasksListController(QtCore.QObject):
         self._initCompleteSelectedTasksAction()
         self._initDecreasePrioritySelectedTasksAction()
         self._initIncreasePrioritySelectedTasksAction()
-        self._settings = settings.Settings()
 
     def _initCreateTaskAction(self):
         action = QtGui.QAction(getIcon('add.png'), '&Create Task', self)
@@ -137,6 +138,8 @@ class TasksListController(QtCore.QObject):
             text = '%s %s' % (date_string, text)
         return text
 
+    def setTodoFeatures(self, todoFeatures):
+        self._todoFeatures = todoFeatures
 
     def createTask(self):
         (text, ok) = self._task_editor_service.createTask()
@@ -144,7 +147,7 @@ class TasksListController(QtCore.QObject):
             self._settings.load()
             if self._settings.getCreateDate():
                 text = self._addCreationDate(text)
-            task = todolib.Task(text)
+            task = todolib.Task(text, self._todoFeatures)
             self._view.addTask(task)
             self._view.clearSelection()
             self._view.selectTask(task)

@@ -8,7 +8,10 @@ LOWER_PRIORITY = 'Z'
 
 class Task(object):
 
-    def __init__(self, line):
+    def __init__(self, line, taskFeatures = None):
+        if taskFeatures == None:
+            taskFeatures = TaskFeatures()
+        self._taskFeatures = taskFeatures
         self.reset()
         if line:
             self.parseLine(line)
@@ -31,6 +34,11 @@ class Task(object):
             i += 1
 
         self._text = ' '.join(words)
+
+        if self._taskFeatures.multiline:
+            self._editText = self._text.replace(r' \\ ','\n')
+        else:
+            self._editText = self._text
 
     def parseWord(self, word, index):
         if index == 0:
@@ -60,6 +68,19 @@ class Task(object):
         if line:
             self.parseLine(line)
 
+    def _getEditText(self):
+        return self._editText
+    
+    def _setEditText(self, text):
+        self.reset()
+        if text:
+            if self._taskFeatures.multiline:
+                text = text.replace('\n',r' \\ ')
+            self.parseLine(line)
+
+    def _getTaskFeatures(self):
+        return self._taskFeatures
+    
     def increasePriority(self):
         if self.priority is None:
             self.priority = LOWER_PRIORITY
@@ -83,8 +104,14 @@ class Task(object):
             newPriority = chr(ord(self.priority)+1)
             self.text = re.sub('^\(%s\) ' % self.priority, '(%s) ' % newPriority, self.text)
             self.priority = newPriority
-    text = property(_getText, _setText)
 
+    text = property(_getText, _setText)
+    editText = property(_getEditText, _setEditText)
+    taskFeatures = property(_getTaskFeatures)
+
+class TaskFeatures(object):
+    def __init__(self):
+        self.multiline = False
 
 
 def compareTasks(task1, task2):
