@@ -1,5 +1,11 @@
 import json
 import os
+from sys import version
+
+PYTHON_VERSION = version[:3]
+
+if PYTHON_VERSION < '3.3':
+    FileNotFoundError = OSError
 
 DEFAULT_SETTINGS_FILE = os.path.expanduser("~/.qtodotxt.cfg")
 UI_MARGINS_OFFSET = -4
