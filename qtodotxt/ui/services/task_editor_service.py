@@ -65,9 +65,7 @@ class TaskEditorService(object):
         self._saveMultilineDialogDimensions(dialog)
         
         if dlgReturn:
-            print("OK")
             return dialog.textValue(), True
-        print("CANCEL")
         return None, False
 
     def _restoreMultilineDialogDimensions(self,dialog):
