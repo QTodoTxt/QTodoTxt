@@ -27,7 +27,10 @@ class AutoCompleteEdit(QtGui.QLineEdit):
         textFirstPart = self.cursorPosition() - completionPrefixSize
         textLastPart = textFirstPart + completionPrefixSize
         newtext = currentText[:textFirstPart] + completion + " " + currentText[textLastPart:]
+        newCursorPos = self.cursorPosition() + (len(completion) - completionPrefixSize) + 1
+        
         self.setText(newtext)
+        self.setCursorPosition(newCursorPos)
 
     def textUnderCursor(self):
         text = self.text()

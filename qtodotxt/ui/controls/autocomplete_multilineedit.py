@@ -39,7 +39,13 @@ class AutoCompleteMultilineEdit(QtGui.QPlainTextEdit):
         textFirstPart = self.textCursor().position() - completionPrefixSize
         textLastPart = textFirstPart + completionPrefixSize
         newtext = currentText[:textFirstPart] + completion + " " + currentText[textLastPart:]
+        newCursorPos = self.textCursor().position() + (len(completion) - completionPrefixSize) + 1
+        
+        """ Insert text an reposition cursor after text """
         self.setPlainText(newtext)
+        currentCursor = self.textCursor()
+        currentCursor.setPosition(newCursorPos)
+        self.setTextCursor(currentCursor)
 
     def textUnderCursor(self):
         text = self.toPlainText()

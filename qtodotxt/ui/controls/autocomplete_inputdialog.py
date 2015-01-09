@@ -1,5 +1,5 @@
 import sys
-from PySide import QtGui
+from PySide import QtGui, QtCore
 from qtodotxt.ui.controls.autocomplete_multilineedit import AutoCompleteMultilineEdit
 from qtodotxt.ui.controls.autocomplete_lineedit import AutoCompleteEdit
 
@@ -36,6 +36,13 @@ class AutoCompleteInputDialog(QtGui.QDialog):
         vbox.addLayout(hbox)
         self.setLayout(vbox)
         self.resize(500, 100)
+        
+        """ select OK on CTRL + Return """
+        shortcut = QtGui.QShortcut(QtGui.QKeySequence('Ctrl+Return'), self)
+        self.connect(shortcut, QtCore.SIGNAL('activated()'), self.accept)
+        shortcut = QtGui.QShortcut(QtGui.QKeySequence('Ctrl+Enter'), self)
+        self.connect(shortcut, QtCore.SIGNAL('activated()'), self.accept)
+
 
     def textValue(self):
         return self._edit.toTaskText()
