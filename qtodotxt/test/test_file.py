@@ -29,7 +29,7 @@ class TestFile(unittest.TestCase):
         except:
             raise
 
-    def saveAndReaload(self):
+    def saveAndReload(self):
         self.file.save(self.tmpfile)
         self.file = File()
         self.file.load(self.tmpfile)
@@ -37,7 +37,7 @@ class TestFile(unittest.TestCase):
     def test_single_task(self):
         text = 'due:1999-10-10 do something +project1 @context1'
         self.file.tasks.append(Task(text))
-        self.saveAndReaload()
+        self.saveAndReload()
         self.assertEqual(self.file.tasks[0].text, text)
         self.assertEqual(self.file.tasks[0].contexts, ['context1'])
         self.assertEqual(self.file.tasks[0].projects, ['project1'])
@@ -53,7 +53,7 @@ class TestFile(unittest.TestCase):
             Task(task1),
             Task(task2)
         ])
-        self.saveAndReaload()
+        self.saveAndReload()
         self.assertEqual(self.file.tasks[0].text, task2)
         self.assertEqual(self.file.tasks[1].text, task1)
 
@@ -64,7 +64,7 @@ class TestFile(unittest.TestCase):
         task4 = Task('something else +project1 @context2')
         task5 = Task('abc +project1 @context2')
         self.file.tasks.extend([task1, task2, task3, task4, task5])
-        self.saveAndReaload()
+        self.saveAndReload()
         self.assertEqual(self.file.tasks[0].text, task2.text)
         self.assertEqual(self.file.tasks[1].text, task5.text)
         self.assertEqual(self.file.tasks[2].text, task1.text)
@@ -78,7 +78,7 @@ class TestFile(unittest.TestCase):
             Task('task with @context1 and @context2'),
             Task('task with @context1 and @context2 and @context3')
         ])
-        self.saveAndReaload()
+        self.saveAndReload()
         self.assertEqual(self.file.getAllContexts(), {'context1': 2, 'context2': 3, 'context3': 1})
 
     def test_get_all_completed_contexts(self):
@@ -88,7 +88,7 @@ class TestFile(unittest.TestCase):
             Task('task with @context1 and @context2'),
             Task('x task with @context1 and @context2 and @context3')
         ])
-        self.saveAndReaload()
+        self.saveAndReload()
         self.assertEqual(self.file.getAllCompletedContexts(), {'context1': 2, 'context2': 1, 'context3': 1})
 
     def test_get_all_projects(self):
@@ -98,7 +98,7 @@ class TestFile(unittest.TestCase):
             Task('task with +project1 and +project2'),
             Task('task with +project1 and +project2 and +project3')
         ])
-        self.saveAndReaload()
+        self.saveAndReload()
         self.assertEqual(self.file.getAllProjects(), {'project1': 2, 'project2': 3, 'project3': 1})
 
     def test_get_all_due_ranges(self):
@@ -111,7 +111,7 @@ class TestFile(unittest.TestCase):
             Task('due:' + today + ' first task of today'),
             Task('due:' + yesterday + ' task of yesterday'),
         ])
-        self.saveAndReaload()
+        self.saveAndReload()
         self.assertEqual(self.file.getAllDueRanges(), {'today': 2, 'this week': 2, 'this month': 2, 'overdue': 1})
 
     def test_get_all_completed_projects(self):
@@ -121,7 +121,7 @@ class TestFile(unittest.TestCase):
             Task('task with +project1 and +project2'),
             Task('x task with +project1 and +project2 and +project3')
         ])
-        self.saveAndReaload()
+        self.saveAndReload()
         self.assertEqual(self.file.getAllCompletedProjects(), {'project1': 2, 'project2': 1, 'project3': 1})
 
     def test_load_empty_filename(self):
