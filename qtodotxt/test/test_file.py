@@ -1,6 +1,7 @@
 import unittest
 from tempfile import mkstemp
 from os import remove
+from datetime import date, timedelta
 from qtodotxt.lib.file import File, ErrorLoadingFile
 from qtodotxt.lib.todolib import Task
 from sys import version
@@ -34,7 +35,7 @@ class TestFile(unittest.TestCase):
         self.file.load(self.tmpfile)
 
     def test_single_task(self):
-        text = 'do something +project1 @context1'
+        text = 'due:1999-10-10 do something +project1 @context1'
         self.file.tasks.append(Task(text))
         self.saveAndReaload()
         self.assertEqual(self.file.tasks[0].text, text)
@@ -42,6 +43,8 @@ class TestFile(unittest.TestCase):
         self.assertEqual(self.file.tasks[0].projects, ['project1'])
         self.assertEqual(self.file.tasks[0].is_complete, False)
         self.assertEqual(self.file.tasks[0].priority, None)
+        self.assertEqual(self.file.tasks[0].due,'1999-10-10')
+        self.assertEqual(self.file.tasks[0].dueRanges,['overdue'])
 
     def test_two_tasks(self):
         task1 = 'do something +project1 @context1'
@@ -97,6 +100,19 @@ class TestFile(unittest.TestCase):
         ])
         self.saveAndReaload()
         self.assertEqual(self.file.getAllProjects(), {'project1': 2, 'project2': 3, 'project3': 1})
+
+    def test_get_all_due_ranges(self):
+        today = date.today().strftime('%Y-%m-%d')
+        yesterday = (date.today() - timedelta(days = 1)).strftime('%Y-%m-%d')
+
+        self.file.tasks.extend([
+            Task('x due:' + today + ' completed task of today'),
+            Task('due:' + today + ' first task of today'),
+            Task('due:' + today + ' first task of today'),
+            Task('due:' + yesterday + ' task of yesterday'),
+        ])
+        self.saveAndReaload()
+        self.assertEqual(self.file.getAllDueRanges(), {'today': 2, 'this week': 2, 'this month': 2, 'overdue': 1})
 
     def test_get_all_completed_projects(self):
         self.file.tasks.extend([

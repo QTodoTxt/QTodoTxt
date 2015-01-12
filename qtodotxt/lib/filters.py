@@ -72,7 +72,6 @@ class CompleteTasksFilter(BaseFilter):
     def isMatch(self, task):
         return task.is_complete
 
-
 class ContextFilter(BaseFilter):
     """
     Task list filter allowing only incomplete tasks with the selected context.
@@ -103,6 +102,19 @@ class ProjectFilter(BaseFilter):
     def __str__(self):
         return "ProjectFilter(%s)" % self.text
 
+class DueFilter(BaseFilter):
+    """
+    Due list filter for ranges
+
+    """
+    def __init__(self, dueRange):
+        BaseFilter.__init__(self, dueRange)
+
+    def isMatch(self, task):
+        return (not task.is_complete) and (self.text in task.dueRanges)
+
+    def __str__(self):
+        return "DueFilter(%s)" % self.text
 
 class HasProjectsFilter(BaseFilter):
     """
@@ -135,6 +147,20 @@ class HasContextsFilter(BaseFilter):
     def __str__(self):
         return "HasContextsFilter" % self.text
 
+class HasDueRangesFilter(BaseFilter):
+    """
+    Task list filter allowing only complete tasks with due date in due ranges.
+
+    """
+
+    def __init__(self):
+        BaseFilter.__init__(self, 'DueRange')
+
+    def isMatch(self, task):
+        return (not task.is_complete) and task.dueRanges
+
+    def __str__(self):
+        return "HasDueFilter" % self.text
 
 class SimpleTextFilter(BaseFilter):
     """

@@ -42,11 +42,13 @@ class FiltersTreeView(QtGui.QWidget):
         nbContexts = counters['Contexts']
         nbProjects = counters['Projects']
         nbComplete = counters['Complete']
+        nbDue = counters['Due']
         self._incompleteTasksItem.setText(0, "Pending (%d)" % nbPending)
         self._uncategorizedTasksItem.setText(0, "Uncategorized (%d)" % nbUncategorized)
         self._contextsItem.setText(0, "Contexts (%d)" % nbContexts)
         self._projectsItem.setText(0, "Projects (%d)" % nbProjects)
         self._completeTasksItem.setText(0, "Complete (%d)" % nbComplete)
+        self._dueRangesItem.setText(0, "Due soon (%d)" % nbDue)
 
     def selectAllTasksFilter(self):
         self._incompleteTasksItem.setSelected(True)
@@ -62,6 +64,10 @@ class FiltersTreeView(QtGui.QWidget):
 
     def _selectProject(self, project):
         item = self._findItem(project, self._projectsItem)
+        self._selectItem(item)
+
+    def _selectDueRange(self, dueRange):
+        item = self._findItem(dueRange, self._dueRangesItem)
         self._selectItem(item)
 
     def _findItem(self, text, parentItem):
@@ -102,22 +108,28 @@ class FiltersTreeView(QtGui.QWidget):
             FilterTreeWidgetItem(None, ['Projects'], HasProjectsFilter(), getIcon('plus.png'))
         self._completeTasksItem = \
             FilterTreeWidgetItem(None, ['Complete'], CompleteTasksFilter(), getIcon('x.png'))
+        self._dueRangesItem = \
+            FilterTreeWidgetItem(None, ['Due'], HasDueRangesFilter(), getIcon('due.png'))
         tree.addTopLevelItems([
             self._incompleteTasksItem,
             self._uncategorizedTasksItem,
             self._contextsItem,
             self._projectsItem,
-            self._completeTasksItem])
+            self._completeTasksItem,
+            self._dueRangesItem])
 
     def _initFilterTypeMappings(self):
         self._filterItemByFilterType[ContextFilter] = self._contextsItem
         self._filterItemByFilterType[ProjectFilter] = self._projectsItem
+        self._filterItemByFilterType[DueFilter] = self._dueRangesItem
         self._filterIconByFilterType[ContextFilter] = getIcon('at.png')
         self._filterIconByFilterType[ProjectFilter] = getIcon('plus.png')
+        self._filterIconByFilterType[DueFilter] = getIcon('due.png')
         self._treeItemByFilterType[IncompleteTasksFilter] = self._incompleteTasksItem
         self._treeItemByFilterType[UncategorizedTasksFilter] = self._uncategorizedTasksItem
         self._treeItemByFilterType[CompleteTasksFilter] = self._completeTasksItem
         self._treeItemByFilterType[HasProjectsFilter] = self._projectsItem
+        self._treeItemByFilterType[HasDueRangesFilter] = self._dueRangesItem
         self._treeItemByFilterType[HasContextsFilter] = self._contextsItem
 
     def _tree_itemSelectionChanged(self):
@@ -128,6 +140,8 @@ class FiltersTreeView(QtGui.QWidget):
             self._selectContext(filter.text)
         elif isinstance(filter, ProjectFilter):
             self._selectProject(filter.text)
+        elif isinstance(filter, DueFilter):
+            self._selectDueRange(filter.text)
         else:
             item = self._treeItemByFilterType[type(filter)]
             self._selectItem(item)

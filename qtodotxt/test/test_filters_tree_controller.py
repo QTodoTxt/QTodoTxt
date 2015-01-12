@@ -1,9 +1,10 @@
 import unittest
 from PySide import QtCore
+from datetime import date
 
 from qtodotxt.lib import todolib
 from qtodotxt.lib.file import File
-from qtodotxt.lib.filters import IncompleteTasksFilter, ContextFilter, ProjectFilter
+from qtodotxt.lib.filters import IncompleteTasksFilter, ContextFilter, ProjectFilter, DueFilter
 from qtodotxt.ui.controllers import FiltersTreeController
 
 
@@ -42,10 +43,12 @@ class FakeTreeView(QtCore.QObject):
 class Test(unittest.TestCase):
 
     def _createMockFile(self):
+        today = today = date.today().strftime('%Y-%m-%d')
         file = File()
         file.tasks.append(todolib.Task('my task1 @context1'))
         file.tasks.append(todolib.Task('my task2 @context1 @context2'))
-        file.tasks.append(todolib.Task('my task3 +project1 @context2'))
+        file.tasks.append(todolib.Task('due:' + today + ' my task3 +project1 @context2'))
+        file.tasks.append(todolib.Task('due:' + today + ' my task4'))
         return file
 
     def test_showFilters(self):
@@ -66,7 +69,8 @@ class Test(unittest.TestCase):
                               'selected filter #1 should be instance of IncompleteTasksFilter (actual: %s)'
                               % view.selectedFilters[0])
 
-        self.assertEqual(3, len(view.filters), 'There should be 3 filters (actual: %d)' % len(view.filters))
+        self.assertEqual(6, len(view.filters), 'There should be 6 filters (actual: %d)' % len(view.filters))
+
         filter = sortedFilter[0]
         self.assertIsInstance(filter, ContextFilter,
                               'Filter #1 should be instance of ContextFilter (actual: %s)' % str(type(filter)))
@@ -81,8 +85,26 @@ class Test(unittest.TestCase):
 
         filter = sortedFilter[2]
         self.assertIsInstance(filter, ProjectFilter,
-                              'Filter #2 should be instance of ProjectFilter (actual: %s)' % str(type(filter)))
-        self.assertEqual(filter.text, 'project1 (1)', 'Filter #2 text should be "%s" (actual: project1)' % filter.text)
+                              'Filter #3 should be instance of ProjectFilter (actual: %s)' % str(type(filter)))
+        self.assertEqual(filter.text, 'project1 (1)', 'Filter #3 text should be "%s" (actual: project1)' % filter.text)
+
+        filter = sortedFilter[3]
+        self.assertIsInstance(filter, DueFilter,
+                              'Filter #4 should be instance of DueFilter (actual: %s)' % str(type(filter)))
+        self.assertEqual(filter.text, 'this month (2)',
+                         'Filter #4 text should be "this month" (actual: "%s")' % filter.text)
+
+        filter = sortedFilter[4]
+        self.assertIsInstance(filter, DueFilter,
+                              'Filter #5 should be instance of DueFilter (actual: %s)' % str(type(filter)))
+        self.assertEqual(filter.text, 'this week (2)',
+                         'Filter #5 text should be "this week" (actual: "%s")' % filter.text)
+
+        filter = sortedFilter[5]
+        self.assertIsInstance(filter, DueFilter,
+                              'Filter #6 should be instance of DueFilter (actual: %s)' % str(type(filter)))
+        self.assertEqual(filter.text, 'today (2)',
+                         'Filter #6 text should be "today" (actual: "%s")' % filter.text)
 
     def test_showFilters_afterAddingNewContext(self):
         # arrange
@@ -100,8 +122,8 @@ class Test(unittest.TestCase):
 
         # assert
         self.assertEquals(
-            4, len(view.filters),
-            'There should be 4 filters (actual: %s)' % view.selectedFilters)
+            7, len(view.filters),
+            'There should be 7 filters (actual: %s)' % view.selectedFilters)
 
         sortedFilter = sorted(view.filters, key=lambda filter: filter.text)
         print(sortedFilter)

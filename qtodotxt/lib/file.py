@@ -134,6 +134,17 @@ class File(object):
                         contexts[context] = 1
         return contexts
 
+    def getAllDueRanges(self):
+        dueRanges = dict()
+        for task in self.tasks:
+            if not task.is_complete:
+                for dueRange in task.dueRanges:
+                    if dueRange in dueRanges:
+                        dueRanges[dueRange] += 1
+                    else:
+                        dueRanges[dueRange] = 1
+        return dueRanges
+
     def getAllProjects(self):
         projects = dict()
         for task in self.tasks:
@@ -150,18 +161,22 @@ class File(object):
                          'Uncategorized': 0,
                          'Contexts': 0,
                          'Projects': 0,
-                         'Complete': 0})
+                         'Complete': 0,
+                         'Due' : 0})
         for task in self.tasks:
             if not task.is_complete:
                 counters['Pending'] += 1
                 nbProjects = len(task.projects)
                 nbContexts = len(task.contexts)
+                nbDueRanges = len(task.dueRanges)
                 if nbProjects > 0:
                     counters['Projects'] += 1
                 if nbContexts > 0:
                     counters['Contexts'] += 1
                 if nbContexts == 0 and nbProjects == 0:
                     counters['Uncategorized'] += 1
+                if nbDueRanges > 0:
+                    counters['Due'] += 1
             else:
                 counters['Complete'] += 1
         return counters

@@ -1,5 +1,5 @@
 import re
-from datetime import datetime,date
+from datetime import datetime,date,timedelta
 
 
 HIGHER_PRIORITY = 'A'
@@ -21,6 +21,7 @@ class Task(object):
         self.is_future = False
         self._text = ''
         self.due = None
+        self.dueRanges = []
         self.threshold = None
 
     def parseLine(self, line):
@@ -45,6 +46,37 @@ class Task(object):
                 self.projects.append(word[1:])
             elif word.startswith('due:'):
                 self.due = word[4:]
+                try:
+                    today = datetime.today().date()
+                    due_date = datetime.strptime(self.due, '%Y-%m-%d').date()
+
+                    # Tasks due today
+                    if  due_date == date.today():
+                        self.dueRanges.append('today')
+
+                    # Tasks due tomorrow
+                    if today < due_date <= today + timedelta(days=1):
+                        self.dueRanges.append('tomorrow')
+
+                    # Tasks due this week (assuming monday as start of week)
+                    if today <= due_date <= today + timedelta((6-today.weekday()) % 7):
+                        self.dueRanges.append('this week')
+
+                    # Tasks due this month
+                    if today.month == 12:
+                        last_day_of_month = today.replace(day=31)
+                    else:
+                        last_day_of_month = today.replace(month=today.month+1, day=1) - timedelta(days=1)
+                    if today <= due_date <= last_day_of_month:
+                        self.dueRanges.append('this month')
+
+                    # Overdue tasks
+                    if due_date < today:
+                        self.dueRanges.append('overdue')
+
+                except ValueError:
+                    self.dueRanges.append('ValueError')
+
             elif word.startswith('t:'):
                 self.threshold = word[2:]
                 try:
