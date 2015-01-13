@@ -13,10 +13,10 @@ class AutoCompleteMultilineEdit(QtGui.QPlainTextEdit):
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         fm = QFontMetrics(self.font())
         textHeight = fm.height() + 5
-        #self.setFixedHeight(textHeight)
+        self.setFixedHeight(textHeight)
         self.heightMin = 0
         self.heightMax = 65000
-        #self.document().contentsChanged.connect(self.sizeChange)
+        self.document().contentsChanged.connect(self.sizeChange)
         self.connect(
             self._completer,
             QtCore.SIGNAL('activated(QString)'),
