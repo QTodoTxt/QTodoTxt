@@ -1,4 +1,5 @@
 from PySide import QtCore, QtGui
+from PySide.QtGui import QFontMetrics, QSizePolicy
 
 
 class AutoCompleteMultilineEdit(QtGui.QPlainTextEdit):
@@ -8,6 +9,14 @@ class AutoCompleteMultilineEdit(QtGui.QPlainTextEdit):
         self._completer = QtGui.QCompleter(model)
         self._completer.setWidget(self)
         self._completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
+        self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        fm = QFontMetrics(self.font())
+        textHeight = fm.height() + 5
+        #self.setFixedHeight(textHeight)
+        self.heightMin = 0
+        self.heightMax = 65000
+        #self.document().contentsChanged.connect(self.sizeChange)
         self.connect(
             self._completer,
             QtCore.SIGNAL('activated(QString)'),
@@ -79,6 +88,13 @@ class AutoCompleteMultilineEdit(QtGui.QPlainTextEdit):
         self._completer.setCompletionPrefix(completionPrefix)
         self._completer.popup().setCurrentIndex(
             self._completer.completionModel().index(0, 0))
+
+    def sizeChange(self):
+        fm = QFontMetrics(self.font())
+        textHeight = fm.height() + 5
+        docHeight = self.document().size().height()
+        if self.heightMin <= docHeight <= self.heightMax:
+            self.setFixedHeight(textHeight*docHeight)
 
 if __name__ == '__main__':
     def demo():
