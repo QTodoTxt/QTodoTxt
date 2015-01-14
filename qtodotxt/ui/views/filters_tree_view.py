@@ -36,6 +36,13 @@ class FiltersTreeView(QtGui.QWidget):
         parentItem.setExpanded(True)
         parentItem.sortChildren(0, QtCore.Qt.AscendingOrder)
 
+    # no alphabetical sorting for due ranges
+    def addDueRangeFilter(self, filter, number=0):
+        parentItem = self._filterItemByFilterType[type(filter)]
+        icon = self._filterIconByFilterType[type(filter)]
+        FilterTreeWidgetItem(parentItem, ["%s (%d)" % (filter.text, number)], filter=filter, icon=icon)
+        parentItem.setExpanded(True)
+
     def updateTopLevelTitles(self, counters):
         nbPending = counters['Pending']
         nbDue = counters['Due']

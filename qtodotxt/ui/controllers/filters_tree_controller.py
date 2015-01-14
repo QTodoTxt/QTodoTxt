@@ -69,7 +69,7 @@ class FiltersTreeController(QtCore.QObject):
             elif range == 'overdue':
                 filter = DueOverdueFilter(range)
 
-            self._view.addFilter(filter, number)
+            self._view.addDueRangeFilter(filter, number)
         
     def _reselect(self, previouslySelectedFilters):
         for filter in previouslySelectedFilters:
