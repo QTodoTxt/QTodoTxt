@@ -1,5 +1,5 @@
 from PySide import QtCore
-from qtodotxt.lib.filters import ContextFilter, ProjectFilter
+from qtodotxt.lib.filters import ContextFilter, ProjectFilter, DueFilter, DueTodayFilter, DueTomorrowFilter, DueThisWeekFilter, DueThisMonthFilter, DueOverdueFilter
 
 # class IFiltersTreeView(object):
 #    def addFilter(self, filter): pass
@@ -32,6 +32,7 @@ class FiltersTreeController(QtCore.QObject):
         self._view.clear()
         self._addAllContexts(file)
         self._addAllProjects(file)
+        self._addAllDueRanges(file)
         self._updateCounter(file)
         self._is_showing_filters = False
         self._reselect(previouslySelectedFilters)
@@ -51,6 +52,29 @@ class FiltersTreeController(QtCore.QObject):
         for project, number in projects.items():
             filter = ProjectFilter(project)
             self._view.addFilter(filter, number)
+
+    def _addAllDueRanges(self, file):
+
+        dueRanges, rangeSorting = file.getAllDueRanges()
+
+        for range, number in dueRanges.items():
+            if range == 'Today':
+                filter = DueTodayFilter(range)
+                sortKey = rangeSorting['Today']
+            elif range == 'Tomorrow':
+                filter = DueTomorrowFilter(range)
+                sortKey = rangeSorting['Tomorrow']
+            elif range == 'This week':
+                filter = DueThisWeekFilter(range)
+                sortKey = rangeSorting['This week']
+            elif range == 'This month':
+                filter = DueThisMonthFilter(range)
+                sortKey = rangeSorting['This month']
+            elif range == 'Overdue':
+                filter = DueOverdueFilter(range)
+                sortKey = rangeSorting['Overdue']
+
+            self._view.addDueRangeFilter(filter, number, sortKey)
         
     def _reselect(self, previouslySelectedFilters):
         for filter in previouslySelectedFilters:
