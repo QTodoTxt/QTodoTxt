@@ -175,33 +175,3 @@ True
 'C'
 >>> task.text
 '(C) this task has no Priority'
-
-========================================
-11. task with due date today
-========================================
->>> today = date.today().strftime('%Y-%m-%d')
->>> task = todolib.Task('due:' + today + ' do something')
->>> task.due  == today
-True
->>> task.dueRanges
-['today', 'this week', 'this month']
-
-========================================
-12. task with due date tomorrow
-========================================
->>> tomorrow = (date.today() + timedelta(days = 1)).strftime('%Y-%m-%d')
->>> task = todolib.Task('due:' + tomorrow + ' do something')
->>> task.due  == tomorrow
-True
->>> ('tomorrow') in task.dueRanges
-True
-
-========================================
-13. task with due date yesterday
-========================================
->>> yesterday = (date.today() - timedelta(days = 1)).strftime('%Y-%m-%d')
->>> task = todolib.Task('due:' + yesterday + ' do something')
->>> task.due  == yesterday
-True
->>> ('overdue') in task.dueRanges
-True
