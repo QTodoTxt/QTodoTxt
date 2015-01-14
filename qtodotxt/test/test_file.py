@@ -44,7 +44,6 @@ class TestFile(unittest.TestCase):
         self.assertEqual(self.file.tasks[0].is_complete, False)
         self.assertEqual(self.file.tasks[0].priority, None)
         self.assertEqual(self.file.tasks[0].due,'1999-10-10')
-        self.assertEqual(self.file.tasks[0].dueRanges,['overdue'])
 
     def test_two_tasks(self):
         task1 = 'do something +project1 @context1'
@@ -108,7 +107,7 @@ class TestFile(unittest.TestCase):
         self.file.tasks.extend([
             Task('x due:' + today + ' completed task of today'),
             Task('due:' + today + ' first task of today'),
-            Task('due:' + today + ' first task of today'),
+            Task('due:' + today + ' second task of today'),
             Task('due:' + yesterday + ' task of yesterday'),
         ])
         self.saveAndReload()

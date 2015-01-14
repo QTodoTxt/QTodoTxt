@@ -4,7 +4,7 @@ from datetime import date
 
 from qtodotxt.lib import todolib
 from qtodotxt.lib.file import File
-from qtodotxt.lib.filters import IncompleteTasksFilter, ContextFilter, ProjectFilter, DueFilter
+from qtodotxt.lib.filters import IncompleteTasksFilter, ContextFilter, ProjectFilter, DueThisMonthFilter, DueThisWeekFilter, DueTodayFilter
 from qtodotxt.ui.controllers import FiltersTreeController
 
 
@@ -89,20 +89,20 @@ class Test(unittest.TestCase):
         self.assertEqual(filter.text, 'project1 (1)', 'Filter #3 text should be "%s" (actual: project1)' % filter.text)
 
         filter = sortedFilter[3]
-        self.assertIsInstance(filter, DueFilter,
-                              'Filter #4 should be instance of DueFilter (actual: %s)' % str(type(filter)))
+        self.assertIsInstance(filter, DueThisMonthFilter,
+                              'Filter #4 should be instance of DueThisMonthFilter (actual: %s)' % str(type(filter)))
         self.assertEqual(filter.text, 'this month (2)',
                          'Filter #4 text should be "this month" (actual: "%s")' % filter.text)
 
         filter = sortedFilter[4]
-        self.assertIsInstance(filter, DueFilter,
-                              'Filter #5 should be instance of DueFilter (actual: %s)' % str(type(filter)))
+        self.assertIsInstance(filter, DueThisWeekFilter,
+                              'Filter #5 should be instance of DueThisWeekFilter (actual: %s)' % str(type(filter)))
         self.assertEqual(filter.text, 'this week (2)',
                          'Filter #5 text should be "this week" (actual: "%s")' % filter.text)
 
         filter = sortedFilter[5]
-        self.assertIsInstance(filter, DueFilter,
-                              'Filter #6 should be instance of DueFilter (actual: %s)' % str(type(filter)))
+        self.assertIsInstance(filter, DueTodayFilter,
+                              'Filter #6 should be instance of DueTodayFilter (actual: %s)' % str(type(filter)))
         self.assertEqual(filter.text, 'today (2)',
                          'Filter #6 text should be "today" (actual: "%s")' % filter.text)
 

@@ -2,6 +2,7 @@ from functools import cmp_to_key
 import logging
 import os
 from PySide import QtCore
+from qtodotxt.lib.filters import DueTodayFilter, DueTomorrowFilter, DueThisWeekFilter, DueThisMonthFilter, DueOverdueFilter
 from qtodotxt.lib.todolib import Task, compareTasks
 from sys import version
 import time
@@ -137,12 +138,36 @@ class File(object):
     def getAllDueRanges(self):
         dueRanges = dict()
         for task in self.tasks:
-            if not task.is_complete:
-                for dueRange in task.dueRanges:
-                    if dueRange in dueRanges:
-                        dueRanges[dueRange] += 1
-                    else:
-                        dueRanges[dueRange] = 1
+            if DueTodayFilter('today').isMatch(task):
+                if not ('today' in dueRanges):
+                    dueRanges['today'] = 1
+                else:
+                    dueRanges['today'] += 1
+
+            if DueTomorrowFilter('tomorrow').isMatch(task):
+                if not ('tomorrow' in dueRanges):
+                    dueRanges['tomorrow'] = 1
+                else:
+                    dueRanges['tomorrow'] += 1
+
+            if DueThisWeekFilter('this week').isMatch(task):
+                if not ('this week' in dueRanges):
+                    dueRanges['this week'] = 1
+                else:
+                    dueRanges['this week'] += 1
+
+            if DueThisMonthFilter('this month').isMatch(task):
+                if not ('this month' in dueRanges):
+                    dueRanges['this month'] = 1
+                else:
+                    dueRanges['this month'] += 1
+
+            if DueOverdueFilter('overdue').isMatch(task):
+                if not ('overdue' in dueRanges):
+                    dueRanges['overdue'] = 1
+                else:
+                    dueRanges['overdue'] += 1
+
         return dueRanges
 
     def getAllProjects(self):
@@ -168,14 +193,13 @@ class File(object):
                 counters['Pending'] += 1
                 nbProjects = len(task.projects)
                 nbContexts = len(task.contexts)
-                nbDueRanges = len(task.dueRanges)
                 if nbProjects > 0:
                     counters['Projects'] += 1
                 if nbContexts > 0:
                     counters['Contexts'] += 1
                 if nbContexts == 0 and nbProjects == 0:
                     counters['Uncategorized'] += 1
-                if nbDueRanges > 0:
+                if task.due:
                     counters['Due'] += 1
             else:
                 counters['Complete'] += 1
