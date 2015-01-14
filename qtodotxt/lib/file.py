@@ -138,35 +138,35 @@ class File(object):
     def getAllDueRanges(self):
         dueRanges = dict()
         for task in self.tasks:
-            if DueTodayFilter('today').isMatch(task):
-                if not ('today' in dueRanges):
-                    dueRanges['today'] = 1
+            if DueTodayFilter('Today').isMatch(task):
+                if not ('Today' in dueRanges):
+                    dueRanges['Today'] = 1
                 else:
-                    dueRanges['today'] += 1
+                    dueRanges['Today'] += 1
 
-            if DueTomorrowFilter('tomorrow').isMatch(task):
-                if not ('tomorrow' in dueRanges):
-                    dueRanges['tomorrow'] = 1
+            if DueTomorrowFilter('Tomorrow').isMatch(task):
+                if not ('Tomorrow' in dueRanges):
+                    dueRanges['Tomorrow'] = 1
                 else:
-                    dueRanges['tomorrow'] += 1
+                    dueRanges['Tomorrow'] += 1
 
-            if DueThisWeekFilter('this week').isMatch(task):
-                if not ('this week' in dueRanges):
-                    dueRanges['this week'] = 1
+            if DueThisWeekFilter('This week').isMatch(task):
+                if not ('This week' in dueRanges):
+                    dueRanges['This week'] = 1
                 else:
-                    dueRanges['this week'] += 1
+                    dueRanges['This week'] += 1
 
-            if DueThisMonthFilter('this month').isMatch(task):
-                if not ('this month' in dueRanges):
-                    dueRanges['this month'] = 1
+            if DueThisMonthFilter('This month').isMatch(task):
+                if not ('This month' in dueRanges):
+                    dueRanges['This month'] = 1
                 else:
-                    dueRanges['this month'] += 1
+                    dueRanges['This month'] += 1
 
-            if DueOverdueFilter('overdue').isMatch(task):
-                if not ('overdue' in dueRanges):
-                    dueRanges['overdue'] = 1
+            if DueOverdueFilter('Overdue').isMatch(task):
+                if not ('Overdue' in dueRanges):
+                    dueRanges['Overdue'] = 1
                 else:
-                    dueRanges['overdue'] += 1
+                    dueRanges['Overdue'] += 1
 
         return dueRanges
 

@@ -111,7 +111,7 @@ class TestFile(unittest.TestCase):
             Task('due:' + yesterday + ' task of yesterday'),
         ])
         self.saveAndReload()
-        self.assertEqual(self.file.getAllDueRanges(), {'today': 2, 'this week': 2, 'this month': 2, 'overdue': 1})
+        self.assertEqual(self.file.getAllDueRanges(), {'Today': 2, 'This week': 2, 'This month': 2, 'Overdue': 1})
 
     def test_get_all_completed_projects(self):
         self.file.tasks.extend([

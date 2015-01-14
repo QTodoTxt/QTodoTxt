@@ -58,15 +58,15 @@ class FiltersTreeController(QtCore.QObject):
         dueRanges = file.getAllDueRanges()
 
         for range, number in dueRanges.items():
-            if range == 'today':
+            if range == 'Today':
                 filter = DueTodayFilter(range)
-            elif range == 'tomorrow':
+            elif range == 'Tomorrow':
                 filter = DueTomorrowFilter(range)
-            elif range == 'this week':
+            elif range == 'This week':
                 filter = DueThisWeekFilter(range)
-            elif range == 'this month':
+            elif range == 'This month':
                 filter = DueThisMonthFilter(range)
-            elif range == 'overdue':
+            elif range == 'Overdue':
                 filter = DueOverdueFilter(range)
 
             self._view.addDueRangeFilter(filter, number)
