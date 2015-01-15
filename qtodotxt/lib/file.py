@@ -2,7 +2,6 @@ from functools import cmp_to_key
 import logging
 import os
 from PySide import QtCore
-from qtodotxt.lib.filters import DueTodayFilter, DueTomorrowFilter, DueThisWeekFilter, DueThisMonthFilter, DueOverdueFilter
 from qtodotxt.lib.todolib import Task, compareTasks
 from sys import version
 import time
@@ -135,41 +134,6 @@ class File(object):
                         contexts[context] = 1
         return contexts
 
-    def getAllDueRanges(self):
-        dueRanges = dict()
-        for task in self.tasks:
-            if DueTodayFilter('Today').isMatch(task):
-                if not ('Today' in dueRanges):
-                    dueRanges['Today'] = 1
-                else:
-                    dueRanges['Today'] += 1
-
-            if DueTomorrowFilter('Tomorrow').isMatch(task):
-                if not ('Tomorrow' in dueRanges):
-                    dueRanges['Tomorrow'] = 1
-                else:
-                    dueRanges['Tomorrow'] += 1
-
-            if DueThisWeekFilter('This week').isMatch(task):
-                if not ('This week' in dueRanges):
-                    dueRanges['This week'] = 1
-                else:
-                    dueRanges['This week'] += 1
-
-            if DueThisMonthFilter('This month').isMatch(task):
-                if not ('This month' in dueRanges):
-                    dueRanges['This month'] = 1
-                else:
-                    dueRanges['This month'] += 1
-
-            if DueOverdueFilter('Overdue').isMatch(task):
-                if not ('Overdue' in dueRanges):
-                    dueRanges['Overdue'] = 1
-                else:
-                    dueRanges['Overdue'] += 1
-
-        return dueRanges
-
     def getAllProjects(self):
         projects = dict()
         for task in self.tasks:
@@ -186,8 +150,7 @@ class File(object):
                          'Uncategorized': 0,
                          'Contexts': 0,
                          'Projects': 0,
-                         'Complete': 0,
-                         'Due' : 0})
+                         'Complete': 0})
         for task in self.tasks:
             if not task.is_complete:
                 counters['Pending'] += 1
@@ -199,8 +162,6 @@ class File(object):
                     counters['Contexts'] += 1
                 if nbContexts == 0 and nbProjects == 0:
                     counters['Uncategorized'] += 1
-                if task.due:
-                    counters['Due'] += 1
             else:
                 counters['Complete'] += 1
         return counters

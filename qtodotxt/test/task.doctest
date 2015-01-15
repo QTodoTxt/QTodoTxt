@@ -1,6 +1,5 @@
 ﻿>>> import sys, os; sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 >>> from qtodotxt.lib import todolib
->>> from datetime import date, timedelta
 
 Unittests for the qtodotxt.lib.todolib.Task class
 
@@ -70,7 +69,6 @@ False
 
 ========================================
 5. task with priority in the end of line (no priority should be set)
-========================================
 
 >>> task = todolib.Task('do something (A)')
 >>> task.text

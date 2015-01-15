@@ -1,5 +1,5 @@
 from PySide import QtCore
-from qtodotxt.lib.filters import ContextFilter, ProjectFilter, DueFilter, DueTodayFilter, DueTomorrowFilter, DueThisWeekFilter, DueThisMonthFilter, DueOverdueFilter
+from qtodotxt.lib.filters import ContextFilter, ProjectFilter
 
 # class IFiltersTreeView(object):
 #    def addFilter(self, filter): pass
@@ -32,7 +32,6 @@ class FiltersTreeController(QtCore.QObject):
         self._view.clear()
         self._addAllContexts(file)
         self._addAllProjects(file)
-        self._addAllDueRanges(file)
         self._updateCounter(file)
         self._is_showing_filters = False
         self._reselect(previouslySelectedFilters)
@@ -52,24 +51,6 @@ class FiltersTreeController(QtCore.QObject):
         for project, number in projects.items():
             filter = ProjectFilter(project)
             self._view.addFilter(filter, number)
-
-    def _addAllDueRanges(self, file):
-
-        dueRanges = file.getAllDueRanges()
-
-        for range, number in dueRanges.items():
-            if range == 'Today':
-                filter = DueTodayFilter(range)
-            elif range == 'Tomorrow':
-                filter = DueTomorrowFilter(range)
-            elif range == 'This week':
-                filter = DueThisWeekFilter(range)
-            elif range == 'This month':
-                filter = DueThisMonthFilter(range)
-            elif range == 'Overdue':
-                filter = DueOverdueFilter(range)
-
-            self._view.addDueRangeFilter(filter, number)
         
     def _reselect(self, previouslySelectedFilters):
         for filter in previouslySelectedFilters:
