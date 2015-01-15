@@ -13,7 +13,6 @@ Test Setup and Helper Methods
 1. Check ctor
 ========================================
 >>> model = ['one', 'two']
->>> autocomplete_pairs = {'foo':'bar','gong':'fu'}
->>> edit = AutoCompleteEdit(model,autocomplete_pairs)
+>>> edit = AutoCompleteEdit(model)
 >>> edit._separator
 ' '
