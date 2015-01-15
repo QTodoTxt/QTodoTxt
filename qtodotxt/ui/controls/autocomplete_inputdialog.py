@@ -1,12 +1,40 @@
 import sys
 from PySide import QtGui
 from qtodotxt.ui.controls.autocomplete_lineedit import AutoCompleteEdit
-
+from datetime import date, timedelta
 
 class AutoCompleteInputDialog(QtGui.QDialog):
+
+    autocomplete_pairs = {'due:EndOfWeek': '',
+                          'due:EndOfMonth': '',
+                          'due:EndOfYear': '',
+                          'due:Today': '',
+                          'due:Tomorrow': ''}
+
     def __init__(self, values, parent=None):
         super(AutoCompleteInputDialog, self).__init__(parent)
         self._initUI(values)
+        self._populateKeys(self.autocomplete_pairs)
+
+    def _populateKeys(self, keys):
+        today = 'due:' + date.today().strftime('%Y-%m-%d')
+        tomorrow = 'due:' + (date.today() + timedelta(days = 1)).strftime('%Y-%m-%d')
+        EOW = 'due:' + (date.today() + timedelta((6-date.today().weekday()) % 7)).strftime('%Y-%m-%d')
+        EOM = 'due:' + (date.today().replace(month=date.today().month+1, day=1) - timedelta(days=1)).strftime('%Y-%m-%d')
+        EOY = 'due:' + (date.today().replace(year=date.today().year+1, month=1, day=1) - timedelta(days=1)).strftime('%Y-%m-%d')
+
+        for key in keys:
+            if 'due:EndOfWeek' == key:
+                keys[key] = EOW
+            elif 'due:EndOfMonth' == key:
+                keys[key] = EOM
+            elif 'due:EndOfYear' == key:
+                keys[key] = EOY
+            elif 'due:Today' == key:
+                keys[key] = today
+            elif 'due:Tomorrow' == key:
+                keys[key] = tomorrow
+        return keys
 
     def _initUI(self, values):
         self.setWindowTitle("Task Editor")
@@ -15,7 +43,7 @@ class AutoCompleteInputDialog(QtGui.QDialog):
         self._label = QtGui.QLabel("Task:")
         vbox.addWidget(self._label)
 
-        self._edit = AutoCompleteEdit(values)
+        self._edit = AutoCompleteEdit(values, self.autocomplete_pairs)
         vbox.addWidget(self._edit)
 
         hbox = QtGui.QHBoxLayout()
