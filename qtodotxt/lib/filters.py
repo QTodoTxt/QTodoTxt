@@ -154,7 +154,7 @@ class DueTomorrowFilter(BaseFilter):
         else:
             due_date = self.parseDate(task.due)
             today = datetime.today().date()
-            return today < due_date < today + timedelta(days=1)
+            return today < due_date <= today + timedelta(days=1)
 
     def __str__(self):
         return "DueTomorrowFilter(%s)" % self.text

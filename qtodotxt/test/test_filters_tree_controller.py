@@ -18,7 +18,7 @@ class FakeTreeView(QtCore.QObject):
         filter.text = "%s (%d)" % (filter.text, number)
         self.filters.append(filter)
 
-    def addDueRangeFilter(self, filter, number=0):
+    def addDueRangeFilter(self, filter, number=0, sortKey=0):
         filter.text = "%s (%d)" % (filter.text, number)
         self.filters.append(filter)
 

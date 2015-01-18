@@ -137,6 +137,13 @@ class File(object):
 
     def getAllDueRanges(self):
         dueRanges = dict()
+        # This determines the sorting of the ranges in the tree view. Lowest value first.
+        rangeSorting = {'Today': 20,
+                        'Tomorrow': 30,
+                        'This week': 40,
+                        'This month': 50,
+                        'Overdue': 10}
+
         for task in self.tasks:
             if DueTodayFilter('Today').isMatch(task):
                 if not ('Today' in dueRanges):
@@ -168,7 +175,7 @@ class File(object):
                 else:
                     dueRanges['Overdue'] += 1
 
-        return dueRanges
+        return dueRanges, rangeSorting
 
     def getAllProjects(self):
         projects = dict()

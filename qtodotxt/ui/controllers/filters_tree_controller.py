@@ -55,21 +55,26 @@ class FiltersTreeController(QtCore.QObject):
 
     def _addAllDueRanges(self, file):
 
-        dueRanges = file.getAllDueRanges()
+        dueRanges, rangeSorting = file.getAllDueRanges()
 
         for range, number in dueRanges.items():
             if range == 'Today':
                 filter = DueTodayFilter(range)
+                sortKey = rangeSorting['Today']
             elif range == 'Tomorrow':
                 filter = DueTomorrowFilter(range)
+                sortKey = rangeSorting['Tomorrow']
             elif range == 'This week':
                 filter = DueThisWeekFilter(range)
+                sortKey = rangeSorting['This week']
             elif range == 'This month':
                 filter = DueThisMonthFilter(range)
+                sortKey = rangeSorting['This month']
             elif range == 'Overdue':
                 filter = DueOverdueFilter(range)
+                sortKey = rangeSorting['Overdue']
 
-            self._view.addDueRangeFilter(filter, number)
+            self._view.addDueRangeFilter(filter, number, sortKey)
         
     def _reselect(self, previouslySelectedFilters):
         for filter in previouslySelectedFilters:
