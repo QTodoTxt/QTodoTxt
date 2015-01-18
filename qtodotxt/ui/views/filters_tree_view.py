@@ -38,7 +38,7 @@ class FiltersTreeView(QtGui.QWidget):
 
     # Predefined sorting for due ranges
     def addDueRangeFilter(self, filter, number=0, sortKey=0):
-        parentItem = self._filterItemByFilterType[type(filter)]
+        parentItem = self._dueItem
         icon = self._filterIconByFilterType[type(filter)]
         FilterTreeWidgetItem(parentItem, ["%s (%d)" % (filter.text, number)], filter=filter, icon=icon, order=sortKey)
         parentItem.setExpanded(True)
@@ -130,11 +130,6 @@ class FiltersTreeView(QtGui.QWidget):
         self._filterItemByFilterType[ContextFilter] = self._contextsItem
         self._filterItemByFilterType[ProjectFilter] = self._projectsItem
         self._filterItemByFilterType[DueFilter] = self._dueItem
-        self._filterItemByFilterType[DueTodayFilter] = self._dueItem
-        self._filterItemByFilterType[DueTomorrowFilter] = self._dueItem
-        self._filterItemByFilterType[DueThisWeekFilter] = self._dueItem
-        self._filterItemByFilterType[DueThisMonthFilter] = self._dueItem
-        self._filterItemByFilterType[DueOverdueFilter] = self._dueItem
 
         self._filterIconByFilterType[ContextFilter] = getIcon('at.png')
         self._filterIconByFilterType[ProjectFilter] = getIcon('plus.png')
