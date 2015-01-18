@@ -36,11 +36,11 @@ class FiltersTreeView(QtGui.QWidget):
         parentItem.setExpanded(True)
         parentItem.sortChildren(0, QtCore.Qt.AscendingOrder)
 
-    # no alphabetical sorting for due ranges
+    # Predefined sorting for due ranges
     def addDueRangeFilter(self, filter, number=0, sortKey=0):
         parentItem = self._filterItemByFilterType[type(filter)]
         icon = self._filterIconByFilterType[type(filter)]
-        FilterTreeWidgetItem(parentItem, ["%s (%d) (%d)" % (filter.text, number, sortKey)], filter=filter, icon=icon, order=sortKey)
+        FilterTreeWidgetItem(parentItem, ["%s (%d)" % (filter.text, number)], filter=filter, icon=icon, order=sortKey)
         parentItem.setExpanded(True)
         parentItem.sortChildren(1, QtCore.Qt.AscendingOrder)
 
