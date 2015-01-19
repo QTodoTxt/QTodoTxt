@@ -23,17 +23,11 @@ class AutoCompleteInputDialog(QtGui.QDialog):
         EOM = 'due:' + (date.today().replace(month=date.today().month+1, day=1) - timedelta(days=1)).strftime('%Y-%m-%d')
         EOY = 'due:' + (date.today().replace(year=date.today().year+1, month=1, day=1) - timedelta(days=1)).strftime('%Y-%m-%d')
 
-        for key in keys:
-            if 'due:EndOfWeek' == key:
-                keys[key] = EOW
-            elif 'due:EndOfMonth' == key:
-                keys[key] = EOM
-            elif 'due:EndOfYear' == key:
-                keys[key] = EOY
-            elif 'due:Today' == key:
-                keys[key] = today
-            elif 'due:Tomorrow' == key:
-                keys[key] = tomorrow
+        keys['due:EndOfWeek'] = EOW
+        keys['due:EndOfMonth'] = EOM
+        keys['due:EndOfYear'] = EOY
+        keys['due:Today'] = today
+        keys['due:Tomorrow'] = tomorrow
         return keys
 
     def _initUI(self, values):
