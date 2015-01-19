@@ -5,23 +5,25 @@ from datetime import date, timedelta
 import collections
 
 class AutoCompleteInputDialog(QtGui.QDialog):
-    autocomplete_pairs = collections.OrderedDict([('due:EndOfWeek', ''),
-    ('due:EndOfMonth', ''),
-    ('due:EndOfYear', ''),
-    ('due:Today', ''),
-    ('due:Tomorrow', ''),
-    ('due:January', ''),
-    ('due:February', ''),
-    ('due:March', ''),
-    ('due:April', ''),
-    ('due:May', ''),
-    ('due:June', ''),
-    ('due:July', ''),
-    ('due:August', ''),
-    ('due:September', ''),
-    ('due:October', ''),
-    ('due:November', ''),
-    ('due:December', '')])
+    autocomplete_pairs = collections.OrderedDict([
+        ('due:Today', ''),
+        ('due:Tomorrow', ''),
+        ('due:EndOfWeek', ''),
+        ('due:EndOfMonth', ''),
+        ('due:EndOfYear', ''),
+        ('due:January', ''),
+        ('due:February', ''),
+        ('due:March', ''),
+        ('due:April', ''),
+        ('due:May', ''),
+        ('due:June', ''),
+        ('due:July', ''),
+        ('due:August', ''),
+        ('due:September', ''),
+        ('due:October', ''),
+        ('due:November', ''),
+        ('due:December', '')
+    ])
 
     def __init__(self, values, parent=None):
         super(AutoCompleteInputDialog, self).__init__(parent)
