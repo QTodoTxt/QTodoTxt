@@ -34,10 +34,8 @@ class AutoCompleteEdit(QtGui.QLineEdit):
         self.setText(newtext)
 
     def replaceAutocompleteKeys(self, completion):
-        for key, value in self._autocomplete_pairs.items():
-            if key == completion:
-                completion = value
-        return completion
+        if completion in self._autocomplete_pairs.keys():
+            return self._autocomplete_pairs[completion]
 
     def textUnderCursor(self):
         text = self.text()
