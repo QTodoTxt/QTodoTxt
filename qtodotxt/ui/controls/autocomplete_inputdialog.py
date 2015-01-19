@@ -2,26 +2,26 @@ import sys
 from PySide import QtGui
 from qtodotxt.ui.controls.autocomplete_lineedit import AutoCompleteEdit
 from datetime import date, timedelta
+import collections
 
 class AutoCompleteInputDialog(QtGui.QDialog):
-
-    autocomplete_pairs = {'due:EndOfWeek': '',
-                          'due:EndOfMonth': '',
-                          'due:EndOfYear': '',
-                          'due:Today': '',
-                          'due:Tomorrow': '',
-                          'due:January': '',
-                          'due:February': '',
-                          'due:March': '',
-                          'due:April': '',
-                          'due:May': '',
-                          'due:June': '',
-                          'due:July': '',
-                          'due:August': '',
-                          'due:September': '',
-                          'due:October': '',
-                          'due:November': '',
-                          'due:December': ''}
+    autocomplete_pairs = collections.OrderedDict([('due:EndOfWeek', ''),
+    ('due:EndOfMonth', ''),
+    ('due:EndOfYear', ''),
+    ('due:Today', ''),
+    ('due:Tomorrow', ''),
+    ('due:January', ''),
+    ('due:February', ''),
+    ('due:March', ''),
+    ('due:April', ''),
+    ('due:May', ''),
+    ('due:June', ''),
+    ('due:July', ''),
+    ('due:August', ''),
+    ('due:September', ''),
+    ('due:October', ''),
+    ('due:November', ''),
+    ('due:December', '')])
 
     def __init__(self, values, parent=None):
         super(AutoCompleteInputDialog, self).__init__(parent)
