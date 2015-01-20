@@ -1,4 +1,5 @@
 import re
+from datetime import datetime, date, timedelta
 
 
 class BaseFilter(object):
@@ -24,6 +25,10 @@ class BaseFilter(object):
 
         """
         return True
+
+    def parseDate(self, dateString):
+        due_date = datetime.strptime(dateString, '%Y-%m-%d').date()
+        return due_date
 
     def __eq__(self, other):
         """
@@ -72,7 +77,6 @@ class CompleteTasksFilter(BaseFilter):
     def isMatch(self, task):
         return task.is_complete
 
-
 class ContextFilter(BaseFilter):
     """
     Task list filter allowing only incomplete tasks with the selected context.
@@ -103,6 +107,121 @@ class ProjectFilter(BaseFilter):
     def __str__(self):
         return "ProjectFilter(%s)" % self.text
 
+class DueFilter(BaseFilter):
+    """
+    Due list filter for ranges
+
+    """
+    def __init__(self, dueRange):
+        BaseFilter.__init__(self, dueRange)
+
+    def isMatch(self, task):
+        return (not task.is_complete) and (self.text in task.dueRanges)
+
+    def __str__(self):
+        return "DueFilter(%s)" % self.text
+
+class DueTodayFilter(BaseFilter):
+    """
+    Task list filter allowing only incomplete tasks that are due today.
+
+    """
+    def __init__(self, dueRange):
+        BaseFilter.__init__(self, dueRange)
+
+    def isMatch(self, task):
+        if (not task.due) or (task.is_complete):
+            return False
+        else:
+            self.due_date = self.parseDate(task.due)
+            today = datetime.today().date()
+            return self.due_date == today
+
+    def __str__(self):
+        return "DueTodayFilter(%s)" % self.text
+
+class DueTomorrowFilter(BaseFilter):
+    """
+    Task list filter allowing only incomplete tasks that are due tomorrow.
+
+    """
+    def __init__(self, dueRange):
+        BaseFilter.__init__(self, dueRange)
+
+    def isMatch(self, task):
+        if (not task.due) or (task.is_complete):
+            return False
+        else:
+            due_date = self.parseDate(task.due)
+            today = datetime.today().date()
+            return today < due_date <= today + timedelta(days=1)
+
+    def __str__(self):
+        return "DueTomorrowFilter(%s)" % self.text
+
+class DueThisWeekFilter(BaseFilter):
+    """
+    Task list filter allowing only incomplete tasks that are due this week.
+
+    """
+    def __init__(self, dueRange):
+        BaseFilter.__init__(self, dueRange)
+
+    def isMatch(self, task):
+        if (not task.due) or (task.is_complete):
+            return False
+        else:
+            due_date = self.parseDate(task.due)
+            today = datetime.today().date()
+            return today <= due_date <= today + timedelta((6-today.weekday()) % 7)
+
+    def __str__(self):
+        return "DueThisWeekFilter(%s)" % self.text
+
+class DueThisMonthFilter(BaseFilter):
+    """
+    Task list filter allowing only incomplete tasks that are due this month.
+
+    """
+    def __init__(self, dueRange):
+        BaseFilter.__init__(self, dueRange)
+
+    def isMatch(self, task):
+        if (not task.due) or (task.is_complete):
+            return False
+        else:
+            due_date = self.parseDate(task.due)
+            today = datetime.today().date()
+            if today.month == 12:
+                last_day_of_month = today.replace(day=31)
+            else:
+                last_day_of_month = today.replace(month=today.month+1, day=1) - timedelta(days=1)
+            return today <= due_date <= last_day_of_month
+
+    def __str__(self):
+        return "DueThisMonthFilter(%s)" % self.text
+
+class DueOverdueFilter(BaseFilter):
+    """
+    Task list filter allowing only incomplete tasks that are overdue.
+
+    """
+    def __init__(self, dueRange):
+        BaseFilter.__init__(self, dueRange)
+
+    def isMatch(self, task):
+        if (not task.due) and (task.is_complete):
+            return False
+        else:
+            if not task.due:
+                return False
+            else:
+                due_date = self.parseDate(task.due)
+                today = datetime.today().date()
+                return due_date < today
+
+    def __str__(self):
+        return "DueOverdueFilter(%s)" % self.text
 
 class HasProjectsFilter(BaseFilter):
     """
@@ -135,6 +254,35 @@ class HasContextsFilter(BaseFilter):
     def __str__(self):
         return "HasContextsFilter" % self.text
 
+class HasDueDateFilter(BaseFilter):
+    """
+    Task list filter allowing only complete tasks with due date in due ranges.
+
+    """
+
+    def __init__(self):
+        BaseFilter.__init__(self, 'DueRange')
+
+    def isMatch(self, task):
+        return (not task.is_complete) and task.due
+
+    def __str__(self):
+        return "HasDueDateFilter" % self.text
+
+class HasDueRangesFilter(BaseFilter):
+    """
+    Task list filter allowing only complete tasks with due date in due ranges.
+
+    """
+
+    def __init__(self):
+        BaseFilter.__init__(self, 'DueRange')
+
+    def isMatch(self, task):
+        return (not task.is_complete) and task.dueRanges
+
+    def __str__(self):
+        return "HasDueRangesFilter" % self.text
 
 class SimpleTextFilter(BaseFilter):
     """
