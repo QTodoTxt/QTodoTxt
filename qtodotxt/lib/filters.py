@@ -210,7 +210,7 @@ class DueOverdueFilter(BaseFilter):
         BaseFilter.__init__(self, dueRange)
 
     def isMatch(self, task):
-        if (not task.due) and (task.is_complete):
+        if (not task.due) or (task.is_complete):
             return False
         else:
             if not task.due:
