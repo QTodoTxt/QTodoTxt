@@ -38,3 +38,4 @@ Be sure to have all [prerequisites](http://github.com/mNantern/QTodoTxt/wiki/Use
 - [Changelog](https://github.com/mNantern/QTodoTxt/wiki/Changelog)
 - [Defects and Enhancements](https://github.com/mNantern/QTodoTxt/issues)
 - [Screenshots](https://github.com/mNantern/QTodoTxt/wiki/Screenshots)
+- [Forum](https://groups.google.com/d/forum/qtodotxt)
