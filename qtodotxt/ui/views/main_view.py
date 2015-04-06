@@ -38,3 +38,4 @@ class MainView(QtGui.QMainWindow):
     def closeEvent(self, closeEvent):
         super(MainView, self).closeEvent(closeEvent)
         self.closeEventSignal.emit(closeEvent)
+

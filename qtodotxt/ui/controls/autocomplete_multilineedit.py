@@ -1,13 +1,21 @@
 from PySide import QtCore, QtGui
+from PySide.QtGui import QFontMetrics, QSizePolicy
 
-class AutoCompleteEdit(QtGui.QLineEdit):
-    def __init__(self, model, autocomplete_pairs, separator=' '):
-        super(AutoCompleteEdit, self).__init__()
+
+class AutoCompleteMultilineEdit(QtGui.QPlainTextEdit):
+    def __init__(self, model, autocomplete_pairs, separator=' \n'):
+        super(AutoCompleteMultilineEdit, self).__init__()
         self._separator = separator
         self._autocomplete_pairs = autocomplete_pairs
         self._completer = QtGui.QCompleter(model)
         self._completer.setWidget(self)
         self._completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
+        #self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        fm = QFontMetrics(self.font())
+        self.heightMin = 5
+        self.heightMax = 20
+        self.document().contentsChanged.connect(self.sizeChange)
         self.connect(
             self._completer,
             QtCore.SIGNAL('activated(QString)'),
@@ -17,34 +25,49 @@ class AutoCompleteEdit(QtGui.QLineEdit):
                               QtCore.Qt.Key_Escape,
                               QtCore.Qt.Key_Tab]
 
+    def setTaskText(self, text):
+        # Replace \\ with newlines
+        text = text.replace(r' \\ ','\n')
+        return super(AutoCompleteMultilineEdit, self).setPlainText(text)
+    
+    def toTaskText(self):
+        # Replace newlines AutoCompleteMultilineEdit \\
+        text = super(AutoCompleteMultilineEdit, self).toPlainText()
+        text = text.rstrip() # trailing empty lines cause issues
+        text = text.replace('\n',r' \\ ')
+        return text
+    
     def _insertCompletion(self, completion):
         """
         This is the event handler for the QCompleter.activated(QString) signal,
         it is called when the user selects an item in the completer popup.
         """
-        currentText = self.text()
+        currentText = self.toPlainText()
         completionPrefixSize = len(self._completer.completionPrefix())
-        textFirstPart = self.cursorPosition() - completionPrefixSize
+        textFirstPart = self.textCursor().position() - completionPrefixSize
         textLastPart = textFirstPart + completionPrefixSize
 
         if completion in self._autocomplete_pairs:
             completion = self.replaceAutocompleteKeys(completion)
 
         newtext = currentText[:textFirstPart] + completion + " " + currentText[textLastPart:]
-        newCursorPos = self.cursorPosition() + (len(completion) - completionPrefixSize) + 1
+        newCursorPos = self.textCursor().position() + (len(completion) - completionPrefixSize) + 1
         
-        self.setText(newtext)
-        self.setCursorPosition(newCursorPos)
+        """ Insert text an reposition cursor after text """
+        self.setPlainText(newtext)
+        currentCursor = self.textCursor()
+        currentCursor.setPosition(newCursorPos)
+        self.setTextCursor(currentCursor)
 
     def replaceAutocompleteKeys(self, completion):
         if completion in self._autocomplete_pairs.keys():
             return self._autocomplete_pairs[completion]
 
     def textUnderCursor(self):
-        text = self.text()
+        text = self.toPlainText()
         textUnderCursor = ''
-        i = self.cursorPosition() - 1
-        while i >= 0 and text[i] != self._separator:
+        i = self.textCursor().position() - 1
+        while i >= 0 and text[i] not in self._separator:
             textUnderCursor = text[i] + textUnderCursor
             i -= 1
         return textUnderCursor
@@ -54,7 +77,7 @@ class AutoCompleteEdit(QtGui.QLineEdit):
             if event.key() in self._keysToIgnore:
                 event.ignore()
                 return
-        super(AutoCompleteEdit, self).keyPressEvent(event)
+        super(AutoCompleteMultilineEdit, self).keyPressEvent(event)
         completionPrefix = self.textUnderCursor()
         if completionPrefix != self._completer.completionPrefix():
             self._updateCompleterPopupItems(completionPrefix)
@@ -63,12 +86,7 @@ class AutoCompleteEdit(QtGui.QLineEdit):
                 self._completer.complete()
         if len(completionPrefix) == 0:
             self._completer.popup().hide()
-    def setTaskText(self, text):
-        return super(AutoCompleteEdit, self).setText(text)
-    
-    def toTaskText(self):
-        return super(AutoCompleteEdit, self).text()
-    
+
     def _updateCompleterPopupItems(self, completionPrefix):
         """
         Filters the completer's popup items to only show items
@@ -78,12 +96,22 @@ class AutoCompleteEdit(QtGui.QLineEdit):
         self._completer.popup().setCurrentIndex(
             self._completer.completionModel().index(0, 0))
 
+    def sizeChange(self):
+        fm = QFontMetrics(self.font())
+        textHeight = fm.height()
+        docHeight = self.document().size().height()
+        if docHeight < self.heightMin:
+            docHeight = self.heightMin
+        newFixedHeight = textHeight*docHeight + 10
+        if newFixedHeight > self.height() and docHeight <= self.heightMax:
+            self.setMinimumHeight(newFixedHeight)
+
 if __name__ == '__main__':
     def demo():
         import sys
         app = QtGui.QApplication(sys.argv)
         values = ['@call', '@bug', '+qtodotxt', '+sqlvisualizer']
-        editor = AutoCompleteEdit(values)
+        editor = AutoCompleteMultilineEdit(values)
         window = QtGui.QWidget()
         hbox = QtGui.QHBoxLayout()
         hbox.addWidget(editor)

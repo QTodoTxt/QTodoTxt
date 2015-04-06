@@ -1,5 +1,5 @@
 import unittest
-from qtodotxt.lib.todolib import Task
+from qtodotxt.lib.todolib import Task, TaskFeatures
 
 class TestTaskCompletenessComparison(unittest.TestCase):
     @unittest.skip("Necessary methods are not implemented yet.")
@@ -41,3 +41,22 @@ class TestTaskComparison(unittest.TestCase):
         self.assertGreater(Task('(B) task'), Task('(A) task'))
         self.assertGreater(Task('task'), Task('(A) task'))
         self.assertGreater(Task('x (A) task'), Task('(A) task'))
+
+class TestTaskNewline(unittest.TestCase):
+    def test_01(self):
+        features = TaskFeatures()
+        features.multiline = False
+        task = Task(r'this is my task \\ with additional description', features)
+        self.assertEqual(task.editText, r'this is my task \\ with additional description')
+
+    def test_02(self):
+        features = TaskFeatures()
+        features.multiline = True
+        task = Task(r'this is my task \\ with additional description',features)
+        self.assertEqual(task.editText, 'this is my task\nwith additional description')
+
+    def test_03(self):
+        features = TaskFeatures()
+        features.multiline = True
+        task = Task('this is my task \\ with additional description',features)
+        self.assertEqual(task.editText, r'this is my task \ with additional description')

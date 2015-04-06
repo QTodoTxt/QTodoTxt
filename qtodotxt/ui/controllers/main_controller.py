@@ -22,17 +22,18 @@ FILENAME_FILTERS = ';;'.join([
 
 
 class MainController(QtCore.QObject):
-    def __init__(self, view, dialogs_service, task_editor_service, args):
+    def __init__(self, view, dialogs_service, task_editor_service, args, settings):
         super(MainController, self).__init__()
         self._args = args
+        self._settings = settings
         self._view = view
         self._dialogs_service = dialogs_service
         self._task_editor_service = task_editor_service
         self._initControllers()
-        self._file = File()
+        self._initTodoFeatures()
+        self._file = File(self._todoFeatures)
         self._fileObserver = FileObserver(self, self._file)
         self._is_modified = False
-        self._settings = settings.Settings()
         self._setIsModified(False)
         self._view.closeEventSignal.connect(self._view_onCloseEvent)
 
@@ -65,6 +66,7 @@ class MainController(QtCore.QObject):
         self._updateAutoSavePref()
         self._updateAutoArchivePref()
         self._updateHideFutureTasksPref()
+        self._updateSupportMultilineTasksPref()
         self._updateView()
 
         if self._args.file:
@@ -100,6 +102,14 @@ class MainController(QtCore.QObject):
         if self._settings.getHideFutureTasks():
             tasks = todolib.filterTasks([FutureFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
+    
+    def _onTodoFeaturesChanged(self):
+        self._initTodoFeatures()
+        try:
+            self.openFileByName(self._file.filename)
+        except ErrorLoadingFile as ex:
+            self._dialogs_service.showError(str(ex))
+
 
     def _initFilterText(self):
         self._view.tasks_view.filter_tasks.filterTextChanged.connect(
@@ -119,12 +129,19 @@ class MainController(QtCore.QObject):
 
     def _initTasksList(self):
         controller = self._tasks_list_controller = \
-            TasksListController(self._view.tasks_view.tasks_list_view, self._task_editor_service)
+            TasksListController(self._view.tasks_view.tasks_list_view, self._task_editor_service, self._settings)
 
         controller.taskCreated.connect(self._tasks_list_taskCreated)
         controller.taskModified.connect(self._tasks_list_taskModified)
         controller.taskDeleted.connect(self._tasks_list_taskDeleted)
         controller.taskArchived.connect(self._tasks_list_taskArchived)
+    
+    def _initTodoFeatures(self):
+        self._settings.load()
+        self._todoFeatures = todolib.TaskFeatures()
+        self._todoFeatures.multiline = self._settings.getSupportMultilineTasks()
+        self._task_editor_service.setMultilineTasks(self._todoFeatures.multiline)
+        self._tasks_list_controller.setTodoFeatures(self._todoFeatures)
 
     def _tasks_list_taskDeleted(self, task):
         self._file.tasks.remove(task)
@@ -219,7 +236,7 @@ class MainController(QtCore.QObject):
 
     def new(self):
         if self._canExit():
-            self._file = File()
+            self._file = File(self._todoFeatures)
             self._loadFileToUI()
 
     def revert(self):
@@ -232,6 +249,7 @@ class MainController(QtCore.QObject):
     def openFileByName(self, filename):
         logger.debug('MainController.openFileByName called with filename="{}"'.format(filename))
         self._fileObserver.clear()
+        self._file = File(self._todoFeatures)
         self._file.load(filename)
         self._loadFileToUI()
         self._settings.setLastOpenFile(filename)
@@ -255,6 +273,9 @@ class MainController(QtCore.QObject):
     def _updateHideFutureTasksPref(self):
         self._menu_controller.changeHideFutureTasksState(bool(self._settings.getHideFutureTasks()))
 
+    def _updateSupportMultilineTasksPref(self):
+        self._menu_controller.changeSupportMultilineTasksState(bool(self._settings.getSupportMultilineTasks()))
+    
     def _updateView(self):
         height = self._settings.getViewHeight()
         width = self._settings.getViewWidth()
@@ -294,6 +315,18 @@ class MainController(QtCore.QObject):
         else:
             self._settings.setHideFutureTasks(True)
         self._onFilterSelectionChanged(self._filters_tree_controller._view.getSelectedFilters())
+
+    def toggleSupportMultilineTasks(self):
+        if self._is_modified:
+            self._dialogs_service.showError('Please save your changes before changing from or to multiline mode.')
+        else:
+            if self._settings.getSupportMultilineTasks():
+                self._settings.setSupportMultilineTasks(False)
+            else:
+                self._settings.setSupportMultilineTasks(True)
+            self._onTodoFeaturesChanged()
+        self._menu_controller.changeSupportMultilineTasksState(self._settings.getSupportMultilineTasks())
+
 
     def toggleVisible(self):
         if self._view.isMinimized():

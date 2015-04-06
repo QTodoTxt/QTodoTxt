@@ -11,6 +11,7 @@ from qtodotxt.ui.resource_manager import getIcon
 from qtodotxt.ui.services.dialogs_service import DialogsService
 from qtodotxt.ui.services.task_editor_service import TaskEditorService
 from qtodotxt.ui.views import MainView
+from qtodotxt.lib.settings import Settings
 
 
 class TrayIcon(QtGui.QSystemTrayIcon):
@@ -47,18 +48,19 @@ def _setupLogging(loglevel):
         logging.basicConfig(format='{asctime}.{msecs:.0f} [{name}] {levelname}: {message}',
                             level=numeric_level, style='{', datefmt='%H:%M:%S')
 
-def _createController(args):
+def _createController(args, settings):
     window = MainView()
     dialogs_service = DialogsService(window, 'QTodoTxt')
-    task_editor_service = TaskEditorService(window)
-    return MainController(window, dialogs_service, task_editor_service, args)
+    task_editor_service = TaskEditorService(window, settings)
+    return MainController(window, dialogs_service, task_editor_service, args, settings)
 
 def run():
     app = QtGui.QApplication(sys.argv)
+    settings = Settings()
     args = _parseArgs()
     _setupLogging(args.loglevel)
 #    logger = logging.getLogger(__file__[:-3]) # in case someone wants to log here
-    controller = _createController(args)
+    controller = _createController(args, settings)
     icon = TrayIcon(controller)
     controller.show()
     icon.show()
