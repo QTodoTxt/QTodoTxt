@@ -1,17 +1,18 @@
+import logging
 from PySide import QtCore
 from PySide import QtGui
-from qtodotxt.lib.task_htmlizer import TaskHtmlizer
-from qtodotxt.lib import todolib
+from qtodotxt.lib.task import Task
+
+logger = logging.getLogger(__name__)
 
 
 class TasksListView(QtGui.QListWidget):
 
-    taskActivated = QtCore.Signal(todolib.Task)
+    taskActivated = QtCore.Signal(Task)
 
     def __init__(self, parent=None):
         super(TasksListView, self).__init__(parent)
         self.setLayoutMode(self.LayoutMode.Batched)
-        self._task_htmlizer = TaskHtmlizer()
         self._initUI()
         self._oldSelected = []
 
@@ -19,6 +20,7 @@ class TasksListView(QtGui.QListWidget):
         item = TaskListWidgetItem(task, self)
         label = self._createLabel(task)
         self.setItemWidget(item, label)
+        logger.debug('Added task-item ({}) to {}'.format(item, self))
 
     def addListAction(self, action):
         self.addAction(action)
@@ -33,29 +35,33 @@ class TasksListView(QtGui.QListWidget):
         label = QtGui.QLabel()
         label.setTextFormat(QtCore.Qt.RichText)
         label.setOpenExternalLinks(True)
-        text = self._task_htmlizer.task2html(task)
+        text = task.html
         label.setText(text)
+        logger.debug('Created label with text: {}'.format(text))
         return label
 
     def _findItemByTask(self, task):
         for index in range(self.count()):
             item = self.item(index)
-            if item.task == task:
+            if item.task is task:
+            # DEBUG below was before / does it count?
+            #if item.task == task:
                 return item
         return None
 
     def _findItemByTaskText(self, text):
         for index in range(self.count()):
             item = self.item(index)
-            if item.task.text == text:
+            if str(item.task) == text:
                 return item
         return None
 
     def updateTask(self, task):
         item = self._findItemByTask(task)
         label = self.itemWidget(item)
-        text = self._task_htmlizer.task2html(item.task)
+        text = item.task.html
         label.setText(text)
+        logger.debug('Set label text of {} to: {}'.format(item, text))
 
     def _selectItem(self, item):
         if item:
@@ -86,14 +92,14 @@ class TasksListView(QtGui.QListWidget):
     def _list_itemPressed(self):
         for oldSelected in self._oldSelected:
             label = self.itemWidget(oldSelected)
-            text = self._task_htmlizer.task2html(oldSelected.task)
+            text = oldSelected.task.html
             label.setText(text)
         self._oldSelected = []
         items = self.selectedItems()
         for item in items:
             self._oldSelected.append(item)
             label = self.itemWidget(item)
-            text = self._task_htmlizer.task2html(item.task)
+            text = item.task.html
             label.setText(text)
 
     def keyPressEvent(self, event):

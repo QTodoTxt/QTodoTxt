@@ -1,18 +1,17 @@
 from PySide import QtCore
 from PySide import QtGui
 from qtodotxt.lib import settings
-from qtodotxt.lib import todolib
+from qtodotxt.lib.task import Task
 from qtodotxt.ui.resource_manager import getIcon
 from datetime import date
-from functools import cmp_to_key
 
 
 class TasksListController(QtCore.QObject):
 
-    taskModified = QtCore.Signal(todolib.Task)
-    taskCreated = QtCore.Signal(todolib.Task)
-    taskArchived = QtCore.Signal(todolib.Task)
-    taskDeleted = QtCore.Signal(todolib.Task)
+    taskModified = QtCore.Signal(Task)
+    taskCreated = QtCore.Signal(Task)
+    taskArchived = QtCore.Signal(Task)
+    taskDeleted = QtCore.Signal(Task)
 
     def __init__(self, view, task_editor_service):
         QtCore.QObject.__init__(self)
@@ -62,9 +61,8 @@ class TasksListController(QtCore.QObject):
         self.increasePrioritySelectedTasksAction = action
 
     def completeTask(self, task):
-        date_string = date.today().strftime('%Y-%m-%d')
         if not task.is_complete:
-            task.text = 'x %s %s' % (date_string, task.text)
+            task.is_complete = True
             self._settings.load()
             if self._settings.getAutoArchive():
                 self.taskArchived.emit(task)
@@ -88,9 +86,9 @@ class TasksListController(QtCore.QObject):
 
     def _confirmTasksAction(self, tasks, messagePrefix):
         if len(tasks) == 1:
-            message = '%s "%s"?' % (messagePrefix, tasks[0].text)
+            message = '{} "{}"?'.format(messagePrefix, str(tasks[0]))
         else:
-            message = '%s %d tasks?' % (messagePrefix, len(tasks))
+            message = '{} {} tasks?'.format(messagePrefix, len(tasks))
 
         result = QtGui.QMessageBox.question(self._view, 'Confirm', message,
                                             buttons=QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
@@ -102,7 +100,7 @@ class TasksListController(QtCore.QObject):
         tasks = self._view.getSelectedTasks()
         if tasks:
             for task in tasks:
-                task.decreasePriority()
+                task.priority -= 1
                 self._view.updateTask(task)
                 self.taskModified.emit(task)
 
@@ -110,7 +108,7 @@ class TasksListController(QtCore.QObject):
         tasks = self._view.getSelectedTasks()
         if tasks:
             for task in tasks:
-                task.increasePriority()
+                task.priority += 1
                 self._view.updateTask(task)
                 self.taskModified.emit(task)
 
@@ -124,26 +122,18 @@ class TasksListController(QtCore.QObject):
 
     def _reselect(self, tasks):
         for task in tasks:
-            self._view.selectTaskByText(task.text)
+            self._view.selectTaskByText(str(task))
 
     def _sortTasks(self, tasks):
-        tasks.sort(key=cmp_to_key(todolib.compareTasks))
-
-    def _addCreationDate(self, text):
-        date_string = date.today().strftime('%Y-%m-%d')
-        if text[:3] in self._task_editor_service._priorities:
-            text = '%s %s %s' % (text[:3], date_string, text[4:])
-        else:
-            text = '%s %s' % (date_string, text)
-        return text
+        tasks.sort()
 
     def createTask(self):
         (text, ok) = self._task_editor_service.createTask()
         if ok and text:
             self._settings.load()
-            if self._settings.getCreateDate():
-                text = self._addCreationDate(text)
-            task = todolib.Task(text)
+            task = Task(text)
+            if self._settings.getCreateDate() and not task.created_date:
+                task.created_date = date.today()
             self._view.addTask(task)
             self._view.clearSelection()
             self._view.selectTask(task)
@@ -152,7 +142,7 @@ class TasksListController(QtCore.QObject):
     def editTask(self, task):
         (text, ok) = self._task_editor_service.editTask(task)
         if ok and text:
-            if text != task.text:
-                task.text = text
+            if task != text:
+                task = Task(text)
                 self._view.updateTask(task)
                 self.taskModified.emit(task)

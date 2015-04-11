@@ -1,6 +1,6 @@
 from PySide import QtCore
-from qtodotxt.lib.filters import ContextFilter, ProjectFilter, DueTodayFilter, DueTomorrowFilter, DueThisWeekFilter, \
-    DueThisMonthFilter, DueOverdueFilter
+from qtodotxt.lib.filters import DueTodayFilter, DueTomorrowFilter, DueThisWeekFilter, DueThisMonthFilter, \
+    DueOverdueFilter, IncompleteTasksWithContextsFilter, IncompleteTasksWithProjectsFilter
 
 # class IFiltersTreeView(object):
 #    def addFilter(self, filter): pass
@@ -45,13 +45,13 @@ class FiltersTreeController(QtCore.QObject):
     def _addAllContexts(self, file):
         contexts = file.getAllContexts()
         for context, number in contexts.items():
-            filter = ContextFilter(context)
+            filter = IncompleteTasksWithContextsFilter(context)
             self._view.addFilter(filter, number)
 
     def _addAllProjects(self, file):
         projects = file.getAllProjects()
         for project, number in projects.items():
-            filter = ProjectFilter(project)
+            filter = IncompleteTasksWithProjectsFilter(project)
             self._view.addFilter(filter, number)
 
     def _addAllDueRanges(self, file):

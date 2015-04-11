@@ -54,7 +54,7 @@ class TaskEditorService(object):
         dialog.setLabelText('Task:')
         dialog.resize(500, 100)
         if task:
-            dialog.setTextValue(task.text)
+            dialog.setTextValue(str(task))
         dialog.setModal(True)
         if dialog.exec_():
             return dialog.textValue(), True

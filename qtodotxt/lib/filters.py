@@ -1,5 +1,7 @@
-import re
 from datetime import datetime, timedelta
+from qtodotxt.lib.task import Task
+import re
+from weakref import WeakSet
 
 
 class BaseFilter(object):
@@ -17,19 +19,6 @@ class BaseFilter(object):
         """
         self.text = text
 
-    def isMatch(self, task):
-        """
-        Determine whether the supplied task (arg 'task') satisfies the filter.
-
-        In this base class, the test always returns True.
-
-        """
-        return True
-
-    def parseDate(self, dateString):
-        due_date = datetime.strptime(dateString, '%Y-%m-%d').date()
-        return due_date
-
     def __eq__(self, other):
         """
         Evaluates objects as equal if their type and self.text attr are the same.
@@ -41,6 +30,39 @@ class BaseFilter(object):
             return self.text == other.text
         return False
 
+    def isMatch(self, task):
+        """
+        Determine whether the supplied task (arg 'task') satisfies the filter.
+        """
+        raise NotImplementedError('A filter-class must implement an isMatch- or a matches-method.')
+
+    def matches(self, tasks=Task.all_tasks):
+        """
+        Returns a set of all matching items from a given iterable.
+        Should be overridden in subclasses to make use of indexes and set operations.
+        :param: A set containing Task-instances.
+        :return: WeakSet
+        """
+        return WeakSet([x for x in tasks if self.isMatch(x)])
+
+    def __str__(self):
+        return '{filtername}(filterparameter)'.format(self.__class__.__name__, self.text)
+
+
+class CompleteTasksFilter(BaseFilter):
+    """
+    Task list filter that removes any uncompleted tasks.
+
+    """
+    def __init__(self):
+        super().__init__('Complete')
+
+    def isMatch(self, task):
+        return task.is_complete
+
+    def matches(self, tasks=Task.all_tasks):
+        return tasks & Task.completed_tasks
+
 
 class IncompleteTasksFilter(BaseFilter):
     """
@@ -48,155 +70,139 @@ class IncompleteTasksFilter(BaseFilter):
 
     """
     def __init__(self):
-        BaseFilter.__init__(self, 'Incomplete')
+        super().__init__('Incomplete')
 
     def isMatch(self, task):
         return not task.is_complete
 
+    def matches(self, tasks=Task.all_tasks):
+        return tasks - Task.completed_tasks
 
-class UncategorizedTasksFilter(BaseFilter):
+
+class IncompleteUncategorizedTasksFilter(BaseFilter):
     """
     Task list filter permitting incomplete tasks without project or context.
 
     """
     def __init__(self):
-        BaseFilter.__init__(self, 'Uncategorized')
+        super().__init__('Uncategorized')
 
     def isMatch(self, task):
         return (not task.is_complete) and (not task.contexts) and (not task.projects)
 
+    def matches(self, tasks=Task.all_tasks):
+        return WeakSet([x for x in tasks - Task.completed_tasks if not x.contexts and not x.projects])
 
-class CompleteTasksFilter(BaseFilter):
+
+class IncompleteTasksWithContextsFilter(BaseFilter):
     """
-    Task list filter that removes any uncompleted tasks from the list.
+    Task list filter allowing only incomplete tasks with the selected contexts.
 
     """
+
+    def __init__(self, *contexts):
+        self.contexts = set(contexts)
+        super().__init__(contexts)
+
+    def isMatch(self, task):
+        return (not task.is_complete) and self.contexts <= set(task.contexts)
+
+    def matches(self, tasks=Task.all_tasks):
+        tasks = WeakSet(tasks)
+        return WeakSet([x for x in (tasks - Task.completed_tasks) if self.contexts <= set(x.contexts)])
+
+
+class IncompleteTasksWithProjectsFilter(BaseFilter):
+    """
+    Task list filter allowing only incomplete tasks with certain projects.
+
+    """
+
+    def __init__(self, *projects):
+        self.projects = set(projects)
+        super().__init__(projects)
+
+    def isMatch(self, task):
+        return (not task.is_complete) and self.projects <= set(task.projects)
+
+    def matches(self, tasks=Task.all_tasks):
+        tasks = WeakSet(tasks)
+        return WeakSet([x for x in (tasks - Task.completed_tasks) if self.projects <= set(x.projects)])
+
+
+class FutureFilter(BaseFilter):
+
     def __init__(self):
-        BaseFilter.__init__(self, 'Complete')
+        super().__init__('Future')
 
     def isMatch(self, task):
-        return task.is_complete
+        return task not in Task.future_tasks
+
+    def matches(self, tasks=Task.all_tasks):
+        return tasks & Task.future_tasks
 
 
-class ContextFilter(BaseFilter):
-    """
-    Task list filter allowing only incomplete tasks with the selected context.
-
-    """
-
-    def __init__(self, context):
-        BaseFilter.__init__(self, context)
-
-    def isMatch(self, task):
-        return (not task.is_complete) and (self.text in task.contexts)
-
-    def __str__(self):
-        return "ContextFilter(%s)" % self.text
-
-
-class ProjectFilter(BaseFilter):
-    """
-    Task list filter allowing only incomplete tasks with the selected project.
-
-    """
-    def __init__(self, project):
-        BaseFilter.__init__(self, project)
-
-    def isMatch(self, task):
-        return (not task.is_complete) and (self.text in task.projects)
-
-    def __str__(self):
-        return "ProjectFilter(%s)" % self.text
-
-
-class DueFilter(BaseFilter):
+class BaseDueFilter(BaseFilter):
     """
     Due list filter for ranges
 
     """
-    def __init__(self, dueRange):
-        BaseFilter.__init__(self, dueRange)
-
     def isMatch(self, task):
         return (not task.is_complete) and (self.text in task.dueRanges)
 
-    def __str__(self):
-        return "DueFilter(%s)" % self.text
 
-
-class DueTodayFilter(BaseFilter):
+class DueTodayFilter(BaseDueFilter):
     """
     Task list filter allowing only incomplete tasks that are due today.
 
     """
-    def __init__(self, dueRange):
-        BaseFilter.__init__(self, dueRange)
-
     def isMatch(self, task):
-        if (not task.due) or (task.is_complete):
+        if (not task.due_date) or (task.is_complete):
             return False
         else:
-            self.due_date = self.parseDate(task.due)
+            self.due_date = task.due_date.value
             today = datetime.today().date()
             return self.due_date == today
 
-    def __str__(self):
-        return "DueTodayFilter(%s)" % self.text
 
-
-class DueTomorrowFilter(BaseFilter):
+class DueTomorrowFilter(BaseDueFilter):
     """
     Task list filter allowing only incomplete tasks that are due tomorrow.
 
     """
-    def __init__(self, dueRange):
-        BaseFilter.__init__(self, dueRange)
-
     def isMatch(self, task):
-        if (not task.due) or (task.is_complete):
+        if (not task.due_date) or (task.is_complete):
             return False
         else:
-            due_date = self.parseDate(task.due)
+            due_date = task.due_date.value
             today = datetime.today().date()
             return today < due_date <= today + timedelta(days=1)
 
-    def __str__(self):
-        return "DueTomorrowFilter(%s)" % self.text
 
-
-class DueThisWeekFilter(BaseFilter):
+class DueThisWeekFilter(BaseDueFilter):
     """
     Task list filter allowing only incomplete tasks that are due this week.
 
     """
-    def __init__(self, dueRange):
-        BaseFilter.__init__(self, dueRange)
-
     def isMatch(self, task):
-        if (not task.due) or (task.is_complete):
+        if (not task.due_date) or (task.is_complete):
             return False
         else:
-            due_date = self.parseDate(task.due)
+            due_date = task.due_date.value
             today = datetime.today().date()
             return today <= due_date <= today + timedelta((6-today.weekday()) % 7)
 
-    def __str__(self):
-        return "DueThisWeekFilter(%s)" % self.text
 
-
-class DueThisMonthFilter(BaseFilter):
+class DueThisMonthFilter(BaseDueFilter):
     """
     Task list filter allowing only incomplete tasks that are due this month.
 
     """
-    def __init__(self, dueRange):
-        BaseFilter.__init__(self, dueRange)
-
     def isMatch(self, task):
-        if (not task.due) or (task.is_complete):
+        if (not task.due_date) or (task.is_complete):
             return False
         else:
-            due_date = self.parseDate(task.due)
+            due_date = task.due_date.value
             today = datetime.today().date()
             if today.month == 12:
                 last_day_of_month = today.replace(day=31)
@@ -204,33 +210,22 @@ class DueThisMonthFilter(BaseFilter):
                 last_day_of_month = today.replace(month=today.month+1, day=1) - timedelta(days=1)
             return today <= due_date <= last_day_of_month
 
-    def __str__(self):
-        return "DueThisMonthFilter(%s)" % self.text
 
-
-class DueOverdueFilter(BaseFilter):
+class DueOverdueFilter(BaseDueFilter):
     """
     Task list filter allowing only incomplete tasks that are overdue.
 
     """
-    def __init__(self, dueRange):
-        BaseFilter.__init__(self, dueRange)
-
     def isMatch(self, task):
-        if (not task.due) or (task.is_complete):
+        if (not task.due_date) or (task.is_complete):
             return False
         else:
-            if not task.due:
-                return False
-            else:
-                due_date = self.parseDate(task.due)
-                today = datetime.today().date()
-                return due_date < today
-
-    def __str__(self):
-        return "DueOverdueFilter(%s)" % self.text
+            due_date = task.due_date.value
+            today = datetime.today().date()
+            return due_date < today
 
 
+# TODO make use of IncompleteTasksWithContextsFilter!?
 class HasProjectsFilter(BaseFilter):
     """
     Task list filter allowing only incomplete tasks with the selected project.
@@ -238,15 +233,13 @@ class HasProjectsFilter(BaseFilter):
     """
 
     def __init__(self):
-        BaseFilter.__init__(self, 'Projects')
+        super().__init__('Projects')
 
     def isMatch(self, task):
         return (not task.is_complete) and task.projects
 
-    def __str__(self):
-        return "HasProjectsFilter" % self.text
 
-
+# TODO make use of IncompleteTasksWithProjextsFilter!?
 class HasContextsFilter(BaseFilter):
     """
     Task list filter allowing only tasks tagged with some project.
@@ -254,13 +247,10 @@ class HasContextsFilter(BaseFilter):
     """
 
     def __init__(self):
-        BaseFilter.__init__(self, 'Contexts')
+        super().__init__('Contexts')
 
     def isMatch(self, task):
         return (not task.is_complete) and task.contexts
-
-    def __str__(self):
-        return "HasContextsFilter" % self.text
 
 
 class HasDueDateFilter(BaseFilter):
@@ -270,13 +260,10 @@ class HasDueDateFilter(BaseFilter):
     """
 
     def __init__(self):
-        BaseFilter.__init__(self, 'DueRange')
+        super().__init__('DueRange')
 
     def isMatch(self, task):
         return (not task.is_complete) and task.due
-
-    def __str__(self):
-        return "HasDueDateFilter" % self.text
 
 
 class HasDueRangesFilter(BaseFilter):
@@ -286,13 +273,10 @@ class HasDueRangesFilter(BaseFilter):
     """
 
     def __init__(self):
-        BaseFilter.__init__(self, 'DueRange')
+        super().__init__('DueRange')
 
     def isMatch(self, task):
         return (not task.is_complete) and task.dueRanges
-
-    def __str__(self):
-        return "HasDueRangesFilter" % self.text
 
 
 class SimpleTextFilter(BaseFilter):
@@ -305,7 +289,7 @@ class SimpleTextFilter(BaseFilter):
     """
 
     def __init__(self, text):
-        BaseFilter.__init__(self, text)
+        super().__init__(text)
 
     def isMatch(self, task):
         """
@@ -326,7 +310,7 @@ class SimpleTextFilter(BaseFilter):
                                                      AND 'job1')
                                             OR      (matches 'home')
 
-        :'norweigan blue ~dead | !parrot':  Either  (matches 'norweigan'
+        :'norwegian blue ~dead | !parrot':  Either  (matches 'norwegian'
                                                      AND 'blue'
                                                      AND does NOT match 'dead')
                                             OR      (does NOT match 'parrot')
@@ -343,33 +327,20 @@ class SimpleTextFilter(BaseFilter):
         feet to the perch'.
         """
         # TODO: implement NOT conditions
-        mymatch = False
         comp = re.compile(r'\s*([\(\)\w\\\-]+)[\s,]*', re.U)
         restring = comp.sub(r'^(?=.*\1)', self.text, re.U)
         try:
             if ')' in restring:
-                raise re.error  # otherwise adding closing parenth avoids error here
-            mymatch = re.search(restring, task.text, re.I | re.U)
+                raise re.error  # otherwise adding closing parenthesis avoids error here
+            mymatch = re.search(restring, str(task), re.I | re.U)
         except re.error:
             comp2 = re.compile(r'\s*\((?=[^?])', re.U)
             restring2 = comp2.sub(r'\\(', restring, re.U)
             comp3 = re.compile(r'(?<!\))\)(?=\))', re.U)
             restring3 = comp3.sub(r'\\)', restring2, re.U)
-            mymatch = re.search(restring3, task.text, re.I | re.U)
+            mymatch = re.search(restring3, str(task), re.I | re.U)
 
         return mymatch
 
-    def __str__(self):
-        return "SimpleTextFilter({})".format(self.text)
-
-
-class FutureFilter(BaseFilter):
-
-    def __init__(self):
-        BaseFilter.__init__(self, 'Future')
-
-    def isMatch(self, task):
-        return not task.is_future
-
-    def __str__(self):
-        return "FutureFilter " % self.text
+    def matches(self, tasks=Task.all_tasks):
+        return WeakSet([x for x in tasks if self.isMatch(x)])

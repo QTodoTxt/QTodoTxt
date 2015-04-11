@@ -1,5 +1,6 @@
 import re
 from datetime import datetime, date
+from qtodotxt.lib import deprecated
 
 
 HIGHER_PRIORITY = 'A'
@@ -7,7 +8,7 @@ LOWER_PRIORITY = 'Z'
 
 
 class Task(object):
-
+    @deprecated
     def __init__(self, line):
         self.reset()
         if line:
@@ -52,14 +53,17 @@ class Task(object):
                 except ValueError:
                     self.is_future = False
 
+    @deprecated
     def _getText(self):
         return self._text
 
+    @deprecated
     def _setText(self, line):
         self.reset()
         if line:
             self.parseLine(line)
 
+    @deprecated
     def increasePriority(self):
         if self.priority is None:
             self.priority = LOWER_PRIORITY
@@ -72,6 +76,7 @@ class Task(object):
             self.text = re.sub('^\(%s\) ' % self.priority, '(%s) ' % newPriority, self.text)
             self.priority = newPriority
 
+    @deprecated
     def decreasePriority(self):
         if self.priority is None:
             self.priority = HIGHER_PRIORITY
@@ -86,6 +91,8 @@ class Task(object):
     text = property(_getText, _setText)
 
 
+
+@deprecated
 def compareTasks(task1, task2):
     comparison = compareTasksByCompleteness(task1, task2)
     if comparison:
@@ -114,6 +121,7 @@ def compareTasksByPriority(task1, task2):
         return -1
 
 
+@deprecated
 def compareTasksByCompleteness(task1, task2):
     if task1.is_complete == task2.is_complete:
         return 0
@@ -125,6 +133,7 @@ def compareTasksByCompleteness(task1, task2):
         return 1
 
 
+@deprecated
 def filterTasks(filters, tasks):
     if None in filters:
         return tasks

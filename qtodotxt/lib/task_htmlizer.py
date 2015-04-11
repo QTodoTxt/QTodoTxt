@@ -1,8 +1,10 @@
 from datetime import datetime, date
+from qtodotxt.lib import deprecated
 import re
 
 
 class TaskHtmlizer(object):
+    @deprecated
     def __init__(self):
         self.priority_colors = dict(
             A='red',
@@ -12,6 +14,7 @@ class TaskHtmlizer(object):
         self.regex = re.compile(
             r'^(x (?P<completed>\d{4}-\d{2}-\d{2} )?)?(\((?P<priority>[A-Z])\) )?(?P<created>\d{4}-\d{2}-\d{2} )?.*$')
 
+    @deprecated
     def task2html(self, task):
         text = task.text
         priority = task.priority
@@ -37,18 +40,22 @@ class TaskHtmlizer(object):
         text = self._htmlizeURL(text)
         return text
 
+    @deprecated
     def _htmlizeContext(self, context):
         return '<font color="green">@%s</font>' % context
 
+    @deprecated
     def _htmlizeProject(self, project):
         return '<font style="color:#64AAD0">+%s</font>' % project
 
+    @deprecated
     def _htmlizePriority(self, priority):
         if priority in self.priority_colors:
             color = self.priority_colors[priority]
             return '<font color="%s"><tt>&nbsp;%s&nbsp;</tt></font>' % (color, priority)
         return '<tt>&nbsp;%s&nbsp;</tt>' % priority
 
+    @deprecated
     def _htmlizeDueDate(self, dueDateString):
         try:
             due_date = datetime.strptime(dueDateString, '%Y-%m-%d').date()
@@ -64,6 +71,7 @@ class TaskHtmlizer(object):
         else:
             return '<b><font style="color:red">due:%s</font></b>' % dueDateString
 
+    @deprecated
     def _htmlizeThresholdDate(self, thresholdDateString):
         try:
             threshold_date = datetime.strptime(thresholdDateString, '%Y-%m-%d').date()
@@ -77,6 +85,7 @@ class TaskHtmlizer(object):
         else:
             return '<font style="color:orange">t:%s</font>' % thresholdDateString
 
+    @deprecated
     def _htmlizeURL(self, text):
         regex = re.compile(
             r'((?:http|ftp)s?://'  # TODO what else is supported by xgd-open?
@@ -89,6 +98,7 @@ class TaskHtmlizer(object):
             r'(?:/?|[/?]\S+))(\s|$)', re.IGNORECASE)
         return regex.sub(r'<a href="\1">\1</a>\2', text)
 
+    @deprecated
     def _htmlizeCreatedCompleted(self, text, raw_text):
         created = ''
         completed = ''
@@ -109,6 +119,6 @@ class TaskHtmlizer(object):
                 if not first:
                     text += ', '
                 text += 'completed: %s' % completed.rstrip()
-            text = text + ')</font>'
+            text += ')</font>'
 
         return text

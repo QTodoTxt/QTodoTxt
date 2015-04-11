@@ -61,7 +61,7 @@ def run():
     app = QtGui.QApplication(sys.argv)
     args = _parseArgs()
     _setupLogging(args.loglevel)
-#    logger = logging.getLogger(__file__[:-3]) # in case someone wants to log here
+#    logger = logging.getLogger(__file__[:-3])  # in case someone wants to log here
     controller = _createController(args)
     icon = TrayIcon(controller)
     controller.show()

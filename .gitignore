@@ -16,6 +16,7 @@
 *.sw[op]
 .venv
 
+# OS X
 .DS_Store
 
 # Mr Developer

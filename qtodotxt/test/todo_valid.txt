@@ -1,8 +1,0 @@
-(A) Make peace between Cylons and humans +PeaceProject
-(B) Report to Admiral Adama about FTL @CIC +GalacticaRepairs due:2013-05-24
-(B) Seal ship's cracks with biomatter +GalacticaRepairs
-(C) Upgrade jump drives with Cylon technology +GalacticaRepairs
-Check for DRADIS contact @CIC
-Check if http://google.com is available
-Think about __future__ t:2099-12-31
-Download code https://github.com/mNantern/QTodoTxt/archive/master.zip

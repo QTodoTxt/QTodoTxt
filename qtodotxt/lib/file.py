@@ -1,10 +1,10 @@
-from functools import cmp_to_key
+from collections import defaultdict
 import logging
 import os
 from PySide import QtCore
 from qtodotxt.lib.filters import DueTodayFilter, DueTomorrowFilter, DueThisWeekFilter, DueThisMonthFilter, \
     DueOverdueFilter
-from qtodotxt.lib.todolib import Task, compareTasks
+from qtodotxt.lib.task import Task
 from sys import version
 import time
 
@@ -72,7 +72,7 @@ class File(object):
             self.filename = self._createNewFilename()
         elif filename:
             self.filename = filename
-        self.tasks.sort(key=cmp_to_key(compareTasks))
+        self.tasks.sort()
         self._saveTasks()
 
     @staticmethod
@@ -89,7 +89,7 @@ class File(object):
     def _saveTasks(self):
         try:
             with open(self.filename, 'wt', encoding='utf-8') as fd:
-                fd.writelines([(task.text + self.NEWLINE) for task in self.tasks])
+                fd.writelines([(str(task) + self.NEWLINE) for task in self.tasks])
             logger.debug('{} was saved to disk.'.format(self.filename))
         except IOError as e:
             raise ErrorSavingFile("Error saving to file '{}'".format(self.filename), e)
@@ -104,40 +104,31 @@ class File(object):
             raise ErrorSavingFile("Error saving to file '%s'" % doneFilename, e)
 
     def getAllCompletedContexts(self):
-        contexts = dict()
+        contexts = defaultdict(int)
         for task in self.tasks:
             if task.is_complete:
                 for context in task.contexts:
-                    if context in contexts:
-                        contexts[context] += 1
-                    else:
-                        contexts[context] = 1
+                    contexts[context] += 1
         return contexts
 
     def getAllCompletedProjects(self):
-        projects = dict()
+        projects = defaultdict(int)
         for task in self.tasks:
             if task.is_complete:
                 for project in task.projects:
-                    if project in projects:
-                        projects[project] += 1
-                    else:
-                        projects[project] = 1
+                    projects[project] += 1
         return projects
 
     def getAllContexts(self):
-        contexts = dict()
+        contexts = defaultdict(int)
         for task in self.tasks:
             if not task.is_complete:
                 for context in task.contexts:
-                    if context in contexts:
-                        contexts[context] += 1
-                    else:
-                        contexts[context] = 1
+                    contexts[context] += 1
         return contexts
 
     def getAllDueRanges(self):
-        dueRanges = dict()
+        dueRanges = defaultdict(int)
         # This determines the sorting of the ranges in the tree view. Lowest value first.
         rangeSorting = {'Today': 20,
                         'Tomorrow': 30,
@@ -147,46 +138,28 @@ class File(object):
 
         for task in self.tasks:
             if DueTodayFilter('Today').isMatch(task):
-                if not ('Today' in dueRanges):
-                    dueRanges['Today'] = 1
-                else:
-                    dueRanges['Today'] += 1
+                dueRanges['Today'] += 1
 
             if DueTomorrowFilter('Tomorrow').isMatch(task):
-                if not ('Tomorrow' in dueRanges):
-                    dueRanges['Tomorrow'] = 1
-                else:
-                    dueRanges['Tomorrow'] += 1
+                dueRanges['Tomorrow'] += 1
 
             if DueThisWeekFilter('This week').isMatch(task):
-                if not ('This week' in dueRanges):
-                    dueRanges['This week'] = 1
-                else:
-                    dueRanges['This week'] += 1
+                dueRanges['This week'] += 1
 
             if DueThisMonthFilter('This month').isMatch(task):
-                if not ('This month' in dueRanges):
-                    dueRanges['This month'] = 1
-                else:
-                    dueRanges['This month'] += 1
+                dueRanges['This month'] += 1
 
             if DueOverdueFilter('Overdue').isMatch(task):
-                if not ('Overdue' in dueRanges):
-                    dueRanges['Overdue'] = 1
-                else:
-                    dueRanges['Overdue'] += 1
+                dueRanges['Overdue'] += 1
 
         return dueRanges, rangeSorting
 
     def getAllProjects(self):
-        projects = dict()
+        projects = defaultdict(int)
         for task in self.tasks:
             if not task.is_complete:
                 for project in task.projects:
-                    if project in projects:
                         projects[project] += 1
-                    else:
-                        projects[project] = 1
         return projects
 
     def getTasksCounters(self):
@@ -207,7 +180,7 @@ class File(object):
                     counters['Contexts'] += 1
                 if nbContexts == 0 and nbProjects == 0:
                     counters['Uncategorized'] += 1
-                if task.due:
+                if task.due_date:
                     counters['Due'] += 1
             else:
                 counters['Complete'] += 1

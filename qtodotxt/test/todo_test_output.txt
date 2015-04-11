@@ -1,5 +1,0 @@
-(A) do something else +project1 @context2
-abc +project1 @context2
-do something +project1 @context1
-do something else +project1 @context2
-something else +project1 @context2

@@ -70,19 +70,3 @@ class AutoCompleteEdit(QtGui.QLineEdit):
         self._completer.setCompletionPrefix(completionPrefix)
         self._completer.popup().setCurrentIndex(
             self._completer.completionModel().index(0, 0))
-
-if __name__ == '__main__':
-    def demo():
-        import sys
-        app = QtGui.QApplication(sys.argv)
-        values = ['@call', '@bug', '+qtodotxt', '+sqlvisualizer']
-        editor = AutoCompleteEdit(values)
-        window = QtGui.QWidget()
-        hbox = QtGui.QHBoxLayout()
-        hbox.addWidget(editor)
-        window.setLayout(hbox)
-        window.show()
-
-        sys.exit(app.exec_())
-
-    demo()

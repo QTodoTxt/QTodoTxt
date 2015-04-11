@@ -5,8 +5,9 @@ import sys
 from PySide import QtCore
 from PySide import QtGui
 
-from qtodotxt.lib import todolib, settings
+from qtodotxt.lib import settings
 from qtodotxt.lib.file import ErrorLoadingFile, File, FileObserver
+from qtodotxt.lib.task import Task
 
 from qtodotxt.ui.controllers.tasks_list_controller import TasksListController
 from qtodotxt.ui.controllers.filters_tree_controller import FiltersTreeController
@@ -91,30 +92,32 @@ class MainController(QtCore.QObject):
 
     def _onFilterSelectionChanged(self, filters):
         # First we filter with filters tree
-        treeTasks = todolib.filterTasks(filters, self._file.tasks)
+        treeTasks = Task.tasks_filtered_by(filters, self._file.tasks)
         # Then with our filter text
         filterText = self._view.tasks_view.filter_tasks.getText()
-        tasks = todolib.filterTasks([SimpleTextFilter(filterText)], treeTasks)
+        tasks = Task.tasks_filtered_by([SimpleTextFilter(filterText)], treeTasks)
         # And finally with future filter if needed
         # TODO: refactor all that filters
         if self._settings.getHideFutureTasks():
-            tasks = todolib.filterTasks([FutureFilter()], tasks)
+            tasks = Task.tasks_filtered_by([FutureFilter()], tasks)
+    # DEBUG check if this is / should be  a list
         self._tasks_list_controller.showTasks(tasks)
 
     def _initFilterText(self):
         self._view.tasks_view.filter_tasks.filterTextChanged.connect(
             self._onFilterTextChanged)
 
+    # TODO looks very redundant
     def _onFilterTextChanged(self, text):
         # First we filter with filters tree
         filters = self._filters_tree_controller._view.getSelectedFilters()
-        treeTasks = todolib.filterTasks(filters, self._file.tasks)
+        treeTasks = Task.tasks_filtered_by(filters, self._file.tasks)
         # Then with our filter text
-        tasks = todolib.filterTasks([SimpleTextFilter(text)], treeTasks)
+        tasks = Task.tasks_filtered_by([SimpleTextFilter(text)], treeTasks)
         # And finally with future filter if needed
         # TODO: refactor all that filters
         if self._settings.getHideFutureTasks():
-            tasks = todolib.filterTasks([FutureFilter()], tasks)
+            tasks = Task.tasks_filtered_by([FutureFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
 
     def _initTasksList(self):
