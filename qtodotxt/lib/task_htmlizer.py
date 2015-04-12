@@ -80,7 +80,7 @@ class TaskHtmlizer(object):
     def _htmlizeURL(self, text):
         regex = re.compile(
             r'((?:http|ftp)s?://'  # TODO what else is supported by xgd-open?
-            #TODO add support for user:password@-scheme
+            # TODO add support for user:password@-scheme
             r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # domain...
             r'localhost|'  # localhost...
             r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|'  # ...or ipv4
@@ -112,4 +112,3 @@ class TaskHtmlizer(object):
             text = text + ')</font>'
 
         return text
-

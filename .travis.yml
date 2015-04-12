@@ -13,6 +13,7 @@ install:
   - sudo apt-get update
   - sudo apt-get -y install python3-pyside
   - export PYTHONPATH="$PYTHONPATH:/usr/lib/python3/dist-packages"
+  - pip install flake8
 
 # command to run tests
 script:
@@ -20,4 +21,4 @@ script:
   - ls /usr/lib/python3/dist-packages/PySide
   - python -c "import sys; print('/usr/lib/python3/dist-packages' in sys.path)"
   - python -c "import PySide; print(PySide.__version__)"
-  - qtodotxt/test/run-tests.py
+  - flake8 qtodotxt && qtodotxt/test/run-tests.py

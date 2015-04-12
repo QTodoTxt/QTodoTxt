@@ -1,6 +1,8 @@
 from PySide import QtCore
 from PySide import QtGui
-from qtodotxt.lib.filters import *  #FIXME
+from qtodotxt.lib.filters import ContextFilter, CompleteTasksFilter, DueFilter, DueOverdueFilter, DueThisMonthFilter, \
+    DueThisWeekFilter, DueTodayFilter, DueTomorrowFilter, HasContextsFilter, HasDueDateFilter, HasProjectsFilter, \
+    IncompleteTasksFilter, ProjectFilter, UncategorizedTasksFilter
 from qtodotxt.lib.settings import UI_MARGINS_OFFSET
 from qtodotxt.ui.resource_manager import getIcon
 
@@ -81,7 +83,7 @@ class FiltersTreeView(QtGui.QWidget):
     def _findItem(self, text, parentItem):
         for index in range(parentItem.childCount()):
             child = parentItem.child(index)
-            #Remove counter on the tree: context (3) for example
+            # Remove counter on the tree: context (3) for example
             childText = child.text(0).rpartition(' ')[0]
             if childText == text:
                 return child
@@ -91,7 +93,7 @@ class FiltersTreeView(QtGui.QWidget):
         layout = QtGui.QGridLayout()
         self.setLayout(layout)
         self.setContentsMargins(UI_MARGINS_OFFSET, UI_MARGINS_OFFSET,
-                                2*UI_MARGINS_OFFSET, UI_MARGINS_OFFSET)
+                                2 * UI_MARGINS_OFFSET, UI_MARGINS_OFFSET)
         self._tree = self._createTreeWidget()
         layout.addWidget(self._tree)
 
@@ -177,6 +179,6 @@ class FilterTreeWidgetItem(QtGui.QTreeWidgetItem):
         QtGui.QTreeWidgetItem.__init__(self, parent, strings)
         self.filter = filter
         if order:
-            self.setText(1,str(order))
+            self.setText(1, str(order))
         if icon:
             self.setIcon(0, icon)

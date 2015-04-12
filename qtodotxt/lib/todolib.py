@@ -1,5 +1,5 @@
 import re
-from datetime import datetime,date,timedelta
+from datetime import datetime, date
 
 
 HIGHER_PRIORITY = 'A'
@@ -68,7 +68,7 @@ class Task(object):
             self.priority = None
             self.text = self.text[4:]
         else:
-            newPriority = chr(ord(self.priority)-1)
+            newPriority = chr(ord(self.priority) - 1)
             self.text = re.sub('^\(%s\) ' % self.priority, '(%s) ' % newPriority, self.text)
             self.priority = newPriority
 
@@ -80,11 +80,10 @@ class Task(object):
             self.text = self.text[4:]
             self.priority = None
         else:
-            newPriority = chr(ord(self.priority)+1)
+            newPriority = chr(ord(self.priority) + 1)
             self.text = re.sub('^\(%s\) ' % self.priority, '(%s) ' % newPriority, self.text)
             self.priority = newPriority
     text = property(_getText, _setText)
-
 
 
 def compareTasks(task1, task2):
@@ -101,10 +100,9 @@ def compareTasks(task1, task2):
     else:
         return 0
 
+
 def compareTasksByPriority(task1, task2):
-    if (not task1.priority and not task2.priority) \
-        or \
-        (task1.priority == task2.priority):
+    if (not task1.priority and not task2.priority) or (task1.priority == task2.priority):
             return 0
     if not task1.priority:
         return 1
@@ -115,6 +113,7 @@ def compareTasksByPriority(task1, task2):
     if task2.priority < task2.priority:
         return -1
 
+
 def compareTasksByCompleteness(task1, task2):
     if task1.is_complete == task2.is_complete:
         return 0
@@ -124,6 +123,7 @@ def compareTasksByCompleteness(task1, task2):
         return -1
     else:
         return 1
+
 
 def filterTasks(filters, tasks):
     if None in filters:

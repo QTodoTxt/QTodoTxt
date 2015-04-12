@@ -1,5 +1,6 @@
 from PySide import QtCore, QtGui
 
+
 class AutoCompleteEdit(QtGui.QLineEdit):
     def __init__(self, model, autocomplete_pairs, separator=' '):
         super(AutoCompleteEdit, self).__init__()

@@ -27,6 +27,13 @@ def run_doctests(testsdir):
     return exit_code
 
 if __name__ == "__main__":
+    try:
+        from flake8 import main as flake8
+        sys.argv.append(os.path.dirname(__file__))
+        flake8.main()
+    except (ImportError, SystemExit):
+        pass
+
     exit_code = 0
 
     print("========================================")

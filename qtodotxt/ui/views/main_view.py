@@ -23,8 +23,8 @@ class MainView(QtGui.QMainWindow):
         splitter.setHandleWidth(1)
 
         cssPath = getResourcePath("css/default.css")
-        css = open(cssPath,'r', encoding='utf-8').read();
-        self.setStyleSheet(css);
+        css = open(cssPath, 'r', encoding='utf-8').read()
+        self.setStyleSheet(css)
 
         self.filters_tree_view = FiltersTreeView(splitter)
         self.tasks_view = TasksView(splitter)

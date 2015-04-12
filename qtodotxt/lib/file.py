@@ -2,7 +2,8 @@ from functools import cmp_to_key
 import logging
 import os
 from PySide import QtCore
-from qtodotxt.lib.filters import DueTodayFilter, DueTomorrowFilter, DueThisWeekFilter, DueThisMonthFilter, DueOverdueFilter
+from qtodotxt.lib.filters import DueTodayFilter, DueTomorrowFilter, DueThisWeekFilter, DueThisMonthFilter, \
+    DueOverdueFilter
 from qtodotxt.lib.todolib import Task, compareTasks
 from sys import version
 import time
@@ -194,7 +195,7 @@ class File(object):
                          'Contexts': 0,
                          'Projects': 0,
                          'Complete': 0,
-                         'Due' : 0})
+                         'Due': 0})
         for task in self.tasks:
             if not task.is_complete:
                 counters['Pending'] += 1
@@ -214,30 +215,30 @@ class File(object):
 
 
 class FileObserver(QtCore.QFileSystemWatcher):
-   def __init__(self, parent, file):
-       logger.debug('Setting up FileObserver instance.')
-       super().__init__(parent)
-       self._file = file
-       self.fileChanged.connect(self.fileChangedHandler)
+    def __init__(self, parent, file):
+        logger.debug('Setting up FileObserver instance.')
+        super().__init__(parent)
+        self._file = file
+        self.fileChanged.connect(self.fileChangedHandler)
 
-   @QtCore.Slot(str)
-   def fileChangedHandler(self, path):
-       logger.debug('Detected change on {}\nremoving it from watchlist'.format(path))
-       self.removePath(path)
-       debug_counter = 0
-       if path == self._file.filename:
-           max_time = time.time() + 1
-           while time.time() < max_time:
-               try:
-                   self.parent().openFileByName(self._file.filename)  # TODO make that emit a signal
-               except ErrorLoadingFile:
-                   time.sleep(0.01)
-                   debug_counter += 1
-               else:
-                   logger.debug('It took {} additional attempts until the file could be read.'.format(debug_counter))
-                   break
+    @QtCore.Slot(str)
+    def fileChangedHandler(self, path):
+        logger.debug('Detected change on {}\nremoving it from watchlist'.format(path))
+        self.removePath(path)
+        debug_counter = 0
+        if path == self._file.filename:
+            max_time = time.time() + 1
+            while time.time() < max_time:
+                try:
+                    self.parent().openFileByName(self._file.filename)  # TODO make that emit a signal
+                except ErrorLoadingFile:
+                    time.sleep(0.01)
+                    debug_counter += 1
+                else:
+                    logger.debug('It took {} additional attempts until the file could be read.'.format(debug_counter))
+                    break
 
-   def clear(self):
-       if self.files():
-           logger.debug('Clearing watchlist.')
-           self.removePaths(self.files())
+    def clear(self):
+        if self.files():
+            logger.debug('Clearing watchlist.')
+            self.removePaths(self.files())

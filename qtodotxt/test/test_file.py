@@ -43,7 +43,7 @@ class TestFile(unittest.TestCase):
         self.assertEqual(self.file.tasks[0].projects, ['project1'])
         self.assertEqual(self.file.tasks[0].is_complete, False)
         self.assertEqual(self.file.tasks[0].priority, None)
-        self.assertEqual(self.file.tasks[0].due,'1999-10-10')
+        self.assertEqual(self.file.tasks[0].due, '1999-10-10')
 
     def test_two_tasks(self):
         task1 = 'do something +project1 @context1'
@@ -102,7 +102,7 @@ class TestFile(unittest.TestCase):
 
     def test_get_all_due_ranges(self):
         today = date.today().strftime('%Y-%m-%d')
-        yesterday = (date.today() - timedelta(days = 1)).strftime('%Y-%m-%d')
+        yesterday = (date.today() - timedelta(days=1)).strftime('%Y-%m-%d')
 
         self.file.tasks.extend([
             Task('x due:' + today + ' completed task of today'),

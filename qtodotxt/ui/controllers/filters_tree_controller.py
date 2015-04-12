@@ -1,5 +1,6 @@
 from PySide import QtCore
-from qtodotxt.lib.filters import ContextFilter, ProjectFilter, DueFilter, DueTodayFilter, DueTomorrowFilter, DueThisWeekFilter, DueThisMonthFilter, DueOverdueFilter
+from qtodotxt.lib.filters import ContextFilter, ProjectFilter, DueTodayFilter, DueTomorrowFilter, DueThisWeekFilter, \
+    DueThisMonthFilter, DueOverdueFilter
 
 # class IFiltersTreeView(object):
 #    def addFilter(self, filter): pass
@@ -8,23 +9,23 @@ from qtodotxt.lib.filters import ContextFilter, ProjectFilter, DueFilter, DueTod
 #    def selectFilter(self, filter): pass
 #    def getSelectedFilters(self): pass
 #    filterSelectionChanged = QtCore.Signal()
-#    def selectAllTasksFilter(self): pass    
+#    def selectAllTasksFilter(self): pass
 
 
 class FiltersTreeController(QtCore.QObject):
-    
+
     filterSelectionChanged = QtCore.Signal(list)
-    
+
     def __init__(self, view):
         QtCore.QObject.__init__(self)
         self._view = view
         self._view.filterSelectionChanged.connect(self._view_filterSelectionChanged)
         self._is_showing_filters = False
-        
+
     def _view_filterSelectionChanged(self, filters):
         if not self._is_showing_filters:
             self.filterSelectionChanged.emit(filters)
-        
+
     def showFilters(self, file):
         self._is_showing_filters = True
         previouslySelectedFilters = self._view.getSelectedFilters()
@@ -75,7 +76,7 @@ class FiltersTreeController(QtCore.QObject):
                 sortKey = rangeSorting['Overdue']
 
             self._view.addDueRangeFilter(filter, number, sortKey)
-        
+
     def _reselect(self, previouslySelectedFilters):
         for filter in previouslySelectedFilters:
             self._view.selectFilter(filter)

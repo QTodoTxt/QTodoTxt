@@ -1,5 +1,5 @@
 import re
-from datetime import datetime, date, timedelta
+from datetime import datetime, timedelta
 
 
 class BaseFilter(object):
@@ -77,6 +77,7 @@ class CompleteTasksFilter(BaseFilter):
     def isMatch(self, task):
         return task.is_complete
 
+
 class ContextFilter(BaseFilter):
     """
     Task list filter allowing only incomplete tasks with the selected context.
@@ -107,6 +108,7 @@ class ProjectFilter(BaseFilter):
     def __str__(self):
         return "ProjectFilter(%s)" % self.text
 
+
 class DueFilter(BaseFilter):
     """
     Due list filter for ranges
@@ -120,6 +122,7 @@ class DueFilter(BaseFilter):
 
     def __str__(self):
         return "DueFilter(%s)" % self.text
+
 
 class DueTodayFilter(BaseFilter):
     """
@@ -140,6 +143,7 @@ class DueTodayFilter(BaseFilter):
     def __str__(self):
         return "DueTodayFilter(%s)" % self.text
 
+
 class DueTomorrowFilter(BaseFilter):
     """
     Task list filter allowing only incomplete tasks that are due tomorrow.
@@ -159,6 +163,7 @@ class DueTomorrowFilter(BaseFilter):
     def __str__(self):
         return "DueTomorrowFilter(%s)" % self.text
 
+
 class DueThisWeekFilter(BaseFilter):
     """
     Task list filter allowing only incomplete tasks that are due this week.
@@ -177,6 +182,7 @@ class DueThisWeekFilter(BaseFilter):
 
     def __str__(self):
         return "DueThisWeekFilter(%s)" % self.text
+
 
 class DueThisMonthFilter(BaseFilter):
     """
@@ -201,6 +207,7 @@ class DueThisMonthFilter(BaseFilter):
     def __str__(self):
         return "DueThisMonthFilter(%s)" % self.text
 
+
 class DueOverdueFilter(BaseFilter):
     """
     Task list filter allowing only incomplete tasks that are overdue.
@@ -222,6 +229,7 @@ class DueOverdueFilter(BaseFilter):
 
     def __str__(self):
         return "DueOverdueFilter(%s)" % self.text
+
 
 class HasProjectsFilter(BaseFilter):
     """
@@ -254,6 +262,7 @@ class HasContextsFilter(BaseFilter):
     def __str__(self):
         return "HasContextsFilter" % self.text
 
+
 class HasDueDateFilter(BaseFilter):
     """
     Task list filter allowing only complete tasks with due date in due ranges.
@@ -269,6 +278,7 @@ class HasDueDateFilter(BaseFilter):
     def __str__(self):
         return "HasDueDateFilter" % self.text
 
+
 class HasDueRangesFilter(BaseFilter):
     """
     Task list filter allowing only complete tasks with due date in due ranges.
@@ -283,6 +293,7 @@ class HasDueRangesFilter(BaseFilter):
 
     def __str__(self):
         return "HasDueRangesFilter" % self.text
+
 
 class SimpleTextFilter(BaseFilter):
     """

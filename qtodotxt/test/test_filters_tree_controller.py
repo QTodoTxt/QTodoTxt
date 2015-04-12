@@ -4,8 +4,9 @@ from datetime import date
 
 from qtodotxt.lib import todolib
 from qtodotxt.lib.file import File
-from qtodotxt.lib.filters import IncompleteTasksFilter, ContextFilter, ProjectFilter, DueThisMonthFilter, DueThisWeekFilter, DueTodayFilter
-from qtodotxt.ui.controllers import FiltersTreeController
+from qtodotxt.lib.filters import IncompleteTasksFilter, ContextFilter, ProjectFilter, DueThisMonthFilter, \
+    DueThisWeekFilter, DueTodayFilter
+from qtodotxt.ui.controllers.filters_tree_controller import FiltersTreeController
 
 
 class FakeTreeView(QtCore.QObject):

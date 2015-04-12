@@ -4,6 +4,7 @@ from tempfile import mkstemp
 from os import remove
 from qtodotxt.lib.settings import Settings
 
+
 class TestSettingsLoadSave(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

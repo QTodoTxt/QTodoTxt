@@ -301,4 +301,3 @@ class MainController(QtCore.QObject):
             self._view.activateWindow()
         else:
             self._view.showMinimized()
-

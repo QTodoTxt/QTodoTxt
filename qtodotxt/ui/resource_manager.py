@@ -22,11 +22,9 @@ def _getRoot():
 def __getResourcesRoot():
     return os.path.join(_getRoot(), 'resources')
 
-resources_root = __getResourcesRoot()
-
 
 def getResourcePath(resource_name):
-    return os.path.join(resources_root, resource_name)
+    return os.path.join(__getResourcesRoot(), resource_name)
 
 
 def getIcon(resource_name):

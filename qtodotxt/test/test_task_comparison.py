@@ -1,6 +1,7 @@
 import unittest
 from qtodotxt.lib.todolib import Task
 
+
 class TestTaskCompletenessComparison(unittest.TestCase):
     @unittest.skip("Necessary methods are not implemented yet.")
     def test(self):
@@ -10,6 +11,7 @@ class TestTaskCompletenessComparison(unittest.TestCase):
         self.assertNotEqual(Task('x task').is_complete, Task('task').is_complete)
         self.assertGreater(Task('task').is_complete, Task('x task').is_complete)
         self.assertLess(Task('x task').is_complete, Task('task').is_complete)
+
 
 class TestTaskPriorityComparison(unittest.TestCase):
     @unittest.skip("Necessary methods are not implemented yet.")
@@ -23,6 +25,7 @@ class TestTaskPriorityComparison(unittest.TestCase):
         self.assertLess(Task('task').priority, Task('(Z) task'.priority))
         self.assertNotEqual(Task('(A) task1').priority, Task('(AA) task2').priority)
         self.assertNotEqual(Task('(1) task1').priority, Task('(1) task2').priority)
+
 
 class TestTaskComparison(unittest.TestCase):
     @unittest.skip("Necessary methods are not implemented yet.")

@@ -60,10 +60,10 @@ class Settings(object):
     def setHideFutureTasks(self, hideFutureTasks):
         self._setData('hide_future_tasks', hideFutureTasks)
 
-    def setViewHeight(self,height):
+    def setViewHeight(self, height):
         self._setData('view_size_height', height)
 
-    def setViewWidth(self,width):
+    def setViewWidth(self, width):
         self._setData('view_size_width', width)
 
     def getViewHeight(self):
@@ -72,10 +72,10 @@ class Settings(object):
     def getViewWidth(self):
         return self._getData('view_size_width')
 
-    def setViewPositionX(self,x):
+    def setViewPositionX(self, x):
         self._setData('view_position_x', x)
 
-    def setViewPositionY(self,y):
+    def setViewPositionY(self, y):
         self._setData('view_position_y', y)
 
     def getViewPositionX(self):
@@ -84,7 +84,7 @@ class Settings(object):
     def getViewPositionY(self):
         return self._getData('view_position_y')
 
-    def setViewSlidderPosition(self,position):
+    def setViewSlidderPosition(self, position):
         self._setData('view_slidder_position', position)
 
     def getViewSlidderPosition(self):

@@ -4,6 +4,7 @@ from qtodotxt.ui.controls.autocomplete_lineedit import AutoCompleteEdit
 from datetime import date, timedelta
 import collections
 
+
 class AutoCompleteInputDialog(QtGui.QDialog):
     autocomplete_pairs = collections.OrderedDict([
         ('due:Today', ''),
@@ -36,14 +37,16 @@ class AutoCompleteInputDialog(QtGui.QDialog):
         eom = date.today().replace(month=month+1, day=1) - timedelta(days=1)
         if eom < date.today():
             eom = eom.replace(year=eom.year+1)
-        return 'due:'+ eom.strftime('%Y-%m-%d')
+        return 'due:' + eom.strftime('%Y-%m-%d')
 
     def _populateKeys(self, keys):
         today = 'due:' + date.today().strftime('%Y-%m-%d')
-        tomorrow = 'due:' + (date.today() + timedelta(days = 1)).strftime('%Y-%m-%d')
+        tomorrow = 'due:' + (date.today() + timedelta(days=1)).strftime('%Y-%m-%d')
         EOW = 'due:' + (date.today() + timedelta((6-date.today().weekday()) % 7)).strftime('%Y-%m-%d')
-        EOM = 'due:' + (date.today().replace(month=date.today().month+1, day=1) - timedelta(days=1)).strftime('%Y-%m-%d')
-        EOY = 'due:' + (date.today().replace(year=date.today().year+1, month=1, day=1) - timedelta(days=1)).strftime('%Y-%m-%d')
+        EOM = 'due:' + (date.today().replace(month=date.today().month+1, day=1)
+                        - timedelta(days=1)).strftime('%Y-%m-%d')
+        EOY = 'due:' + (date.today().replace(year=date.today().year+1, month=1, day=1)
+                        - timedelta(days=1)).strftime('%Y-%m-%d')
 
         keys['due:EndOfWeek'] = EOW
         keys['due:EndOfMonth'] = EOM
@@ -101,4 +104,4 @@ if __name__ == '__main__':
     values = ['(A)', '(B)', '(C)', '@home', '@call', '@work', '+qtodotxt', '+sqlvisualizer']
     view = AutoCompleteInputDialog(values)
     view.show()
-    sys.exit(app.exec_())  
+    sys.exit(app.exec_())

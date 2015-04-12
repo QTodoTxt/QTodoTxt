@@ -6,11 +6,11 @@ import logging
 import sys
 
 from PySide import QtGui
-from qtodotxt.ui.controllers import MainController
+from qtodotxt.ui.controllers.main_controller import MainController
 from qtodotxt.ui.resource_manager import getIcon
 from qtodotxt.ui.services.dialogs_service import DialogsService
 from qtodotxt.ui.services.task_editor_service import TaskEditorService
-from qtodotxt.ui.views import MainView
+from qtodotxt.ui.views.main_view import MainView
 
 
 class TrayIcon(QtGui.QSystemTrayIcon):
@@ -28,6 +28,7 @@ class TrayIcon(QtGui.QSystemTrayIcon):
     def _onActivated(self):
         self._controller._tasks_list_controller.createTask()
 
+
 def _parseArgs():
     if len(sys.argv) > 1 and sys.argv[1].startswith('-psn'):
         del sys.argv[1]
@@ -41,17 +42,20 @@ def _parseArgs():
                         help='set one of these logging levels: DEBUG, INFO, WARNING, ERROR, CRITICAL')
     return parser.parse_args()
 
+
 def _setupLogging(loglevel):
     numeric_level = getattr(logging, loglevel[0].upper(), None)
-    if isinstance(numeric_level,int):
+    if isinstance(numeric_level, int):
         logging.basicConfig(format='{asctime}.{msecs:.0f} [{name}] {levelname}: {message}',
                             level=numeric_level, style='{', datefmt='%H:%M:%S')
+
 
 def _createController(args):
     window = MainView()
     dialogs_service = DialogsService(window, 'QTodoTxt')
     task_editor_service = TaskEditorService(window)
     return MainController(window, dialogs_service, task_editor_service, args)
+
 
 def run():
     app = QtGui.QApplication(sys.argv)
@@ -64,6 +68,7 @@ def run():
     icon.show()
     app.exec_()
     sys.exit()
+
 
 if __name__ == "__main__":
     run()

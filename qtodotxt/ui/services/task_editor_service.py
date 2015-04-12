@@ -2,11 +2,12 @@ import string
 from qtodotxt.ui.controls.autocomplete_inputdialog import AutoCompleteInputDialog
 from collections import OrderedDict
 
+
 class TaskEditorService(object):
 
     def __init__(self, parent_window):
         self._parent_window = parent_window
-        self._priorities = ["("+i+")" for i in string.ascii_uppercase ]
+        self._priorities = ["("+i+")" for i in string.ascii_uppercase]
         self._resetValues()
         self._dates = list()
 
@@ -58,4 +59,3 @@ class TaskEditorService(object):
         if dialog.exec_():
             return dialog.textValue(), True
         return None, False
-

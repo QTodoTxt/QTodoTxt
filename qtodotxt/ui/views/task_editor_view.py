@@ -1,5 +1,4 @@
 import sys
-from PySide import QtCore
 from PySide import QtGui
 
 
@@ -14,7 +13,7 @@ class TaskEditorView(QtGui.QDialog):
         vbox = QtGui.QVBoxLayout()
         vbox.addWidget(QtGui.QLabel("Task:"))
         vbox.addWidget(self._edit)
-        
+
         hbox = QtGui.QHBoxLayout()
         okButton = QtGui.QPushButton("Ok")
         cancelButton = QtGui.QPushButton("Cancel")
@@ -35,6 +34,3 @@ if __name__ == '__main__':
     view = TaskEditorView()
     view.show()
     sys.exit(app.exec_())
-    
-    
-

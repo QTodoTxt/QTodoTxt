@@ -137,7 +137,6 @@ class TasksListController(QtCore.QObject):
             text = '%s %s' % (date_string, text)
         return text
 
-
     def createTask(self):
         (text, ok) = self._task_editor_service.createTask()
         if ok and text:
