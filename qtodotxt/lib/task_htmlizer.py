@@ -78,7 +78,8 @@ class TaskHtmlizer(object):
             return '<font style="color:orange">t:%s</font>' % thresholdDateString
 
     def _htmlizeURL(self, text):
-        regex = re.compile(r'((file://(?!.*//.*)(?!.*/ .*)/{1}([^\\(){}:\*\?<>\|])+\.[a-zA-Z]{3,})|'  # 
+        regex = re.compile(r'((file://(?!.*//.*)(?!.*/ .*)/{1}([^\\(){}:\*\?<>\|])+\.[a-zA-Z]{3,})|'  #
+            r'(file://([a-zA-Z]:\\)?[^\x00-\x1F"<>\|:\*\?/]+\.[a-zA-Z]{3,})|'
             r'(?:http|ftp)s?://'  # TODO what else is supported by xgd-open?
             #TODO add support for user:password@-scheme
             r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # domain...
