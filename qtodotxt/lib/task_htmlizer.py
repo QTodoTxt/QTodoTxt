@@ -78,16 +78,16 @@ class TaskHtmlizer(object):
             return '<font style="color:orange">t:%s</font>' % thresholdDateString
 
     def _htmlizeURL(self, text):
-        regex = re.compile(
-            r'((?:http|ftp)s?://'  # TODO what else is supported by xgd-open?
-            # TODO add support for user:password@-scheme
+        regex = re.compile(r'((file://(?!.*//.*)(?!.*/ .*)/{1}([^\\(){}:\*\?<>\|])+\.[a-zA-Z]{3,})|'  # 
+            r'(?:http|ftp)s?://'  # TODO what else is supported by xgd-open?
+            #TODO add support for user:password@-scheme
             r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # domain...
             r'localhost|'  # localhost...
             r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|'  # ...or ipv4
             r'\[?[A-F0-9]*:[A-F0-9:]+\]?)'  # ...or ipv6
             r'(?::\d+)?'  # optional port
             r'(?:/?|[/?]\S+))(\s|$)', re.IGNORECASE)
-        return regex.sub(r'<a href="\1">\1</a>\2', text)
+        return regex.sub(r'<a href="\1">\1</a> ', text)
 
     def _htmlizeCreatedCompleted(self, text, raw_text):
         created = ''
