@@ -39,3 +39,4 @@ Be sure to have all [prerequisites](documentation/User-documentation) installed 
 - [Defects and Enhancements](https://github.com/mNantern/QTodoTxt/issues)
 - [Screenshots](documentation/Screenshots.md)
 - [Forum](https://groups.google.com/d/forum/qtodotxt)
+- [Contributing code to the project](CONTRIBUTING.md) 
