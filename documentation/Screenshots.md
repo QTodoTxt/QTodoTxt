@@ -1,15 +1,15 @@
 ## Main view
 
-[[documentation/screenshots/QTodoTxt_main_view.png]]
+(screenshots/QTodoTxt_main_view.png)
 
 ## Edit view
 
-[[documentation/screenshots/QTodoTxt-Edit.png]]
+(screenshots/QTodoTxt-Edit.png)
 
 ## Filters
 
 ### Tree filters
-[[documentation/screenshots/QTodoTxt_tree_filters.png]]
+(screenshots/QTodoTxt_tree_filters.png)
 
 ### Text filter
-[[documentation/screenshots/QTodoTxt_text_filter.png]]
+(screenshots/QTodoTxt_text_filter.png)
