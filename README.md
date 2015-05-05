@@ -33,9 +33,9 @@ Be sure to have all [prerequisites](documentation/User-documentation) installed 
 
 ## Documentation
 
-- [User documentation](documentation/User-documentation)
-- Stable and older releases: [Downloads](documentation/Releases)
-- [Changelog](documentation/Changelog)
+- [User documentation](documentation/User-documentation.md)
+- Stable and older releases: [Downloads](documentation/Releases.md)
+- [Changelog](documentation/Changelog.md)
 - [Defects and Enhancements](https://github.com/mNantern/QTodoTxt/issues)
-- [Screenshots](documentation/Screenshots)
+- [Screenshots](documentation/Screenshots.md)
 - [Forum](https://groups.google.com/d/forum/qtodotxt)
