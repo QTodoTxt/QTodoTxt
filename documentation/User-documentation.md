@@ -33,7 +33,10 @@ Command line arguments support:
 * **Decrease Task Priority**: -
 
 ### Behaviour description
-* **Hyperlinks**: Are recognized automatically if starting with 'http://', 'https://', 'ftp://', etc.
+* **Internet URLs**: Are recognized automatically if starting with 'http://', 'https://', 'ftp://', etc.
+* **Local Files (Linux/Windows)**: Local files can be referenced if preceeded by 'file://'
+* **Local Directories (Linux)**: Local Linux directories are recognized automatically (need to start and end with a '/')
+* **Emails**: Emails are recognized automatically and will open a new email in the default email client if preceeded by 'mailto:' (note '//' not included).
 * **Sorting**: Is done automatically at first on priorities and within this order alphabetically
 * **Due dates format**: "due:YYYY-MM-DD" (other formats can lead to strange behaviour)
 * **Due dates color**: red = today or past; orange = within the following week; black = more than one week
