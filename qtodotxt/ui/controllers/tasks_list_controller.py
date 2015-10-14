@@ -27,7 +27,7 @@ class TasksListController(QtCore.QObject):
         self._settings = settings.Settings()
 
     def _initCreateTaskAction(self):
-        action = QtGui.QAction(getIcon('add.png'), '&Create Task', self)
+        action = QtGui.QAction(getIcon('add.png'), '&Create New Task', self)
         action.setShortcuts(['Insert', 'Ctrl+I', 'Ctrl+N'])
         action.triggered.connect(self.createTask)
         self._view.addListAction(action)

@@ -44,11 +44,20 @@ class MainController(QtCore.QObject):
         self._initFiltersTree()
         self._initTasksList()
         self._initMenuBar()
+        self._initToolBar()
         self._initFilterText()
 
     def _initMenuBar(self):
         menu = self._view.menuBar()
         self._menu_controller = MenuController(self, menu)
+
+    def _initToolBar(self):
+        toolbar = self._view.addToolBar("Edit")
+        toolbar.addAction(self._tasks_list_controller.createTaskAction)
+        toolbar.addAction(self._tasks_list_controller.deleteSelectedTasksAction)
+        toolbar.addAction(self._tasks_list_controller.completeSelectedTasksAction)
+        toolbar.addAction(self._tasks_list_controller.decreasePrioritySelectedTasksAction)
+        toolbar.addAction(self._tasks_list_controller.increasePrioritySelectedTasksAction)
 
     def exit(self):
         self._view.close()
