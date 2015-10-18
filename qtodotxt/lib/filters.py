@@ -295,6 +295,18 @@ class HasDueRangesFilter(BaseFilter):
         return "HasDueRangesFilter" % self.text
 
 
+def simpleTextFilterRepl(matchObj):
+    """
+    Return a search string based on the matchObj
+
+    Replace function used in SimpleTextFilter isMatch, needed to allow for inverted(not) searching
+
+    """
+    if(matchObj.group(1)):
+        return "^(?!.*" + matchObj.group(2) + ")"
+    else:
+        return "^(?=.*" + matchObj.group(2) + ")"
+
 class SimpleTextFilter(BaseFilter):
     """
     Task list filter allowing only tasks whose string matches a filter string.
@@ -307,10 +319,10 @@ class SimpleTextFilter(BaseFilter):
     def __init__(self, text):
         BaseFilter.__init__(self, text)
 
+
     def isMatch(self, task):
         """
         Return a boolean based on whether the supplied task satisfies self.text.
-        TODO: the NOT syntax described below isn't yet implemented
 
         This filter can handle basic and/or/not conditions. The syntax is as
         follows:
@@ -342,10 +354,9 @@ class SimpleTextFilter(BaseFilter):
         automatically. So the search string '(B)' will match '(B) nail its
         feet to the perch'.
         """
-        # TODO: implement NOT conditions
         mymatch = False
-        comp = re.compile(r'\s*([\(\)\w\\\-]+)[\s,]*', re.U)
-        restring = comp.sub(r'^(?=.*\1)', self.text, re.U)
+        comp = re.compile(r'\s*([\!~])?([\(\)\w\\\-]+)[\s,]*', re.U)
+        restring = comp.sub(simpleTextFilterRepl, self.text, re.U)
         try:
             if ')' in restring:
                 raise re.error  # otherwise adding closing parenth avoids error here
