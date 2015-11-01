@@ -1,24 +1,23 @@
 language: python
+sudo: true
 
 python:
-  - "3.2"
-  - "3.3"
   - "3.4"
+#  - "3.5"
 
 before_install:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 
 install:
-  - sudo apt-get update
-  - sudo apt-get -y install python3-pyside
-  - export PYTHONPATH="$PYTHONPATH:/usr/lib/python3/dist-packages"
+  - sudo apt-get update -qq
+  - travis_retry sudo apt-get -y install python3-pyside
   - pip install flake8
 
-# command to run tests
 script:
+  - export PYTHONPATH="$PYTHONPATH:/usr/lib/python3/dist-packages"
   - echo $PYTHONPATH
   - ls /usr/lib/python3/dist-packages/PySide
   - python -c "import sys; print('/usr/lib/python3/dist-packages' in sys.path)"
   - python -c "import PySide; print(PySide.__version__)"
-  - flake8 qtodotxt && qtodotxt/test/run-tests.py
+  - flake8 qtodotxt && py.test qtodotxt/test && qtodotxt/test/run-doctests.py

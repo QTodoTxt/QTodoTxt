@@ -4,13 +4,6 @@ from os import remove
 from datetime import date, timedelta
 from qtodotxt.lib.file import File, ErrorLoadingFile
 from qtodotxt.lib.todolib import Task
-from sys import version
-
-
-PYTHON_VERSION = version[:3]
-
-if PYTHON_VERSION < '3.3':
-    FileNotFoundError = BaseException
 
 
 class TestFile(unittest.TestCase):

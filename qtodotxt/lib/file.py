@@ -5,15 +5,9 @@ from PySide import QtCore
 from qtodotxt.lib.filters import DueTodayFilter, DueTomorrowFilter, DueThisWeekFilter, DueThisMonthFilter, \
     DueOverdueFilter
 from qtodotxt.lib.todolib import Task, compareTasks
-from sys import version
 import time
 
 logger = logging.getLogger(__name__)
-
-PYTHON_VERSION = version[:3]
-
-if PYTHON_VERSION < '3.3':
-    FileNotFoundError = OSError
 
 
 class Error(Exception):
