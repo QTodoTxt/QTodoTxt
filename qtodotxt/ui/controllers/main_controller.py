@@ -68,7 +68,7 @@ class MainController(QtCore.QObject):
         self._updateView()
 
         if self._args.file:
-            filename = self._args.file[0]
+            filename = self._args.file
         else:
             filename = self._settings.getLastOpenFile()
 

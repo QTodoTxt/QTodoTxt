@@ -33,7 +33,7 @@ def _parseArgs():
     if len(sys.argv) > 1 and sys.argv[1].startswith('-psn'):
         del sys.argv[1]
     parser = argparse.ArgumentParser(description='QTodoTxt')
-    parser.add_argument('-f', '--file', type=str, nargs=1, metavar='TEXTFILE',
+    parser.add_argument('file', type=str, nargs='?', metavar='TEXTFILE',
                         help='open the specified file')
     parser.add_argument('-q', '--quickadd', action='store_true',
                         help='opens the add task dialog and exit the application when done')
