@@ -1,8 +1,8 @@
 from PySide import QtCore
 from PySide import QtGui
 
+from qtodotxt.ui.dialogs import about_view
 from qtodotxt.ui.resource_manager import getIcon
-from qtodotxt.ui.views import about_view
 
 
 class MenuController(QtCore.QObject):
