@@ -1,9 +1,9 @@
 from PySide import QtCore, QtGui
 
 
-class AutoCompleteEdit(QtGui.QLineEdit):
+class TaskEditorLineEdit(QtGui.QLineEdit):
     def __init__(self, model, autocomplete_pairs, separator=' '):
-        super(AutoCompleteEdit, self).__init__()
+        super(TaskEditorLineEdit, self).__init__()
         self._separator = separator
         self._autocomplete_pairs = autocomplete_pairs
         self._completer = QtGui.QCompleter(model)
@@ -55,7 +55,7 @@ class AutoCompleteEdit(QtGui.QLineEdit):
             if event.key() in self._keysToIgnore:
                 event.ignore()
                 return
-        super(AutoCompleteEdit, self).keyPressEvent(event)
+        super(TaskEditorLineEdit, self).keyPressEvent(event)
         completionPrefix = self.textUnderCursor()
         if completionPrefix != self._completer.completionPrefix():
             self._updateCompleterPopupItems(completionPrefix)
@@ -79,7 +79,7 @@ if __name__ == '__main__':
         import sys
         app = QtGui.QApplication(sys.argv)
         values = ['@call', '@bug', '+qtodotxt', '+sqlvisualizer']
-        editor = AutoCompleteEdit(values)
+        editor = TaskEditorLineEdit(values)
         window = QtGui.QWidget()
         hbox = QtGui.QHBoxLayout()
         hbox.addWidget(editor)

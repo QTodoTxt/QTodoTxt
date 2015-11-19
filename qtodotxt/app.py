@@ -9,7 +9,7 @@ from PySide import QtGui
 
 from qtodotxt.ui.controllers.main_controller import MainController
 from qtodotxt.ui.dialogs.misc_dialogs import Dialogs
-from qtodotxt.ui.dialogs.taskeditor import TaskEditorService
+from qtodotxt.ui.dialogs.taskeditor import TaskEditor
 from qtodotxt.ui.resource_manager import getIcon
 from qtodotxt.ui.views.main_view import MainView
 
@@ -54,8 +54,8 @@ def _setupLogging(loglevel):
 def _createController(args):
     window = MainView()
     dialogs = Dialogs(window, 'QTodoTxt')
-    task_editor_service = TaskEditorService(window)
-    return MainController(window, dialogs, task_editor_service, args)
+    taskeditor = TaskEditor(window)
+    return MainController(window, dialogs, taskeditor, args)
 
 
 def run():

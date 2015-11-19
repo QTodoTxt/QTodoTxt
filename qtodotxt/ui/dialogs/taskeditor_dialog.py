@@ -1,11 +1,11 @@
 import sys
 from PySide import QtGui
-from qtodotxt.ui.dialogs.taskeditor_lineedit import AutoCompleteEdit
+from qtodotxt.ui.dialogs.taskeditor_lineedit import TaskEditorLineEdit
 from datetime import date, timedelta
 import collections
 
 
-class AutoCompleteInputDialog(QtGui.QDialog):
+class TaskEditorDialog(QtGui.QDialog):
     autocomplete_pairs = collections.OrderedDict([
         ('due:Today', ''),
         ('due:Tomorrow', ''),
@@ -74,7 +74,7 @@ class AutoCompleteInputDialog(QtGui.QDialog):
         self._label = QtGui.QLabel("Task:")
         vbox.addWidget(self._label)
 
-        self._edit = AutoCompleteEdit(values, self.autocomplete_pairs)
+        self._edit = TaskEditorLineEdit(values, self.autocomplete_pairs)
         vbox.addWidget(self._edit)
 
         hbox = QtGui.QHBoxLayout()
