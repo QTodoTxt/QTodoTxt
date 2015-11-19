@@ -1,6 +1,6 @@
 from PySide import QtGui
 from qtodotxt.lib.settings import UI_MARGINS_OFFSET
-from qtodotxt.ui.views.filter_tasks_view import FilterTasksView
+from qtodotxt.ui.views.tasks_filter_view import FilterTasksView
 from qtodotxt.ui.views.tasks_list_view import TasksListView
 from qtodotxt.ui.resource_manager import getIcon
 
