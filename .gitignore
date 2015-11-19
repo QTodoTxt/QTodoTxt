@@ -33,8 +33,6 @@ dist/
 *.egg-info
 eggs/
 .installed.cfg
-lib
-lib64
 parts
 pip-log.txt
 sdist
