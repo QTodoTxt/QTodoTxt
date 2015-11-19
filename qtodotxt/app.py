@@ -9,7 +9,7 @@ from PySide import QtGui
 
 from qtodotxt.ui.controllers.main_controller import MainController
 from qtodotxt.ui.dialogs.misc_dialogs import Dialogs
-from qtodotxt.ui.dialogs.task_editor_service import TaskEditorService
+from qtodotxt.ui.dialogs.taskeditor import TaskEditorService
 from qtodotxt.ui.resource_manager import getIcon
 from qtodotxt.ui.views.main_view import MainView
 

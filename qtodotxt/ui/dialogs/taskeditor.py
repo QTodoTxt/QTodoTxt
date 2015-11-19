@@ -1,5 +1,5 @@
 import string
-from qtodotxt.ui.dialogs.autocomplete_inputdialog import AutoCompleteInputDialog
+from qtodotxt.ui.dialogs.taskeditor_dialog import AutoCompleteInputDialog
 from collections import OrderedDict
 
 

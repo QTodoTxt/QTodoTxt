@@ -1,6 +1,6 @@
 import sys
 from PySide import QtGui
-from qtodotxt.ui.dialogs.autocomplete_lineedit import AutoCompleteEdit
+from qtodotxt.ui.dialogs.taskeditor_lineedit import AutoCompleteEdit
 from datetime import date, timedelta
 import collections
 
