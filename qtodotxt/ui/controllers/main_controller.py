@@ -5,7 +5,7 @@ import sys
 from PySide import QtCore
 from PySide import QtGui
 
-from qtodotxt.lib import todolib, settings
+from qtodotxt.lib import task_parser, settings
 from qtodotxt.lib.file import ErrorLoadingFile, File, FileObserver
 
 from qtodotxt.ui.controllers.tasks_list_controller import TasksListController
@@ -91,14 +91,14 @@ class MainController(QtCore.QObject):
 
     def _onFilterSelectionChanged(self, filters):
         # First we filter with filters tree
-        treeTasks = todolib.filterTasks(filters, self._file.tasks)
+        treeTasks = task_parser.filterTasks(filters, self._file.tasks)
         # Then with our filter text
         filterText = self._view.tasks_view.filter_tasks.getText()
-        tasks = todolib.filterTasks([SimpleTextFilter(filterText)], treeTasks)
+        tasks = task_parser.filterTasks([SimpleTextFilter(filterText)], treeTasks)
         # And finally with future filter if needed
         # TODO: refactor all that filters
         if self._settings.getHideFutureTasks():
-            tasks = todolib.filterTasks([FutureFilter()], tasks)
+            tasks = task_parser.filterTasks([FutureFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
 
     def _initFilterText(self):
@@ -108,13 +108,13 @@ class MainController(QtCore.QObject):
     def _onFilterTextChanged(self, text):
         # First we filter with filters tree
         filters = self._filters_tree_controller._view.getSelectedFilters()
-        treeTasks = todolib.filterTasks(filters, self._file.tasks)
+        treeTasks = task_parser.filterTasks(filters, self._file.tasks)
         # Then with our filter text
-        tasks = todolib.filterTasks([SimpleTextFilter(text)], treeTasks)
+        tasks = task_parser.filterTasks([SimpleTextFilter(text)], treeTasks)
         # And finally with future filter if needed
         # TODO: refactor all that filters
         if self._settings.getHideFutureTasks():
-            tasks = todolib.filterTasks([FutureFilter()], tasks)
+            tasks = task_parser.filterTasks([FutureFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
 
     def _initTasksList(self):
