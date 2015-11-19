@@ -1,7 +1,7 @@
 from PySide import QtCore
 from PySide import QtGui
 
-from qtodotxt.ui.dialogs import about_view
+from qtodotxt.ui.dialogs import about_dialog
 from qtodotxt.ui.resource_manager import getIcon
 
 
@@ -51,7 +51,7 @@ class MenuController(QtCore.QObject):
         return action
 
     def _about(self):
-        about_view.show(self._menu)
+        about_dialog.show(self._menu)
 
     def _createNewAction(self):
         action = QtGui.QAction(getIcon('page.png'), '&New', self)
