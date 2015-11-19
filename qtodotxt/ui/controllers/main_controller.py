@@ -22,11 +22,11 @@ FILENAME_FILTERS = ';;'.join([
 
 
 class MainController(QtCore.QObject):
-    def __init__(self, view, dialogs_service, task_editor_service, args):
+    def __init__(self, view, dialogs, task_editor_service, args):
         super(MainController, self).__init__()
         self._args = args
         self._view = view
-        self._dialogs_service = dialogs_service
+        self._dialogs = dialogs
         self._task_editor_service = task_editor_service
         self._initControllers()
         self._file = File()
@@ -76,7 +76,7 @@ class MainController(QtCore.QObject):
             try:
                 self.openFileByName(filename)
             except ErrorLoadingFile as ex:
-                self._dialogs_service.showError(str(ex))
+                self._dialogs.showError(str(ex))
 
         if self._args.quickadd:
             self._tasks_list_controller.createTask()
@@ -151,7 +151,7 @@ class MainController(QtCore.QObject):
     def _canExit(self):
         if not self._is_modified:
             return True
-        button = self._dialogs_service.showSaveDiscardOrCancel('Unsaved changes...')
+        button = self._dialogs.showSaveDiscardCancel('Unsaved changes...')
         if button == QtGui.QMessageBox.Save:
             self.save()
             return True
@@ -215,7 +215,7 @@ class MainController(QtCore.QObject):
             try:
                 self.openFileByName(filename)
             except ErrorLoadingFile as ex:
-                self._dialogs_service.showError(str(ex))
+                self._dialogs.showError(str(ex))
 
     def new(self):
         if self._canExit():
@@ -223,11 +223,11 @@ class MainController(QtCore.QObject):
             self._loadFileToUI()
 
     def revert(self):
-        if self._dialogs_service.showConfirm('Revert to saved file (and lose unsaved changes)?'):
+        if self._dialogs.showConfirm('Revert to saved file (and lose unsaved changes)?'):
             try:
                 self.openFileByName(self._file.filename)
             except ErrorLoadingFile as ex:
-                self._dialogs_service.showError(str(ex))
+                self._dialogs.showError(str(ex))
 
     def openFileByName(self, filename):
         logger.debug('MainController.openFileByName called with filename="{}"'.format(filename))

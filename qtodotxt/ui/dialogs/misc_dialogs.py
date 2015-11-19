@@ -1,7 +1,7 @@
 from PySide import QtGui
 
 
-class DialogsService(object):
+class Dialogs(object):
 
     def __init__(self, parent_window, default_title):
         self._parent_window = parent_window
@@ -19,7 +19,7 @@ class DialogsService(object):
 
         QtGui.QMessageBox.critical(self._parent_window, title, message)
 
-    def showSaveDiscardOrCancel(self, message):
+    def showSaveDiscardCancel(self, message):
         """
         Returns:
             QtGui.QMessageBox.Save or
@@ -47,10 +47,10 @@ class DialogsService(object):
 
 if __name__ == "__main__":
     app = QtGui.QApplication([])
-    service = DialogsService(None, 'Default Title')
+    service = Dialogs(None, 'Default Title')
     service.showMessage("DialogsService.message()")
     service.showError("DialogsService.error()")
-    result = service.showSaveDiscardOrCancel("Unsaved changes...")
+    result = service.showSaveDiscardCancel("Unsaved changes...")
     message = 'You clicked '
     if result == QtGui.QMessageBox.Save:
         message += '"Save"'
