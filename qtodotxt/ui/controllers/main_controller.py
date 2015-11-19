@@ -93,7 +93,7 @@ class MainController(QtCore.QObject):
         # First we filter with filters tree
         treeTasks = task_parser.filterTasks(filters, self._file.tasks)
         # Then with our filter text
-        filterText = self._view.tasks_view.filter_tasks.getText()
+        filterText = self._view.tasks_view.tasks_filter.getText()
         tasks = task_parser.filterTasks([SimpleTextFilter(filterText)], treeTasks)
         # And finally with future filter if needed
         # TODO: refactor all that filters
@@ -102,7 +102,7 @@ class MainController(QtCore.QObject):
         self._tasks_list_controller.showTasks(tasks)
 
     def _initFilterText(self):
-        self._view.tasks_view.filter_tasks.filterTextChanged.connect(
+        self._view.tasks_view.tasks_filter.filterTextChanged.connect(
             self._onFilterTextChanged)
 
     def _onFilterTextChanged(self, text):

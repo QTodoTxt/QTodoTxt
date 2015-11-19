@@ -27,7 +27,7 @@ class TaskEditorDialog(QtGui.QDialog):
     ])
 
     def __init__(self, values, parent=None):
-        super(AutoCompleteInputDialog, self).__init__(parent)
+        super(TaskEditorDialog, self).__init__(parent)
         self._initUI(values)
         self._populateKeys(self.autocomplete_pairs)
 
