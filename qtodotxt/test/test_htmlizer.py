@@ -48,8 +48,9 @@ class TestHtmlizer(unittest.TestCase):
 
     def test_07(self):
         # Test task with a two contexts and a three projects
-        task = task_parser.Task('this is my task @context1 and @context2 and +project1 +project2 and +project3 some more '
-                            'words')
+        task = task_parser.Task('this is my task @context1 and @context2 and '
+                                '+project1 +project2 and +project3 some more '
+                                'words')
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>this is my task <font color="green">@context1</font> and '
                          '<font color="green">@context2</font> and <font style="color:#64AAD0">+project1</font> '

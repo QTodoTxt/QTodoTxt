@@ -102,6 +102,6 @@ class TaskEditorDialog(QtGui.QDialog):
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
     values = ['(A)', '(B)', '(C)', '@home', '@call', '@work', '+qtodotxt', '+sqlvisualizer']
-    view = AutoCompleteInputDialog(values)
+    view = TaskEditorDialog(values)
     view.show()
     sys.exit(app.exec_())
