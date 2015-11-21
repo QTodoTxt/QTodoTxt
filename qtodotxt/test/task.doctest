@@ -1,14 +1,14 @@
 ﻿>>> import sys, os; sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
->>> from qtodotxt.lib import todolib
+>>> from qtodotxt.lib import task_parser
 >>> from datetime import date, timedelta
 
-Unittests for the qtodotxt.lib.todolib.Task class
+Unittests for the qtodotxt.lib.task_parser.Task class
 
 ========================================
 1. text only task
 ========================================
 
->>> task = todolib.Task('do something')
+>>> task = task_parser.Task('do something')
 >>> task.text
 'do something'
 >>> len(task.contexts)
@@ -24,7 +24,7 @@ True
 2. task with two contexts
 ========================================
 
->>> task = todolib.Task('do something @context1 @context2')
+>>> task = task_parser.Task('do something @context1 @context2')
 >>> task.text
 'do something @context1 @context2'
 >>> task.contexts
@@ -40,7 +40,7 @@ False
 3. task with two projects
 ========================================
 
->>> task = todolib.Task('do something +project1 +project2')
+>>> task = task_parser.Task('do something +project1 +project2')
 >>> task.text
 'do something +project1 +project2'
 >>> task.contexts
@@ -56,7 +56,7 @@ False
 4. task with 2 projects and 2 contexts
 ========================================
 
->>> task = todolib.Task('do something @context1 @context2 +project1 +project2')
+>>> task = task_parser.Task('do something @context1 @context2 +project1 +project2')
 >>> task.text
 'do something @context1 @context2 +project1 +project2'
 >>> task.contexts
@@ -72,7 +72,7 @@ False
 5. task with priority in the end of line (no priority should be set)
 ========================================
 
->>> task = todolib.Task('do something (A)')
+>>> task = task_parser.Task('do something (A)')
 >>> task.text
 'do something (A)'
 >>> task.contexts
@@ -88,7 +88,7 @@ False
 6. task with priority in the start of line (no priority should be set)
 ========================================
 
->>> task = todolib.Task('(B) do something')
+>>> task = task_parser.Task('(B) do something')
 >>> task.text
 '(B) do something'
 >>> task.contexts
@@ -104,7 +104,7 @@ False
 7. task with X at the beginning is complete
 ========================================
 
->>> task = todolib.Task('x this task is complete')
+>>> task = task_parser.Task('x this task is complete')
 >>> task.text
 'x this task is complete'
 >>> task.contexts
@@ -120,7 +120,7 @@ True
 8. a single "+" sign is not interpreted as a project
 ========================================
 
->>> task = todolib.Task('this task has a + in the middle')
+>>> task = task_parser.Task('this task has a + in the middle')
 >>> task.text
 'this task has a + in the middle'
 >>> task.contexts
@@ -135,7 +135,7 @@ False
 ========================================
 9. increase task priority
 ========================================
->>> task = todolib.Task('this task has no Priority')
+>>> task = task_parser.Task('this task has no Priority')
 >>> task.priority is None
 True
 >>> task.increasePriority()
@@ -157,7 +157,7 @@ True
 ========================================
 10. decrease task priority
 ========================================
->>> task = todolib.Task('this task has no Priority')
+>>> task = task_parser.Task('this task has no Priority')
 >>> task.priority is None
 True
 >>> task.decreasePriority()

@@ -3,7 +3,7 @@ Test Setup and Helper Methods
 ========================================
 >>> import os, sys, doctest
 >>> sys.path.insert(0, os.path.join('.', '..', '..', '..'))
->>> from qtodotxt.ui.controls.autocomplete_lineedit import AutoCompleteEdit
+>>> from qtodotxt.ui.dialogs.taskeditor_lineedit import TaskEditorLineEdit
 >>> from PySide import QtCore, QtGui
 >>> app=QtGui.QApplication.instance() 
 >>> if not app:
@@ -14,6 +14,6 @@ Test Setup and Helper Methods
 ========================================
 >>> model = ['one', 'two']
 >>> autocomplete_pairs = {'foo':'bar','kung':'fu'}
->>> edit = AutoCompleteEdit(model, autocomplete_pairs)
+>>> edit = TaskEditorLineEdit(model, autocomplete_pairs)
 >>> edit._separator
 ' '
