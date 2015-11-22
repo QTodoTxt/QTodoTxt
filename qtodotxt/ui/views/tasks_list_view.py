@@ -18,6 +18,7 @@ class TasksListView(QtGui.QListWidget):
     def addTask(self, task):
         item = TaskListWidgetItem(task, self)
         label = self._createLabel(task)
+        item.setSizeHint(label.sizeHint())
         self.setItemWidget(item, label)
 
     def addListAction(self, action):
