@@ -136,7 +136,19 @@ class MainController(QtCore.QObject):
         controller.taskArchived.connect(self._tasks_list_taskArchived)
 
         #Context menu
-        controller._view.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+        #controller._view.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+        controller._view.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        controller._view.customContextMenuRequested.connect(self.showContextMenu)
+        self._contextMenu = QtGui.QMenu()
+        self._contextMenu.addAction(self._tasks_list_controller.deleteSelectedTasksAction)
+        self._contextMenu.addAction(self._tasks_list_controller.completeSelectedTasksAction)
+        self._contextMenu.addAction(self._tasks_list_controller.decreasePrioritySelectedTasksAction)
+        self._contextMenu.addAction(self._tasks_list_controller.increasePrioritySelectedTasksAction)
+
+    def showContextMenu(self, position):
+        tasks = self._tasks_list_controller._view.getSelectedTasks()
+        if tasks:
+            self._contextMenu.exec_(self._tasks_list_controller._view.mapToGlobal(position))
 
     def _tasks_list_taskDeleted(self, task):
         self._file.tasks.remove(task)
