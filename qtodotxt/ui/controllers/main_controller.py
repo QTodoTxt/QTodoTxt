@@ -52,7 +52,7 @@ class MainController(QtCore.QObject):
         self._menu_controller = MenuController(self, menu)
 
     def _initToolBar(self):
-        toolbar = self._view.addToolBar("Edit")
+        toolbar = self._view.addToolBar("Main Toolbar")
         toolbar.addAction(self._tasks_list_controller.createTaskAction)
         toolbar.addAction(self._tasks_list_controller.deleteSelectedTasksAction)
         toolbar.addAction(self._tasks_list_controller.completeSelectedTasksAction)
@@ -134,6 +134,9 @@ class MainController(QtCore.QObject):
         controller.taskModified.connect(self._tasks_list_taskModified)
         controller.taskDeleted.connect(self._tasks_list_taskDeleted)
         controller.taskArchived.connect(self._tasks_list_taskArchived)
+
+        #Context menu
+        controller._view.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
 
     def _tasks_list_taskDeleted(self, task):
         self._file.tasks.remove(task)
