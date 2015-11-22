@@ -145,8 +145,8 @@ class MainController(QtCore.QObject):
         controller.taskDeleted.connect(self._tasks_list_taskDeleted)
         controller.taskArchived.connect(self._tasks_list_taskArchived)
 
-        #Context menu
-        #controller._view.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+        # Context menu
+        # controller._view.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
         controller._view.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         controller._view.customContextMenuRequested.connect(self.showContextMenu)
         self._contextMenu = QtGui.QMenu()
