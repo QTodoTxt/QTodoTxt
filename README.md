@@ -2,7 +2,7 @@
 
 QTodoTxt is a cross-platform UI client for todo.txt files (see [todo.txt](http://todotxt.com)).
 
-![Main view](https://github.com/mNantern/QTodoTxt/wiki/screenshots/QTodoTxt_main_view.png)
+![Main view](documentation/screenshots/QTodoTxt_main_view.png)
 
 ## Downloads
 
@@ -29,13 +29,14 @@ To run the application without installing just:
   * On Linux/Mac: bin/qtodotxt
   * On Windows: bin/qtodotxt.pyw
  
-Be sure to have all [prerequisites](http://github.com/mNantern/QTodoTxt/wiki/User-documentation) installed !
+Be sure to have all [prerequisites](documentation/User-documentation) installed !
 
 ## Documentation
 
-- [User documentation](https://github.com/mNantern/QTodoTxt/wiki/User-documentation)
-- Stable and older releases: [Downloads](https://github.com/mNantern/QTodoTxt/wiki/Releases)
-- [Changelog](https://github.com/mNantern/QTodoTxt/wiki/Changelog)
+- [User documentation](documentation/User-documentation.md)
+- Stable and older releases: [Downloads](documentation/Releases.md)
+- [Changelog](documentation/Changelog.md)
 - [Defects and Enhancements](https://github.com/mNantern/QTodoTxt/issues)
-- [Screenshots](https://github.com/mNantern/QTodoTxt/wiki/Screenshots)
+- [Screenshots](documentation/Screenshots.md)
 - [Forum](https://groups.google.com/d/forum/qtodotxt)
+- [Contributing code to the project](CONTRIBUTING.md) 

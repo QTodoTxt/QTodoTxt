@@ -107,4 +107,60 @@ class TestHtmlizer(unittest.TestCase):
         task = todolib.Task('https://github.com/mNantern/QTodoTxt/archive/master.zip')
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt><a href="https://github.com/mNantern/QTodoTxt/archive/master.zip">'
-                         'https://github.com/mNantern/QTodoTxt/archive/master.zip</a>')
+                         'https://github.com/mNantern/QTodoTxt/archive/master.zip</a> ')
+
+    def test_16(self):
+        # Test task with inline reference to local file on Linux
+        task = todolib.Task('Link to local file:///home/user/Desktop/test.txt (linux/UNIX)')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>Link to local <a href="file:///home/user/Desktop/test.txt">'
+                         'file:///home/user/Desktop/test.txt</a> (linux/UNIX)')
+
+    def test_17(self):
+        # Test task with solely a local file on Linux
+        task = todolib.Task('file:///home/user/Desktop/test.txt')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt><a href="file:///home/user/Desktop/test.txt">'
+                         'file:///home/user/Desktop/test.txt</a> ')
+
+    def test_18(self):
+        # Test task with inline reference to local file on Windows
+        task = todolib.Task('Link to local file://c:\\user\\Desktop\\test.txt (Windows)')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>Link to local <a href="file://c:\\user\\Desktop\\test.txt">'
+                         'file://c:\\user\\Desktop\\test.txt</a> (Windows)')
+
+    def test_19(self):
+        # Test task with solely a local file on Windows
+        task = todolib.Task('file://c:\\user\\Desktop\\test.txt')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt><a href="file://c:\\user\\Desktop\\test.txt">'
+                         'file://c:\\user\\Desktop\\test.txt</a> ')
+
+    def test_20(self):
+        # Test task with inline reference to local directory on Linux (assumes start and end with '/')
+        task = todolib.Task('Link to local directory /home/user/Desktop/ (Linux/UNIX)')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>Link to local directory <a href="/home/user/Desktop/">'
+                         '/home/user/Desktop/</a> (Linux/UNIX)')
+
+    def test_21(self):
+        # Test task with solely a local directory on Linux (assumes start and end with '/')
+        task = todolib.Task('/home/user/Desktop/')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt><a href="/home/user/Desktop/">'
+                         '/home/user/Desktop/</a> ')
+
+    def test_22(self):
+        # Test task with inline reference to mailto protocol
+        task = todolib.Task('Email creation via link mailto:someone@gmail.com (platform independent)')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>Email creation via link <a href="mailto:someone@gmail.com">'
+                         'mailto:someone@gmail.com</a> (platform independent)')
+
+    def test_23(self):
+        # Test task with solely a mailto protocol
+        task = todolib.Task('mailto:someone@gmail.com')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt><a href="mailto:someone@gmail.com">'
+                         'mailto:someone@gmail.com</a> ')
