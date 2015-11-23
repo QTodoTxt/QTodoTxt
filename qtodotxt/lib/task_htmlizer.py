@@ -82,7 +82,7 @@ class TaskHtmlizer(object):
             r'('
             r'(file://(?!.*//.*)(?!.*/ .*)/{1}([^\\(){}:\*\?<>\|])+\.[a-zA-Z]{3,})|'  # Local file on Linux
             r'(file://([a-zA-Z]:\\)?[^\x00-\x1F"<>\|:\*\?/]+\.[a-zA-Z]{3,})|'  # Local file on Windows
-            r'/[-_A-Za-z0-9]+(/[-_A-Za-z0-9]*)*|'  # Local directory on Linux (assumes start and end with '/')
+            r'/[-_A-Za-z0-9]+(/[-_A-Za-z0-9]*)*/|'  # Local directory on Linux (assumes start and end with '/')
             r'(mailto:[0-9a-zA-Z]+([0-9a-zA-Z]*[-._+])*[0-9a-zA-Z]+@[0-9a-zA-Z]+'
             r'([-.][0-9a-zA-Z]+)*([0-9a-zA-Z]*[.])[a-zA-Z]{2,6})|'  # mailto protocol
             r'(?:http|ftp)s?://'
