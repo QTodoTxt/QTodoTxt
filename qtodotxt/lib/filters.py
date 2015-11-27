@@ -348,7 +348,7 @@ class SimpleTextFilter(BaseFilter):
         restring = comp.sub(r'^(?=.*\1)', self.text, re.U)
         try:
             if ')' in restring:
-                raise re.error  # otherwise adding closing parenth avoids error here
+                raise re.error('')  # otherwise adding closing parenth avoids error here
             mymatch = re.search(restring, task.text, re.I | re.U)
         except re.error:
             comp2 = re.compile(r'\s*\((?=[^?])', re.U)
