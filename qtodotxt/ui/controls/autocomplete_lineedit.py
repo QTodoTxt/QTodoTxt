@@ -32,7 +32,10 @@ class AutoCompleteEdit(QtGui.QLineEdit):
             completion = self.replaceAutocompleteKeys(completion)
 
         newtext = currentText[:textFirstPart] + completion + " " + currentText[textLastPart:]
+        newCursorPos = self.cursorPosition() + (len(completion) - completionPrefixSize) + 1
+        
         self.setText(newtext)
+        self.setCursorPosition(newCursorPos)
 
     def replaceAutocompleteKeys(self, completion):
         if completion in self._autocomplete_pairs.keys():
