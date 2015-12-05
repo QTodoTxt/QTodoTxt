@@ -65,8 +65,9 @@ class Task(object):
             self.priority = LOWEST_PRIORITY
             self.text = '(%s) %s' % (self.priority, self.text)
         elif self.priority == HIGHEST_PRIORITY:
-            self.priority = None
-            self.text = self.text[4:]
+            # do nothing
+            self.priority = self.priority
+            self.text = self.text
         else:
             oldPriority = self.priority
             self.priority = chr(ord(self.priority) - 1)
@@ -74,8 +75,9 @@ class Task(object):
 
     def decreasePriority(self):
         if self.priority is None:
-            self.priority = HIGHEST_PRIORITY
-            self.text = '(%s) %s' % (self.priority, self.text)
+            # do nothing
+            self.priority = self.priority
+            self.text = self.text
         elif self.priority == LOWEST_PRIORITY:
             self.priority = None
             self.text = self.text[4:]
