@@ -63,26 +63,26 @@ class Task(object):
     def increasePriority(self):
         if self.priority is None:
             self.priority = LOWEST_PRIORITY
-            self.text = '(%s) %s' % (LOWEST_PRIORITY, self.text)
+            self.text = '(%s) %s' % (self.priority, self.text)
         elif self.priority == HIGHEST_PRIORITY:
             self.priority = None
             self.text = self.text[4:]
         else:
-            newPriority = chr(ord(self.priority) - 1)
-            self.text = re.sub('^\(%s\) ' % self.priority, '(%s) ' % newPriority, self.text)
-            self.priority = newPriority
+            oldPriority = self.priority
+            self.priority = chr(ord(self.priority) - 1)
+            self.text = re.sub('^\(%s\) ' % oldPriority, '(%s) ' % self.priority, self.text)
 
     def decreasePriority(self):
         if self.priority is None:
             self.priority = HIGHEST_PRIORITY
-            self.text = '(%s) %s' % (HIGHEST_PRIORITY, self.text)
+            self.text = '(%s) %s' % (self.priority, self.text)
         elif self.priority == LOWEST_PRIORITY:
-            self.text = self.text[4:]
             self.priority = None
+            self.text = self.text[4:]
         else:
-            newPriority = chr(ord(self.priority) + 1)
-            self.text = re.sub('^\(%s\) ' % self.priority, '(%s) ' % newPriority, self.text)
-            self.priority = newPriority
+            oldPriority = self.priority
+            self.priority = chr(ord(self.priority) + 1)
+            self.text = re.sub('^\(%s\) ' % oldPriority, '(%s) ' % self.priority, self.text)
     text = property(_getText, _setText)
 
 
