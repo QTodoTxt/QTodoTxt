@@ -2,8 +2,8 @@ import re
 from datetime import datetime, date
 
 
-HIGHER_PRIORITY = 'A'
-LOWER_PRIORITY = 'Z'
+HIGHEST_PRIORITY = 'A'
+LOWEST_PRIORITY = 'Z'
 
 
 class Task(object):
@@ -62,9 +62,9 @@ class Task(object):
 
     def increasePriority(self):
         if self.priority is None:
-            self.priority = LOWER_PRIORITY
-            self.text = '(%s) %s' % (LOWER_PRIORITY, self.text)
-        elif self.priority == HIGHER_PRIORITY:
+            self.priority = LOWEST_PRIORITY
+            self.text = '(%s) %s' % (LOWEST_PRIORITY, self.text)
+        elif self.priority == HIGHEST_PRIORITY:
             self.priority = None
             self.text = self.text[4:]
         else:
@@ -74,9 +74,9 @@ class Task(object):
 
     def decreasePriority(self):
         if self.priority is None:
-            self.priority = HIGHER_PRIORITY
-            self.text = '(%s) %s' % (HIGHER_PRIORITY, self.text)
-        elif self.priority == LOWER_PRIORITY:
+            self.priority = HIGHEST_PRIORITY
+            self.text = '(%s) %s' % (HIGHEST_PRIORITY, self.text)
+        elif self.priority == LOWEST_PRIORITY:
             self.text = self.text[4:]
             self.priority = None
         else:
