@@ -10,6 +10,7 @@ class Task(object):
 
     def __init__(self, line):
         self.reset()
+        self._user_lowest_priority = 'D'
         if line:
             self.parseLine(line)
 
@@ -62,8 +63,8 @@ class Task(object):
 
     def increasePriority(self):
         if self.priority != HIGHEST_PRIORITY:
-            if self.priority is None:
-                self.priority = LOWEST_PRIORITY
+            if (self.priority == None):
+                self.priority = self._user_lowest_priority
                 self.text = '(%s) %s' % (self.priority, self.text)
             else:
                 oldPriority = self.priority
@@ -72,7 +73,7 @@ class Task(object):
 
     def decreasePriority(self):
         if self.priority != None:
-            if self.priority == LOWEST_PRIORITY:
+            if (self.priority == self._user_lowest_priority) or (self.priority == LOWEST_PRIORITY):
                 self.priority = None
                 self.text = self.text[4:]
             else:
