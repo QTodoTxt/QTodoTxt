@@ -11,6 +11,7 @@ class TasksListView(QtGui.QListWidget):
     def __init__(self, parent=None):
         super(TasksListView, self).__init__(parent)
         self.setLayoutMode(self.LayoutMode.Batched)
+        self.setAlternatingRowColors(True)
         self._task_htmlizer = TaskHtmlizer()
         self._initUI()
         self._oldSelected = []
@@ -18,6 +19,7 @@ class TasksListView(QtGui.QListWidget):
     def addTask(self, task):
         item = TaskListWidgetItem(task, self)
         label = self._createLabel(task)
+        label.setWordWrap(True)
         item.setSizeHint(label.sizeHint())
         self.setItemWidget(item, label)
 
