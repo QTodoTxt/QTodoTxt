@@ -307,6 +307,7 @@ def simpleTextFilterRepl(matchObj):
     else:
         return "^(?=.*" + matchObj.group(2) + ")"
 
+
 class SimpleTextFilter(BaseFilter):
     """
     Task list filter allowing only tasks whose string matches a filter string.
@@ -318,7 +319,6 @@ class SimpleTextFilter(BaseFilter):
 
     def __init__(self, text):
         BaseFilter.__init__(self, text)
-
 
     def isMatch(self, task):
         """
