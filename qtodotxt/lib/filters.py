@@ -329,7 +329,7 @@ class SimpleTextFilter(BaseFilter):
 
         :AND   :   ',' or whitespace (' ')
         :OR    :   '|'
-        :NOT   :   prefixed '~' or '!'  {not yet implemented}
+        :NOT   :   prefixed '~' or '!'
 
         These operators follow the following order of precedence: OR, AND, NOT.
         So, for example:
