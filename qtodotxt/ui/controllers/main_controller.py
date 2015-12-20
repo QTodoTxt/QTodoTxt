@@ -26,6 +26,9 @@ class MainController(QtCore.QObject):
         super(MainController, self).__init__()
         self._args = args
         self._view = view
+        self.settings = QtCore.QSettings("QTodoTxt", "QTodoTxt")
+        # handle the bad bool handling of qsettings
+        self._show_toolbar = True if self.settings.value("show_toolbar", "true") == "true" else False
         self._dialogs_service = dialogs_service
         self._task_editor_service = task_editor_service
         self._initControllers()
@@ -58,6 +61,12 @@ class MainController(QtCore.QObject):
         toolbar.addAction(self._tasks_list_controller.completeSelectedTasksAction)
         toolbar.addAction(self._tasks_list_controller.decreasePrioritySelectedTasksAction)
         toolbar.addAction(self._tasks_list_controller.increasePrioritySelectedTasksAction)
+        toolbar.visibilityChanged.connect(self._toolbar_visibility_changed)
+        if not self._show_toolbar:
+            toolbar.hide()
+
+    def _toolbar_visibility_changed(self, val):
+        self._show_toolbar = val
 
     def exit(self):
         self._view.close()
@@ -185,6 +194,7 @@ class MainController(QtCore.QObject):
     def _view_onCloseEvent(self, closeEvent):
         if self._canExit():
             self._saveView()
+            self.settings.setValue("show_toolbar", self._show_toolbar)
             closeEvent.accept()
         else:
             closeEvent.ignore()
