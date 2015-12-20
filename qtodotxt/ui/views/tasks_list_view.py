@@ -23,8 +23,9 @@ class TasksListView(QtGui.QListWidget):
         # set minimum width to a reasonable value to get a useful
         # sizeHint _height_ when using word wrap
         label.setMinimumWidth(self.width() - 20)
-        # set items size
-        item.setSizeHint(label.sizeHint())
+        # set items size and add some space between items
+        item.setSizeHint(QtCore.QSize(label.sizeHint().width(),
+                                      label.sizeHint().height() + 5))
         self.setItemWidget(item, label)
 
     def addListAction(self, action):
