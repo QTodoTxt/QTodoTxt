@@ -43,7 +43,7 @@ class AutoCompleteInputDialog(QtGui.QDialog):
         today = 'due:' + date.today().strftime('%Y-%m-%d')
         tomorrow = 'due:' + (date.today() + timedelta(days=1)).strftime('%Y-%m-%d')
         EOW = 'due:' + (date.today() + timedelta((6-date.today().weekday()) % 7)).strftime('%Y-%m-%d')
-        EOM = 'due:' + (date.today().replace(month=date.today().month+1, day=1)
+        EOM = 'due:' + ((date.today().replace(day=1) + timedelta(days=32)).replace(day=1)
                         - timedelta(days=1)).strftime('%Y-%m-%d')
         EOY = 'due:' + (date.today().replace(year=date.today().year+1, month=1, day=1)
                         - timedelta(days=1)).strftime('%Y-%m-%d')
