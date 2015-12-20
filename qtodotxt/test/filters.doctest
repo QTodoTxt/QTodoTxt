@@ -99,62 +99,62 @@ To run tests: python run-tests.py
 >>> len(resultTasks)
 0
 
-/*========================================*/
-/*6. SimpleTextFilter AND and NOT conditions */
-/*========================================*/
+========================================
+6. SimpleTextFilter AND and NOT conditions
+========================================
 
-/*>>> filterSTF_or6 = SimpleTextFilter("!zzz thing")*/
-/*>>> resultTasks = todolib.filterTasks([filterSTF_or6], [task])*/
-/*>>> len(resultTasks)*/
-/*1*/
-/*>>> resultTasks[0].text*/
-/*'do Something'*/
+>>> filterSTF_or6 = SimpleTextFilter("!zzz thing")
+>>> resultTasks = todolib.filterTasks([filterSTF_or6], [task])
+>>> len(resultTasks)
+1
+>>> resultTasks[0].text
+'do Something'
 
-/*>>> filterSTF_or7 = SimpleTextFilter("~zzz thing")*/
-/*>>> resultTasks = todolib.filterTasks([filterSTF_or7], [task])*/
-/*>>> len(resultTasks)*/
-/*1*/
-/*>>> resultTasks[0].text*/
-/*'do Something'*/
+>>> filterSTF_or7 = SimpleTextFilter("~zzz thing")
+>>> resultTasks = todolib.filterTasks([filterSTF_or7], [task])
+>>> len(resultTasks)
+1
+>>> resultTasks[0].text
+'do Something'
 
-/*>>> filterSTF_or8 = SimpleTextFilter("~zzz !thing")*/
-/*>>> resultTasks = todolib.filterTasks([filterSTF_or8], [task])*/
-/*>>> len(resultTasks)*/
-/*0*/
+>>> filterSTF_or8 = SimpleTextFilter("~zzz !thing")
+>>> resultTasks = todolib.filterTasks([filterSTF_or8], [task])
+>>> len(resultTasks)
+0
 
-/*========================================*/
-/*7. SimpleTextFilter AND, OR, and NOT conditions */
-/*========================================*/
+========================================
+7. SimpleTextFilter AND, OR, and NOT conditions
+========================================
 
-/*>>> filterSTF_or9 = SimpleTextFilter("zzz | thing ~yyy")*/
-/*>>> resultTasks = todolib.filterTasks([filterSTF_or9], [task])*/
-/*>>> len(resultTasks)*/
-/*1*/
-/*>>> resultTasks[0].text*/
-/*'do Something'*/
+>>> filterSTF_or9 = SimpleTextFilter("zzz | thing ~yyy")
+>>> resultTasks = todolib.filterTasks([filterSTF_or9], [task])
+>>> len(resultTasks)
+1
+>>> resultTasks[0].text
+'do Something'
 
-/*>>> filterSTF_or10 = SimpleTextFilter("zzz | !thing yyy")*/
-/*>>> resultTasks = todolib.filterTasks([filterSTF_or10], [task])*/
-/*>>> len(resultTasks)*/
-/*0*/
+>>> filterSTF_or10 = SimpleTextFilter("zzz | !thing yyy")
+>>> resultTasks = todolib.filterTasks([filterSTF_or10], [task])
+>>> len(resultTasks)
+0
 
-/*========================================*/
-/*8. SimpleTextFilter NOT condition*/
-/*========================================*/
+========================================
+8. SimpleTextFilter NOT condition
+========================================
 
-/*>>> filterSTF_or12 = SimpleTextFilter("~som")*/
-/*>>> resultTasks = todolib.filterTasks([filterSTF_or12], [task])*/
-/*>>> len(resultTasks)*/
-/*0*/
+>>> filterSTF_or12 = SimpleTextFilter("~som")
+>>> resultTasks = todolib.filterTasks([filterSTF_or12], [task])
+>>> len(resultTasks)
+0
 
-/*>>> filterSTF_or12 = SimpleTextFilter("!som")*/
-/*>>> resultTasks = todolib.filterTasks([filterSTF_or12], [task])*/
-/*>>> len(resultTasks)*/
-/*0*/
+>>> filterSTF_or12 = SimpleTextFilter("!som")
+>>> resultTasks = todolib.filterTasks([filterSTF_or12], [task])
+>>> len(resultTasks)
+0
 
-/*>>> filterSTF_or12 = SimpleTextFilter("!zzz")*/
-/*>>> resultTasks = todolib.filterTasks([filterSTF_or12], [task])*/
-/*>>> len(resultTasks)*/
-/*1*/
-/*>>> resultTasks[0].text*/
-/*'do Something'*/
+>>> filterSTF_or12 = SimpleTextFilter("!zzz")
+>>> resultTasks = todolib.filterTasks([filterSTF_or12], [task])
+>>> len(resultTasks)
+1
+>>> resultTasks[0].text
+'do Something'
