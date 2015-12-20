@@ -48,14 +48,14 @@ class TasksListController(QtCore.QObject):
         self.completeSelectedTasksAction = action
 
     def _initDecreasePrioritySelectedTasksAction(self):
-        action = QtGui.QAction(getIcon('decrease.svg'), 'Decrease priority', self)
+        action = QtGui.QAction(getIcon('decrease.svg'), 'Decrease Priority', self)
         action.setShortcuts(['-', '<'])
         action.triggered.connect(self._decreasePriority)
         self._view.addListAction(action)
         self.decreasePrioritySelectedTasksAction = action
 
     def _initIncreasePrioritySelectedTasksAction(self):
-        action = QtGui.QAction(getIcon('increase.svg'), 'Increase priority', self)
+        action = QtGui.QAction(getIcon('increase.svg'), 'Increase Priority', self)
         action.setShortcuts(['+', '>'])
         action.triggered.connect(self._increasePriority)
         self._view.addListAction(action)
