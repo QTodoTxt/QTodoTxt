@@ -33,7 +33,7 @@ class AutoCompleteEdit(QtGui.QLineEdit):
 
         newtext = currentText[:textFirstPart] + completion + " " + currentText[textLastPart:]
         newCursorPos = self.cursorPosition() + (len(completion) - completionPrefixSize) + 1
-        
+
         self.setText(newtext)
         self.setCursorPosition(newCursorPos)
 
