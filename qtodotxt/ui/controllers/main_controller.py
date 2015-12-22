@@ -26,7 +26,7 @@ class MainController(QtCore.QObject):
         super(MainController, self).__init__()
         self._args = args
         self._view = view
-        self.settings = QtCore.QSettings("QTodoTxt", "QTodoTxt")
+        self.settings = QtCore.QSettings()
         # handle the bad bool handling of qsettings
         self._show_toolbar = True if self.settings.value("show_toolbar", "true") == "true" else False
         self._dialogs_service = dialogs_service
@@ -35,6 +35,7 @@ class MainController(QtCore.QObject):
         self._file = File()
         self._fileObserver = FileObserver(self, self._file)
         self._is_modified = False
+        # FIXME use of custom settings should be removed
         self._settings = settings.Settings()
         self._setIsModified(False)
         self._view.closeEventSignal.connect(self._view_onCloseEvent)
@@ -89,7 +90,7 @@ class MainController(QtCore.QObject):
         if self._args.file:
             filename = self._args.file[0]
         else:
-            filename = self._settings.getLastOpenFile()
+            filename = self.settings.value("last_open_file")
 
         if filename:
             try:
@@ -226,7 +227,7 @@ class MainController(QtCore.QObject):
                 QtGui.QFileDialog.getSaveFileName(self._view, filter=FILENAME_FILTERS)
         if ok and filename:
             self._file.save(filename)
-            self._settings.setLastOpenFile(filename)
+            self.settings.setValue("last_open_file", filename)
             self._setIsModified(False)
             logger.debug('Adding {} to watchlist'.format(filename))
             self._fileObserver.addPath(self._file.filename)
@@ -269,7 +270,7 @@ class MainController(QtCore.QObject):
         self._fileObserver.clear()
         self._file.load(filename)
         self._loadFileToUI()
-        self._settings.setLastOpenFile(filename)
+        self.settings.setValue("last_open_file", filename)
         logger.debug('Adding {} to watchlist'.format(filename))
         self._fileObserver.addPath(self._file.filename)
 
