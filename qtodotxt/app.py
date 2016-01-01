@@ -5,6 +5,7 @@ import argparse
 import logging
 import sys
 
+from PySide import QtCore
 from PySide import QtGui
 
 from qtodotxt.ui.controllers.main_controller import MainController
@@ -34,7 +35,7 @@ def _parseArgs():
     if len(sys.argv) > 1 and sys.argv[1].startswith('-psn'):
         del sys.argv[1]
     parser = argparse.ArgumentParser(description='QTodoTxt')
-    parser.add_argument('-f', '--file', type=str, nargs=1, metavar='TEXTFILE',
+    parser.add_argument('file', type=str, nargs='?', metavar='TEXTFILE',
                         help='open the specified file')
     parser.add_argument('-q', '--quickadd', action='store_true',
                         help='opens the add task dialog and exit the application when done')
@@ -59,6 +60,10 @@ def _createController(args):
 
 
 def run():
+    # First set some application settings for QSettings
+    QtCore.QCoreApplication.setOrganizationName("QTodoTxt")
+    QtCore.QCoreApplication.setApplicationName("QTodoTxt")
+    # Now set up our application and start
     app = QtGui.QApplication(sys.argv)
     args = _parseArgs()
     _setupLogging(args.loglevel)
