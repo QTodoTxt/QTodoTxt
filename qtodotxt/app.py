@@ -5,6 +5,7 @@ import argparse
 import logging
 import sys
 
+from PySide import QtCore
 from PySide import QtGui
 from qtodotxt.ui.controllers.main_controller import MainController
 from qtodotxt.ui.resource_manager import getIcon
@@ -58,6 +59,10 @@ def _createController(args):
 
 
 def run():
+    # First set some application settings for QSettings
+    QtCore.QCoreApplication.setOrganizationName("QTodoTxt")
+    QtCore.QCoreApplication.setApplicationName("QTodoTxt")
+    # Now set up our application and start
     app = QtGui.QApplication(sys.argv)
     args = _parseArgs()
     _setupLogging(args.loglevel)

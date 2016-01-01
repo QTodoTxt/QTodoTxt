@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.0"
+   width="346.67966"
+   height="346.43555"
+   id="svg3183"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="decrease.svg">
+  <metadata
+     id="metadata8">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1166"
+     inkscape:window-height="754"
+     id="namedview6"
+     showgrid="false"
+     inkscape:zoom="0.6812234"
+     inkscape:cx="173.33983"
+     inkscape:cy="173.21777"
+     inkscape:window-x="53"
+     inkscape:window-y="24"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg3183" />
+  <defs
+     id="defs3185" />
+  <g
+     transform="matrix(-1,0,0,-1,356.19697,208.4371)"
+     id="layer1">
+    <path
+       d="M 9.5173129,208.4371 182.85716,-137.99845 356.19697,208.4371 l -346.6796571,0 z"
+       id="text2383"
+       style="font-style:normal;font-weight:normal;font-size:150px;line-height:125%;font-family:'Bitstream Vera Sans';fill:#00cc33;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>

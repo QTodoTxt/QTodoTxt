@@ -26,12 +26,16 @@ class MainController(QtCore.QObject):
         super(MainController, self).__init__()
         self._args = args
         self._view = view
+        self.settings = QtCore.QSettings()
+        # handle the bad bool handling of qsettings
+        self._show_toolbar = True if self.settings.value("show_toolbar", "true") == "true" else False
         self._dialogs_service = dialogs_service
         self._task_editor_service = task_editor_service
         self._initControllers()
         self._file = File()
         self._fileObserver = FileObserver(self, self._file)
         self._is_modified = False
+        # FIXME use of custom settings should be removed
         self._settings = settings.Settings()
         self._setIsModified(False)
         self._view.closeEventSignal.connect(self._view_onCloseEvent)
@@ -44,11 +48,27 @@ class MainController(QtCore.QObject):
         self._initFiltersTree()
         self._initTasksList()
         self._initMenuBar()
+        self._initToolBar()
         self._initFilterText()
 
     def _initMenuBar(self):
         menu = self._view.menuBar()
         self._menu_controller = MenuController(self, menu)
+
+    def _initToolBar(self):
+        toolbar = self._view.addToolBar("Main Toolbar")
+        toolbar.addAction(self._menu_controller.saveAction)
+        toolbar.addAction(self._tasks_list_controller.createTaskAction)
+        toolbar.addAction(self._tasks_list_controller.deleteSelectedTasksAction)
+        toolbar.addAction(self._tasks_list_controller.completeSelectedTasksAction)
+        toolbar.addAction(self._tasks_list_controller.decreasePrioritySelectedTasksAction)
+        toolbar.addAction(self._tasks_list_controller.increasePrioritySelectedTasksAction)
+        toolbar.visibilityChanged.connect(self._toolbar_visibility_changed)
+        if not self._show_toolbar:
+            toolbar.hide()
+
+    def _toolbar_visibility_changed(self, val):
+        self._show_toolbar = val
 
     def exit(self):
         self._view.close()
@@ -70,7 +90,7 @@ class MainController(QtCore.QObject):
         if self._args.file:
             filename = self._args.file[0]
         else:
-            filename = self._settings.getLastOpenFile()
+            filename = self.settings.value("last_open_file")
 
         if filename:
             try:
@@ -126,6 +146,21 @@ class MainController(QtCore.QObject):
         controller.taskDeleted.connect(self._tasks_list_taskDeleted)
         controller.taskArchived.connect(self._tasks_list_taskArchived)
 
+        # Context menu
+        # controller._view.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+        controller._view.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        controller._view.customContextMenuRequested.connect(self.showContextMenu)
+        self._contextMenu = QtGui.QMenu()
+        self._contextMenu.addAction(self._tasks_list_controller.deleteSelectedTasksAction)
+        self._contextMenu.addAction(self._tasks_list_controller.completeSelectedTasksAction)
+        self._contextMenu.addAction(self._tasks_list_controller.decreasePrioritySelectedTasksAction)
+        self._contextMenu.addAction(self._tasks_list_controller.increasePrioritySelectedTasksAction)
+
+    def showContextMenu(self, position):
+        tasks = self._tasks_list_controller._view.getSelectedTasks()
+        if tasks:
+            self._contextMenu.exec_(self._tasks_list_controller._view.mapToGlobal(position))
+
     def _tasks_list_taskDeleted(self, task):
         self._file.tasks.remove(task)
         self._onFileUpdated()
@@ -161,6 +196,7 @@ class MainController(QtCore.QObject):
     def _view_onCloseEvent(self, closeEvent):
         if self._canExit():
             self._saveView()
+            self.settings.setValue("show_toolbar", self._show_toolbar)
             closeEvent.accept()
         else:
             closeEvent.ignore()
@@ -191,7 +227,7 @@ class MainController(QtCore.QObject):
                 QtGui.QFileDialog.getSaveFileName(self._view, filter=FILENAME_FILTERS)
         if ok and filename:
             self._file.save(filename)
-            self._settings.setLastOpenFile(filename)
+            self.settings.setValue("last_open_file", filename)
             self._setIsModified(False)
             logger.debug('Adding {} to watchlist'.format(filename))
             self._fileObserver.addPath(self._file.filename)
@@ -234,7 +270,7 @@ class MainController(QtCore.QObject):
         self._fileObserver.clear()
         self._file.load(filename)
         self._loadFileToUI()
-        self._settings.setLastOpenFile(filename)
+        self.settings.setValue("last_open_file", filename)
         logger.debug('Adding {} to watchlist'.format(filename))
         self._fileObserver.addPath(self._file.filename)
 
