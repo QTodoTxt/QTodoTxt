@@ -4,7 +4,7 @@ import os
 from PySide import QtCore
 from qtodotxt.lib.filters import DueTodayFilter, DueTomorrowFilter, DueThisWeekFilter, DueThisMonthFilter, \
     DueOverdueFilter
-from qtodotxt.lib.todolib import Task, compareTasks
+from qtodotxt.lib.task_parser import Task, compareTasks
 from sys import version
 import time
 

@@ -1,7 +1,7 @@
 from PySide import QtCore, QtGui
 
 
-class FilterTasksView(QtGui.QLineEdit):
+class TasksFilterView(QtGui.QLineEdit):
 
     filterTextChanged = QtCore.Signal(str)
 

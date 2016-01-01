@@ -5,7 +5,7 @@ import sys
 from PySide import QtCore
 from PySide import QtGui
 
-from qtodotxt.lib import todolib, settings
+from qtodotxt.lib import task_parser, settings
 from qtodotxt.lib.file import ErrorLoadingFile, File, FileObserver
 
 from qtodotxt.ui.controllers.tasks_list_controller import TasksListController
@@ -22,14 +22,14 @@ FILENAME_FILTERS = ';;'.join([
 
 
 class MainController(QtCore.QObject):
-    def __init__(self, view, dialogs_service, task_editor_service, args):
+    def __init__(self, view, dialogs, task_editor_service, args):
         super(MainController, self).__init__()
         self._args = args
         self._view = view
         self.settings = QtCore.QSettings()
         # handle the bad bool handling of qsettings
         self._show_toolbar = True if self.settings.value("show_toolbar", "true") == "true" else False
-        self._dialogs_service = dialogs_service
+        self._dialogs = dialogs
         self._task_editor_service = task_editor_service
         self._initControllers()
         self._file = File()
@@ -96,7 +96,7 @@ class MainController(QtCore.QObject):
             try:
                 self.openFileByName(filename)
             except ErrorLoadingFile as ex:
-                self._dialogs_service.showError(str(ex))
+                self._dialogs.showError(str(ex))
 
         if self._args.quickadd:
             self._tasks_list_controller.createTask()
@@ -111,30 +111,30 @@ class MainController(QtCore.QObject):
 
     def _onFilterSelectionChanged(self, filters):
         # First we filter with filters tree
-        treeTasks = todolib.filterTasks(filters, self._file.tasks)
+        treeTasks = task_parser.filterTasks(filters, self._file.tasks)
         # Then with our filter text
-        filterText = self._view.tasks_view.filter_tasks.getText()
-        tasks = todolib.filterTasks([SimpleTextFilter(filterText)], treeTasks)
+        filterText = self._view.tasks_view.tasks_filter.getText()
+        tasks = task_parser.filterTasks([SimpleTextFilter(filterText)], treeTasks)
         # And finally with future filter if needed
         # TODO: refactor all that filters
         if self._settings.getHideFutureTasks():
-            tasks = todolib.filterTasks([FutureFilter()], tasks)
+            tasks = task_parser.filterTasks([FutureFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
 
     def _initFilterText(self):
-        self._view.tasks_view.filter_tasks.filterTextChanged.connect(
+        self._view.tasks_view.tasks_filter.filterTextChanged.connect(
             self._onFilterTextChanged)
 
     def _onFilterTextChanged(self, text):
         # First we filter with filters tree
         filters = self._filters_tree_controller._view.getSelectedFilters()
-        treeTasks = todolib.filterTasks(filters, self._file.tasks)
+        treeTasks = task_parser.filterTasks(filters, self._file.tasks)
         # Then with our filter text
-        tasks = todolib.filterTasks([SimpleTextFilter(text)], treeTasks)
+        tasks = task_parser.filterTasks([SimpleTextFilter(text)], treeTasks)
         # And finally with future filter if needed
         # TODO: refactor all that filters
         if self._settings.getHideFutureTasks():
-            tasks = todolib.filterTasks([FutureFilter()], tasks)
+            tasks = task_parser.filterTasks([FutureFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
 
     def _initTasksList(self):
@@ -186,7 +186,7 @@ class MainController(QtCore.QObject):
     def _canExit(self):
         if not self._is_modified:
             return True
-        button = self._dialogs_service.showSaveDiscardOrCancel('Unsaved changes...')
+        button = self._dialogs.showSaveDiscardCancel('Unsaved changes...')
         if button == QtGui.QMessageBox.Save:
             self.save()
             return True
@@ -251,7 +251,7 @@ class MainController(QtCore.QObject):
             try:
                 self.openFileByName(filename)
             except ErrorLoadingFile as ex:
-                self._dialogs_service.showError(str(ex))
+                self._dialogs.showError(str(ex))
 
     def new(self):
         if self._canExit():
@@ -259,11 +259,11 @@ class MainController(QtCore.QObject):
             self._loadFileToUI()
 
     def revert(self):
-        if self._dialogs_service.showConfirm('Revert to saved file (and lose unsaved changes)?'):
+        if self._dialogs.showConfirm('Revert to saved file (and lose unsaved changes)?'):
             try:
                 self.openFileByName(self._file.filename)
             except ErrorLoadingFile as ex:
-                self._dialogs_service.showError(str(ex))
+                self._dialogs.showError(str(ex))
 
     def openFileByName(self, filename):
         logger.debug('MainController.openFileByName called with filename="{}"'.format(filename))
