@@ -3,7 +3,6 @@ from PySide import QtGui
 from qtodotxt.lib.filters import ContextFilter, CompleteTasksFilter, DueFilter, DueOverdueFilter, DueThisMonthFilter, \
     DueThisWeekFilter, DueTodayFilter, DueTomorrowFilter, HasContextsFilter, HasDueDateFilter, HasProjectsFilter, \
     IncompleteTasksFilter, ProjectFilter, UncategorizedTasksFilter
-from qtodotxt.lib.settings import UI_MARGINS_OFFSET
 from qtodotxt.ui.resource_manager import getIcon
 
 
@@ -92,8 +91,9 @@ class FiltersTreeView(QtGui.QWidget):
     def _initUI(self):
         layout = QtGui.QGridLayout()
         self.setLayout(layout)
-        self.setContentsMargins(UI_MARGINS_OFFSET, UI_MARGINS_OFFSET,
-                                2 * UI_MARGINS_OFFSET, UI_MARGINS_OFFSET)
+        offset = QtCore.QSettings().value("ui_margin_offset", -4)
+        self.setContentsMargins(offset, offset,
+                                2 * offset, offset)
         self._tree = self._createTreeWidget()
         layout.addWidget(self._tree)
 
