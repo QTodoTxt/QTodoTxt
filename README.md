@@ -8,6 +8,7 @@ QTodoTxt is a cross-platform UI client for todo.txt files (see [todo.txt](http:/
 
 Latest stable release (v1.4.0):
 
+- Everywhere: pip install qtodotxt
 - For Ubuntu: [deb package](http://dl.bintray.com/mnantern/deb/qtodotxt_1.4.0_all.deb)
 - For Windows: [Windows installer](http://dl.bintray.com/mnantern/generic/qtodotxt_1.4.0.exe)
 - For Mac OS X: [Mac Os X installer](http://dl.bintray.com/mnantern/generic/QTodoTxt_1.4.0.dmg)
