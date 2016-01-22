@@ -1,6 +1,5 @@
 from PySide import QtCore
 from PySide import QtGui
-from qtodotxt.lib import settings
 from qtodotxt.lib import task_parser
 from qtodotxt.ui.resource_manager import getIcon
 from datetime import date
@@ -24,7 +23,6 @@ class TasksListController(QtCore.QObject):
         self._initCompleteSelectedTasksAction()
         self._initDecreasePrioritySelectedTasksAction()
         self._initIncreasePrioritySelectedTasksAction()
-        self._settings = settings.Settings()
 
     def _initCreateTaskAction(self):
         action = QtGui.QAction(getIcon('add.svg'), '&Create New Task', self)
@@ -65,8 +63,7 @@ class TasksListController(QtCore.QObject):
         date_string = date.today().strftime('%Y-%m-%d')
         if not task.is_complete:
             task.text = 'x %s %s' % (date_string, task.text)
-            self._settings.load()
-            if self._settings.getAutoArchive():
+            if int(QtCore.QSettings().value("auto_archive", 1)):
                 self.taskArchived.emit(task)
             else:
                 self.taskModified.emit(task)
@@ -140,8 +137,7 @@ class TasksListController(QtCore.QObject):
     def createTask(self):
         (text, ok) = self._task_editor_service.createTask()
         if ok and text:
-            self._settings.load()
-            if self._settings.getCreateDate():
+            if int(QtCore.QSettings().value("add_created_date", 1)):
                 text = self._addCreationDate(text)
             task = task_parser.Task(text)
             self._view.addTask(task)

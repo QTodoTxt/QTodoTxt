@@ -1,5 +1,4 @@
-from PySide import QtGui
-from qtodotxt.lib.settings import UI_MARGINS_OFFSET
+from PySide import QtGui, QtCore
 from qtodotxt.ui.views.tasks_filter_view import TasksFilterView
 from qtodotxt.ui.views.tasks_list_view import TasksListView
 from qtodotxt.ui.resource_manager import getIcon
@@ -17,8 +16,9 @@ class TasksView(QtGui.QWidget):
 
         self.tasks_filter = TasksFilterView(getIcon("zoom.png"), getIcon("cross.png"), self)
         self.tasks_list_view = TasksListView(self)
-        self.setContentsMargins(2 * UI_MARGINS_OFFSET, UI_MARGINS_OFFSET,
-                                UI_MARGINS_OFFSET, UI_MARGINS_OFFSET)
+        offset = QtCore.QSettings().value("ui_margin_offset", -4)
+        self.setContentsMargins(2 * offset, offset,
+                                offset, offset)
         layout.addWidget(self.tasks_filter, 1, 0)
         layout.addWidget(self.tasks_list_view, 2, 0)
         self.setLayout(layout)
