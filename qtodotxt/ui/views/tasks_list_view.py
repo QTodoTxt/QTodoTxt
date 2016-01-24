@@ -11,6 +11,7 @@ class TasksListView(QtGui.QListWidget):
     def __init__(self, parent=None):
         super(TasksListView, self).__init__(parent)
         self.setLayoutMode(self.LayoutMode.Batched)
+        self.setAlternatingRowColors(True)
         self._task_htmlizer = TaskHtmlizer()
         self._initUI()
         self._oldSelected = []
@@ -18,7 +19,13 @@ class TasksListView(QtGui.QListWidget):
     def addTask(self, task):
         item = TaskListWidgetItem(task, self)
         label = self._createLabel(task)
-        item.setSizeHint(label.sizeHint())
+        label.setWordWrap(True)
+        # set minimum width to a reasonable value to get a useful
+        # sizeHint _height_ when using word wrap
+        label.setMinimumWidth(self.width() - 20)
+        # set items size and add some space between items
+        item.setSizeHint(QtCore.QSize(label.sizeHint().width(),
+                                      label.sizeHint().height() + 5))
         self.setItemWidget(item, label)
 
     def addListAction(self, action):

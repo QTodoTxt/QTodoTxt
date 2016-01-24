@@ -12,13 +12,13 @@ class TasksView(QtGui.QWidget):
         self._initUI()
 
     def _initUI(self):
-        layout = QtGui.QGridLayout(self)
+        layout = QtGui.QVBoxLayout(self)
         layout.setSpacing(10)
 
         self.tasks_filter = TasksFilterView(getIcon("zoom.png"), getIcon("cross.png"), self)
         self.tasks_list_view = TasksListView(self)
         self.setContentsMargins(2 * UI_MARGINS_OFFSET, UI_MARGINS_OFFSET,
                                 UI_MARGINS_OFFSET, UI_MARGINS_OFFSET)
-        layout.addWidget(self.tasks_filter, 1, 0)
-        layout.addWidget(self.tasks_list_view, 2, 0)
+        layout.addWidget(self.tasks_filter)
+        layout.addWidget(self.tasks_list_view)
         self.setLayout(layout)
