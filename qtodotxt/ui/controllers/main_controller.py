@@ -29,7 +29,10 @@ class MainController(QtCore.QObject):
         self._settings = QtCore.QSettings()
         # use object variable for setting only used in this class
         # others are accesed through QSettings
-        self._show_toolbar = int(self._settings.value("show_toolbar", 1)) 
+        show_toolbar = self._settings.value("show_toolbar", 1)
+        if show_toolbar in ("true", "false"):  # migration issue
+            show_toolbar = 1
+        self._show_toolbar = int(show_toolbar) 
         self._auto_save = int(self._settings.value("auto_save", 1))
         self._hide_future_tasks = int(self._settings.value("hide_future_tasks", 1))
         self._dialogs = dialogs
