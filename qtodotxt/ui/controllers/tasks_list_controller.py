@@ -20,11 +20,19 @@ class TasksListController(QtCore.QObject):
         self._task_editor_service = task_editor_service
         self._view.taskActivated.connect(self.editTask)
         self._initCreateTaskAction()
+        self._initEditTaskAction()
         self._initDeleteSelectedTasksAction()
         self._initCompleteSelectedTasksAction()
         self._initDecreasePrioritySelectedTasksAction()
         self._initIncreasePrioritySelectedTasksAction()
         self._settings = settings.Settings()
+
+    def _initEditTaskAction(self):
+        action = QtGui.QAction(getIcon('edit.svg'), '&Edit Task', self)
+        action.setShortcuts(['Ctrl+E'])
+        action.triggered.connect(self.editTask)
+        self._view.addListAction(action)
+        self.editTaskAction = action
 
     def _initCreateTaskAction(self):
         action = QtGui.QAction(getIcon('add.svg'), '&Create New Task', self)
@@ -149,7 +157,17 @@ class TasksListController(QtCore.QObject):
             self._view.selectTask(task)
             self.taskCreated.emit(task)
 
-    def editTask(self, task):
+    def editTask(self, task=None):
+        if task is None:
+            tasks = self._view.getSelectedTasks()
+            #FIXME: instead of this we should disable icon when no task ot serverak tasks are selected
+            if len(tasks) == 0:
+                print("No task selected")
+                return
+            elif len(tasks) > 1:
+                print("More than one task selected")
+                return
+            task = tasks[0]
         (text, ok) = self._task_editor_service.editTask(task)
         if ok and text:
             if text != task.text:
