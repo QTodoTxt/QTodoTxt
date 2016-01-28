@@ -42,6 +42,16 @@ class BaseFilter(object):
         return False
 
 
+class AllTasksFilter(BaseFilter):
+    """
+    Task list filter that returns all tasks.
+
+    """
+    def __init__(self):
+        BaseFilter.__init__(self, 'All')
+
+
+
 class IncompleteTasksFilter(BaseFilter):
     """
     Task list filter that removes any completed tasks.
