@@ -21,6 +21,24 @@ class FiltersTreeView(QtGui.QWidget):
         items = self._tree.selectedItems()
         filters = [item.filter for item in items]
         return filters
+    
+    def getSelectedFilterNames(self):
+        return [f.text for f in self.getSelectedFilters()]
+
+    def setSelectedFiltersByNames(self, names):
+        # FIXME: seems selecting an item deselect previous iten....
+        # we could also support reselecting dynamic filters....
+        if not isinstance(names, (list, tuple)):
+            names = [names]
+        for name in names:
+            if name == "All":
+                self.selectAllTasksFilter()
+            elif name == "Incomplete":
+                self.selectIncompleteTasksFilter()
+            elif name == "Complete":
+                self._completeTasksItem.setSelected(True)
+            elif name == "Uncategorized":
+                self._uncategorizedTasksItem.setSelected(True)
 
     def clear(self):
         self._tree.clear()
@@ -59,10 +77,10 @@ class FiltersTreeView(QtGui.QWidget):
         self._projectsItem.setText(0, "Projects (%d)" % nbProjects)
         self._completeTasksItem.setText(0, "Complete (%d)" % nbComplete)
 
-    def selectAllTasksFilter(self):
+    def selectIncompleteTasksFilter(self):
         self._incompleteTasksItem.setSelected(True)
 
-    def selectAllTasksFilter2(self):
+    def selectAllTasksFilter(self):
         self._allTasksItem.setSelected(True)
 
     def _selectItem(self, item):
@@ -103,8 +121,7 @@ class FiltersTreeView(QtGui.QWidget):
     def _createTreeWidget(self):
         tree = QtGui.QTreeWidget()
         tree.header().hide()
-        tree.setSelectionMode(
-            QtGui.QAbstractItemView.SelectionMode.ExtendedSelection)
+        tree.setSelectionMode(QtGui.QAbstractItemView.SelectionMode.ExtendedSelection)
         tree.itemSelectionChanged.connect(self._tree_itemSelectionChanged)
         self._addDefaultTreeItems(tree)
         self._initFilterTypeMappings()
