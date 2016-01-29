@@ -1,6 +1,5 @@
 from PySide import QtCore
 from PySide import QtGui
-from qtodotxt.lib import settings
 from qtodotxt.lib import task_parser
 from qtodotxt.ui.resource_manager import getIcon
 from datetime import date
@@ -20,11 +19,18 @@ class TasksListController(QtCore.QObject):
         self._task_editor_service = task_editor_service
         self._view.taskActivated.connect(self.editTask)
         self._initCreateTaskAction()
+        self._initEditTaskAction()
         self._initDeleteSelectedTasksAction()
         self._initCompleteSelectedTasksAction()
         self._initDecreasePrioritySelectedTasksAction()
         self._initIncreasePrioritySelectedTasksAction()
-        self._settings = settings.Settings()
+
+    def _initEditTaskAction(self):
+        action = QtGui.QAction(getIcon('edit.svg'), '&Edit Task', self)
+        action.setShortcuts(['Ctrl+E'])
+        action.triggered.connect(self.editTask)
+        self._view.addListAction(action)
+        self.editTaskAction = action
 
     def _initCreateTaskAction(self):
         action = QtGui.QAction(getIcon('add.svg'), '&Create New Task', self)
@@ -65,8 +71,7 @@ class TasksListController(QtCore.QObject):
         date_string = date.today().strftime('%Y-%m-%d')
         if not task.is_complete:
             task.text = 'x %s %s' % (date_string, task.text)
-            self._settings.load()
-            if self._settings.getAutoArchive():
+            if int(QtCore.QSettings().value("auto_archive", 1)):
                 self.taskArchived.emit(task)
             else:
                 self.taskModified.emit(task)
@@ -140,8 +145,7 @@ class TasksListController(QtCore.QObject):
     def createTask(self):
         (text, ok) = self._task_editor_service.createTask()
         if ok and text:
-            self._settings.load()
-            if self._settings.getCreateDate():
+            if int(QtCore.QSettings().value("add_created_date", 1)):
                 text = self._addCreationDate(text)
             task = task_parser.Task(text)
             self._view.addTask(task)
@@ -149,7 +153,17 @@ class TasksListController(QtCore.QObject):
             self._view.selectTask(task)
             self.taskCreated.emit(task)
 
-    def editTask(self, task):
+    def editTask(self, task=None):
+        if task is None:
+            tasks = self._view.getSelectedTasks()
+            #FIXME: instead of this we should disable icon when no task ot serverak tasks are selected
+            if len(tasks) == 0:
+                print("No task selected")
+                return
+            elif len(tasks) > 1:
+                print("More than one task selected")
+                return
+            task = tasks[0]
         (text, ok) = self._task_editor_service.editTask(task)
         if ok and text:
             if text != task.text:
