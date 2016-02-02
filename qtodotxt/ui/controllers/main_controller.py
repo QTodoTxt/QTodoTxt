@@ -28,7 +28,7 @@ class MainController(QtCore.QObject):
         self._view = view
         self._settings = QtCore.QSettings()
         # use object variable for setting only used in this class
-        # others are accesed through QSettings
+        # others are accessed through QSettings
         show_toolbar = self._settings.value("show_toolbar", 1)
         if show_toolbar in ("true", "false"):  # migration issue
             show_toolbar = 1
