@@ -64,6 +64,7 @@ class MenuController(QtCore.QObject):
         action = QtGui.QAction(getIcon('folder.png'), '&Open', self)
         action.setShortcuts(["Ctrl+O"])
         action.triggered.connect(self._main_controller.open)
+        self.openAction = action
         return action
 
     def _createSaveAction(self):
