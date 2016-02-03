@@ -138,8 +138,8 @@ class FiltersTreeView(QtGui.QWidget):
         tree.addTopLevelItems([
             self._allTasksItem,
             self._incompleteTasksItem,
-            self._dueItem,
             self._uncategorizedTasksItem,
+            self._dueItem,
             self._contextsItem,
             self._projectsItem,
             self._completeTasksItem
