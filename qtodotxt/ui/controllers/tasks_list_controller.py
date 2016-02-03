@@ -160,7 +160,7 @@ class TasksListController(QtCore.QObject):
     def editTask(self, task=None):
         if task is None:
             tasks = self._view.getSelectedTasks()
-            #FIXME: instead of this we should disable icon when no task ot serverak tasks are selected
+            #FIXME: instead of this we should disable icon when no task or serveral tasks are selected
             if len(tasks) == 0:
                 print("No task selected")
                 return
