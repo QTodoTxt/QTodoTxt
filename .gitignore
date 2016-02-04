@@ -45,6 +45,7 @@ var
 *.mo
 
 # Unit test / coverage reports
+.cache
 .coverage
 nosetests.xml
 tempfile.txt
