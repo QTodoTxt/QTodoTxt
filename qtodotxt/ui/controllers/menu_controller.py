@@ -36,8 +36,11 @@ class MenuController(QtCore.QObject):
         editMenu = self._menu.addMenu('&Edit')
         tlc = self._main_controller._tasks_list_controller
         editMenu.addAction(tlc.createTaskAction)
+        editMenu.addAction(tlc.editTaskAction)
+        editMenu.addSeparator()
         editMenu.addAction(tlc.deleteSelectedTasksAction)
         editMenu.addAction(tlc.completeSelectedTasksAction)
+        editMenu.addSeparator()
         editMenu.addAction(tlc.decreasePrioritySelectedTasksAction)
         editMenu.addAction(tlc.increasePrioritySelectedTasksAction)
 
@@ -64,6 +67,7 @@ class MenuController(QtCore.QObject):
         action = QtGui.QAction(getIcon('folder.png'), '&Open', self)
         action.setShortcuts(["Ctrl+O"])
         action.triggered.connect(self._main_controller.open)
+        self.openAction = action
         return action
 
     def _createSaveAction(self):

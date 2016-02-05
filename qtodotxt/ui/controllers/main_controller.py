@@ -57,10 +57,15 @@ class MainController(QtCore.QObject):
 
     def _initToolBar(self):
         toolbar = self._view.addToolBar("Main Toolbar")
+        toolbar.addAction(self._menu_controller.openAction)
         toolbar.addAction(self._menu_controller.saveAction)
+        toolbar.addSeparator()
         toolbar.addAction(self._tasks_list_controller.createTaskAction)
+        toolbar.addAction(self._tasks_list_controller.editTaskAction)
+        toolbar.addSeparator()
         toolbar.addAction(self._tasks_list_controller.deleteSelectedTasksAction)
         toolbar.addAction(self._tasks_list_controller.completeSelectedTasksAction)
+        toolbar.addSeparator()
         toolbar.addAction(self._tasks_list_controller.decreasePrioritySelectedTasksAction)
         toolbar.addAction(self._tasks_list_controller.increasePrioritySelectedTasksAction)
         toolbar.visibilityChanged.connect(self._toolbar_visibility_changed)
@@ -151,8 +156,11 @@ class MainController(QtCore.QObject):
         controller._view.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         controller._view.customContextMenuRequested.connect(self.showContextMenu)
         self._contextMenu = QtGui.QMenu()
+        self._contextMenu.addAction(self._tasks_list_controller.editTaskAction)
+        self._contextMenu.addSeparator()
         self._contextMenu.addAction(self._tasks_list_controller.deleteSelectedTasksAction)
         self._contextMenu.addAction(self._tasks_list_controller.completeSelectedTasksAction)
+        self._contextMenu.addSeparator()
         self._contextMenu.addAction(self._tasks_list_controller.decreasePrioritySelectedTasksAction)
         self._contextMenu.addAction(self._tasks_list_controller.increasePrioritySelectedTasksAction)
 
