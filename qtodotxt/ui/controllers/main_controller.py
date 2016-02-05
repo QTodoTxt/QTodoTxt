@@ -82,13 +82,13 @@ class MainController(QtCore.QObject):
         return self._view
 
     def show(self):
+        self._updateView()
         self._view.show()
         self._updateTitle()
         self._updateCreatePref()
         self._updateAutoSavePref()
         self._updateAutoArchivePref()
         self._updateHideFutureTasksPref()
-        self._updateView()
 
         if self._args.file:
             filename = self._args.file
@@ -198,6 +198,7 @@ class MainController(QtCore.QObject):
 
     def _view_onCloseEvent(self, closeEvent):
         if self._canExit():
+            self._settings.setValue("slider_pos", self._view.centralWidget().sizes())
             self._settings.setValue("main_window_geometry", self._view.saveGeometry())
             self._settings.setValue("main_window_state", self._view.saveState())
 
@@ -290,18 +291,23 @@ class MainController(QtCore.QObject):
     def _updateView(self):
         self._view.restoreGeometry(self._settings.value("main_window_geometry"))
         self._view.restoreState(self._settings.value("main_window_state"))
+        slidderPosition = self._settings.value("slider_pos", None)
+        slidderPosition = [int(x) for x in slidderPosition]
+        if slidderPosition:
+            self._view.centralWidget().setSizes(slidderPosition)
 
     def createdDate(self):
         self._settings.setValue("add_created_date", 0 if int(self._settings.value("add_created_date", 1)) else 1)
 
     def toggleAutoSave(self):
-        self._auto_save = not self._auto_save
+        self._auto_save = 1 if self._auto_save else 0
 
     def toggleAutoArchive(self):
         self._settings.setValue("auto_archive", 0 if int(self._settings.value("auto_archive", 1)) else 1)
 
     def toggleHideFutureTasks(self):
-        self._settings.setValue("hide_future_tasks", 0 if int(self._settings.value("hide_future_tasks", 1)) else 1)
+        self._hide_future_tasks = 0 if not self._hide_future_tasks else 1
+        self._settings.setValue("hide_future_tasks", self._hide_future_tasks)
         self._onFilterSelectionChanged(self._filters_tree_controller._view.getSelectedFilters())
 
     def toggleVisible(self):
