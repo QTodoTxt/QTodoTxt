@@ -292,8 +292,8 @@ class MainController(QtCore.QObject):
         self._view.restoreGeometry(self._settings.value("main_window_geometry"))
         self._view.restoreState(self._settings.value("main_window_state"))
         slidderPosition = self._settings.value("slider_pos", None)
-        slidderPosition = [int(x) for x in slidderPosition]
         if slidderPosition:
+            slidderPosition = [int(x) for x in slidderPosition]
             self._view.centralWidget().setSizes(slidderPosition)
 
     def createdDate(self):
