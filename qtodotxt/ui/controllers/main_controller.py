@@ -67,6 +67,7 @@ class MainController(QtCore.QObject):
 
     def _initToolBar(self):
         toolbar = self._view.addToolBar("Main Toolbar")
+        toolbar.setObjectName("mainToolbar")
         toolbar.addAction(self._menu_controller.saveAction)
         toolbar.addAction(self._tasks_list_controller.createTaskAction)
         toolbar.addAction(self._tasks_list_controller.deleteSelectedTasksAction)
