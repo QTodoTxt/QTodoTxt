@@ -26,15 +26,21 @@ class MainController(QtCore.QObject):
         super(MainController, self).__init__()
         self._args = args
         self._view = view
-        self._settings = QtCore.QSettings()
+
         # use object variable for setting only used in this class
         # others are accessed through QSettings
+        self._settings = QtCore.QSettings()
+        # self._show_toolbar = int(self._settings.value("show_toolbar", 1))
+        # fix migration issue from old settings
         show_toolbar = self._settings.value("show_toolbar", 1)
-        if show_toolbar in ("true", "false"):  # migration issue
+        if show_toolbar in ("true", "false"):
             show_toolbar = 1
         self._show_toolbar = int(show_toolbar) 
+        self._add_created_date = int(self._settings.value("add_created_date", 1))
         self._auto_save = int(self._settings.value("auto_save", 1))
+        self._auto_archive = int(self._settings.value("auto_archive", 1))
         self._hide_future_tasks = int(self._settings.value("hide_future_tasks", 1))
+
         self._dialogs = dialogs
         self._task_editor_service = task_editor_service
         self._initControllers()
@@ -198,12 +204,16 @@ class MainController(QtCore.QObject):
 
     def _view_onCloseEvent(self, closeEvent):
         if self._canExit():
+            self._settings.setValue("show_toolbar", self._show_toolbar)
             self._settings.setValue("slider_pos", self._view.centralWidget().sizes())
             self._settings.setValue("main_window_geometry", self._view.saveGeometry())
             self._settings.setValue("main_window_state", self._view.saveState())
 
-            self._settings.setValue("show_toolbar", self._show_toolbar)
+            self._settings.setValue("add_created_date", self._add_created_date)
             self._settings.setValue("auto_save", self._auto_save)
+            self._settings.setValue("auto_archive", self._auto_archive)
+            self._settings.setValue("hide_future_tasks", self._hide_future_tasks)
+
             closeEvent.accept()
         else:
             closeEvent.ignore()
@@ -277,16 +287,16 @@ class MainController(QtCore.QObject):
         self._task_editor_service.updateValues(self._file)
 
     def _updateCreatePref(self):
-        self._menu_controller.changeCreatedDateState(bool(int(self._settings.value("add_created_date", 1))))
+        self._menu_controller.changeCreatedDateState(self._add_created_date)
 
     def _updateAutoSavePref(self):
         self._menu_controller.changeAutoSaveState(self._auto_save)
 
     def _updateAutoArchivePref(self):
-        self._menu_controller.changeAutoArchiveState(bool(int(self._settings.value("auto_archive", 1))))
+        self._menu_controller.changeAutoArchiveState(self._auto_archive)
 
     def _updateHideFutureTasksPref(self):
-        self._menu_controller.changeHideFutureTasksState(bool(int(self._settings.value("hide_future_tasks", 1))))
+        self._menu_controller.changeHideFutureTasksState(self._hide_future_tasks)
 
     def _updateView(self):
         self._view.restoreGeometry(self._settings.value("main_window_geometry"))
@@ -297,17 +307,16 @@ class MainController(QtCore.QObject):
             self._view.centralWidget().setSizes(slidderPosition)
 
     def createdDate(self):
-        self._settings.setValue("add_created_date", 0 if int(self._settings.value("add_created_date", 1)) else 1)
+        self._add_created_date = int(not self._add_created_date)
 
     def toggleAutoSave(self):
-        self._auto_save = 1 if self._auto_save else 0
+        self._auto_save = int(not self._auto_save)
 
     def toggleAutoArchive(self):
-        self._settings.setValue("auto_archive", 0 if int(self._settings.value("auto_archive", 1)) else 1)
+        self._auto_archive = int(not self._auto_archive)
 
     def toggleHideFutureTasks(self):
-        self._hide_future_tasks = 0 if not self._hide_future_tasks else 1
-        self._settings.setValue("hide_future_tasks", self._hide_future_tasks)
+        self._hide_future_tasks = int(not self._hide_future_tasks)
         self._onFilterSelectionChanged(self._filters_tree_controller._view.getSelectedFilters())
 
     def toggleVisible(self):
