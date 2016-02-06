@@ -308,15 +308,19 @@ class MainController(QtCore.QObject):
 
     def toggleCreatedDate(self):
         self._add_created_date = int(not self._add_created_date)
+        self._settings.setValue("add_created_date", self._add_created_date)
 
     def toggleAutoSave(self):
         self._auto_save = int(not self._auto_save)
+        self._settings.setValue("auto_save", self._auto_save)
 
     def toggleAutoArchive(self):
         self._auto_archive = int(not self._auto_archive)
+        self._settings.setValue("auto_archive", self._auto_archive)
 
     def toggleHideFutureTasks(self):
         self._hide_future_tasks = int(not self._hide_future_tasks)
+        self._settings.setValue("hide_future_tasks", self._hide_future_tasks)
         self._onFilterSelectionChanged(self._filters_tree_controller._view.getSelectedFilters())
 
     def toggleVisible(self):
