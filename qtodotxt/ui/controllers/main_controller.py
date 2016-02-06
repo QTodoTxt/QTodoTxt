@@ -5,7 +5,7 @@ import sys
 from PySide import QtCore
 from PySide import QtGui
 
-from qtodotxt.lib import task_parser, settings
+from qtodotxt.lib import task_parser
 from qtodotxt.lib.file import ErrorLoadingFile, File, FileObserver
 
 from qtodotxt.ui.controllers.tasks_list_controller import TasksListController
@@ -26,22 +26,32 @@ class MainController(QtCore.QObject):
         super(MainController, self).__init__()
         self._args = args
         self._view = view
-        self.settings = QtCore.QSettings()
-        # handle the bad bool handling of qsettings
-        self._show_toolbar = True if self.settings.value("show_toolbar", "true") == "true" else False
+
+        # use object variable for setting only used in this class
+        # others are accessed through QSettings
+        self._settings = QtCore.QSettings()
+        # self._show_toolbar = int(self._settings.value("show_toolbar", 1))
+        # fix migration issue from old settings
+        show_toolbar = self._settings.value("show_toolbar", 1)
+        if show_toolbar in ("true", "false"):
+            show_toolbar = 1
+        self._show_toolbar = int(show_toolbar) 
+        self._add_created_date = int(self._settings.value("add_created_date", 1))
+        self._auto_save = int(self._settings.value("auto_save", 1))
+        self._auto_archive = int(self._settings.value("auto_archive", 1))
+        self._hide_future_tasks = int(self._settings.value("hide_future_tasks", 1))
+
         self._dialogs = dialogs
         self._task_editor_service = task_editor_service
         self._initControllers()
         self._file = File()
         self._fileObserver = FileObserver(self, self._file)
         self._is_modified = False
-        # FIXME use of custom settings should be removed
-        self._settings = settings.Settings()
         self._setIsModified(False)
         self._view.closeEventSignal.connect(self._view_onCloseEvent)
 
-    def autoSave(self):
-        if self._settings.getAutoSave():
+    def auto_save(self):
+        if self._auto_save:
             self.save()
 
     def _initControllers(self):
@@ -57,6 +67,7 @@ class MainController(QtCore.QObject):
 
     def _initToolBar(self):
         toolbar = self._view.addToolBar("Main Toolbar")
+        toolbar.setObjectName("mainToolbar")
         toolbar.addAction(self._menu_controller.openAction)
         toolbar.addAction(self._menu_controller.saveAction)
         toolbar.addSeparator()
@@ -73,7 +84,7 @@ class MainController(QtCore.QObject):
             toolbar.hide()
 
     def _toolbar_visibility_changed(self, val):
-        self._show_toolbar = val
+        self._show_toolbar = int(val)
 
     def exit(self):
         self._view.close()
@@ -83,19 +94,18 @@ class MainController(QtCore.QObject):
         return self._view
 
     def show(self):
+        self._updateView()
         self._view.show()
         self._updateTitle()
-        self._settings.load()
         self._updateCreatePref()
         self._updateAutoSavePref()
         self._updateAutoArchivePref()
         self._updateHideFutureTasksPref()
-        self._updateView()
 
         if self._args.file:
             filename = self._args.file
         else:
-            filename = self.settings.value("last_open_file")
+            filename = self._settings.value("last_open_file")
 
         if filename:
             try:
@@ -122,7 +132,7 @@ class MainController(QtCore.QObject):
         tasks = task_parser.filterTasks([SimpleTextFilter(filterText)], treeTasks)
         # And finally with future filter if needed
         # TODO: refactor all that filters
-        if self._settings.getHideFutureTasks():
+        if self._hide_future_tasks:
             tasks = task_parser.filterTasks([FutureFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
 
@@ -138,7 +148,7 @@ class MainController(QtCore.QObject):
         tasks = task_parser.filterTasks([SimpleTextFilter(text)], treeTasks)
         # And finally with future filter if needed
         # TODO: refactor all that filters
-        if self._settings.getHideFutureTasks():
+        if self._hide_future_tasks:
             tasks = task_parser.filterTasks([FutureFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
 
@@ -189,7 +199,7 @@ class MainController(QtCore.QObject):
         self._filters_tree_controller.showFilters(self._file)
         self._task_editor_service.updateValues(self._file)
         self._setIsModified(True)
-        self.autoSave()
+        self.auto_save()
 
     def _canExit(self):
         if not self._is_modified:
@@ -203,21 +213,19 @@ class MainController(QtCore.QObject):
 
     def _view_onCloseEvent(self, closeEvent):
         if self._canExit():
-            self._saveView()
-            self.settings.setValue("show_toolbar", self._show_toolbar)
+            self._settings.setValue("show_toolbar", self._show_toolbar)
+            self._settings.setValue("splitter_pos", self._view.centralWidget().sizes())
+            self._settings.setValue("main_window_geometry", self._view.saveGeometry())
+            self._settings.setValue("main_window_state", self._view.saveState())
+
+            self._settings.setValue("add_created_date", self._add_created_date)
+            self._settings.setValue("auto_save", self._auto_save)
+            self._settings.setValue("auto_archive", self._auto_archive)
+            self._settings.setValue("hide_future_tasks", self._hide_future_tasks)
+
             closeEvent.accept()
         else:
             closeEvent.ignore()
-
-    def _saveView(self):
-        viewSize = self._view.size()
-        viewPosition = self._view.pos()
-        splitterPosition = self._view.centralWidget().sizes()
-        self._settings.setViewHeight(viewSize.height())
-        self._settings.setViewWidth(viewSize.width())
-        self._settings.setViewPositionX(viewPosition.x())
-        self._settings.setViewPositionY(viewPosition.y())
-        self._settings.setViewSlidderPosition(splitterPosition)
 
     def _setIsModified(self, is_modified):
         self._is_modified = is_modified
@@ -235,7 +243,7 @@ class MainController(QtCore.QObject):
                 QtGui.QFileDialog.getSaveFileName(self._view, filter=FILENAME_FILTERS)
         if ok and filename:
             self._file.save(filename)
-            self.settings.setValue("last_open_file", filename)
+            self._settings.setValue("last_open_file", filename)
             self._setIsModified(False)
             logger.debug('Adding {} to watchlist'.format(filename))
             self._fileObserver.addPath(self._file.filename)
@@ -278,7 +286,7 @@ class MainController(QtCore.QObject):
         self._fileObserver.clear()
         self._file.load(filename)
         self._loadFileToUI()
-        self.settings.setValue("last_open_file", filename)
+        self._settings.setValue("last_open_file", filename)
         logger.debug('Adding {} to watchlist'.format(filename))
         self._fileObserver.addPath(self._file.filename)
 
@@ -288,55 +296,40 @@ class MainController(QtCore.QObject):
         self._task_editor_service.updateValues(self._file)
 
     def _updateCreatePref(self):
-        self._menu_controller.changeCreatedDateState(bool(self._settings.getCreateDate()))
+        self._menu_controller.changeCreatedDateState(self._add_created_date)
 
     def _updateAutoSavePref(self):
-        self._menu_controller.changeAutoSaveState(bool(self._settings.getAutoSave()))
+        self._menu_controller.changeAutoSaveState(self._auto_save)
 
     def _updateAutoArchivePref(self):
-        self._menu_controller.changeAutoArchiveState(bool(self._settings.getAutoArchive()))
+        self._menu_controller.changeAutoArchiveState(self._auto_archive)
 
     def _updateHideFutureTasksPref(self):
-        self._menu_controller.changeHideFutureTasksState(bool(self._settings.getHideFutureTasks()))
+        self._menu_controller.changeHideFutureTasksState(self._hide_future_tasks)
 
     def _updateView(self):
-        height = self._settings.getViewHeight()
-        width = self._settings.getViewWidth()
-        if height and width:
-            self._view.resize(width, height)
+        self._view.restoreGeometry(self._settings.value("main_window_geometry"))
+        self._view.restoreState(self._settings.value("main_window_state"))
+        splitterPosition = self._settings.value("splitter_pos", None)
+        if splitterPosition:
+            splitterPosition = [int(x) for x in splitterPosition]
+            self._view.centralWidget().setSizes(splitterPosition)
 
-        positionX = self._settings.getViewPositionX()
-        positionY = self._settings.getViewPositionY()
-        if positionX and positionY:
-            self._view.move(positionX, positionY)
-
-        slidderPosition = self._settings.getViewSlidderPosition()
-        if slidderPosition:
-            self._view.centralWidget().setSizes(slidderPosition)
-
-    def createdDate(self):
-        if self._settings.getCreateDate():
-            self._settings.setCreateDate(False)
-        else:
-            self._settings.setCreateDate(True)
+    def toggleCreatedDate(self):
+        self._add_created_date = int(not self._add_created_date)
+        self._settings.setValue("add_created_date", self._add_created_date)
 
     def toggleAutoSave(self):
-        if self._settings.getAutoSave():
-            self._settings.setAutoSave(False)
-        else:
-            self._settings.setAutoSave(True)
+        self._auto_save = int(not self._auto_save)
+        self._settings.setValue("auto_save", self._auto_save)
 
     def toggleAutoArchive(self):
-        if self._settings.getAutoArchive():
-            self._settings.setAutoArchive(False)
-        else:
-            self._settings.setAutoArchive(True)
+        self._auto_archive = int(not self._auto_archive)
+        self._settings.setValue("auto_archive", self._auto_archive)
 
     def toggleHideFutureTasks(self):
-        if self._settings.getHideFutureTasks():
-            self._settings.setHideFutureTasks(False)
-        else:
-            self._settings.setHideFutureTasks(True)
+        self._hide_future_tasks = int(not self._hide_future_tasks)
+        self._settings.setValue("hide_future_tasks", self._hide_future_tasks)
         self._onFilterSelectionChanged(self._filters_tree_controller._view.getSelectedFilters())
 
     def toggleVisible(self):

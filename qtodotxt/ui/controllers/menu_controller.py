@@ -85,7 +85,7 @@ class MenuController(QtCore.QObject):
 
     def _createPreferenceAction(self):
         action = QtGui.QAction('Add created date', self, checkable=True)
-        action.triggered.connect(self._main_controller.createdDate)
+        action.triggered.connect(self._main_controller.toggleCreatedDate)
         self.prefAction = action
         return action
 
