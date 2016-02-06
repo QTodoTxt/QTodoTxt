@@ -205,7 +205,7 @@ class MainController(QtCore.QObject):
     def _view_onCloseEvent(self, closeEvent):
         if self._canExit():
             self._settings.setValue("show_toolbar", self._show_toolbar)
-            self._settings.setValue("slider_pos", self._view.centralWidget().sizes())
+            self._settings.setValue("splitter_pos", self._view.centralWidget().sizes())
             self._settings.setValue("main_window_geometry", self._view.saveGeometry())
             self._settings.setValue("main_window_state", self._view.saveState())
 
@@ -301,12 +301,12 @@ class MainController(QtCore.QObject):
     def _updateView(self):
         self._view.restoreGeometry(self._settings.value("main_window_geometry"))
         self._view.restoreState(self._settings.value("main_window_state"))
-        slidderPosition = self._settings.value("slider_pos", None)
-        if slidderPosition:
-            slidderPosition = [int(x) for x in slidderPosition]
-            self._view.centralWidget().setSizes(slidderPosition)
+        splitterPosition = self._settings.value("splitter_pos", None)
+        if splitterPosition:
+            splitterPosition = [int(x) for x in splitterPosition]
+            self._view.centralWidget().setSizes(splitterPosition)
 
-    def createdDate(self):
+    def toggleCreatedDate(self):
         self._add_created_date = int(not self._add_created_date)
 
     def toggleAutoSave(self):
