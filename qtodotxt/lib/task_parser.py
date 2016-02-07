@@ -1,5 +1,8 @@
 import re
+import string
 from datetime import datetime, date
+
+from PySide import QtCore
 
 
 HIGHEST_PRIORITY = 'A'
@@ -10,7 +13,20 @@ class Task(object):
 
     def __init__(self, line):
         self.reset()
-        self._user_lowest_priority = 'D'
+
+        # read and validate user_lowest_priority
+        # TODO: make user_lowest_priority changeable from gui
+        default_lowest_priority = "D"
+        settings = QtCore.QSettings()
+        user_lowest_priority = settings.value("user_lowest_priority", default_lowest_priority)
+        if str(user_lowest_priority).isupper():
+            self._user_lowest_priority = user_lowest_priority
+        else:
+            self._user_lowest_priority = default_lowest_priority
+            # make sure other parts of the application using this value
+            # always get a valid value
+            settings.setValue("user_lowest_priority", self._user_lowest_priority)
+
         if line:
             self.parseLine(line)
 
