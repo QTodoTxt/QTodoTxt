@@ -244,6 +244,7 @@ class MainController(QtCore.QObject):
         if ok and filename:
             self._file.save(filename)
             self._settings.setValue("last_open_file", filename)
+            self._settings.sync()
             self._setIsModified(False)
             logger.debug('Adding {} to watchlist'.format(filename))
             self._fileObserver.addPath(self._file.filename)
@@ -287,6 +288,7 @@ class MainController(QtCore.QObject):
         self._file.load(filename)
         self._loadFileToUI()
         self._settings.setValue("last_open_file", filename)
+        self._settings.sync()
         logger.debug('Adding {} to watchlist'.format(filename))
         self._fileObserver.addPath(self._file.filename)
 
@@ -318,18 +320,22 @@ class MainController(QtCore.QObject):
     def toggleCreatedDate(self):
         self._add_created_date = int(not self._add_created_date)
         self._settings.setValue("add_created_date", self._add_created_date)
+        self._settings.sync()
 
     def toggleAutoSave(self):
         self._auto_save = int(not self._auto_save)
         self._settings.setValue("auto_save", self._auto_save)
+        self._settings.sync()
 
     def toggleAutoArchive(self):
         self._auto_archive = int(not self._auto_archive)
         self._settings.setValue("auto_archive", self._auto_archive)
+        self._settings.sync()
 
     def toggleHideFutureTasks(self):
         self._hide_future_tasks = int(not self._hide_future_tasks)
         self._settings.setValue("hide_future_tasks", self._hide_future_tasks)
+        self._settings.sync()
         self._onFilterSelectionChanged(self._filters_tree_controller._view.getSelectedFilters())
 
     def toggleVisible(self):
