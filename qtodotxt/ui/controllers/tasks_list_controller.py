@@ -1,7 +1,10 @@
 from PySide import QtCore
 from PySide import QtGui
+
 from qtodotxt.lib import task_parser
+from qtodotxt.lib.task_htmlizer import TaskHtmlizer
 from qtodotxt.ui.resource_manager import getIcon
+
 from datetime import date
 from functools import cmp_to_key
 
@@ -17,6 +20,7 @@ class TasksListController(QtCore.QObject):
         QtCore.QObject.__init__(self)
         self._view = view
         self._task_editor_service = task_editor_service
+        self._task_htmlizer = TaskHtmlizer()
         self._view.taskActivated.connect(self.editTask)
         self._initCreateTaskAction()
         self._initEditTaskAction()
@@ -93,14 +97,15 @@ class TasksListController(QtCore.QObject):
 
     def _confirmTasksAction(self, tasks, messagePrefix):
         if len(tasks) == 1:
-            message = '%s "%s"?' % (messagePrefix, tasks[0].text)
+            message = '<b>%s the following task?</b><ul>' % messagePrefix
         else:
-            message = '%s %d tasks?' % (messagePrefix, len(tasks))
-
+            message = '<b>%s the following tasks?</b><ul>' % messagePrefix
+        for task in tasks:
+            message += '<li>%s</li>' % self._task_htmlizer.task2html(task)
+        message += '</ul>'
         result = QtGui.QMessageBox.question(self._view, 'Confirm', message,
                                             buttons=QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                                             defaultButton=QtGui.QMessageBox.Yes)
-
         return result == QtGui.QMessageBox.Yes
 
     def _decreasePriority(self):
