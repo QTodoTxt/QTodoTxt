@@ -11,7 +11,7 @@ Latest stable release (v1.4.0):
 - For Ubuntu / Debian: [.deb package](http://dl.bintray.com/mnantern/deb/qtodotxt_1.4.0_all.deb)
 - For Windows: [Windows installer](http://dl.bintray.com/mnantern/generic/qtodotxt_1.4.0.exe)
 - For Mac OS X: [Mac OS X installer](http://dl.bintray.com/mnantern/generic/QTodoTxt_1.4.0.dmg)
-- Everywhere: pip install qtodotxt
+- Everywhere: ```pip install --pre qtodotxt```
 - Everywhere: [tar.gz archive](https://github.com/mNantern/QTodoTxt/archive/1.4.0.tar.gz)
 
 For Debian/Ubuntu you can also add the following repo to your sources.list:
