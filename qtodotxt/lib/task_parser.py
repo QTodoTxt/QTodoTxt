@@ -1,15 +1,32 @@
 import re
+import string
 from datetime import datetime, date
 
+from PySide import QtCore
 
-HIGHER_PRIORITY = 'A'
-LOWER_PRIORITY = 'Z'
+
+HIGHEST_PRIORITY = 'A'
+LOWEST_PRIORITY = 'Z'
 
 
 class Task(object):
 
     def __init__(self, line):
         self.reset()
+
+        # read and validate user_lowest_priority
+        # TODO: make user_lowest_priority changeable from gui
+        default_lowest_priority = "D"
+        settings = QtCore.QSettings()
+        user_lowest_priority = settings.value("user_lowest_priority", default_lowest_priority)
+        if str(user_lowest_priority).isupper():
+            self._user_lowest_priority = user_lowest_priority
+        else:
+            self._user_lowest_priority = default_lowest_priority
+            # make sure other parts of the application using this value
+            # always get a valid value
+            settings.setValue("user_lowest_priority", self._user_lowest_priority)
+
         if line:
             self.parseLine(line)
 
@@ -61,28 +78,24 @@ class Task(object):
             self.parseLine(line)
 
     def increasePriority(self):
-        if self.priority is None:
-            self.priority = LOWER_PRIORITY
-            self.text = '(%s) %s' % (LOWER_PRIORITY, self.text)
-        elif self.priority == HIGHER_PRIORITY:
-            self.priority = None
-            self.text = self.text[4:]
-        else:
-            newPriority = chr(ord(self.priority) - 1)
-            self.text = re.sub('^\(%s\) ' % self.priority, '(%s) ' % newPriority, self.text)
-            self.priority = newPriority
+        if self.priority != HIGHEST_PRIORITY:
+            if (self.priority == None):
+                self.priority = self._user_lowest_priority
+                self.text = '(%s) %s' % (self.priority, self.text)
+            else:
+                oldPriority = self.priority
+                self.priority = chr(ord(self.priority) - 1)
+                self.text = re.sub('^\(%s\) ' % oldPriority, '(%s) ' % self.priority, self.text)
 
     def decreasePriority(self):
-        if self.priority is None:
-            self.priority = HIGHER_PRIORITY
-            self.text = '(%s) %s' % (HIGHER_PRIORITY, self.text)
-        elif self.priority == LOWER_PRIORITY:
-            self.text = self.text[4:]
-            self.priority = None
-        else:
-            newPriority = chr(ord(self.priority) + 1)
-            self.text = re.sub('^\(%s\) ' % self.priority, '(%s) ' % newPriority, self.text)
-            self.priority = newPriority
+        if self.priority != None:
+            if (self.priority == self._user_lowest_priority) or (self.priority == LOWEST_PRIORITY):
+                self.priority = None
+                self.text = self.text[4:]
+            else:
+                oldPriority = self.priority
+                self.priority = chr(ord(self.priority) + 1)
+                self.text = re.sub('^\(%s\) ' % oldPriority, '(%s) ' % self.priority, self.text)
     text = property(_getText, _setText)
 
 
