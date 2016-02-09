@@ -49,6 +49,8 @@ class MainController(QtCore.QObject):
         self._is_modified = False
         self._setIsModified(False)
         self._view.closeEventSignal.connect(self._view_onCloseEvent)
+        filters = self._settings.value("current_filters", ["All"])
+        self._filters_tree_controller._view.setSelectedFiltersByNames(filters)
 
     def auto_save(self):
         if self._auto_save:
@@ -215,6 +217,7 @@ class MainController(QtCore.QObject):
         if self._canExit():
             self._settings.setValue("show_toolbar", self._show_toolbar)
             self._settings.setValue("splitter_pos", self._view.centralWidget().sizes())
+            self._settings.setValue("current_filters", self._filters_tree_controller._view.getSelectedFilterNames())
             self._settings.setValue("main_window_geometry", self._view.saveGeometry())
             self._settings.setValue("main_window_state", self._view.saveState())
 
