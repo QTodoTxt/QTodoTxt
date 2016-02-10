@@ -5,10 +5,16 @@ Before you submit any code, make sure to run the following tests before committi
 
     …/QTodoTxt $ flake8 qtodotxt
     …/QTodoTxt $ py.test qtodotxt/test 
+    …/QTodoTxt $ qtodotxt/test/run-tests.py
+
+If you installed both Python 2 and Python 3 on your system, make sure you run these tests with Python 3.
+Depending on your system configuration, the above commands may have to be replaced by commands like these:
+
+    …/QTodoTxt $ python3 -m flake8 qtodotxt
+    …/QTodoTxt $ python3 -m py.test qtodotxt/test 
     …/QTodoTxt $ qtodotxt/test/run-tests.py 
 
-As PySide must be compiled on [Travis](https://travis-ci.org/QTodoTxt/QTodoTxt), the tests there will run a considerably 
-long time. Please refer to [flake8](https://flake8.readthedocs.org)'s and [pytest](https://pytest.org)'s documentation 
+Please refer to [flake8](https://flake8.readthedocs.org)'s and [pytest](https://pytest.org)'s documentation 
 for details on these tests. You can also consider the `…/run-coverage.py`-script to get find code that is uncovered by 
 tests.
 
