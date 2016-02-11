@@ -24,7 +24,7 @@ class MenuController(QtCore.QObject):
         fileMenu.addAction(self._createSaveAction())
         fileMenu.addAction(self._createRevertAction())
         fileMenu.addSeparator()
-        preferenceMenu = fileMenu.addMenu(getIcon('wrench.png'), '&Preferences')
+        preferenceMenu = fileMenu.addMenu(getIcon('ApplicationPreferences.png'), '&Preferences')
         preferenceMenu.addAction(self._createPreferenceAction())
         preferenceMenu.addAction(self._autoSavePreferenceAction())
         preferenceMenu.addAction(self._autoArchivePreferenceAction())
@@ -49,7 +49,7 @@ class MenuController(QtCore.QObject):
         helpMenu.addAction(self._createAboutAction())
 
     def _createAboutAction(self):
-        action = QtGui.QAction(getIcon('help.png'), '&About', self)
+        action = QtGui.QAction(getIcon('ApplicationAbout.png'), '&About', self)
         action.triggered.connect(self._about)
         return action
 
@@ -57,28 +57,28 @@ class MenuController(QtCore.QObject):
         about_dialog.show(self._menu)
 
     def _createNewAction(self):
-        action = QtGui.QAction(getIcon('page.png'), '&New', self)
+        action = QtGui.QAction(getIcon('FileNew.png'), '&New', self)
         # infrequent action, I prefer to use ctrl+n for new task.
         action.setShortcuts(["Ctrl+Shift+N"])
         action.triggered.connect(self._main_controller.new)
         return action
 
     def _createOpenAction(self):
-        action = QtGui.QAction(getIcon('folder.png'), '&Open', self)
+        action = QtGui.QAction(getIcon('FileOpen.png'), '&Open', self)
         action.setShortcuts(["Ctrl+O"])
         action.triggered.connect(self._main_controller.open)
         self.openAction = action
         return action
 
     def _createSaveAction(self):
-        action = QtGui.QAction(getIcon('save.svg'), '&Save', self)
+        action = QtGui.QAction(getIcon('FileSave.svg'), '&Save', self)
         action.setShortcuts(["Ctrl+S"])
         action.triggered.connect(self._main_controller.save)
         self.saveAction = action
         return action
 
     def _createRevertAction(self):
-        action = QtGui.QAction(getIcon('arrow_rotate_clockwise.png'), '&Revert', self)
+        action = QtGui.QAction(getIcon('FileRevert.png'), '&Revert', self)
         action.triggered.connect(self._main_controller.revert)
         self.revertAction = action
         return action
@@ -120,7 +120,7 @@ class MenuController(QtCore.QObject):
         self.hideFutureTasksAction.setChecked(value)
 
     def _createExitAction(self):
-        action = QtGui.QAction(getIcon('door_in.png'), 'E&xit', self)
+        action = QtGui.QAction(getIcon('ApplicationExit.png'), 'E&xit', self)
         action.setShortcuts(["Alt+F4"])
         action.triggered.connect(self._main_controller.exit)
         return action
