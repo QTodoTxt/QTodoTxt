@@ -1,8 +1,8 @@
-# QTodoTxt [![Build Status](https://travis-ci.org/mNantern/QTodoTxt.png?branch=master)](https://travis-ci.org/mNantern/QTodoTxt)
+# QTodoTxt [![Build Status](https://travis-ci.org/QTodoTxt/QTodoTxt.png?branch=master)](https://travis-ci.org/QTodoTxt/QTodoTxt)
 
 QTodoTxt is a cross-platform UI client for todo.txt files (see [todo.txt](http://todotxt.com)).
 
-![Main view](https://github.com/mNantern/QTodoTxt/wiki/screenshots/QTodoTxt_main_view.png)
+![Main view](https://github.com/QTodoTxt/QTodoTxt/wiki/screenshots/QTodoTxt_main_view.png)
 
 ## Downloads
 
@@ -25,18 +25,18 @@ echo "deb http://dl.bintray.com/mnantern/deb /" | sudo tee -a /etc/apt/sources.l
 
 To run the application without installing just:
 
-* Download [latest code archive](https://github.com/mNantern/QTodoTxt/archive/master.zip)
+* Download [latest code archive](https://github.com/QTodoTxt/QTodoTxt/archive/master.zip)
 * Run:
   * On Linux/Mac: bin/qtodotxt
   * On Windows: bin/qtodotxt.pyw
  
-Be sure to have all [prerequisites](http://github.com/mNantern/QTodoTxt/wiki/User-documentation) installed !
+Be sure to have all [prerequisites](http://github.com/QTodoTxt/QTodoTxt/wiki/User-documentation) installed !
 
 ## Documentation
 
-- [User documentation](https://github.com/mNantern/QTodoTxt/wiki/User-documentation)
-- Stable and older releases: [Downloads](https://github.com/mNantern/QTodoTxt/wiki/Releases)
-- [Changelog](https://github.com/mNantern/QTodoTxt/wiki/Changelog)
-- [Defects and Enhancements](https://github.com/mNantern/QTodoTxt/issues)
-- [Screenshots](https://github.com/mNantern/QTodoTxt/wiki/Screenshots)
+- [User documentation](https://github.com/QTodoTxt/QTodoTxt/wiki/User-documentation)
+- Stable and older releases: [Downloads](https://github.com/QTodoTxt/QTodoTxt/wiki/Releases)
+- [Changelog](https://github.com/QTodoTxt/QTodoTxt/wiki/Changelog)
+- [Defects and Enhancements](https://github.com/QTodoTxt/QTodoTxt/issues)
+- [Screenshots](https://github.com/QTodoTxt/QTodoTxt/wiki/Screenshots)
 - [Forum](https://groups.google.com/d/forum/qtodotxt)
