@@ -51,7 +51,6 @@ class AllTasksFilter(BaseFilter):
         BaseFilter.__init__(self, 'All')
 
 
-
 class IncompleteTasksFilter(BaseFilter):
     """
     Task list filter that removes any completed tasks.
@@ -188,7 +187,7 @@ class DueThisWeekFilter(BaseFilter):
         else:
             due_date = self.parseDate(task.due)
             today = datetime.today().date()
-            return today <= due_date <= today + timedelta((6-today.weekday()) % 7)
+            return today <= due_date <= today + timedelta((6 - today.weekday()) % 7)
 
     def __str__(self):
         return "DueThisWeekFilter(%s)" % self.text
@@ -211,7 +210,7 @@ class DueThisMonthFilter(BaseFilter):
             if today.month == 12:
                 last_day_of_month = today.replace(day=31)
             else:
-                last_day_of_month = today.replace(month=today.month+1, day=1) - timedelta(days=1)
+                last_day_of_month = today.replace(month=today.month + 1, day=1) - timedelta(days=1)
             return today <= due_date <= last_day_of_month
 
     def __str__(self):

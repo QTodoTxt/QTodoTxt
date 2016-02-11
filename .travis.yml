@@ -35,5 +35,5 @@ install:
 
 script:
 # run tests
-  - flake8 qtodotxt
+  - flake8 --max-complexity 13 qtodotxt
   - qtodotxt/test/run-tests.py

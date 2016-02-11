@@ -21,7 +21,7 @@ class FiltersTreeView(QtGui.QWidget):
         items = self._tree.selectedItems()
         filters = [item.filter for item in items]
         return filters
-    
+
     def getSelectedFilterNames(self):
         return [f.text for f in self.getSelectedFilters()]
 
@@ -128,13 +128,34 @@ class FiltersTreeView(QtGui.QWidget):
         return tree
 
     def _addDefaultTreeItems(self, tree):
-        self._allTasksItem = FilterTreeWidgetItem(None, ['All'], AllTasksFilter(), getIcon('qtodotxt.png'))
-        self._incompleteTasksItem = FilterTreeWidgetItem(None, ['Pending'], IncompleteTasksFilter(), getIcon('time.png'))
-        self._dueItem = FilterTreeWidgetItem(None, ['Due'], HasDueDateFilter(), getIcon('due.png'))
-        self._uncategorizedTasksItem = FilterTreeWidgetItem(None, ['Uncategorized'], UncategorizedTasksFilter(), getIcon('help.png'))
-        self._contextsItem = FilterTreeWidgetItem(None, ['Contexts'], HasContextsFilter(), getIcon('at.png'))
-        self._projectsItem = FilterTreeWidgetItem(None, ['Projects'], HasProjectsFilter(), getIcon('plus.png'))
-        self._completeTasksItem = FilterTreeWidgetItem(None, ['Complete'], CompleteTasksFilter(), getIcon('x.png'))
+        self._allTasksItem = FilterTreeWidgetItem(None,
+                                                  ['All'],
+                                                  AllTasksFilter(),
+                                                  getIcon('qtodotxt.png'))
+        self._incompleteTasksItem = FilterTreeWidgetItem(None,
+                                                         ['Pending'],
+                                                         IncompleteTasksFilter(),
+                                                         getIcon('time.png'))
+        self._dueItem = FilterTreeWidgetItem(None,
+                                             ['Due'],
+                                             HasDueDateFilter(),
+                                             getIcon('due.png'))
+        self._uncategorizedTasksItem = FilterTreeWidgetItem(None,
+                                                            ['Uncategorized'],
+                                                            UncategorizedTasksFilter(),
+                                                            getIcon('help.png'))
+        self._contextsItem = FilterTreeWidgetItem(None,
+                                                  ['Contexts'],
+                                                  HasContextsFilter(),
+                                                  getIcon('at.png'))
+        self._projectsItem = FilterTreeWidgetItem(None,
+                                                  ['Projects'],
+                                                  HasProjectsFilter(),
+                                                  getIcon('plus.png'))
+        self._completeTasksItem = FilterTreeWidgetItem(None,
+                                                       ['Complete'],
+                                                       CompleteTasksFilter(),
+                                                       getIcon('x.png'))
         tree.addTopLevelItems([
             self._allTasksItem,
             self._incompleteTasksItem,

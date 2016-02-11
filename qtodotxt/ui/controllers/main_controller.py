@@ -35,7 +35,7 @@ class MainController(QtCore.QObject):
         show_toolbar = self._settings.value("show_toolbar", 1)
         if show_toolbar in ("true", "false"):
             show_toolbar = 1
-        self._show_toolbar = int(show_toolbar) 
+        self._show_toolbar = int(show_toolbar)
         self._add_created_date = int(self._settings.value("add_created_date", 1))
         self._auto_save = int(self._settings.value("auto_save", 1))
         self._auto_archive = int(self._settings.value("auto_archive", 1))
