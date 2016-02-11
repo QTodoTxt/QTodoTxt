@@ -14,7 +14,7 @@ class TasksView(QtGui.QWidget):
         layout = QtGui.QVBoxLayout(self)
         layout.setSpacing(10)
 
-        self.tasks_filter = TasksFilterView(getIcon("zoom.png"), getIcon("cross.png"), self)
+        self.tasks_filter = TasksFilterView(getIcon("ActionSearch.png"), getIcon("ActionClear.png"), self)
         self.tasks_list_view = TasksListView(self)
         offset = QtCore.QSettings().value("ui_margin_offset", -4)
         self.setContentsMargins(2 * offset, offset, offset, offset)
