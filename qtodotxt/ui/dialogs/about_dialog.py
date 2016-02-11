@@ -1,3 +1,6 @@
+from PySide import QtGui
+
+
 __version__ = "1.4.0"
 
 description = """<p>QTodoTxt is a cross-platform UI client for todo.txt files
@@ -36,8 +39,6 @@ GNU General Public License for more details.</p>
 along with this program.  If not, see
 &lt;<a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
 """
-
-from PySide import QtGui
 
 
 def _getAboutText():

@@ -1,24 +1,39 @@
+# It's quite difficult to get PySide installed on the Travis CI servers.
+# Using apt-get definitively doesn't work, using pip takes a really long time.
+# The best solution seems to be using an external or self compiled binary.
+# Further reading:
+# - https://stackoverflow.com/questions/24489588/how-can-i-install-pyside-on-travis
+# - https://github.com/parkin/python-wheelhouse
+
+
 language: python
 
 python:
-  - "3.2"
-  - "3.3"
+#  - "3.2"
+#  - "3.3"
   - "3.4"
 
 before_install:
+# start (virtual) X server
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 
 install:
+# install PySide using external wheel
+# available for python 3.4
   - sudo apt-get update
-  - sudo apt-get -y install python3-pyside
-  - export PYTHONPATH="$PYTHONPATH:/usr/lib/python3/dist-packages"
+  - sudo apt-get -y install libqt4-dev
+  - pip install PySide --no-index --find-links https://parkin.github.io/python-wheelhouse/;
+  - python ~/virtualenv/python${TRAVIS_PYTHON_VERSION}/bin/pyside_postinstall.py -install
+
+# install PySide using pip (takes a long time)
+# available for python 3.2, 3.3, 3.4
+#  - travis_wait pip install PySide
+
+# install flake8
   - pip install flake8
 
-# command to run tests
 script:
-  - echo $PYTHONPATH
-  - ls /usr/lib/python3/dist-packages/PySide
-  - python -c "import sys; print('/usr/lib/python3/dist-packages' in sys.path)"
-  - python -c "import PySide; print(PySide.__version__)"
-  - flake8 qtodotxt && qtodotxt/test/run-tests.py
+# run tests
+  - flake8 qtodotxt
+  - qtodotxt/test/run-tests.py
