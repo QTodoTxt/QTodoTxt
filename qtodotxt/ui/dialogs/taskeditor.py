@@ -7,7 +7,7 @@ class TaskEditor(object):
 
     def __init__(self, parent_window):
         self._parent_window = parent_window
-        self._priorities = ["("+i+")" for i in string.ascii_uppercase]
+        self._priorities = ["(" + i + ")" for i in string.ascii_uppercase]
         self._resetValues()
         self._dates = list()
 
@@ -48,7 +48,7 @@ class TaskEditor(object):
         return text, ok
 
     def _openTaskEditor(self, title, task=None):
-        uniqlist = sorted(list(OrderedDict.fromkeys(self._completedValues+self._values)))+self._dates
+        uniqlist = sorted(list(OrderedDict.fromkeys(self._completedValues + self._values))) + self._dates
         dialog = TaskEditorDialog(uniqlist, self._parent_window)
         dialog.setWindowTitle(title)
         dialog.setLabelText('Task:')

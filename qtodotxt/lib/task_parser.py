@@ -1,5 +1,4 @@
 import re
-import string
 from datetime import datetime, date
 
 from PySide import QtCore
@@ -79,7 +78,7 @@ class Task(object):
 
     def increasePriority(self):
         if self.priority != HIGHEST_PRIORITY:
-            if (self.priority == None):
+            if (self.priority is None):
                 self.priority = self._user_lowest_priority
                 self.text = '(%s) %s' % (self.priority, self.text)
             else:
@@ -88,7 +87,7 @@ class Task(object):
                 self.text = re.sub('^\(%s\) ' % oldPriority, '(%s) ' % self.priority, self.text)
 
     def decreasePriority(self):
-        if self.priority != None:
+        if self.priority is not None:
             if (self.priority == self._user_lowest_priority) or (self.priority == LOWEST_PRIORITY):
                 self.priority = None
                 self.text = self.text[4:]

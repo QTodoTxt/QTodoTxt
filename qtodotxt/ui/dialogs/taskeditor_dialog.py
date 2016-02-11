@@ -34,19 +34,19 @@ class TaskEditorDialog(QtGui.QDialog):
     def _endOfMonth(self, month):
         month %= 12
 
-        eom = date.today().replace(month=month+1, day=1) - timedelta(days=1)
+        eom = date.today().replace(month=month + 1, day=1) - timedelta(days=1)
         if eom < date.today():
-            eom = eom.replace(year=eom.year+1)
+            eom = eom.replace(year=eom.year + 1)
         return 'due:' + eom.strftime('%Y-%m-%d')
 
     def _populateKeys(self, keys):
         today = 'due:' + date.today().strftime('%Y-%m-%d')
         tomorrow = 'due:' + (date.today() + timedelta(days=1)).strftime('%Y-%m-%d')
-        EOW = 'due:' + (date.today() + timedelta((6-date.today().weekday()) % 7)).strftime('%Y-%m-%d')
+        EOW = 'due:' + (date.today() + timedelta((6 - date.today().weekday()) % 7)).strftime('%Y-%m-%d')
         EOM = 'due:' + ((date.today().replace(day=1) +
                         timedelta(days=32)).replace(day=1) -
                         timedelta(days=1)).strftime('%Y-%m-%d')
-        EOY = 'due:' + (date.today().replace(year=date.today().year+1, month=1, day=1) -
+        EOY = 'due:' + (date.today().replace(year=date.today().year + 1, month=1, day=1) -
                         timedelta(days=1)).strftime('%Y-%m-%d')
 
         keys['due:EndOfWeek'] = EOW
