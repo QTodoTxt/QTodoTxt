@@ -29,6 +29,10 @@ class Task(object):
         if line:
             self.parseLine(line)
 
+    def __str__(self):
+        return "Task({})".format(self.text)
+    __repr__ = __str__
+
     def reset(self):
         self.contexts = []
         self.projects = []
@@ -76,6 +80,8 @@ class Task(object):
         if line:
             self.parseLine(line)
 
+    text = property(_getText, _setText)
+
     def increasePriority(self):
         if self.priority != HIGHEST_PRIORITY:
             if (self.priority is None):
@@ -95,46 +101,31 @@ class Task(object):
                 oldPriority = self.priority
                 self.priority = chr(ord(self.priority) + 1)
                 self.text = re.sub('^\(%s\) ' % oldPriority, '(%s) ' % self.priority, self.text)
-    text = property(_getText, _setText)
 
+    def __eq__(self, other):
+        return self.text == other.text
 
-def compareTasks(task1, task2):
-    comparison = compareTasksByCompleteness(task1, task2)
-    if comparison:
-        return comparison
-    comparison = compareTasksByPriority(task1, task2)
-    if comparison:
-        return comparison
-    if task1.text < task2.text:
-        return -1
-    elif task1.text > task2.text:
-        return 1
-    else:
-        return 0
+    def __lt__(self, other):
+        if self.is_complete != other.is_complete:
+            return self._lowerCompleteness(other)
+        if self.priority != other.priority:
+            return self._lowerPriority(other)
+        # order the other tasks alphabetically
+        return self.text > other.text
 
+    def _lowerPriority(self, other):
+        if not other.priority:
+            return False
+        if other.priority and not self.priority:
+            return True
+        return self.priority > other.priority
 
-def compareTasksByPriority(task1, task2):
-    if (not task1.priority and not task2.priority) or (task1.priority == task2.priority):
-            return 0
-    if not task1.priority:
-        return 1
-    if not task2.priority:
-        return -1
-    if task1.priority > task2.priority:
-        return 1
-    if task2.priority < task2.priority:
-        return -1
-
-
-def compareTasksByCompleteness(task1, task2):
-    if task1.is_complete == task2.is_complete:
-        return 0
-    if task1.is_complete:
-        return 1
-    if task2.is_complete:
-        return -1
-    else:
-        return 1
+    def _lowerCompleteness(self, other):
+        if self.is_complete and not other.is_complete:
+            return True
+        if not self.is_complete and other.is_complete:
+            return False
+        raise RuntimeError("Could not comapre completeness, report")
 
 
 def filterTasks(filters, tasks):

@@ -1,12 +1,12 @@
 from PySide import QtCore
 from PySide import QtGui
 from qtodotxt.lib.task_htmlizer import TaskHtmlizer
-from qtodotxt.lib import task_parser
+from qtodotxt.lib import tasklib
 
 
 class TasksListView(QtGui.QListWidget):
 
-    taskActivated = QtCore.Signal(task_parser.Task)
+    taskActivated = QtCore.Signal(tasklib.Task)
 
     def __init__(self, parent=None):
         super(TasksListView, self).__init__(parent)

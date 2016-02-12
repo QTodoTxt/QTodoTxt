@@ -1,5 +1,5 @@
 import unittest
-from qtodotxt.lib.task_parser import Task
+from qtodotxt.lib.tasklib import Task
 
 
 class TestTaskCompletenessComparison(unittest.TestCase):

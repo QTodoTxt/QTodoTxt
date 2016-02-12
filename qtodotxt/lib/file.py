@@ -1,10 +1,9 @@
-from functools import cmp_to_key
 import logging
 import os
 from PySide import QtCore
 from qtodotxt.lib.filters import DueTodayFilter, DueTomorrowFilter, DueThisWeekFilter, DueThisMonthFilter, \
     DueOverdueFilter
-from qtodotxt.lib.task_parser import Task, compareTasks
+from qtodotxt.lib.tasklib import Task
 from sys import version
 import time
 
@@ -72,7 +71,7 @@ class File(object):
             self.filename = self._createNewFilename()
         elif filename:
             self.filename = filename
-        self.tasks.sort(key=cmp_to_key(compareTasks))
+        self.tasks.sort(reverse=True)
         self._saveTasks()
 
     @staticmethod

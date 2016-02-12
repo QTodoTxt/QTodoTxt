@@ -1,20 +1,19 @@
 from PySide import QtCore
 from PySide import QtGui
 
-from qtodotxt.lib import task_parser
+from qtodotxt.lib import tasklib
 from qtodotxt.lib.task_htmlizer import TaskHtmlizer
 from qtodotxt.ui.resource_manager import getIcon
 
 from datetime import date
-from functools import cmp_to_key
 
 
 class TasksListController(QtCore.QObject):
 
-    taskModified = QtCore.Signal(task_parser.Task)
-    taskCreated = QtCore.Signal(task_parser.Task)
-    taskArchived = QtCore.Signal(task_parser.Task)
-    taskDeleted = QtCore.Signal(task_parser.Task)
+    taskModified = QtCore.Signal(tasklib.Task)
+    taskCreated = QtCore.Signal(tasklib.Task)
+    taskArchived = QtCore.Signal(tasklib.Task)
+    taskDeleted = QtCore.Signal(tasklib.Task)
 
     def __init__(self, view, task_editor_service):
         QtCore.QObject.__init__(self)
@@ -137,7 +136,7 @@ class TasksListController(QtCore.QObject):
             self._view.selectTaskByText(task.text)
 
     def _sortTasks(self, tasks):
-        tasks.sort(key=cmp_to_key(task_parser.compareTasks))
+        tasks.sort(reverse=True)
 
     def _addCreationDate(self, text):
         date_string = date.today().strftime('%Y-%m-%d')
@@ -152,7 +151,7 @@ class TasksListController(QtCore.QObject):
         if ok and text:
             if int(QtCore.QSettings().value("add_created_date", 1)):
                 text = self._addCreationDate(text)
-            task = task_parser.Task(text)
+            task = tasklib.Task(text)
             self._view.addTask(task)
             self._view.clearSelection()
             self._view.selectTask(task)

@@ -3,109 +3,114 @@ Test Setup and Helper Methods
 ========================================
 >>> import os, sys, doctest
 >>> sys.path.insert(0, os.path.join('.', '..', '..'))
->>> from qtodotxt.lib import task_parser
+>>> from qtodotxt.lib import tasklib
 
 
 ========================================
-1a. Identical tasks should return 0
+1a. Identical tasks 
 ========================================
->>> task1 = task_parser.Task('task')
->>> task2 = task_parser.Task('task')
->>> task_parser.compareTasks(task1, task2)
-0
+>>> task1 = tasklib.Task('task')
+>>> task2 = tasklib.Task('task')
+>>> task1 == task2
+True
 
 ========================================
-1b. Identical, uncompleted tasks should return 0
+1b. Identical, completed tasks 
 ========================================
->>> task1 = task_parser.Task('task')
->>> task2 = task_parser.Task('task')
->>> task_parser.compareTasksByCompleteness(task1, task2)
-0
+>>> task1 = tasklib.Task('x task')
+>>> task2 = tasklib.Task('x task')
+>>> task1 == task2
+True
 
 ========================================
-1c. Identical, unprioritized tasks should return 0
+1c. Identical, prioritized tasks 
 ========================================
->>> task1 = task_parser.Task('task')
->>> task2 = task_parser.Task('task')
->>> task_parser.compareTasksByPriority(task1, task2)
-0
+>>> task1 = tasklib.Task('(B) task')
+>>> task2 = tasklib.Task('(B) task')
+>>> task1 == task2
+True
 
 ========================================
-2a. task1.text < task2.text should return -1
+2a. task1.text < task2.text 
 ========================================
->>> task1 = task_parser.Task('task1')
->>> task2 = task_parser.Task('task2')
->>> task_parser.compareTasks(task1, task2)
--1
+>>> task1 = tasklib.Task('b')
+>>> task2 = tasklib.Task('a')
+>>> task1 < task2
+True
+>>> task1 > task2
+False
 
 ========================================
-2b. Different, uncompleted tasks should return 0
+2b. Different, completed 
 ========================================
->>> task1 = task_parser.Task('task1')
->>> task2 = task_parser.Task('task2')
->>> task_parser.compareTasksByCompleteness(task1, task2)
-0
+>>> task1 = tasklib.Task('x b task')
+>>> task2 = tasklib.Task('x a task')
+>>> task1 < task2
+True
+>>> task1 > task2
+False
+
 
 ========================================
-2c. Different, unprioritized tasks should return 0
+4. Task1 has priority A, Task2 has no priority
 ========================================
->>> task1 = task_parser.Task('task1')
->>> task2 = task_parser.Task('task2')
->>> task_parser.compareTasksByPriority(task1, task2)
-0
+>>> task1 = tasklib.Task('(A) task2')
+>>> task2 = tasklib.Task('task1')
+>>> task1 < task2
+False
+>>> task1 > task2
+True
 
 ========================================
-3a. Task1.text > Task2.text should return 1
+5. Task1 has priority B, Task2 has priority A
 ========================================
->>> task1 = task_parser.Task('task2')
->>> task2 = task_parser.Task('task1')
->>> task_parser.compareTasks(task1, task2)
-1
+>>> task1 = tasklib.Task('(B) task2')
+>>> task2 = tasklib.Task('(A) task1')
+>>> task1 < task2
+True
+>>> task1 > task2
+False
 
 ========================================
-3b. Different, uncompleted tasks should return 0
+5. Task1 is complete, Task2 is incomplete
 ========================================
->>> task1 = task_parser.Task('task2')
->>> task2 = task_parser.Task('task1')
->>> task_parser.compareTasksByCompleteness(task1, task2)
-0
+>>> task1 = tasklib.Task('x task1')
+>>> task2 = tasklib.Task('task2')
+>>> task1 < task2
+True
+>>> task1 > task2
+False
 
 ========================================
-3c. Different, unprioritized tasks should return 0
+6. Task1 is incomplete, Task2 is complete
 ========================================
->>> task1 = task_parser.Task('task2')
->>> task2 = task_parser.Task('task1')
->>> task_parser.compareTasksByPriority(task1, task2)
-0
+>>> task1 = tasklib.Task('(B) task1')
+>>> task2 = tasklib.Task('x (A) task2')
+>>> task1 > task2
+True
+>>> task1 < task2
+False
+
 
 ========================================
-4. Task1 has priority A, Task2 has no priority, should return -1
+7. Task1 is incomplete, Task2 is complete
 ========================================
->>> task1 = task_parser.Task('(A) task2')
->>> task2 = task_parser.Task('task1')
->>> task_parser.compareTasks(task1, task2)
--1
-
-========================================
-5. Task1 has priority B, Task2 has priority A, should return 1
-========================================
->>> task1 = task_parser.Task('(B) task2')
->>> task2 = task_parser.Task('(A) task1')
->>> task_parser.compareTasks(task1, task2)
-1
-
-========================================
-5. Task1 is complete, Task2 is incomplete, should return 1
-========================================
->>> task1 = task_parser.Task('x task1')
->>> task2 = task_parser.Task('task2')
->>> task_parser.compareTasks(task1, task2)
-1
-
-========================================
-6. Task1 is incomplete, Task2 is complete, should return -1
-========================================
->>> task1 = task_parser.Task('task1')
->>> task2 = task_parser.Task('x task2')
->>> task_parser.compareTasks(task1, task2)
--1
+>>> task1 = tasklib.Task('x task1')
+>>> task2 = tasklib.Task('task2')
+>>> task3 = tasklib.Task('abc task2')
+>>> task4 = tasklib.Task('(D) task2')
+>>> task5 = tasklib.Task('(C) b task')
+>>> task6 = tasklib.Task('(C) a task')
+>>> task7 = tasklib.Task('(B) task2')
+>>> task8 = tasklib.Task('(A) task2')
+>>> task2 < task3
+True
+>>> task1 < task2  < task3 < task4 < task5 < task6 < task7 < task8
+True
+>>> l = [task1, task2, task3, task4, task5, task6, task7, task8]
+>>> l2 = [task2, task3, task1, task4, task5, task6, task7, task8]
+>>> l == l2
+False
+>>> l2.sort()
+>>> l == l2
+True
