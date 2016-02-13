@@ -71,7 +71,7 @@ class MenuController(QtCore.QObject):
         return action
 
     def _createSaveAction(self):
-        action = QtGui.QAction(getIcon('FileSave.svg'), '&Save', self)
+        action = QtGui.QAction(getIcon('FileSave.png'), '&Save', self)
         action.setShortcuts(["Ctrl+S"])
         action.triggered.connect(self._main_controller.save)
         self.saveAction = action
