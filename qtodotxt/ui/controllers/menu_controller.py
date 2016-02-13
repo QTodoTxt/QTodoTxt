@@ -38,11 +38,11 @@ class MenuController(QtCore.QObject):
         editMenu.addAction(tlc.createTaskAction)
         editMenu.addAction(tlc.editTaskAction)
         editMenu.addSeparator()
-        editMenu.addAction(tlc.deleteSelectedTasksAction)
         editMenu.addAction(tlc.completeSelectedTasksAction)
+        editMenu.addAction(tlc.deleteSelectedTasksAction)
         editMenu.addSeparator()
-        editMenu.addAction(tlc.decreasePrioritySelectedTasksAction)
         editMenu.addAction(tlc.increasePrioritySelectedTasksAction)
+        editMenu.addAction(tlc.decreasePrioritySelectedTasksAction)
 
     def _initHelpMenu(self):
         helpMenu = self._menu.addMenu('&Help')
