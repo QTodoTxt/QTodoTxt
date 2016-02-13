@@ -1,5 +1,5 @@
 from PySide import QtGui, QtCore
-from qtodotxt.ui.views.tasks_filter_view import TasksSearchView
+from qtodotxt.ui.views.tasks_search_view import TasksSearchView
 from qtodotxt.ui.views.tasks_list_view import TasksListView
 from qtodotxt.ui.resource_manager import getIcon
 
