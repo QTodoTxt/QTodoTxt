@@ -2,7 +2,7 @@ import unittest
 from PySide import QtCore
 from datetime import date
 
-from qtodotxt.lib import task_parser
+from qtodotxt.lib import tasklib
 from qtodotxt.lib.file import File
 from qtodotxt.lib.filters import IncompleteTasksFilter, ContextFilter, ProjectFilter, DueThisMonthFilter, \
     DueThisWeekFilter, DueTodayFilter
@@ -50,10 +50,10 @@ class Test(unittest.TestCase):
     def _createMockFile(self):
         today = today = date.today().strftime('%Y-%m-%d')
         file = File()
-        file.tasks.append(task_parser.Task('my task1 @context1'))
-        file.tasks.append(task_parser.Task('my task2 @context1 @context2'))
-        file.tasks.append(task_parser.Task('due:' + today + ' my task3 +project1 @context2'))
-        file.tasks.append(task_parser.Task('due:' + today + ' my task4'))
+        file.tasks.append(tasklib.Task('my task1 @context1'))
+        file.tasks.append(tasklib.Task('my task2 @context1 @context2'))
+        file.tasks.append(tasklib.Task('due:' + today + ' my task3 +project1 @context2'))
+        file.tasks.append(tasklib.Task('due:' + today + ' my task4'))
         return file
 
     def test_showFilters(self):

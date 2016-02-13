@@ -3,7 +3,7 @@ from tempfile import mkstemp
 from os import remove
 from datetime import date, timedelta
 from qtodotxt.lib.file import File, ErrorLoadingFile
-from qtodotxt.lib.task_parser import Task
+from qtodotxt.lib.tasklib import Task
 from sys import version
 
 
