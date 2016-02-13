@@ -29,42 +29,42 @@ class TasksListController(QtCore.QObject):
         self._initIncreasePrioritySelectedTasksAction()
 
     def _initEditTaskAction(self):
-        action = QtGui.QAction(getIcon('edit.svg'), '&Edit Task', self)
+        action = QtGui.QAction(getIcon('TaskEdit.png'), '&Edit Task', self)
         action.setShortcuts(['Ctrl+E'])
         action.triggered.connect(self.editTask)
         self._view.addListAction(action)
         self.editTaskAction = action
 
     def _initCreateTaskAction(self):
-        action = QtGui.QAction(getIcon('add.svg'), '&Create New Task', self)
+        action = QtGui.QAction(getIcon('TaskCreate.png'), '&Create New Task', self)
         action.setShortcuts(['Insert', 'Ctrl+I', 'Ctrl+N'])
         action.triggered.connect(self.createTask)
         self._view.addListAction(action)
         self.createTaskAction = action
 
     def _initDeleteSelectedTasksAction(self):
-        action = QtGui.QAction(getIcon('delete.svg'), '&Delete Selected Tasks', self)
+        action = QtGui.QAction(getIcon('TaskDelete.png'), '&Delete Selected Tasks', self)
         action.setShortcut('Delete')
         action.triggered.connect(self._deleteSelectedTasks)
         self._view.addListAction(action)
         self.deleteSelectedTasksAction = action
 
     def _initCompleteSelectedTasksAction(self):
-        action = QtGui.QAction(getIcon('checked.svg'), 'C&omplete Selected Tasks', self)
+        action = QtGui.QAction(getIcon('TaskComplete.png'), 'C&omplete Selected Tasks', self)
         action.setShortcuts(['x', 'c'])
         action.triggered.connect(self._completeSelectedTasks)
         self._view.addListAction(action)
         self.completeSelectedTasksAction = action
 
     def _initDecreasePrioritySelectedTasksAction(self):
-        action = QtGui.QAction(getIcon('decrease.svg'), 'Decrease Priority', self)
+        action = QtGui.QAction(getIcon('TaskPriorityDecrease.png'), 'Decrease Priority', self)
         action.setShortcuts(['-', '<'])
         action.triggered.connect(self._decreasePriority)
         self._view.addListAction(action)
         self.decreasePrioritySelectedTasksAction = action
 
     def _initIncreasePrioritySelectedTasksAction(self):
-        action = QtGui.QAction(getIcon('increase.svg'), 'Increase Priority', self)
+        action = QtGui.QAction(getIcon('TaskPriorityIncrease.png'), 'Increase Priority', self)
         action.setShortcuts(['+', '>'])
         action.triggered.connect(self._increasePriority)
         self._view.addListAction(action)

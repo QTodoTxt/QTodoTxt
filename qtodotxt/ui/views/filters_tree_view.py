@@ -131,31 +131,31 @@ class FiltersTreeView(QtGui.QWidget):
         self._allTasksItem = FilterTreeWidgetItem(None,
                                                   ['All'],
                                                   AllTasksFilter(),
-                                                  getIcon('qtodotxt.png'))
+                                                  getIcon('FilterAll.png'))
         self._incompleteTasksItem = FilterTreeWidgetItem(None,
                                                          ['Pending'],
                                                          IncompleteTasksFilter(),
-                                                         getIcon('time.png'))
+                                                         getIcon('FilterPending.png'))
         self._dueItem = FilterTreeWidgetItem(None,
                                              ['Due'],
                                              HasDueDateFilter(),
-                                             getIcon('due.png'))
+                                             getIcon('FilterDue.png'))
         self._uncategorizedTasksItem = FilterTreeWidgetItem(None,
                                                             ['Uncategorized'],
                                                             UncategorizedTasksFilter(),
-                                                            getIcon('help.png'))
+                                                            getIcon('FilterUncategorized.png'))
         self._contextsItem = FilterTreeWidgetItem(None,
                                                   ['Contexts'],
                                                   HasContextsFilter(),
-                                                  getIcon('at.png'))
+                                                  getIcon('FilterContexts.png'))
         self._projectsItem = FilterTreeWidgetItem(None,
                                                   ['Projects'],
                                                   HasProjectsFilter(),
-                                                  getIcon('plus.png'))
+                                                  getIcon('FilterProjects.png'))
         self._completeTasksItem = FilterTreeWidgetItem(None,
                                                        ['Complete'],
                                                        CompleteTasksFilter(),
-                                                       getIcon('x.png'))
+                                                       getIcon('FilterComplete.png'))
         tree.addTopLevelItems([
             self._allTasksItem,
             self._incompleteTasksItem,
@@ -171,14 +171,14 @@ class FiltersTreeView(QtGui.QWidget):
         self._filterItemByFilterType[ProjectFilter] = self._projectsItem
         self._filterItemByFilterType[DueFilter] = self._dueItem
 
-        self._filterIconByFilterType[ContextFilter] = getIcon('at.png')
-        self._filterIconByFilterType[ProjectFilter] = getIcon('plus.png')
+        self._filterIconByFilterType[ContextFilter] = getIcon('FilterContexts.png')
+        self._filterIconByFilterType[ProjectFilter] = getIcon('FilterProjects.png')
 
-        self._filterIconByFilterType[DueTodayFilter] = getIcon('due_today.png')
-        self._filterIconByFilterType[DueTomorrowFilter] = getIcon('due_tomorrow.png')
-        self._filterIconByFilterType[DueThisWeekFilter] = getIcon('due.png')
-        self._filterIconByFilterType[DueThisMonthFilter] = getIcon('due_this_month.png')
-        self._filterIconByFilterType[DueOverdueFilter] = getIcon('due_overdue.png')
+        self._filterIconByFilterType[DueTodayFilter] = getIcon('FilterDueToday.png')
+        self._filterIconByFilterType[DueTomorrowFilter] = getIcon('FilterDueTomorrow.png')
+        self._filterIconByFilterType[DueThisWeekFilter] = getIcon('FilterDueWeek.png')
+        self._filterIconByFilterType[DueThisMonthFilter] = getIcon('FilterDueMonth.png')
+        self._filterIconByFilterType[DueOverdueFilter] = getIcon('FilterDueOverdue.png')
 
         self._treeItemByFilterType[AllTasksFilter] = self._allTasksItem
         self._treeItemByFilterType[IncompleteTasksFilter] = self._incompleteTasksItem

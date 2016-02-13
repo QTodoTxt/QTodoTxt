@@ -11,15 +11,15 @@ description = """<p>QTodoTxt is a cross-platform UI client for todo.txt files
 
 <h2>Links</h2>
 <ul>
-<li>Project Page: <a href="https://github.com/mNantern/QTodoTxt">https://github.com/mNantern/QTodoTxt</a></li>
+<li>Project Page: <a href="https://github.com/QTodoTxt/QTodoTxt">https://github.com/QTodoTxt/QTodoTxt</a></li>
 </ul>
 
 <h2>Credits</h2>
 
 <ul>
     <li>Concept by <a href="http://ginatrapani.org/">Gina Trapani</a></li>
-    <li>Icons by <a href="http://www.famfamfam.com/lab/icons/silk/">Mark James</a>
-        and <a href="http://sekkyumu.deviantart.com/art/Developpers-Icons-63052312">Sekkyumu</a></li>
+    <li>Icons by <a href="http://tango.freedesktop.org/">The Tango! Desktop Project</a>
+        and <a href="http://www.famfamfam.com/lab/icons/silk/">Mark James</a></li>
     <li>Original code by <a href="http://elentok.blogspot.com">David Elentok</a></li>
 </ul>
 
@@ -37,7 +37,7 @@ GNU General Public License for more details.</p>
 
 <p>You should have received a copy of the GNU General Public License
 along with this program.  If not, see
-&lt;<a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+<a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
 """
 
 
