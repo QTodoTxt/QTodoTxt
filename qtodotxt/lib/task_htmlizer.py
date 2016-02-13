@@ -46,8 +46,8 @@ class TaskHtmlizer(object):
     def _htmlizePriority(self, priority):
         if priority.priority in self.priority_colors:
             color = self.priority_colors[priority.priority]
-            return '<font color="%s"><tt>&nbsp;(%s)&nbsp;</tt></font>' % (color, priority)
-        return '<tt>&nbsp;(%s)&nbsp;</tt>' % priority
+            return '<font color="%s"><tt>(%s)</tt>&nbsp;</font>' % (color, priority)
+        return '<tt>(%s)</tt>&nbsp;' % priority
 
     def _htmlizeDueDate(self, dueDateString):
         try:
