@@ -5,6 +5,12 @@ import argparse
 import logging
 import sys
 
+try:
+    import PySide
+except ImportError:
+    print("Couldn't import PySide. Please make sure PySide is installed.")
+    sys.exit(1)
+
 from PySide import QtCore
 from PySide import QtGui
 
