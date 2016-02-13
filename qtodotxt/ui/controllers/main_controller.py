@@ -61,7 +61,7 @@ class MainController(QtCore.QObject):
         self._initTasksList()
         self._initMenuBar()
         self._initToolBar()
-        self._initFilterText()
+        self._initSearchText()
 
     def _initMenuBar(self):
         menu = self._view.menuBar()
@@ -129,25 +129,25 @@ class MainController(QtCore.QObject):
     def _onFilterSelectionChanged(self, filters):
         # First we filter with filters tree
         treeTasks = tasklib.filterTasks(filters, self._file.tasks)
-        # Then with our filter text
-        filterText = self._view.tasks_view.tasks_filter.getText()
-        tasks = tasklib.filterTasks([SimpleTextFilter(filterText)], treeTasks)
+        # Then with our search text
+        searchText = self._view.tasks_view.tasks_search_view.getSearchText()
+        tasks = tasklib.filterTasks([SimpleTextFilter(searchText)], treeTasks)
         # And finally with future filter if needed
         # TODO: refactor all that filters
         if self._hide_future_tasks:
             tasks = tasklib.filterTasks([FutureFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
 
-    def _initFilterText(self):
-        self._view.tasks_view.tasks_filter.filterTextChanged.connect(
-            self._onFilterTextChanged)
+    def _initSearchText(self):
+        self._view.tasks_view.tasks_search_view.searchTextChanged.connect(
+            self._onSearchTextChanged)
 
-    def _onFilterTextChanged(self, text):
+    def _onSearchTextChanged(self, searchText):
         # First we filter with filters tree
         filters = self._filters_tree_controller._view.getSelectedFilters()
         treeTasks = tasklib.filterTasks(filters, self._file.tasks)
-        # Then with our filter text
-        tasks = tasklib.filterTasks([SimpleTextFilter(text)], treeTasks)
+        # Then with our search text
+        tasks = tasklib.filterTasks([SimpleTextFilter(searchText)], treeTasks)
         # And finally with future filter if needed
         # TODO: refactor all that filters
         if self._hide_future_tasks:
