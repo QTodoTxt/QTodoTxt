@@ -1,14 +1,14 @@
 from PySide import QtCore, QtGui
 
 
-class TasksFilterView(QtGui.QLineEdit):
+class TasksSearchView(QtGui.QLineEdit):
 
-    filterTextChanged = QtCore.Signal(str)
+    searchTextChanged = QtCore.Signal(str)
 
     def __init__(self, searchIcon, clearIcon, parent=None):
         QtGui.QLineEdit.__init__(self, parent)
 
-        self._text = ""
+        self._searchText = ""
 
         self.clearButton = QtGui.QToolButton(self)
         self.clearButton.setIcon(clearIcon)
@@ -16,7 +16,7 @@ class TasksFilterView(QtGui.QLineEdit):
         self.clearButton.setStyleSheet("QToolButton { border: none; padding: 0px; }")
         self.clearButton.hide()
         self.clearButton.clicked.connect(self.clear)
-        self.textChanged.connect(self.updateText)
+        self.textChanged.connect(self.updateSearchText)
 
         self.searchButton = QtGui.QToolButton(self)
         self.searchButton.setIcon(searchIcon)
@@ -30,7 +30,7 @@ class TasksFilterView(QtGui.QLineEdit):
         self.setMinimumSize(max(msz.width(),
                                 self.searchButton.sizeHint().width() + buttonWidth + frameWidth * 2 + 2),
                             max(msz.height(), self.clearButton.sizeHint().height() + frameWidth * 2 + 2))
-        self.setPlaceholderText("filter")
+        self.setPlaceholderText("Search")
 
         focusShortcut = QtGui.QShortcut(QtGui.QKeySequence("Ctrl+F"), self)
         focusShortcut.activated.connect(self.setFocus)
@@ -42,13 +42,13 @@ class TasksFilterView(QtGui.QLineEdit):
                               (self.rect().bottom() + 1 - sz.height()) / 2)
         self.searchButton.move(self.rect().left() + 1, (self.rect().bottom() + 1 - sz.height()) / 2)
 
-    def getText(self):
-        return self._text
+    def getSearchText(self):
+        return self._searchText
 
-    def updateText(self, text):
-        self._text = text
-        self.filterTextChanged.emit(text)
-        self.updateCloseButton(bool(text))
+    def updateSearchText(self, searchText):
+        self._searchText = searchText
+        self.searchTextChanged.emit(searchText)
+        self.updateCloseButton(bool(searchText))
 
     def updateCloseButton(self, visible):
             self.clearButton.setVisible(visible)
