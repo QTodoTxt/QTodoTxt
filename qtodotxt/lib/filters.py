@@ -17,6 +17,10 @@ class BaseFilter(object):
         """
         self.text = text
 
+    def __str__(self):
+        return "Filter:{}".format(self.__class__.__name__)
+    __repr__ = __str__
+
     def isMatch(self, task):
         """
         Determine whether the supplied task (arg 'task') satisfies the filter.

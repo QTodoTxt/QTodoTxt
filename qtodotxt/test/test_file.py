@@ -41,8 +41,8 @@ class TestFile(unittest.TestCase):
         self.assertEqual(self.file.tasks[0].text, text)
         self.assertEqual(self.file.tasks[0].contexts, ['context1'])
         self.assertEqual(self.file.tasks[0].projects, ['project1'])
-        self.assertEqual(self.file.tasks[0].is_complete, False)
-        self.assertEqual(self.file.tasks[0].priority, None)
+        self.assertFalse(self.file.tasks[0].is_complete)
+        self.assertFalse(self.file.tasks[0].priority)
         self.assertEqual(self.file.tasks[0].due, '1999-10-10')
 
     def test_two_tasks(self):

@@ -61,25 +61,25 @@ class TestHtmlizer(unittest.TestCase):
         # Test task with priority A
         task = tasklib.Task('(A) this is my task')
         self.assertEqual(self.htmlizer.task2html(task),
-                         '<font color="red"><tt>&nbsp;A&nbsp;</tt></font>this is my task')
+                         '<font color="red"><tt>(A)</tt>&nbsp;</font>this is my task')
 
     def test_09(self):
         # Test task with priority B
         task = tasklib.Task('(B) this is my task')
         self.assertEqual(self.htmlizer.task2html(task),
-                         '<font color="green"><tt>&nbsp;B&nbsp;</tt></font>this is my task')
+                         '<font color="green"><tt>(B)</tt>&nbsp;</font>this is my task')
 
     def test_10(self):
         # Test task with priority C
         task = tasklib.Task('(C) this is my task')
         self.assertEqual(self.htmlizer.task2html(task),
-                         '<font color="navy"><tt>&nbsp;C&nbsp;</tt></font>this is my task')
+                         '<font color="navy"><tt>(C)</tt>&nbsp;</font>this is my task')
 
     def test_11(self):
         # Test task with priority D
         task = tasklib.Task('(D) this is my task')
         self.assertEqual(self.htmlizer.task2html(task),
-                         '<tt>&nbsp;D&nbsp;</tt>this is my task')
+                         '<tt>(D)</tt>&nbsp;this is my task')
 
     def test_12(self):
         # Test task with an invalid due date

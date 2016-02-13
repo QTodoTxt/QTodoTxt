@@ -71,9 +71,8 @@ class TasksListController(QtCore.QObject):
         self.increasePrioritySelectedTasksAction = action
 
     def completeTask(self, task):
-        date_string = date.today().strftime('%Y-%m-%d')
         if not task.is_complete:
-            task.text = 'x %s %s' % (date_string, task.text)
+            task.setCompleted()
             if int(QtCore.QSettings().value("auto_archive", 1)):
                 self.taskArchived.emit(task)
             else:
@@ -171,6 +170,6 @@ class TasksListController(QtCore.QObject):
         (text, ok) = self._task_editor_service.editTask(task)
         if ok and text:
             if text != task.text:
-                task.text = text
+                task.parseLine(text)
                 self._view.updateTask(task)
                 self.taskModified.emit(task)

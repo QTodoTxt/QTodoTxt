@@ -121,14 +121,15 @@ class Test(unittest.TestCase):
         original_filter0 = view.filters[0]
         view.clearSelection()
         view.selectFilter(view.filters[0])
-        file.tasks[2].text += " @context3"
+        file.tasks[2] = tasklib.Task(file.tasks[2].text + " @context3")
 
         # act
         controller.showFilters(file)
 
         # assert
         self.assertEquals(
-            7, len(view.filters),
+            7,
+            len(view.filters),
             'There should be 7 filters (actual: %s)' % view.selectedFilters)
 
         sortedFilter = sorted(view.filters, key=lambda filter: filter.text)
