@@ -26,13 +26,13 @@ class TestTasks(unittest.TestCase):
         self.assertEqual(Task('task'), Task('task'))
         self.assertEqual(Task('(A) task'), Task('(A) task'))
 
-        #self.assertLess(Task('task1'), Task('task2'))
+        # self.assertLess(Task('task1'), Task('task2'))
         self.assertLess(Task('x task'), Task('task'))
         self.assertGreater(Task('(A) task'), Task('(B) task'))
         self.assertGreater(Task('(A) task'), Task('task'))
         self.assertGreater(Task('(A) task'), Task('x (A) task'))
 
-        #self.assertGreater(Task('task2'), Task('task1'))
+        # self.assertGreater(Task('task2'), Task('task1'))
         self.assertLess(Task('x task'), Task('task'))
         self.assertLess(Task('(B) task'), Task('(A) task'))
         self.assertLess(Task('task'), Task('(A) task'))

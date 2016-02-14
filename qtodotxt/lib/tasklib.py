@@ -8,6 +8,7 @@ HIGHEST_PRIORITY = 'A'
 
 
 class Priority(object):
+
     def __init__(self, val="", lowest_priority="D"):
         self.priority = val
         self._lowest_priority = lowest_priority
@@ -60,9 +61,9 @@ class Task(object):
     def __init__(self, line):
         settings = QtCore.QSettings()
         self._lowest_priority = settings.value("user_lowest_priority", "D").upper()
-        #force update so option appear in config file 
+        # force update so option appear in config file
         # FIXME: move it somewhere else where it is only called once for app!!
-        settings.setValue("user_lowest_priority", self._lowest_priority)  
+        settings.setValue("user_lowest_priority", self._lowest_priority)
 
         self.parseLine(line)
 

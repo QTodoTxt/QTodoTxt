@@ -38,4 +38,3 @@ script:
   - flake8 --max-complexity 13 qtodotxt
   - py.test qtodotxt/test
   - qtodotxt/test/run-doctests.py
-  - qtodotxt/test/run-tests.py
