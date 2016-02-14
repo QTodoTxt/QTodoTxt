@@ -24,7 +24,7 @@ class Priority(object):
     def __sub__(self, inc):
         newp = self.priority
         if newp:
-            if newp == self._lowest_priority:
+            if newp <= self._lowest_priority:
                 newp = ""
             else:
                 newp = chr(ord(newp) + inc)
@@ -59,8 +59,10 @@ class Task(object):
 
     def __init__(self, line):
         settings = QtCore.QSettings()
-        self._lowest_priority = settings.value("user_lowest_priority", "D")
-        settings.setValue("user_lowest_priority", self._lowest_priority)  #force update, FIXME: why????
+        self._lowest_priority = settings.value("user_lowest_priority", "D").upper()
+        #force update so option appear in config file 
+        # FIXME: move it somewhere else where it is only called once for app!!
+        settings.setValue("user_lowest_priority", self._lowest_priority)  
 
         self.parseLine(line)
 
@@ -150,7 +152,7 @@ class Task(object):
             return True
         if not self.is_complete and other.is_complete:
             return False
-        raise RuntimeError("Could not comapre completeness, report")
+        raise RuntimeError("Could not compare completeness of 2 tasks, please report")
 
 
 def filterTasks(filters, tasks):
