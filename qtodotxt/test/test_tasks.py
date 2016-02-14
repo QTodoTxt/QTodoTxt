@@ -1,9 +1,10 @@
 import unittest
-from qtodotxt.lib.tasklib import Task
+from qtodotxt.lib.tasklib import Task, Priority
 
 
 class TestTasks(unittest.TestCase):
-    def test_completeness(self):
+
+    def test_completeness_comparison(self):
         self.assertEqual(Task('task1').is_complete, Task('task2').is_complete)
         self.assertEqual(Task('x task1').is_complete, Task('x task2').is_complete)
         self.assertNotEqual(Task('task').is_complete, Task('x task').is_complete)
@@ -11,7 +12,7 @@ class TestTasks(unittest.TestCase):
         self.assertGreater(Task('task'), Task('x task'))
         self.assertLess(Task('x task'), Task('task'))
 
-    def test_priority(self):
+    def test_priority_comparison(self):
         self.assertEqual(Task('task1').priority, Task('task2').priority)
         self.assertEqual(Task('(A) task1').priority, Task('(A) task2').priority)
         self.assertNotEqual(Task('(A) task').priority, Task('task').priority)
@@ -22,7 +23,7 @@ class TestTasks(unittest.TestCase):
         self.assertNotEqual(Task('(A) task1').priority, Task('(AA) task2').priority)
         self.assertEqual(Task('(1) task1').priority, Task('(1) task2').priority)
 
-    def test_comparisons(self):
+    def test_comparisons_comparison(self):
         self.assertEqual(Task('task'), Task('task'))
         self.assertEqual(Task('(A) task'), Task('(A) task'))
 
@@ -37,3 +38,38 @@ class TestTasks(unittest.TestCase):
         self.assertLess(Task('(B) task'), Task('(A) task'))
         self.assertLess(Task('task'), Task('(A) task'))
         self.assertLess(Task('x (A) task'), Task('(A) task'))
+
+    def test_priority_decrease(self):
+        self.assertEqual(Task("task").priority, Priority())
+        self.assertEqual(Task("(a) task").priority, Priority())
+        self.assertEqual(Task("x (a) task").priority, Priority())
+        self.assertEqual(Task("(A) task").priority, Priority("A"))
+        t = Task("(A) task")
+        self.assertEqual(t.priority, Priority("A"))
+        t.priority += 1
+        self.assertEqual(t.priority, Priority("A"))
+        t.priority -= 1
+        self.assertEqual(t.priority, Priority("B"))
+        t.priority -= 2
+        self.assertEqual(t.priority, Priority("D"))
+        self.assertEqual(t.text, "(D) task")
+        t.priority -= 1
+        self.assertEqual(t.priority, Priority())
+        self.assertEqual(t.text, "task")
+
+        t.priority += 2
+        self.assertEqual(t.priority, Priority("C"))
+        t.priority += 5
+        self.assertEqual(t.priority, Priority("A"))
+        t.priority -= 100
+        self.assertEqual(t.priority, Priority(""))
+
+        # this test is controversial, what should be the correct behaviour?
+        self.assertEqual(Task("x (A) task").priority, Priority("A"))
+
+        # A task with a priority lower than our default minimal priority
+        t = Task("(M) task")
+        t.priority += 1
+        self.assertEqual(t.priority, Priority("L"))
+        t.priority -= 1
+        self.assertEqual(t.priority, Priority(""))

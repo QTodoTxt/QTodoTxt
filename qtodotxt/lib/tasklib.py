@@ -14,21 +14,28 @@ class Priority(object):
         self._lowest_priority = lowest_priority
 
     def __add__(self, inc):
+        if inc <= 0:
+            raise RuntimeError("Increment to priority must be positiv")
         newp = self.priority
+        if not self.priority:
+            newp = self._lowest_priority
+            inc -= 1
         if newp != HIGHEST_PRIORITY:
-            if not newp:
-                newp = self._lowest_priority
-            else:
-                newp = chr(ord(newp) - inc)
+            o = ord(newp) - inc
+            if o < ord(HIGHEST_PRIORITY):
+                o = ord(HIGHEST_PRIORITY)
+            newp = chr(o)
         return Priority(newp)
 
     def __sub__(self, inc):
+        if inc <= 0:
+            raise RuntimeError("Increment to priority must be positiv")
         newp = self.priority
         if newp:
-            if newp <= self._lowest_priority:
-                newp = ""
-            else:
-                newp = chr(ord(newp) + inc)
+            o = ord(newp) + inc
+            if o > ord(self._lowest_priority):
+                return Priority("")
+            newp = chr(o)
         return Priority(newp)
 
     def __eq__(self, other):
