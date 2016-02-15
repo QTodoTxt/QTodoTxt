@@ -67,6 +67,12 @@ class Priority(object):
 
 
 class Task(object):
+    """
+    Represent a task as defined in todo.txt format
+    Take a line in todo.txt format as argument
+    priority and complete argument are editable
+    other arguments are read-only (this might change), reparse string to modify them
+    """
 
     def __init__(self, line):
         settings = QtCore.QSettings()
@@ -75,7 +81,7 @@ class Task(object):
         # FIXME: move it somewhere else where it is only called once for app!!
         settings.setValue("user_lowest_priority", self._lowest_priority)
 
-        self.parseLine(line)
+        self.parseString(line)
 
     def __str__(self):
         return self.text
@@ -83,7 +89,7 @@ class Task(object):
     def __repr__(self):
         return "Task({})".format(self.text)
 
-    def setup(self):
+    def _reset(self):
         self.contexts = []
         self.projects = []
         self.priority = Priority()
@@ -93,8 +99,11 @@ class Task(object):
         self.due = None
         self.threshold = None
 
-    def parseLine(self, line):
-        self.setup()
+    def parseString(self, line):
+        """
+        parse a task formated as string in todo.txt format
+        """
+        self._reset()
         words = line.split(' ')
         if words[0] == "x":
             self.is_complete = True
@@ -104,12 +113,12 @@ class Task(object):
             words = words[1:]
         text = []
         for word in words:
-            w = self.parseWord(word)
+            w = self._parseWord(word)
             if w:
                 text.append(w)
         self._text = ' '.join(text)
 
-    def parseWord(self, word):
+    def _parseWord(self, word):
         if len(word) > 1:
             if word.startswith('@'):
                 self.contexts.append(word[1:])
@@ -127,9 +136,15 @@ class Task(object):
 
     @staticmethod
     def fromString(self, string):
+        """
+        Create a new task from a string in todo.txt format
+        """
         return Task(string)
 
     def toString(self):
+        """
+        return a task as a string following todo.txt format
+        """
         priority = ""
         if self.priority:
             priority = "({}) ".format(self.priority)
@@ -139,6 +154,9 @@ class Task(object):
         return "{}{}{}".format(complete, priority, self._text)
 
     def toHtml(self):
+        """
+        return a task as an html block which is a pretty display of a line in todo.txt format
+        """
         htmlizer = TaskHtmlizer()
         return htmlizer.task2html(self)
 
