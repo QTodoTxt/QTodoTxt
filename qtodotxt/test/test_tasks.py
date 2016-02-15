@@ -39,7 +39,7 @@ class TestTasks(unittest.TestCase):
         self.assertLess(Task('task'), Task('(A) task'))
         self.assertLess(Task('x (A) task'), Task('(A) task'))
 
-    def test_priority_decrease(self):
+    def test_priority(self):
         self.assertEqual(Task("task").priority, Priority())
         self.assertEqual(Task("(a) task").priority, Priority())
         self.assertEqual(Task("x (a) task").priority, Priority())
@@ -73,3 +73,36 @@ class TestTasks(unittest.TestCase):
         self.assertEqual(t.priority, Priority("L"))
         t.priority -= 1
         self.assertEqual(t.priority, Priority(""))
+
+    def test_basic(self):
+        task = Task('do something')
+        self.assertEqual(task.text, 'do something')
+        self.assertEqual(len(task.contexts), 0)
+        self.assertFalse(len(task.projects), 0)
+        self.assertFalse(task.is_complete)
+        self.assertFalse(task.priority)
+
+        task = Task('do something @context1 @context2')
+        self.assertEqual(task.contexts, ['context1', 'context2'])
+        self.assertEqual(task.projects, [])
+        self.assertFalse(task.is_complete)
+        self.assertFalse(task.priority)
+
+        task = Task('do something +project1 +project2')
+        self.assertEqual(task.contexts, [])
+        self.assertEqual(task.projects, ['project1', 'project2'])
+        self.assertFalse(task.is_complete)
+        self.assertFalse(task.priority)
+
+        task = Task('(E) do something +project1 @context1 +project2 rest of line @context2')
+        self.assertEqual(task.contexts, ['context1', 'context2'])
+        self.assertEqual(task.projects, ['project1', 'project2'])
+        self.assertFalse(task.is_complete)
+        self.assertTrue(task.priority)
+
+        # task with + alone and complete
+        task = Task('x do something +project1 @context1 +project2 rest + of line @context2')
+        self.assertEqual(task.contexts, ['context1', 'context2'])
+        self.assertEqual(task.projects, ['project1', 'project2'])
+        self.assertTrue(task.is_complete)
+        self.assertFalse(task.priority)
