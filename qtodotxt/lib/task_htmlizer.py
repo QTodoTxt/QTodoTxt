@@ -24,7 +24,7 @@ class TaskHtmlizer(object):
             text = text.replace('@' + context, self._htmlizeContext(context))
         for project in task.projects:
             text = text.replace('+' + project, self._htmlizeProject(project))
-        if priority is not None:
+        if priority:
             text = text.replace('(%s) ' % priority, self._htmlizePriority(priority))
         else:
             # add 3 spaces, so tasks get evenly aligned when there's no priority
@@ -44,10 +44,10 @@ class TaskHtmlizer(object):
         return '<font style="color:#64AAD0">+%s</font>' % project
 
     def _htmlizePriority(self, priority):
-        if priority in self.priority_colors:
-            color = self.priority_colors[priority]
-            return '<font color="%s"><tt>&nbsp;%s&nbsp;</tt></font>' % (color, priority)
-        return '<tt>&nbsp;%s&nbsp;</tt>' % priority
+        if priority.priority in self.priority_colors:
+            color = self.priority_colors[priority.priority]
+            return '<font color="%s"><tt>(%s)</tt>&nbsp;</font>' % (color, priority)
+        return '<tt>(%s)</tt>&nbsp;' % priority
 
     def _htmlizeDueDate(self, dueDateString):
         try:
