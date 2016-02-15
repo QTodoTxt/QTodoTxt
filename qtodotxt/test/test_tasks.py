@@ -39,6 +39,23 @@ class TestTasks(unittest.TestCase):
         self.assertLess(Task('task'), Task('(A) task'))
         self.assertLess(Task('x (A) task'), Task('(A) task'))
 
+    def test_task_ordering(self):
+        task1 = Task('x task1')
+        task2 = Task('task2')
+        task3 = Task('abc task2')
+        task4 = Task('(D) task2')
+        task5 = Task('(C) b task')
+        task6 = Task('(C) a task')
+        task7 = Task('(B) task2')
+        task8 = Task('(A) task2')
+        self.assertTrue(task2 < task3)
+        self.assertTrue(task1 < task2 < task3 < task4 < task5 < task6 < task7 < task8)
+        l = [task1, task2, task3, task4, task5, task6, task7, task8]
+        l2 = [task2, task3, task1, task4, task5, task6, task7, task8]
+        self.assertFalse(l == l2)
+        l2.sort()
+        self.assertTrue(l == l2)
+
     def test_priority(self):
         self.assertEqual(Task("task").priority, Priority())
         self.assertEqual(Task("(a) task").priority, Priority())
