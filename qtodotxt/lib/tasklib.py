@@ -3,6 +3,9 @@ from datetime import datetime, date
 
 from PySide import QtCore
 
+from qtodotxt.lib.task_htmlizer import TaskHtmlizer
+from qtodotxt.lib import deprecated
+
 
 HIGHEST_PRIORITY = 'A'
 
@@ -80,7 +83,7 @@ class Task(object):
     def __repr__(self):
         return "Task({})".format(self.text)
 
-    def reset(self):
+    def setup(self):
         self.contexts = []
         self.projects = []
         self.priority = Priority()
@@ -91,7 +94,7 @@ class Task(object):
         self.threshold = None
 
     def parseLine(self, line):
-        self.reset()
+        self.setup()
         words = line.split(' ')
         if words[0] == "x":
             self.is_complete = True
@@ -122,7 +125,11 @@ class Task(object):
                     self.is_future = False
         return word  # Currently we return all, but we should take out keyword
 
-    def _getText(self):
+    @staticmethod
+    def fromString(self, string):
+        return Task(string)
+
+    def toString(self):
         priority = ""
         if self.priority:
             priority = "({}) ".format(self.priority)
@@ -131,8 +138,14 @@ class Task(object):
             complete = "x "
         return "{}{}{}".format(complete, priority, self._text)
 
+    def toHtml(self):
+        htmlizer = TaskHtmlizer()
+        return htmlizer.task2html(self)
+
+    def _getText(self):
+        return self.toString()
+
     def _setText(self, line):
-        self.reset()
         if line:
             self.parseLine(line)
 
@@ -153,7 +166,7 @@ class Task(object):
         if self.priority != other.priority:
             return self.priority < other.priority
         # order the other tasks alphabetically
-        return self.text > other.text
+        return self._text > other._text
 
     def _lowerCompleteness(self, other):
         if self.is_complete and not other.is_complete:
