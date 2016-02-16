@@ -27,6 +27,7 @@ class TasksListController(QtCore.QObject):
         self._initCompleteSelectedTasksAction()
         self._initDecreasePrioritySelectedTasksAction()
         self._initIncreasePrioritySelectedTasksAction()
+        self._confirm_complete = int(QtCore.QSettings().value("confirm_complete", 1))
 
     def _initEditTaskAction(self):
         action = QtGui.QAction(getIcon('TaskEdit.png'), '&Edit Task', self)
@@ -83,7 +84,7 @@ class TasksListController(QtCore.QObject):
     def _completeSelectedTasks(self):
         tasks = self._view.getSelectedTasks()
         if tasks:
-            if self._confirmTasksAction(tasks, 'Toggle Complete for'):
+            if not self._confirm_complete or self._confirmTasksAction(tasks, 'Toggle Complete for'):
                 for task in tasks:
                     self.completeTask(task)
 
