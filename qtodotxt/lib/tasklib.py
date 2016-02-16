@@ -60,9 +60,11 @@ class Task(object):
         if words[0] == "x":
             self.is_complete = True
             words = words[1:]
-            # FIXME: parse next word as a completion date if format matches.
-            # It is required by format
-            # self.complete_date
+            # parse next word as a completion date
+            # required by todotxt but often not here
+            self.completion_date = self._parseDate(words[0])
+            if self.completion_date:
+                words = words[1:]
         elif re.search(r'^\([A-Z]\)$', words[0]):
             self.priority = words[0][1:-1]
             words = words[1:]
@@ -80,16 +82,19 @@ class Task(object):
                 key, val = word.split(":", 1)
                 self.keywords[key] = val
                 if word.startswith('due:'):
-                    try:
-                        self.due = datetime.strptime(word[4:], '%Y-%m-%d').date()
-                    except ValueError:
-                        print("Error parsing date for due date: ", word[4:])
+                    self.due = self._parseDate(word[4:])
                 elif word.startswith('t:'):
                     self.threshold = word[2:]
-                    try:
-                        self.is_future = datetime.strptime(self.threshold, '%Y-%m-%d').date() > date.today()
-                    except ValueError:
-                        self.is_future = False
+                    self.is_future = self._parseDate(word[2:])
+                    if self.is_future and self.is_future <= date.today():
+                        self.is_future = None
+
+    def _parseDate(self, string, context=""):
+        try:
+            return datetime.strptime(string, '%Y-%m-%d').date()
+        except ValueError:
+            print("Error parsing date ", string)
+            return None
 
     def setCompleted(self):
         """

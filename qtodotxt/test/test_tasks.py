@@ -1,3 +1,4 @@
+from datetime import date
 import unittest
 from qtodotxt.lib.tasklib import Task
 
@@ -128,6 +129,7 @@ class TestTasks(unittest.TestCase):
         self.assertEqual(task.projects, ['project1', 'project2'])
         self.assertTrue(task.is_complete)
         self.assertFalse(task.priority)
+        self.assertEqual(task.completion_date, date(2016, 1, 23))
 
     def test_future(self):
         task = Task('(D) do something +project1 t:2030-10-06')
