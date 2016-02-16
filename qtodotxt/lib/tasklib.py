@@ -80,7 +80,10 @@ class Task(object):
                 key, val = word.split(":", 1)
                 self.keywords[key] = val
                 if word.startswith('due:'):
-                    self.due = word[4:]
+                    try:
+                        self.due = datetime.strptime(word[4:], '%Y-%m-%d').date()
+                    except ValueError:
+                        print("Error parsing date for due date: ", word[4:])
                 elif word.startswith('t:'):
                     self.threshold = word[2:]
                     try:
