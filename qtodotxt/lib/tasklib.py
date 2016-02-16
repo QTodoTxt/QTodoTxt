@@ -31,7 +31,7 @@ class Task(object):
         self.threshold = None
         self.keywords = {}
 
-        self.parseString(line)
+        self.parseLine(line)
 
     def __str__(self):
         return self.text
@@ -51,7 +51,7 @@ class Task(object):
         self.threshold = None
         self.keywords = {}
 
-    def parseString(self, line):
+    def parseLine(self, line):
         """
         parse a task formated as string in todo.txt format
         """
@@ -90,6 +90,7 @@ class Task(object):
 
     def setCompleted(self):
         """
+        Set a task as completed by inserting a x and current date at the begynning of line
         """
         if self.is_complete:
             return
@@ -121,9 +122,11 @@ class Task(object):
         if self.priority >= self._lowest_priority:
             self.priority = ""
             self.text = self.text[4:]
+            self.text = self.text.replace("({})".format(self.priority), "", 1)
         elif self.priority:
+            oldpriority = self.priority
             self.priority = chr(ord(self.priority) + 1)
-            self.text = "({}) {}".format(self.priority, self.text[4:])
+            self.text = self.text.replace("({})".format(oldpriority), "({})".format(self.priority), 1)
 
     def __eq__(self, other):
         return self.text == other.text
