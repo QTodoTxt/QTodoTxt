@@ -131,6 +131,23 @@ class TestTasks(unittest.TestCase):
         self.assertFalse(task.priority)
         self.assertEqual(task.completion_date, date(2016, 1, 23))
 
+    def test_completion(self):
+        task = Task('(B) something +project1 @context1 pri:C')
+        self.assertEqual(task.contexts, ['context1'])
+        self.assertEqual(task.projects, ['project1'])
+        self.assertFalse(task.is_complete)
+        self.assertEqual(task.priority, 'B')
+        self.assertEqual(len(task.keywords), 1)
+
+        task.setCompleted()
+        self.assertTrue(task.is_complete)
+        self.assertEqual(task.completion_date, date.today())
+        self.assertTrue(task.text.startswith("x "))
+
+        task.setPending()
+        self.assertFalse(task.is_complete)
+        self.assertFalse(task.completion_date)
+
     def test_future(self):
         task = Task('(D) do something +project1 t:2030-10-06')
         self.assertEqual(task.contexts, [])

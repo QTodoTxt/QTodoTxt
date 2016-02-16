@@ -24,7 +24,7 @@ class Task(object):
         self.projects = []
         self.priority = ""
         self.is_complete = False
-        self.completion_date = ""
+        self.completion_date = None
         self.is_future = False
         self.text = ''
         self.due = None
@@ -44,7 +44,7 @@ class Task(object):
         self.projects = []
         self.priority = ""
         self.is_complete = False
-        self.completion_date = ""
+        self.completion_date = None
         self.is_future = False
         self.text = ''
         self.due = None
@@ -106,6 +106,21 @@ class Task(object):
         date_string = self.completion_date.strftime('%Y-%m-%d')
         self.text = 'x %s %s' % (date_string, self.text)
         self.is_complete = True
+
+    def setPending(self):
+        """
+        Unset completed flag from task
+        """
+        if not self.is_complete:
+            return
+        words = self.text.split(" ")
+        d = self._parseDate(words[1])
+        if d:
+            self.text = " ".join(words[2:])
+        else:
+            self.text = " ".join(words[1:])
+        self.is_complete = False
+        self.completion_date = None
 
     def toHtml(self):
         """
