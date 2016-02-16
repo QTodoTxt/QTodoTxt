@@ -73,15 +73,17 @@ class TasksListController(QtCore.QObject):
     def completeTask(self, task):
         if not task.is_complete:
             task.setCompleted()
-            if int(QtCore.QSettings().value("auto_archive", 1)):
-                self.taskArchived.emit(task)
-            else:
-                self.taskModified.emit(task)
+        else:
+            task.setPending()
+        if int(QtCore.QSettings().value("auto_archive", 1)):
+            self.taskArchived.emit(task)
+        else:
+            self.taskModified.emit(task)
 
     def _completeSelectedTasks(self):
         tasks = self._view.getSelectedTasks()
         if tasks:
-            if self._confirmTasksAction(tasks, 'Complete'):
+            if self._confirmTasksAction(tasks, 'Toggle Complete for'):
                 for task in tasks:
                     self.completeTask(task)
 
