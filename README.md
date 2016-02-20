@@ -33,7 +33,7 @@ To run the application without installing just:
   * On Linux/Mac: bin/qtodotxt
   * On Windows: bin/qtodotxt.pyw
  
-Be sure to have all [prerequisites](http://github.com/QTodoTxt/QTodoTxt/wiki/User-documentation) installed !
+Be sure to have all [prerequisites](http://github.com/QTodoTxt/QTodoTxt/wiki) installed !
 
 
 ## Documentation
