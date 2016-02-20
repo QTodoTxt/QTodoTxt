@@ -26,8 +26,10 @@ class Task(object):
         self.is_complete = False
         self.completion_date = None
         self.is_future = False
+        self.threshold_error = ""  # set if error while parsing threshold
         self.text = ''
         self.due = None
+        self.due_error = ""  # set if error while parsing due date
         self.threshold = None
         self.keywords = {}
 
@@ -46,8 +48,10 @@ class Task(object):
         self.is_complete = False
         self.completion_date = None
         self.is_future = False
+        self.threshold_error = ""
         self.text = ''
         self.due = None
+        self.due_error = ""
         self.threshold = None
         self.keywords = {}
 
@@ -83,11 +87,15 @@ class Task(object):
                 self.keywords[key] = val
                 if word.startswith('due:'):
                     self.due = self._parseDate(word[4:])
+                    if not self.due:
+                        self.due_error = word[4:]
                 elif word.startswith('t:'):
-                    self.threshold = word[2:]
-                    self.is_future = self._parseDate(word[2:])
-                    if self.is_future and self.is_future <= date.today():
-                        self.is_future = None
+                    self.threshold = self._parseDate(word[2:])
+                    if not self.threshold:
+                        self.threshold_error = word[2:]
+                    else:
+                        if self.threshold > date.today():
+                            self.is_future = True
 
     def _parseDate(self, string, context=""):
         try:

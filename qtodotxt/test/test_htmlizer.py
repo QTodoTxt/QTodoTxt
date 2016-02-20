@@ -85,7 +85,7 @@ class TestHtmlizer(unittest.TestCase):
         # Test task with an invalid due date
         task = tasklib.Task('this is my task due:2014-04')
         self.assertEqual(self.htmlizer.task2html(task),
-                         '<tt>&nbsp;&nbsp;&nbsp;</tt>this is my task due:2014-04')
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>this is my task <b><font style="color:red">*** Invalid date format, expected: YYYY-mm-dd! due:2014-04s ***</font></b>')
 
     def test_13(self):
         # Test task with an invalid Threshold date

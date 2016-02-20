@@ -30,9 +30,14 @@ class TaskHtmlizer(object):
             # add 3 spaces, so tasks get evenly aligned when there's no priority
             text = '<tt>&nbsp;&nbsp;&nbsp;</tt>' + text
         if task.due:
-            text = text.replace('due:%s' % task.due, self._htmlizeDueDate(task.due))
-        if task.threshold is not None:
+            text = text.replace('due:{}'.format(task.due), self._htmlizeDueDate(task.due))
+        elif task.due_error:
+            text = text.replace('due:{}'.format(task.due_error), '<b><font style="color:red">*** Invalid date format, expected: YYYY-mm-dd! due:{}s ***</font></b>'.format(task.due_error))
+
+        if task.threshold:
             text = text.replace('t:%s' % task.threshold, self._htmlizeThresholdDate(task.threshold))
+        elif task.threshold_error:
+            text = text.replace('t:{}'.format(task.threshold_error), '<b><font style="color:red">*** Invalid date format, expected: YYYY-mm-dd! t:{} ***</font></b>'.format(task.threshold_error))
         text = self._htmlizeCreatedCompleted(text, task.text)
         text = self._htmlizeURL(text)
         return text
@@ -46,31 +51,26 @@ class TaskHtmlizer(object):
     def _htmlizePriority(self, priority):
         if priority in self.priority_colors:
             color = self.priority_colors[priority]
-            return '<font color="%s"><tt>(%s)</tt>&nbsp;</font>' % (color, priority)
+            return '<font color="{}"><tt>({})</tt>&nbsp;</font>'.format(color, priority)
         return '<tt>(%s)</tt>&nbsp;' % priority
 
     def _htmlizeDueDate(self, due_date):
         date_now = date.today()
         tdelta = due_date - date_now
         if tdelta.days > 7:
-            return '<b>due:%s</b>' % due_date.isoformat()
+            return '<b>due:{}</b>'.format(due_date)
         elif tdelta.days > 0:
-            return '<b><font color="orange">due:%s</font></b>' % due_date.isoformat()
+            return '<b><font color="orange">due:{}</font></b>'.format(due_date)
         else:
-            return '<b><font style="color:red">due:%s</font></b>' % due_date.isoformat()
+            return '<b><font style="color:red">due:{}</font></b>'.format(due_date)
 
-    def _htmlizeThresholdDate(self, thresholdDateString):
-        try:
-            threshold_date = datetime.strptime(thresholdDateString, '%Y-%m-%d').date()
-        except ValueError:
-            return '<b><font style="color:red">*** Invalid date format, expected: YYYY-mm-dd! t:%s ***</font></b>' \
-                   % thresholdDateString
+    def _htmlizeThresholdDate(self, threshold):
         date_now = date.today()
-        tdelta = threshold_date - date_now
+        tdelta = threshold - date_now
         if tdelta.days > 0:
-            return '<i><font style="color:grey">t:%s</font></i>' % thresholdDateString
+            return '<i><font style="color:grey">t:{}</font></i>'.format(threshold)
         else:
-            return '<font style="color:orange">t:%s</font>' % thresholdDateString
+            return '<font style="color:orange">t:{}</font>'.format(threshold)
 
     def _htmlizeURL(self, text):
         regex = re.compile(
