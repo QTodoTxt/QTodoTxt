@@ -84,7 +84,7 @@ class TasksListController(QtCore.QObject):
     def _completeSelectedTasks(self):
         tasks = self._view.getSelectedTasks()
         if tasks:
-            if not self._confirm_complete or self._confirmTasksAction(tasks, 'Toggle Complete for'):
+            if not self._confirm_complete or self._confirmTasksAction(tasks, 'Toggle Completeness of'):
                 for task in tasks:
                     self.completeTask(task)
 
