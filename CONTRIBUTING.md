@@ -1,4 +1,4 @@
-# Contributor's guide
+# Contributor's Guide
 
 ## Testing your code
 Before you submit any code, make sure to run the following tests before committing:
