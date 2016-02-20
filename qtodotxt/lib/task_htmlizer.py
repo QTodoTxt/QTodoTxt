@@ -27,8 +27,8 @@ class TaskHtmlizer(object):
         if priority:
             text = text.replace('(%s) ' % priority, self._htmlizePriority(priority))
         else:
-            # add 3 spaces, so tasks get evenly aligned when there's no priority
-            text = '<tt>&nbsp;&nbsp;&nbsp;</tt>' + text
+            # add space, so tasks get evenly aligned when there's no priority
+            text = '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;' + text
         if task.due:
             text = text.replace('due:{}'.format(task.due), self._htmlizeDueDate(task.due))
         elif task.due_error:
