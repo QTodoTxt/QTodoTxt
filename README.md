@@ -34,10 +34,10 @@ Be sure to have all [prerequisites](http://github.com/QTodoTxt/QTodoTxt/wiki/Use
 
 
 ## Documentation
-- [User documentation](https://github.com/QTodoTxt/QTodoTxt/wiki)
+- [User Documentation](https://github.com/QTodoTxt/QTodoTxt/wiki)
 - [Screenshots](https://github.com/QTodoTxt/QTodoTxt/wiki/Screenshots)
 - [Downloads](https://github.com/QTodoTxt/QTodoTxt/wiki/Downloads)
 - [Changelog](https://github.com/QTodoTxt/QTodoTxt/wiki/Changelog)
 - [Defects and Enhancements](https://github.com/QTodoTxt/QTodoTxt/issues)
-- [Contributor's guide](https://github.com/QTodoTxt/QTodoTxt/blob/master/CONTRIBUTING.md)
+- [Contributor's Guide](https://github.com/QTodoTxt/QTodoTxt/blob/master/CONTRIBUTING.md)
 - [Building QTodoTxt Binaries](https://github.com/QTodoTxt/QTodoTxt/wiki/Building-QTodoTxt-Binaries)
