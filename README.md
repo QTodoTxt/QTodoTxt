@@ -4,8 +4,8 @@ QTodoTxt is a cross-platform UI client for todo.txt files (see [todo.txt](http:/
 
 ![Main view](https://github.com/QTodoTxt/QTodoTxt/wiki/screenshots/QTodoTxt_main_view.png)
 
-## Downloads
 
+## Downloads
 Latest stable release (v1.4.0):
 
 - For Ubuntu / Debian: [.deb package](http://dl.bintray.com/mnantern/deb/qtodotxt_1.4.0_all.deb)
@@ -21,8 +21,8 @@ For Debian/Ubuntu you can also add the following repo to your sources.list:
 echo "deb http://dl.bintray.com/mnantern/deb /" | sudo tee -a /etc/apt/sources.list.d/qtodotxt.list
 ```
 
-## Running from sources
 
+## Running from sources
 To run the application without installing just:
 
 * Download [latest code archive](https://github.com/QTodoTxt/QTodoTxt/archive/master.zip)
@@ -32,10 +32,10 @@ To run the application without installing just:
  
 Be sure to have all [prerequisites](http://github.com/QTodoTxt/QTodoTxt/wiki/User-documentation) installed !
 
-## Documentation
 
-- [User documentation](https://github.com/QTodoTxt/QTodoTxt/wiki/User-documentation)
-- Stable and older releases: [Downloads](https://github.com/QTodoTxt/QTodoTxt/wiki/Releases)
+## Documentation
+- [User documentation](https://github.com/QTodoTxt/QTodoTxt/wiki)
+- [Downloads](https://github.com/QTodoTxt/QTodoTxt/wiki/Downloads)
 - [Changelog](https://github.com/QTodoTxt/QTodoTxt/wiki/Changelog)
 - [Defects and Enhancements](https://github.com/QTodoTxt/QTodoTxt/issues)
 - [Screenshots](https://github.com/QTodoTxt/QTodoTxt/wiki/Screenshots)
