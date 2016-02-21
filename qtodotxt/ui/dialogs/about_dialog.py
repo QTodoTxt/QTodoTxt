@@ -1,13 +1,14 @@
 from PySide import QtGui
 
 
-__version__ = "1.4.0"
+__version__ = "1.5.0"
 
 description = """<p>QTodoTxt is a cross-platform UI client for todo.txt files
  (see <a href="http://todotxt.com">http://todotxt.com</a>)</p>
 
-<p>Copyright &copy; David Elentok 2011</p>
-<p>Copyright &copy; Matthieu Nantern 2013</p>
+Copyright &copy; David Elentok 2011<br/>
+Copyright &copy; Matthieu Nantern 2013-2015<br/>
+Copyright &copy; QTT Development Team 2015-2016
 
 <h2>Links</h2>
 <ul>
