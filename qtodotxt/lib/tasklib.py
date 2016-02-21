@@ -101,7 +101,7 @@ class Task(object):
         try:
             return datetime.strptime(string, '%Y-%m-%d').date()
         except ValueError:
-            print("Error parsing date ", string)
+            print("Error parsing date", string)
             return None
 
     def setCompleted(self):

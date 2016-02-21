@@ -32,12 +32,12 @@ class TaskHtmlizer(object):
         if task.due:
             text = text.replace('due:{}'.format(task.due), self._htmlizeDueDate(task.due))
         elif task.due_error:
-            text = text.replace('due:{}'.format(task.due_error), '<b><font style="color:red">*** Invalid date format, expected: YYYY-mm-dd! due:{}s ***</font></b>'.format(task.due_error))
+            text = text.replace('due:{}'.format(task.due_error), '<b><font style="color:red">*** due:{}: Invalid date format, expected YYYY-MM-DD. ***</font></b>'.format(task.due_error))
 
         if task.threshold:
             text = text.replace('t:%s' % task.threshold, self._htmlizeThresholdDate(task.threshold))
         elif task.threshold_error:
-            text = text.replace('t:{}'.format(task.threshold_error), '<b><font style="color:red">*** Invalid date format, expected: YYYY-mm-dd! t:{} ***</font></b>'.format(task.threshold_error))
+            text = text.replace('t:{}'.format(task.threshold_error), '<b><font style="color:red">*** t:{}: Invalid date format, expected YYYY-MM-DD. ***</font></b>'.format(task.threshold_error))
         text = self._htmlizeCreatedCompleted(text, task.text)
         text = self._htmlizeURL(text)
         return text
