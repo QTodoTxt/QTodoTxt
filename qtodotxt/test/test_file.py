@@ -2,12 +2,14 @@ import unittest
 from tempfile import mkstemp
 from os import remove
 from datetime import date, timedelta
+from sys import version
+
 from qtodotxt.lib.file import File, ErrorLoadingFile
 from qtodotxt.lib.tasklib import Task
-from sys import version
 
 
 PYTHON_VERSION = version[:3]
+
 
 if PYTHON_VERSION < '3.3':
     FileNotFoundError = BaseException
@@ -41,9 +43,9 @@ class TestFile(unittest.TestCase):
         self.assertEqual(self.file.tasks[0].text, text)
         self.assertEqual(self.file.tasks[0].contexts, ['context1'])
         self.assertEqual(self.file.tasks[0].projects, ['project1'])
-        self.assertEqual(self.file.tasks[0].is_complete, False)
-        self.assertEqual(self.file.tasks[0].priority, None)
-        self.assertEqual(self.file.tasks[0].due, '1999-10-10')
+        self.assertFalse(self.file.tasks[0].is_complete)
+        self.assertFalse(self.file.tasks[0].priority)
+        self.assertEqual(self.file.tasks[0].due, date(1999, 10, 10))
 
     def test_two_tasks(self):
         task1 = 'do something +project1 @context1'

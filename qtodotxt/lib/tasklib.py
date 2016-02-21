@@ -3,104 +3,161 @@ from datetime import datetime, date
 
 from PySide import QtCore
 
-
-HIGHEST_PRIORITY = 'A'
-LOWEST_PRIORITY = 'Z'
+from qtodotxt.lib.task_htmlizer import TaskHtmlizer
 
 
 class Task(object):
+    """
+    Represent a task as defined in todo.txt format
+    Take a line in todo.txt format as argument
+    Arguments are read-only, reparse string to modify them or
+    use one the modification methods such as setCompleted()
+    """
 
     def __init__(self, line):
-        self.reset()
-
-        # read and validate user_lowest_priority
-        # TODO: make user_lowest_priority changeable from gui
-        default_lowest_priority = "D"
         settings = QtCore.QSettings()
-        user_lowest_priority = settings.value("user_lowest_priority", default_lowest_priority)
-        if str(user_lowest_priority).isupper():
-            self._user_lowest_priority = user_lowest_priority
-        else:
-            self._user_lowest_priority = default_lowest_priority
-            # make sure other parts of the application using this value
-            # always get a valid value
-            settings.setValue("user_lowest_priority", self._user_lowest_priority)
+        self._highest_priority = 'A'
+        self._lowest_priority = settings.value("lowest_priority", "D")
 
-        if line:
-            self.parseLine(line)
-
-    def __str__(self):
-        return "Task({})".format(self.text)
-    __repr__ = __str__
-
-    def reset(self):
+        # define all class attributes here to avoid pylint warnings
         self.contexts = []
         self.projects = []
-        self.priority = None
+        self.priority = ""
         self.is_complete = False
+        self.completion_date = None
         self.is_future = False
-        self._text = ''
+        self.threshold_error = ""  # set if error while parsing threshold
+        self.text = ''
         self.due = None
+        self.due_error = ""  # set if error while parsing due date
         self.threshold = None
+        self.keywords = {}
+
+        self.parseLine(line)
+
+    def __str__(self):
+        return self.text
+
+    def __repr__(self):
+        return "Task({})".format(self.text)
+
+    def _reset(self):
+        self.contexts = []
+        self.projects = []
+        self.priority = ""
+        self.is_complete = False
+        self.completion_date = None
+        self.is_future = False
+        self.threshold_error = ""
+        self.text = ''
+        self.due = None
+        self.due_error = ""
+        self.threshold = None
+        self.keywords = {}
 
     def parseLine(self, line):
+        """
+        parse a task formated as string in todo.txt format
+        """
+        self._reset()
         words = line.split(' ')
-        i = 0
-        while i < len(words):
-            self.parseWord(words[i], i)
-            i += 1
+        if words[0] == "x":
+            self.is_complete = True
+            words = words[1:]
+            # parse next word as a completion date
+            # required by todotxt but often not here
+            self.completion_date = self._parseDate(words[0])
+            if self.completion_date:
+                words = words[1:]
+        elif re.search(r'^\([A-Z]\)$', words[0]):
+            self.priority = words[0][1:-1]
+            words = words[1:]
+        for word in words:
+            self._parseWord(word)
+        self.text = line
 
-        self._text = ' '.join(words)
-
-    def parseWord(self, word, index):
-        if index == 0:
-            if word == 'x':
-                self.is_complete = True
-            elif re.search('^\([A-Z]\)$', word):
-                self.priority = word[1]
+    def _parseWord(self, word):
         if len(word) > 1:
             if word.startswith('@'):
                 self.contexts.append(word[1:])
             elif word.startswith('+'):
                 self.projects.append(word[1:])
-            elif word.startswith('due:'):
-                self.due = word[4:]
-            elif word.startswith('t:'):
-                self.threshold = word[2:]
-                try:
-                    self.is_future = datetime.strptime(self.threshold, '%Y-%m-%d').date() > date.today()
-                except ValueError:
-                    self.is_future = False
+            elif ":" in word:
+                key, val = word.split(":", 1)
+                self.keywords[key] = val
+                if word.startswith('due:'):
+                    self.due = self._parseDate(word[4:])
+                    if not self.due:
+                        self.due_error = word[4:]
+                elif word.startswith('t:'):
+                    self.threshold = self._parseDate(word[2:])
+                    if not self.threshold:
+                        self.threshold_error = word[2:]
+                    else:
+                        if self.threshold > date.today():
+                            self.is_future = True
 
-    def _getText(self):
-        return self._text
+    def _parseDate(self, string, context=""):
+        try:
+            return datetime.strptime(string, '%Y-%m-%d').date()
+        except ValueError:
+            print("Error parsing date", string)
+            return None
 
-    def _setText(self, line):
-        self.reset()
-        if line:
-            self.parseLine(line)
+    def setCompleted(self):
+        """
+        Set a task as completed by inserting a x and current date at the begynning of line
+        """
+        if self.is_complete:
+            return
+        self.completion_date = date.today()
+        date_string = self.completion_date.strftime('%Y-%m-%d')
+        self.text = 'x %s %s' % (date_string, self.text)
+        self.is_complete = True
 
-    text = property(_getText, _setText)
+    def setPending(self):
+        """
+        Unset completed flag from task
+        """
+        if not self.is_complete:
+            return
+        words = self.text.split(" ")
+        d = self._parseDate(words[1])
+        if d:
+            self.text = " ".join(words[2:])
+        else:
+            self.text = " ".join(words[1:])
+        self.is_complete = False
+        self.completion_date = None
+
+    def toHtml(self):
+        """
+        return a task as an html block which is a pretty display of a line in todo.txt format
+        """
+        htmlizer = TaskHtmlizer()
+        return htmlizer.task2html(self)
 
     def increasePriority(self):
-        if self.priority != HIGHEST_PRIORITY:
-            if (self.priority is None):
-                self.priority = self._user_lowest_priority
-                self.text = '(%s) %s' % (self.priority, self.text)
-            else:
-                oldPriority = self.priority
-                self.priority = chr(ord(self.priority) - 1)
-                self.text = re.sub('^\(%s\) ' % oldPriority, '(%s) ' % self.priority, self.text)
+        if self.is_complete:
+            return
+        if not self.priority:
+            self.priority = self._lowest_priority
+            self.text = "({}) {}".format(self.priority, self.text)
+        elif self.priority != self._highest_priority:
+            self.priority = chr(ord(self.priority) - 1)
+            self.text = "({}) {}".format(self.priority, self.text[4:])
 
     def decreasePriority(self):
-        if self.priority is not None:
-            if (self.priority == self._user_lowest_priority) or (self.priority == LOWEST_PRIORITY):
-                self.priority = None
-                self.text = self.text[4:]
-            else:
-                oldPriority = self.priority
-                self.priority = chr(ord(self.priority) + 1)
-                self.text = re.sub('^\(%s\) ' % oldPriority, '(%s) ' % self.priority, self.text)
+        if self.is_complete:
+            return
+        if self.priority >= self._lowest_priority:
+            self.priority = ""
+            self.text = self.text[4:]
+            self.text = self.text.replace("({})".format(self.priority), "", 1)
+        elif self.priority:
+            oldpriority = self.priority
+            self.priority = chr(ord(self.priority) + 1)
+            self.text = self.text.replace("({})".format(oldpriority), "({})".format(self.priority), 1)
 
     def __eq__(self, other):
         return self.text == other.text
@@ -109,27 +166,24 @@ class Task(object):
         if self.is_complete != other.is_complete:
             return self._lowerCompleteness(other)
         if self.priority != other.priority:
-            return self._lowerPriority(other)
+            if not self.priority:
+                return True
+            if not other.priority:
+                return False
+            return self.priority > other.priority
         # order the other tasks alphabetically
         return self.text > other.text
-
-    def _lowerPriority(self, other):
-        if not other.priority:
-            return False
-        if other.priority and not self.priority:
-            return True
-        return self.priority > other.priority
 
     def _lowerCompleteness(self, other):
         if self.is_complete and not other.is_complete:
             return True
         if not self.is_complete and other.is_complete:
             return False
-        raise RuntimeError("Could not comapre completeness, report")
+        raise RuntimeError("Could not compare completeness of 2 tasks, please report")
 
 
 def filterTasks(filters, tasks):
-    if None in filters:
+    if None in filters:  # FIXME: why??? if a filter is None we can just ignore it
         return tasks
 
     filteredTasks = []

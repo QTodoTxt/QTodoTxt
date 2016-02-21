@@ -17,6 +17,10 @@ class BaseFilter(object):
         """
         self.text = text
 
+    def __str__(self):
+        return "Filter:{}".format(self.__class__.__name__)
+    __repr__ = __str__
+
     def isMatch(self, task):
         """
         Determine whether the supplied task (arg 'task') satisfies the filter.
@@ -25,10 +29,6 @@ class BaseFilter(object):
 
         """
         return True
-
-    def parseDate(self, dateString):
-        due_date = datetime.strptime(dateString, '%Y-%m-%d').date()
-        return due_date
 
     def __eq__(self, other):
         """
@@ -145,7 +145,7 @@ class DueTodayFilter(BaseFilter):
         if (not task.due) or (task.is_complete):
             return False
         else:
-            self.due_date = self.parseDate(task.due)
+            self.due_date = task.due
             today = datetime.today().date()
             return self.due_date == today
 
@@ -165,7 +165,7 @@ class DueTomorrowFilter(BaseFilter):
         if (not task.due) or (task.is_complete):
             return False
         else:
-            due_date = self.parseDate(task.due)
+            due_date = task.due
             today = datetime.today().date()
             return today < due_date <= today + timedelta(days=1)
 
@@ -185,7 +185,7 @@ class DueThisWeekFilter(BaseFilter):
         if (not task.due) or (task.is_complete):
             return False
         else:
-            due_date = self.parseDate(task.due)
+            due_date = task.due
             today = datetime.today().date()
             return today <= due_date <= today + timedelta((6 - today.weekday()) % 7)
 
@@ -205,7 +205,7 @@ class DueThisMonthFilter(BaseFilter):
         if (not task.due) or (task.is_complete):
             return False
         else:
-            due_date = self.parseDate(task.due)
+            due_date = task.due
             today = datetime.today().date()
             if today.month == 12:
                 last_day_of_month = today.replace(day=31)
@@ -232,7 +232,7 @@ class DueOverdueFilter(BaseFilter):
             if not task.due:
                 return False
             else:
-                due_date = self.parseDate(task.due)
+                due_date = task.due
                 today = datetime.today().date()
                 return due_date < today
 

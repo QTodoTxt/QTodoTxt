@@ -27,6 +27,7 @@ class TasksListController(QtCore.QObject):
         self._initCompleteSelectedTasksAction()
         self._initDecreasePrioritySelectedTasksAction()
         self._initIncreasePrioritySelectedTasksAction()
+        self._confirm_complete = int(QtCore.QSettings().value("confirm_complete", 1))
 
     def _initEditTaskAction(self):
         action = QtGui.QAction(getIcon('TaskEdit.png'), '&Edit Task', self)
@@ -71,18 +72,19 @@ class TasksListController(QtCore.QObject):
         self.increasePrioritySelectedTasksAction = action
 
     def completeTask(self, task):
-        date_string = date.today().strftime('%Y-%m-%d')
         if not task.is_complete:
-            task.text = 'x %s %s' % (date_string, task.text)
-            if int(QtCore.QSettings().value("auto_archive", 1)):
-                self.taskArchived.emit(task)
-            else:
-                self.taskModified.emit(task)
+            task.setCompleted()
+        else:
+            task.setPending()
+        if int(QtCore.QSettings().value("auto_archive", 1)):
+            self.taskArchived.emit(task)
+        else:
+            self.taskModified.emit(task)
 
     def _completeSelectedTasks(self):
         tasks = self._view.getSelectedTasks()
         if tasks:
-            if self._confirmTasksAction(tasks, 'Complete'):
+            if not self._confirm_complete or self._confirmTasksAction(tasks, 'Toggle Completeness of'):
                 for task in tasks:
                     self.completeTask(task)
 
@@ -171,6 +173,6 @@ class TasksListController(QtCore.QObject):
         (text, ok) = self._task_editor_service.editTask(task)
         if ok and text:
             if text != task.text:
-                task.text = text
+                task.parseLine(text)
                 self._view.updateTask(task)
                 self.taskModified.emit(task)

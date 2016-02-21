@@ -45,6 +45,10 @@ class File(object):
         self.tasks = []
         self.filename = ''
 
+    def __str__(self):
+        return "File(filename:{}, tasks:{})".format(self.filename, self.tasks)
+    __repr__ = __str__
+
     def load(self, filename):
 
         try:
