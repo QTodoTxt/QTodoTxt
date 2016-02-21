@@ -51,10 +51,10 @@ collect_resources(resources_root,css)
 # ======================================
 # Setup parameters
 setup(name='qtodotxt',
-      version='1.4.0',
-      author='Matthieu Nantern',
-      author_email='matthieu.nantern@gmail.com',
-      url='https://github.com/mNantern/QTodoTxt',
+      version='1.5.0',
+      author='QTT Development Team',
+      author_email='qtodotxt@googlegroups.com',
+      url='https://github.com/QTodoTxt/QTodoTxt',
       packages=packages,
       setup_requires=["py2exe"],
 
