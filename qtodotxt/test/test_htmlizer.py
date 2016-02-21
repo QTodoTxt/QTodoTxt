@@ -89,21 +89,69 @@ class TestHtmlizer(unittest.TestCase):
 
     def test_12(self):
         # Test task with an invalid due date
+        task = tasklib.Task('this is my task due:abc')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
+                         '<font style="color:red">*** due:abc: Invalid date format, '
+                         'expected YYYY-MM-DD. ***</font></b>')
+
+    def test_13(self):
+        # Test task with an invalid due date
         task = tasklib.Task('this is my task due:2014-04')
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
                          '<font style="color:red">*** due:2014-04: Invalid date format, '
                          'expected YYYY-MM-DD. ***</font></b>')
 
-    def test_13(self):
-        # Test task with an invalid Threshold date
+    def test_14(self):
+        # Test task with an invalid due month
+        task = tasklib.Task('this is my task due:2014-13-01')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
+                         '<font style="color:red">*** due:2014-13-01: Invalid date format, '
+                         'expected YYYY-MM-DD. ***</font></b>')
+
+    def test_15(self):
+        # Test task with an invalid due day
+        task = tasklib.Task('this is my task due:2014-04-31')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
+                         '<font style="color:red">*** due:2014-04-31: Invalid date format, '
+                         'expected YYYY-MM-DD. ***</font></b>')
+
+    def test_16(self):
+        # Test task with an invalid threshold date
+        task = tasklib.Task('this is my task t:abc')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
+                         '<font style="color:red">*** t:abc: Invalid date format, '
+                         'expected YYYY-MM-DD. ***</font></b>')
+
+    def test_17(self):
+        # Test task with an invalid threshold date
         task = tasklib.Task('this is my task t:2014-04')
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
                          '<font style="color:red">*** t:2014-04: Invalid date format, '
                          'expected YYYY-MM-DD. ***</font></b>')
 
-    def test_14(self):
+    def test_18(self):
+        # Test task with an invalid threshold month
+        task = tasklib.Task('this is my task t:2014-13-01')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
+                         '<font style="color:red">*** t:2014-13-01: Invalid date format, '
+                         'expected YYYY-MM-DD. ***</font></b>')
+
+    def test_19(self):
+        # Test task with an invalid threshold day
+        task = tasklib.Task('this is my task t:2014-04-31')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
+                         '<font style="color:red">*** t:2014-04-31: Invalid date format, '
+                         'expected YYYY-MM-DD. ***</font></b>')
+
+    def test_20(self):
         # Test task with an URL
         task = tasklib.Task('Download https://github.com/mNantern/QTodoTxt/archive/master.zip and extract')
         self.assertEqual(self.htmlizer.task2html(task),
@@ -111,7 +159,7 @@ class TestHtmlizer(unittest.TestCase):
                          '<a href="https://github.com/mNantern/QTodoTxt/archive/master.zip">'
                          'https://github.com/mNantern/QTodoTxt/archive/master.zip</a> and extract')
 
-    def test_15(self):
+    def test_21(self):
         # Test task with solely an URL
         task = tasklib.Task('https://github.com/mNantern/QTodoTxt/archive/master.zip')
         self.assertEqual(self.htmlizer.task2html(task),
