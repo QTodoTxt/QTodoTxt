@@ -21,7 +21,7 @@ class Settings(QtGui.QDialog):
         self._int_settings_to_cb("auto_archive", self.ui.autoArchiveCheckBox)
         self._int_settings_to_cb("add_created_date", self.ui.addCreatedDateCheckBox)
         self._int_settings_to_cb("hide_future_tasks", self.ui.hideFutureTasksCheckBox)
-        self._int_settings_to_cb("comfirm_complete", self.ui.confirmCompletionCheckBox)
+        self._int_settings_to_cb("confirm_complete", self.ui.confirmCompletionCheckBox)
         priority = self.settings.value("lowest_priority", "D")
         self.ui.lowestPriorityLineEdit.setText(priority)
 
