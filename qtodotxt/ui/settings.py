@@ -2,12 +2,12 @@ import sys
 
 from PySide import QtCore, QtGui
 
-from settingsui import Ui_SettingsUI
+from qtodotxt.ui.settingsui import Ui_SettingsUI
 
 
-class Settings(QtGui.QWidget):
+class Settings(QtGui.QDialog):
     def __init__(self, parent):
-        QtGui.QWidget.__init__(self, parent)
+        QtGui.QDialog.__init__(self, parent)
         self.ui = Ui_SettingsUI()
         self.ui.setupUi(self)
         self.settings = QtCore.QSettings()
