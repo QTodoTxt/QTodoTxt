@@ -1,3 +1,11 @@
+qtodotxt (1.5.0) unstable; urgency=low
+
+  * Publication of v1.5.0: see changelog here
+    https://github.com/QTodoTxt/QTodoTxt/wiki/Changelog#v150
+  * Initial release.
+
+ -- QTT Development Team <qtodotxt@googlegroups.com>  Sun, 21 Feb 2016 00:00:00 +0100
+
 qtodotxt (1.4.0) unstable; urgency=low
 
   * Publication of v1.4.0: see changelog here

@@ -4,9 +4,9 @@ import sys
 
 
 setup(name="qtodotxt", 
-      version="1.5alpha1",
+      version="1.5.0",
       description="Cross Platform todo.txt GUI",
-      author="many",
+      author="QTT Development Team",
       author_email="qtodotxt@googlegroups.com",
       url='https://github.com/QTodoTxt/QTodoTxt',
       packages=find_packages(include=("*.png")) + ["qtodotxt.ui.resources", "qtodotxt.ui.resources.css"],
