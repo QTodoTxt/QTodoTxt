@@ -53,7 +53,7 @@
       <item row="3" column="0">
        <widget class="QCheckBox" name="hideFutureTasksCheckBox">
         <property name="text">
-         <string>Add future tasks</string>
+         <string>Hide future tasks</string>
         </property>
         <property name="checked">
          <bool>false</bool>

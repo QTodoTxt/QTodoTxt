@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'settingsui.ui'
 #
-# Created: Thu Feb 25 11:53:02 2016
+# Created: Thu Feb 25 12:35:48 2016
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -75,7 +75,7 @@ class Ui_SettingsUI(object):
         self.addCreatedDateCheckBox.setText(QtGui.QApplication.translate(
             "SettingsUI", "Add created date", None, QtGui.QApplication.UnicodeUTF8))
         self.hideFutureTasksCheckBox.setText(QtGui.QApplication.translate(
-            "SettingsUI", "Add future tasks", None, QtGui.QApplication.UnicodeUTF8))
+            "SettingsUI", "Hide future tasks", None, QtGui.QApplication.UnicodeUTF8))
         self.confirmCompletionCheckBox.setText(QtGui.QApplication.translate(
             "SettingsUI", "Ask for confirmation before task completion", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate(

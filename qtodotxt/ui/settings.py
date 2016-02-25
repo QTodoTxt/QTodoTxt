@@ -7,8 +7,9 @@ from qtodotxt.ui.settingsui import Ui_SettingsUI
 
 class Settings(QtGui.QDialog):
 
-    def __init__(self, parent):
-        QtGui.QDialog.__init__(self, parent)
+    def __init__(self, maincontroller):
+        QtGui.QDialog.__init__(self, maincontroller._view)
+        self.maincontroller = maincontroller
         self.ui = Ui_SettingsUI()
         self.ui.setupUi(self)
         self.settings = QtCore.QSettings()
@@ -58,6 +59,7 @@ class Settings(QtGui.QDialog):
 
     def setHideFutureTasks(self, val):
         self._save_int_cb("hide_future_tasks", val)
+        self.maincontroller.updateFilters()
 
     def setConfirmCompletion(self, val):
         self._save_int_cb("comfirm_complete", val)

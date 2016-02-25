@@ -36,11 +36,6 @@ class MainController(QtCore.QObject):
         if show_toolbar in ("true", "false"):
             show_toolbar = 1
         self._show_toolbar = int(show_toolbar)
-        self._add_created_date = int(self._settings.value("add_created_date", 1))
-        self._auto_save = int(self._settings.value("auto_save", 1))
-        self._auto_archive = int(self._settings.value("auto_archive", 1))
-        self._hide_future_tasks = int(self._settings.value("hide_future_tasks", 1))
-
         self._dialogs = dialogs
         self._task_editor_service = task_editor_service
         self._initControllers()
@@ -53,7 +48,7 @@ class MainController(QtCore.QObject):
         self._filters_tree_controller._view.setSelectedFiltersByNames(filters)
 
     def auto_save(self):
-        if self._auto_save:
+        if int(self._settings.value("auto_save", 1)):
             self.save()
 
     def _initControllers(self):
@@ -130,7 +125,7 @@ class MainController(QtCore.QObject):
         tasks = tasklib.filterTasks([SimpleTextFilter(searchText)], treeTasks)
         # And finally with future filter if needed
         # TODO: refactor all that filters
-        if self._hide_future_tasks:
+        if int(self._settings.value("hide_future_tasks", 1)):
             tasks = tasklib.filterTasks([FutureFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
 
@@ -146,7 +141,7 @@ class MainController(QtCore.QObject):
         tasks = tasklib.filterTasks([SimpleTextFilter(searchText)], treeTasks)
         # And finally with future filter if needed
         # TODO: refactor all that filters
-        if self._hide_future_tasks:
+        if int(self._settings.value("hide_future_tasks", 1)):
             tasks = tasklib.filterTasks([FutureFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
 
@@ -299,8 +294,8 @@ class MainController(QtCore.QObject):
             splitterPosition = [int(x) for x in splitterPosition]
             self._view.centralWidget().setSizes(splitterPosition)
 
-        # FIXME call after changing setting
-        #self._onFilterSelectionChanged(self._filters_tree_controller._view.getSelectedFilters())
+    def updateFilters(self):
+        self._onFilterSelectionChanged(self._filters_tree_controller._view.getSelectedFilters())
 
     def toggleVisible(self):
         if self._view.isMinimized():
