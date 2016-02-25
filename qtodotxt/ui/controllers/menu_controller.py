@@ -91,7 +91,7 @@ class MenuController(QtCore.QObject):
         action.setShortcuts(["Alt+F4"])
         action.triggered.connect(self._main_controller.exit)
         return action
-    
+
     def _show_preferences(self):
         print(self._main_controller._view)
         settings = Settings(self._main_controller._view)

@@ -6,6 +6,7 @@ from qtodotxt.ui.settingsui import Ui_SettingsUI
 
 
 class Settings(QtGui.QDialog):
+
     def __init__(self, parent):
         QtGui.QDialog.__init__(self, parent)
         self.ui = Ui_SettingsUI()
@@ -65,8 +66,6 @@ class Settings(QtGui.QDialog):
         self.settings.setValue("lowest_priority", text)
 
 
-
-
 if __name__ == "__main__":
     QtCore.QCoreApplication.setOrganizationName("QTodoTxt")
     QtCore.QCoreApplication.setApplicationName("QTodoTxt")
@@ -74,4 +73,3 @@ if __name__ == "__main__":
     s = Settings(None)
     s.show()
     sys.exit(app.exec_())
-
