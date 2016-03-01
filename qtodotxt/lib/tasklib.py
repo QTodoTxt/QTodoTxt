@@ -25,9 +25,11 @@ class Task(object):
         self.priority = ""
         self.is_complete = False
         self.completion_date = None
+        self.creation_date = None
         self.is_future = False
         self.threshold_error = ""  # set if error while parsing threshold
         self.text = ''
+        self.description = ''
         self.due = None
         self.due_error = ""  # set if error while parsing due date
         self.threshold = None
@@ -47,9 +49,11 @@ class Task(object):
         self.priority = ""
         self.is_complete = False
         self.completion_date = None
+        self.creation_date = None
         self.is_future = False
         self.threshold_error = ""
         self.text = ''
+        self.description = ''
         self.due = None
         self.due_error = ""
         self.threshold = None
@@ -72,6 +76,13 @@ class Task(object):
         elif re.search(r'^\([A-Z]\)$', words[0]):
             self.priority = words[0][1:-1]
             words = words[1:]
+
+        dato = self._parseDate(words[0])
+        if dato:
+            self.creation_date = dato
+            words = words[1:]
+
+        self.description = " ".join(words)
         for word in words:
             self._parseWord(word)
         self.text = line
@@ -88,10 +99,12 @@ class Task(object):
                 if word.startswith('due:'):
                     self.due = self._parseDate(word[4:])
                     if not self.due:
+                        print("Error parsing due date '{}'".format(word))
                         self.due_error = word[4:]
                 elif word.startswith('t:'):
                     self.threshold = self._parseDate(word[2:])
                     if not self.threshold:
+                        print("Error parsing threshold '{}'".format(word))
                         self.threshold_error = word[2:]
                     else:
                         if self.threshold > date.today():
@@ -101,7 +114,6 @@ class Task(object):
         try:
             return datetime.strptime(string, '%Y-%m-%d').date()
         except ValueError:
-            print("Error parsing date", string)
             return None
 
     def setCompleted(self):
