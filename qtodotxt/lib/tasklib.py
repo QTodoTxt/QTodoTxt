@@ -1,5 +1,5 @@
-import re
 from datetime import datetime, date
+import re
 
 from PySide import QtCore
 
@@ -19,22 +19,8 @@ class Task(object):
         self._highest_priority = 'A'
         self._lowest_priority = settings.value("lowest_priority", "D")
 
-        # define all class attributes here to avoid pylint warnings
-        self.contexts = []
-        self.projects = []
-        self.priority = ""
-        self.is_complete = False
-        self.completion_date = None
-        self.creation_date = None
-        self.is_future = False
-        self.threshold_error = ""  # set if error while parsing threshold
-        self.text = ''
-        self.description = ''
-        self.due = None
-        self.due_error = ""  # set if error while parsing due date
-        self.threshold = None
-        self.keywords = {}
-
+        # all other class attributes are defined in _reset method
+        # which is called in parseLine
         self.parseLine(line)
 
     def __str__(self):
@@ -110,7 +96,7 @@ class Task(object):
                         if self.threshold > date.today():
                             self.is_future = True
 
-    def _parseDate(self, string, context=""):
+    def _parseDate(self, string):
         try:
             return datetime.strptime(string, '%Y-%m-%d').date()
         except ValueError:
@@ -200,8 +186,8 @@ def filterTasks(filters, tasks):
 
     filteredTasks = []
     for task in tasks:
-        for filter in filters:
-            if filter.isMatch(task):
+        for myfilter in filters:
+            if myfilter.isMatch(task):
                 filteredTasks.append(task)
                 break
     return filteredTasks

@@ -1,5 +1,4 @@
 from datetime import date
-import re
 
 
 class TaskHtmlizer(object):
@@ -9,12 +8,8 @@ class TaskHtmlizer(object):
             A='red',
             B='green',
             C='navy')
-        # regex matching creation and completion dates and priority
-        self.regex = re.compile(
-            r'^(x (?P<completed>\d{4}-\d{2}-\d{2} )?)?(\((?P<priority>[A-Z])\) )?(?P<created>\d{4}-\d{2}-\d{2} )?.*$')
 
     def task2html(self, task):
-        # first do some formating easier word by word
         words = task.description.split(" ")
         newwords = []
         for word in words:
@@ -30,14 +25,9 @@ class TaskHtmlizer(object):
                 word = '<a href="{}">{}</a>'.format(word, word)
             newwords.append(word)
         html = " ".join(newwords)
-        # now do some formating easier by regex
-        priority = task.priority
         if task.is_complete:
             html = '<s>{}</s>'.format(html)
-            # when the task is complete, the Task object has no priority.
-            # We find the original priority from the text
-            priority = re.match(self.regex, task.text).group('priority')
-        if priority:
+        if task.priority:
             html = self._htmlizePriority(task.priority) + html
         else:
             # add space, so tasks get evenly aligned when there's no priority
