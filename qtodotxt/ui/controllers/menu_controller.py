@@ -3,7 +3,7 @@ from PySide import QtGui
 
 from qtodotxt.ui.dialogs import about_dialog
 from qtodotxt.ui.resource_manager import getIcon
-from qtodotxt.ui.settings import Settings
+from qtodotxt.ui.dialogs.settings import Settings
 
 
 class MenuController(QtCore.QObject):

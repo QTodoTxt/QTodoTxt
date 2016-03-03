@@ -2,7 +2,7 @@ import sys
 
 from PySide import QtCore, QtGui
 
-from qtodotxt.ui.settingsui import Ui_SettingsUI
+from qtodotxt.ui.dialogs.settingsui import Ui_SettingsUI
 
 
 class Settings(QtGui.QDialog):
