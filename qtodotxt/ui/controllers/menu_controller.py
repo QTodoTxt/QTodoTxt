@@ -3,6 +3,7 @@ from PySide import QtGui
 
 from qtodotxt.ui.dialogs import about_dialog
 from qtodotxt.ui.resource_manager import getIcon
+from qtodotxt.ui.dialogs.settings import Settings
 
 
 class MenuController(QtCore.QObject):
@@ -24,11 +25,7 @@ class MenuController(QtCore.QObject):
         fileMenu.addAction(self._createSaveAction())
         fileMenu.addAction(self._createRevertAction())
         fileMenu.addSeparator()
-        preferenceMenu = fileMenu.addMenu(getIcon('ApplicationPreferences.png'), '&Preferences')
-        preferenceMenu.addAction(self._createPreferenceAction())
-        preferenceMenu.addAction(self._autoSavePreferenceAction())
-        preferenceMenu.addAction(self._autoArchivePreferenceAction())
-        preferenceMenu.addAction(self._hideFutureTasksAction())
+        fileMenu.addAction(self._createPreferenceAction())
         fileMenu.addSeparator()
         fileMenu.addAction(self._createExitAction())
 
@@ -84,43 +81,18 @@ class MenuController(QtCore.QObject):
         return action
 
     def _createPreferenceAction(self):
-        action = QtGui.QAction('Add created date', self, checkable=True)
-        action.triggered.connect(self._main_controller.toggleCreatedDate)
-        self.prefAction = action
+        action = QtGui.QAction('&Preferences', self)
+        action.triggered.connect(self._show_preferences)
+        self.preferencesAction = action
         return action
-
-    def _autoSavePreferenceAction(self):
-        action = QtGui.QAction('Enable auto save', self, checkable=True)
-        action.triggered.connect(self._main_controller.toggleAutoSave)
-        self.autoSaveAction = action
-        return action
-
-    def _autoArchivePreferenceAction(self):
-        action = QtGui.QAction('Enable auto archive', self, checkable=True)
-        action.triggered.connect(self._main_controller.toggleAutoArchive)
-        self.autoArchiveAction = action
-        return action
-
-    def _hideFutureTasksAction(self):
-        action = QtGui.QAction('Hide future tasks', self, checkable=True)
-        action.triggered.connect(self._main_controller.toggleHideFutureTasks)
-        self.hideFutureTasksAction = action
-        return action
-
-    def changeAutoSaveState(self, value=False):
-        self.autoSaveAction.setChecked(value)
-
-    def changeCreatedDateState(self, value=False):
-        self.prefAction.setChecked(value)
-
-    def changeAutoArchiveState(self, value=False):
-        self.autoArchiveAction.setChecked(value)
-
-    def changeHideFutureTasksState(self, value=False):
-        self.hideFutureTasksAction.setChecked(value)
 
     def _createExitAction(self):
         action = QtGui.QAction(getIcon('ApplicationExit.png'), 'E&xit', self)
         action.setShortcuts(["Alt+F4"])
         action.triggered.connect(self._main_controller.exit)
         return action
+
+    def _show_preferences(self):
+        print(self._main_controller._view)
+        settings = Settings(self._main_controller)
+        settings.show()

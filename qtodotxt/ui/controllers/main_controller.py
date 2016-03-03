@@ -36,11 +36,6 @@ class MainController(QtCore.QObject):
         if show_toolbar in ("true", "false"):
             show_toolbar = 1
         self._show_toolbar = int(show_toolbar)
-        self._add_created_date = int(self._settings.value("add_created_date", 1))
-        self._auto_save = int(self._settings.value("auto_save", 1))
-        self._auto_archive = int(self._settings.value("auto_archive", 1))
-        self._hide_future_tasks = int(self._settings.value("hide_future_tasks", 1))
-
         self._dialogs = dialogs
         self._task_editor_service = task_editor_service
         self._initControllers()
@@ -53,7 +48,7 @@ class MainController(QtCore.QObject):
         self._filters_tree_controller._view.setSelectedFiltersByNames(filters)
 
     def auto_save(self):
-        if self._auto_save:
+        if int(self._settings.value("auto_save", 1)):
             self.save()
 
     def _initControllers(self):
@@ -99,10 +94,6 @@ class MainController(QtCore.QObject):
         self._updateView()
         self._view.show()
         self._updateTitle()
-        self._updateCreatePref()
-        self._updateAutoSavePref()
-        self._updateAutoArchivePref()
-        self._updateHideFutureTasksPref()
 
         if self._args.file:
             filename = self._args.file
@@ -134,7 +125,7 @@ class MainController(QtCore.QObject):
         tasks = tasklib.filterTasks([SimpleTextFilter(searchText)], treeTasks)
         # And finally with future filter if needed
         # TODO: refactor all that filters
-        if self._hide_future_tasks:
+        if int(self._settings.value("hide_future_tasks", 1)):
             tasks = tasklib.filterTasks([FutureFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
 
@@ -150,7 +141,7 @@ class MainController(QtCore.QObject):
         tasks = tasklib.filterTasks([SimpleTextFilter(searchText)], treeTasks)
         # And finally with future filter if needed
         # TODO: refactor all that filters
-        if self._hide_future_tasks:
+        if int(self._settings.value("hide_future_tasks", 1)):
             tasks = tasklib.filterTasks([FutureFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
 
@@ -220,11 +211,6 @@ class MainController(QtCore.QObject):
             self._settings.setValue("current_filters", self._filters_tree_controller._view.getSelectedFilterNames())
             self._settings.setValue("main_window_geometry", self._view.saveGeometry())
             self._settings.setValue("main_window_state", self._view.saveState())
-
-            self._settings.setValue("add_created_date", self._add_created_date)
-            self._settings.setValue("auto_save", self._auto_save)
-            self._settings.setValue("auto_archive", self._auto_archive)
-            self._settings.setValue("hide_future_tasks", self._hide_future_tasks)
 
             closeEvent.accept()
         else:
@@ -300,18 +286,6 @@ class MainController(QtCore.QObject):
         self._filters_tree_controller.showFilters(self._file)
         self._task_editor_service.updateValues(self._file)
 
-    def _updateCreatePref(self):
-        self._menu_controller.changeCreatedDateState(self._add_created_date)
-
-    def _updateAutoSavePref(self):
-        self._menu_controller.changeAutoSaveState(self._auto_save)
-
-    def _updateAutoArchivePref(self):
-        self._menu_controller.changeAutoArchiveState(self._auto_archive)
-
-    def _updateHideFutureTasksPref(self):
-        self._menu_controller.changeHideFutureTasksState(self._hide_future_tasks)
-
     def _updateView(self):
         self._view.restoreGeometry(self._settings.value("main_window_geometry"))
         self._view.restoreState(self._settings.value("main_window_state"))
@@ -320,25 +294,7 @@ class MainController(QtCore.QObject):
             splitterPosition = [int(x) for x in splitterPosition]
             self._view.centralWidget().setSizes(splitterPosition)
 
-    def toggleCreatedDate(self):
-        self._add_created_date = int(not self._add_created_date)
-        self._settings.setValue("add_created_date", self._add_created_date)
-        self._settings.sync()
-
-    def toggleAutoSave(self):
-        self._auto_save = int(not self._auto_save)
-        self._settings.setValue("auto_save", self._auto_save)
-        self._settings.sync()
-
-    def toggleAutoArchive(self):
-        self._auto_archive = int(not self._auto_archive)
-        self._settings.setValue("auto_archive", self._auto_archive)
-        self._settings.sync()
-
-    def toggleHideFutureTasks(self):
-        self._hide_future_tasks = int(not self._hide_future_tasks)
-        self._settings.setValue("hide_future_tasks", self._hide_future_tasks)
-        self._settings.sync()
+    def updateFilters(self):
         self._onFilterSelectionChanged(self._filters_tree_controller._view.getSelectedFilters())
 
     def toggleVisible(self):
