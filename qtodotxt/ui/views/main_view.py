@@ -1,14 +1,15 @@
-from PySide import QtCore
-from PySide import QtGui
+from PyQt5 import QtCore
+from PyQt5 import QtGui
+from PyQt5 import QtWidgets
 
 from qtodotxt.ui.resource_manager import getIcon, getResourcePath
 from qtodotxt.ui.views.filters_tree_view import FiltersTreeView
 from qtodotxt.ui.views.tasks_view import TasksView
 
 
-class MainView(QtGui.QMainWindow):
+class MainView(QtWidgets.QMainWindow):
 
-    closeEventSignal = QtCore.Signal(QtGui.QCloseEvent)
+    closeEventSignal = QtCore.pyqtSignal(QtGui.QCloseEvent)
 
     def __init__(self, parent=None):
         super(MainView, self).__init__(parent)
@@ -19,7 +20,7 @@ class MainView(QtGui.QMainWindow):
 
     def _initUI(self):
 
-        splitter = QtGui.QSplitter()
+        splitter = QtWidgets.QSplitter()
         splitter.setHandleWidth(1)
 
         cssPath = getResourcePath("css/default.css")

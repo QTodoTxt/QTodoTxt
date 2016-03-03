@@ -1,14 +1,14 @@
-from PySide import QtCore
-from PySide import QtGui
+from PyQt5 import QtCore
+from PyQt5 import QtWidgets
 from qtodotxt.lib.filters import ContextFilter, CompleteTasksFilter, DueFilter, DueOverdueFilter, DueThisMonthFilter, \
     DueThisWeekFilter, DueTodayFilter, DueTomorrowFilter, HasContextsFilter, HasDueDateFilter, HasProjectsFilter, \
     IncompleteTasksFilter, ProjectFilter, UncategorizedTasksFilter, AllTasksFilter
 from qtodotxt.ui.resource_manager import getIcon
 
 
-class FiltersTreeView(QtGui.QWidget):
+class FiltersTreeView(QtWidgets.QWidget):
 
-    filterSelectionChanged = QtCore.Signal(list)
+    filterSelectionChanged = QtCore.pyqtSignal(list)
 
     def __init__(self, parent=None):
         super(FiltersTreeView, self).__init__(parent)
@@ -110,7 +110,7 @@ class FiltersTreeView(QtGui.QWidget):
         return None
 
     def _initUI(self):
-        layout = QtGui.QGridLayout()
+        layout = QtWidgets.QGridLayout()
         self.setLayout(layout)
         offset = QtCore.QSettings().value("ui_margin_offset", -4)
         self.setContentsMargins(offset, offset,
@@ -119,9 +119,9 @@ class FiltersTreeView(QtGui.QWidget):
         layout.addWidget(self._tree)
 
     def _createTreeWidget(self):
-        tree = QtGui.QTreeWidget()
+        tree = QtWidgets.QTreeWidget()
         tree.header().hide()
-        tree.setSelectionMode(QtGui.QAbstractItemView.SelectionMode.ExtendedSelection)
+        tree.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
         tree.itemSelectionChanged.connect(self._tree_itemSelectionChanged)
         self._addDefaultTreeItems(tree)
         self._initFilterTypeMappings()
@@ -213,9 +213,9 @@ class FiltersTreeView(QtGui.QWidget):
             self._selectItem(item)
 
 
-class FilterTreeWidgetItem(QtGui.QTreeWidgetItem):
+class FilterTreeWidgetItem(QtWidgets.QTreeWidgetItem):
     def __init__(self, parent, strings, filter=None, icon=None, order=None):
-        QtGui.QTreeWidgetItem.__init__(self, parent, strings)
+        QtWidgets.QTreeWidgetItem.__init__(self, parent, strings)
         self.filter = filter
         if order:
             self.setText(1, str(order))

@@ -51,7 +51,7 @@ setup(name='qtodotxt',
       options={
           "py2app": {
               "iconfile": "artwork/icon/icon.icns",
-              "includes": ['PySide.QtCore', 'PySide.QtGui'],
+              "includes": ['PyQt5.QtCore', 'PyQt5.QtGui'],
               "resources": resources,
           },
           "build": {

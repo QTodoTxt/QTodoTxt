@@ -5,8 +5,9 @@ import argparse
 import logging
 import sys
 
-from PySide import QtCore
-from PySide import QtGui
+from PyQt5 import QtCore
+from PyQt5 import QtGui
+from PyQt5 import QtWidgets
 
 from qtodotxt.ui.controllers.main_controller import MainController
 from qtodotxt.ui.dialogs.misc_dialogs import Dialogs
@@ -15,7 +16,7 @@ from qtodotxt.ui.resource_manager import getIcon
 from qtodotxt.ui.views.main_view import MainView
 
 
-class TrayIcon(QtGui.QSystemTrayIcon):
+class TrayIcon(QtWidgets.QSystemTrayIcon):
     def __init__(self, main_controller):
         self._controller = main_controller
         self._initIcon()
@@ -23,7 +24,7 @@ class TrayIcon(QtGui.QSystemTrayIcon):
     def _initIcon(self):
         view = self._controller.getView()
         icon = getIcon('qtodotxt.png')
-        QtGui.QSystemTrayIcon.__init__(self, icon, view)
+        QtWidgets.QSystemTrayIcon.__init__(self, icon, view)
         self.activated.connect(self._onActivated)
         self.setToolTip('QTodoTxt')
 
@@ -64,7 +65,7 @@ def run():
     QtCore.QCoreApplication.setOrganizationName("QTodoTxt")
     QtCore.QCoreApplication.setApplicationName("QTodoTxt")
     # Now set up our application and start
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
     args = _parseArgs()
     _setupLogging(args.loglevel)
 #    logger = logging.getLogger(__file__[:-3]) # in case someone wants to log here

@@ -6,9 +6,9 @@ from os import path
 import sys
 
 try:
-    import PySide  # noqa
+    import PyQt5  # noqa
 except ImportError:
-    print("Couldn't import PySide. Aborting. These are the PYTHONPATHs:")
+    print("Couldn't import PyQt5. Aborting. These are the PYTHONPATHs:")
     print(sys.path)
     sys.exit(1)
 

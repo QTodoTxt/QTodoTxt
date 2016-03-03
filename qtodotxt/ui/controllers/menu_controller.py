@@ -1,5 +1,6 @@
-from PySide import QtCore
-from PySide import QtGui
+from PyQt5 import QtCore
+from PyQt5 import QtGui
+from PyQt5 import QtWidgets
 
 from qtodotxt.ui.dialogs import about_dialog
 from qtodotxt.ui.resource_manager import getIcon
@@ -46,7 +47,7 @@ class MenuController(QtCore.QObject):
         helpMenu.addAction(self._createAboutAction())
 
     def _createAboutAction(self):
-        action = QtGui.QAction(getIcon('ApplicationAbout.png'), '&About', self)
+        action = QtWidgets.QAction(getIcon('ApplicationAbout.png'), '&About', self)
         action.triggered.connect(self._about)
         return action
 
@@ -54,40 +55,40 @@ class MenuController(QtCore.QObject):
         about_dialog.show(self._menu)
 
     def _createNewAction(self):
-        action = QtGui.QAction(getIcon('FileNew.png'), '&New', self)
+        action = QtWidgets.QAction(getIcon('FileNew.png'), '&New', self)
         # infrequent action, I prefer to use ctrl+n for new task.
         action.setShortcuts(["Ctrl+Shift+N"])
         action.triggered.connect(self._main_controller.new)
         return action
 
     def _createOpenAction(self):
-        action = QtGui.QAction(getIcon('FileOpen.png'), '&Open', self)
+        action = QtWidgets.QAction(getIcon('FileOpen.png'), '&Open', self)
         action.setShortcuts(["Ctrl+O"])
         action.triggered.connect(self._main_controller.open)
         self.openAction = action
         return action
 
     def _createSaveAction(self):
-        action = QtGui.QAction(getIcon('FileSave.png'), '&Save', self)
+        action = QtWidgets.QAction(getIcon('FileSave.png'), '&Save', self)
         action.setShortcuts(["Ctrl+S"])
         action.triggered.connect(self._main_controller.save)
         self.saveAction = action
         return action
 
     def _createRevertAction(self):
-        action = QtGui.QAction(getIcon('FileRevert.png'), '&Revert', self)
+        action = QtWidgets.QAction(getIcon('FileRevert.png'), '&Revert', self)
         action.triggered.connect(self._main_controller.revert)
         self.revertAction = action
         return action
 
     def _createPreferenceAction(self):
-        action = QtGui.QAction('&Preferences', self)
+        action = QtWidgets.QAction('&Preferences', self)
         action.triggered.connect(self._show_preferences)
         self.preferencesAction = action
         return action
 
     def _createExitAction(self):
-        action = QtGui.QAction(getIcon('ApplicationExit.png'), 'E&xit', self)
+        action = QtWidgets.QAction(getIcon('ApplicationExit.png'), 'E&xit', self)
         action.setShortcuts(["Alt+F4"])
         action.triggered.connect(self._main_controller.exit)
         return action

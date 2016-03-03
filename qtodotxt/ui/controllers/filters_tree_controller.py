@@ -1,4 +1,4 @@
-from PySide import QtCore
+from PyQt5 import QtCore
 from qtodotxt.lib.filters import ContextFilter, ProjectFilter, DueTodayFilter, DueTomorrowFilter, DueThisWeekFilter, \
     DueThisMonthFilter, DueOverdueFilter
 
@@ -8,13 +8,13 @@ from qtodotxt.lib.filters import ContextFilter, ProjectFilter, DueTodayFilter, D
 #    def clearSelection(self): pass
 #    def selectFilter(self, filter): pass
 #    def getSelectedFilters(self): pass
-#    filterSelectionChanged = QtCore.Signal()
+#    filterSelectionChanged = QtCore.pyqtSignal()
 #    def selectAllTasksFilter(self): pass
 
 
 class FiltersTreeController(QtCore.QObject):
 
-    filterSelectionChanged = QtCore.Signal(list)
+    filterSelectionChanged = QtCore.pyqtSignal(list)
 
     def __init__(self, view):
         QtCore.QObject.__init__(self)

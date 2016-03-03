@@ -1,18 +1,15 @@
-from PySide import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class TaskEditorLineEdit(QtGui.QLineEdit):
+class TaskEditorLineEdit(QtWidgets.QLineEdit):
     def __init__(self, model, autocomplete_pairs, separator=' '):
         super(TaskEditorLineEdit, self).__init__()
         self._separator = separator
         self._autocomplete_pairs = autocomplete_pairs
-        self._completer = QtGui.QCompleter(model)
+        self._completer = QtWidgets.QCompleter(model)
         self._completer.setWidget(self)
         self._completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
-        self.connect(
-            self._completer,
-            QtCore.SIGNAL('activated(QString)'),
-            self._insertCompletion)
+        self._completer.activated.connect(self._insertCompletion)
         self._keysToIgnore = [QtCore.Qt.Key_Enter,
                               QtCore.Qt.Key_Return,
                               QtCore.Qt.Key_Escape,

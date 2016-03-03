@@ -1,5 +1,5 @@
 import unittest
-from PySide import QtCore
+from PyQt5 import QtCore
 from datetime import date
 
 from qtodotxt.lib import tasklib
@@ -36,7 +36,7 @@ class FakeTreeView(QtCore.QObject):
     def getSelectedFilters(self):
         return self.selectedFilters
 
-    filterSelectionChanged = QtCore.Signal()
+    filterSelectionChanged = QtCore.pyqtSignal()
 
     def selectAllTasksFilter(self):
         self.selectedFilters = [IncompleteTasksFilter()]

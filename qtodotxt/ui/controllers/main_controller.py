@@ -2,8 +2,9 @@ import logging
 import os
 import sys
 
-from PySide import QtCore
-from PySide import QtGui
+from PyQt5 import QtCore
+from PyQt5 import QtGui
+from PyQt5 import QtWidgets
 
 from qtodotxt.lib import tasklib
 from qtodotxt.lib.file import ErrorLoadingFile, File, FileObserver
@@ -158,7 +159,7 @@ class MainController(QtCore.QObject):
         # controller._view.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
         controller._view.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         controller._view.customContextMenuRequested.connect(self.showContextMenu)
-        self._contextMenu = QtGui.QMenu()
+        self._contextMenu = QtWidgets.QMenu()
         self._contextMenu.addAction(self._tasks_list_controller.editTaskAction)
         self._contextMenu.addSeparator()
         self._contextMenu.addAction(self._tasks_list_controller.completeSelectedTasksAction)
@@ -198,11 +199,11 @@ class MainController(QtCore.QObject):
         if not self._is_modified:
             return True
         button = self._dialogs.showSaveDiscardCancel('Unsaved changes...')
-        if button == QtGui.QMessageBox.Save:
+        if button == QtWidgets.QMessageBox.Save:
             self.save()
             return True
         else:
-            return button == QtGui.QMessageBox.Discard
+            return button == QtWidgets.QMessageBox.Discard
 
     def _view_onCloseEvent(self, closeEvent):
         if self._canExit():
@@ -229,7 +230,7 @@ class MainController(QtCore.QObject):
         ok = True
         if not filename:
             (filename, ok) = \
-                QtGui.QFileDialog.getSaveFileName(self._view, filter=FILENAME_FILTERS)
+                QtWidgets.QFileDialog.getSaveFileName(self._view, filter=FILENAME_FILTERS)
         if ok and filename:
             self._file.save(filename)
             self._settings.setValue("last_open_file", filename)
@@ -251,7 +252,7 @@ class MainController(QtCore.QObject):
 
     def open(self):
         (filename, ok) = \
-            QtGui.QFileDialog.getOpenFileName(self._view, filter=FILENAME_FILTERS)
+            QtWidgets.QFileDialog.getOpenFileName(self._view, filter=FILENAME_FILTERS)
 
         if ok and filename:
             try:

@@ -1,5 +1,6 @@
-from PySide import QtCore
-from PySide import QtGui
+from PyQt5 import QtCore
+from PyQt5 import QtGui
+from PyQt5 import QtWidgets
 
 from qtodotxt.lib import tasklib
 from qtodotxt.lib.task_htmlizer import TaskHtmlizer
@@ -10,10 +11,10 @@ from datetime import date
 
 class TasksListController(QtCore.QObject):
 
-    taskModified = QtCore.Signal(tasklib.Task)
-    taskCreated = QtCore.Signal(tasklib.Task)
-    taskArchived = QtCore.Signal(tasklib.Task)
-    taskDeleted = QtCore.Signal(tasklib.Task)
+    taskModified = QtCore.pyqtSignal(tasklib.Task)
+    taskCreated = QtCore.pyqtSignal(tasklib.Task)
+    taskArchived = QtCore.pyqtSignal(tasklib.Task)
+    taskDeleted = QtCore.pyqtSignal(tasklib.Task)
 
     def __init__(self, view, task_editor_service):
         QtCore.QObject.__init__(self)
@@ -30,42 +31,42 @@ class TasksListController(QtCore.QObject):
         self._confirm_complete = int(QtCore.QSettings().value("confirm_complete", 1))
 
     def _initEditTaskAction(self):
-        action = QtGui.QAction(getIcon('TaskEdit.png'), '&Edit Task', self)
+        action = QtWidgets.QAction(getIcon('TaskEdit.png'), '&Edit Task', self)
         action.setShortcuts(['Ctrl+E'])
         action.triggered.connect(self.editTask)
         self._view.addListAction(action)
         self.editTaskAction = action
 
     def _initCreateTaskAction(self):
-        action = QtGui.QAction(getIcon('TaskCreate.png'), '&Create New Task', self)
+        action = QtWidgets.QAction(getIcon('TaskCreate.png'), '&Create New Task', self)
         action.setShortcuts(['Insert', 'Ctrl+I', 'Ctrl+N'])
         action.triggered.connect(self.createTask)
         self._view.addListAction(action)
         self.createTaskAction = action
 
     def _initDeleteSelectedTasksAction(self):
-        action = QtGui.QAction(getIcon('TaskDelete.png'), '&Delete Selected Tasks', self)
+        action = QtWidgets.QAction(getIcon('TaskDelete.png'), '&Delete Selected Tasks', self)
         action.setShortcut('Delete')
         action.triggered.connect(self._deleteSelectedTasks)
         self._view.addListAction(action)
         self.deleteSelectedTasksAction = action
 
     def _initCompleteSelectedTasksAction(self):
-        action = QtGui.QAction(getIcon('TaskComplete.png'), 'C&omplete Selected Tasks', self)
+        action = QtWidgets.QAction(getIcon('TaskComplete.png'), 'C&omplete Selected Tasks', self)
         action.setShortcuts(['x', 'c'])
         action.triggered.connect(self._completeSelectedTasks)
         self._view.addListAction(action)
         self.completeSelectedTasksAction = action
 
     def _initDecreasePrioritySelectedTasksAction(self):
-        action = QtGui.QAction(getIcon('TaskPriorityDecrease.png'), 'Decrease Priority', self)
+        action = QtWidgets.QAction(getIcon('TaskPriorityDecrease.png'), 'Decrease Priority', self)
         action.setShortcuts(['-', '<'])
         action.triggered.connect(self._decreasePriority)
         self._view.addListAction(action)
         self.decreasePrioritySelectedTasksAction = action
 
     def _initIncreasePrioritySelectedTasksAction(self):
-        action = QtGui.QAction(getIcon('TaskPriorityIncrease.png'), 'Increase Priority', self)
+        action = QtWidgets.QAction(getIcon('TaskPriorityIncrease.png'), 'Increase Priority', self)
         action.setShortcuts(['+', '>'])
         action.triggered.connect(self._increasePriority)
         self._view.addListAction(action)

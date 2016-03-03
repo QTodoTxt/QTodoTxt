@@ -1,4 +1,4 @@
-from PySide import QtGui
+from PyQt5 import QtWidgets
 
 
 __version__ = "1.5.0"
@@ -49,4 +49,4 @@ def _getAboutText():
 
 def show(parent=None):
     text = _getAboutText()
-    QtGui.QMessageBox.information(parent, 'About QTodoTxt', text)
+    QtWidgets.QMessageBox.information(parent, 'About QTodoTxt', text)

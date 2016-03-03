@@ -1,16 +1,16 @@
-from PySide import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class TasksSearchView(QtGui.QLineEdit):
+class TasksSearchView(QtWidgets.QLineEdit):
 
-    searchTextChanged = QtCore.Signal(str)
+    searchTextChanged = QtCore.pyqtSignal(str)
 
     def __init__(self, searchIcon, clearIcon, parent=None):
-        QtGui.QLineEdit.__init__(self, parent)
+        QtWidgets.QLineEdit.__init__(self, parent)
 
         self._searchText = ""
 
-        self.clearButton = QtGui.QToolButton(self)
+        self.clearButton = QtWidgets.QToolButton(self)
         self.clearButton.setIcon(clearIcon)
         self.clearButton.setCursor(QtCore.Qt.ArrowCursor)
         self.clearButton.setStyleSheet("QToolButton { border: none; padding: 0px; }")
@@ -18,11 +18,11 @@ class TasksSearchView(QtGui.QLineEdit):
         self.clearButton.clicked.connect(self.clear)
         self.textChanged.connect(self.updateSearchText)
 
-        self.searchButton = QtGui.QToolButton(self)
+        self.searchButton = QtWidgets.QToolButton(self)
         self.searchButton.setIcon(searchIcon)
         self.searchButton.setStyleSheet("QToolButton { border: none; padding: 0px; }")
 
-        frameWidth = self.style().pixelMetric(QtGui.QStyle.PM_DefaultFrameWidth)
+        frameWidth = self.style().pixelMetric(QtWidgets.QStyle.PM_DefaultFrameWidth)
         buttonWidth = self.clearButton.sizeHint().width()
         self.setStyleSheet("QLineEdit { padding-left: %spx; padding-right: %spx; } " % (
             self.searchButton.sizeHint().width() + frameWidth + 1, buttonWidth + frameWidth + 1))
@@ -32,12 +32,12 @@ class TasksSearchView(QtGui.QLineEdit):
                             max(msz.height(), self.clearButton.sizeHint().height() + frameWidth * 2 + 2))
         self.setPlaceholderText("Search")
 
-        focusShortcut = QtGui.QShortcut(QtGui.QKeySequence("Ctrl+F"), self)
+        focusShortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Ctrl+F"), self)
         focusShortcut.activated.connect(self.setFocus)
 
     def resizeEvent(self, event):
         sz = self.clearButton.sizeHint()
-        frameWidth = self.style().pixelMetric(QtGui.QStyle.PM_DefaultFrameWidth)
+        frameWidth = self.style().pixelMetric(QtWidgets.QStyle.PM_DefaultFrameWidth)
         self.clearButton.move(self.rect().right() - frameWidth - sz.width(),
                               (self.rect().bottom() + 1 - sz.height()) / 2)
         self.searchButton.move(self.rect().left() + 1, (self.rect().bottom() + 1 - sz.height()) / 2)

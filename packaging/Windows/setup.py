@@ -60,7 +60,7 @@ setup(name='qtodotxt',
 
       data_files=[
               ('resources', resources), 
-			  ('imageformats', [r'C:\Python34\Lib\site-packages\PySide\plugins\imageformats\qico4.dll']), 
+			  ('imageformats', [r'C:\Python34\Lib\site-packages\PyQt5\plugins\imageformats\qico4.dll']), 
 			  ('resources/css', css)
 		  ],
 
