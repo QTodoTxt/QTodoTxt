@@ -7,6 +7,11 @@
 
 
 language: python
+sudo: required
+dist: trusty
+
+virtualenv:
+  system_site_packages: true
 
 python:
 #  - "3.2"
@@ -22,9 +27,11 @@ install:
 # install PySide using external wheel
 # available for python 3.4
   - sudo apt-get update
-  - sudo apt-get -y install libqt4-dev
-  - pip install PySide --no-index --find-links https://parkin.github.io/python-wheelhouse/;
-  - python ~/virtualenv/python${TRAVIS_PYTHON_VERSION}/bin/pyside_postinstall.py -install
+  - sudo apt-get -y install python3-pyqt5
+  - sudo apt-get -y install python3-pytest 
+    #- sudo apt-get -y install libqt4-dev
+    #- pip install PyQt5 --no-index --find-links https://parkin.github.io/python-wheelhouse/;
+    #- python ~/virtualenv/python${TRAVIS_PYTHON_VERSION}/bin/pyside_postinstall.py -install
 
 # install PySide using pip (takes a long time)
 # available for python 3.2, 3.3, 3.4
@@ -36,5 +43,5 @@ install:
 script:
 # run tests
   - flake8 --max-complexity 13 qtodotxt
-  - py.test qtodotxt/test
+  - py.test-3 qtodotxt/test
   - qtodotxt/test/run-doctests.py
