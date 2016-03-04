@@ -1,5 +1,4 @@
 from PyQt5 import QtCore
-from PyQt5 import QtGui
 from PyQt5 import QtWidgets
 from qtodotxt.lib.task_htmlizer import TaskHtmlizer
 from qtodotxt.lib import tasklib

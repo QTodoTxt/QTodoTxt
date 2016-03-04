@@ -1,5 +1,5 @@
 import sys
-from PyQt5 import QtGui, QtWidgets
+from PyQt5 import QtWidgets
 from qtodotxt.ui.dialogs.taskeditor_lineedit import TaskEditorLineEdit
 from datetime import date, timedelta
 import collections

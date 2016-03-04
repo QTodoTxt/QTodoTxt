@@ -1,4 +1,4 @@
-from PyQt5 import QtGui, QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 from qtodotxt.ui.views.tasks_search_view import TasksSearchView
 from qtodotxt.ui.views.tasks_list_view import TasksListView
 from qtodotxt.ui.resource_manager import getIcon
