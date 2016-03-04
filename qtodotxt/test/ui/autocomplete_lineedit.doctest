@@ -4,10 +4,10 @@ Test Setup and Helper Methods
 >>> import os, sys, doctest
 >>> sys.path.insert(0, os.path.join('.', '..', '..', '..'))
 >>> from qtodotxt.ui.dialogs.taskeditor_lineedit import TaskEditorLineEdit
->>> from PySide import QtCore, QtGui
->>> app=QtGui.QApplication.instance() 
+>>> from PyQt5 import QtCore, QtWidgets
+>>> app=QtWidgets.QApplication.instance() 
 >>> if not app:
-...     app = QtGui.QApplication([])
+...     app = QtWidgets.QApplication([])
 
 ========================================
 1. Check ctor
