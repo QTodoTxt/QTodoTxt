@@ -1,6 +1,6 @@
 
 import unittest
-from datetime import date, timedelta
+from datetime import date
 
 from qtodotxt.ui.dialogs.taskeditor_dialog import end_of_month,  end_of_year, end_of_next_month
 from qtodotxt.ui.dialogs.taskeditor_dialog import end_of_week, end_of_next_week
