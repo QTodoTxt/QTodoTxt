@@ -3,6 +3,46 @@ from PyQt5 import QtWidgets
 from qtodotxt.ui.dialogs.taskeditor_lineedit import TaskEditorLineEdit
 from datetime import date, timedelta
 import collections
+import calendar
+from dateutil.relativedelta import relativedelta
+
+
+def end_of_month(today=None, month=None):
+    if today is None:
+        today = date.today()
+    if month is None:
+        month = today.month
+    year = today.year
+    if month < today.month:
+        year += 1
+    eom = date(year=year, month=month, day=calendar.monthrange(year, month)[1])
+    return eom.isoformat()
+
+
+def end_of_next_month(today=None):
+    if today is None:
+        today = date.today()
+    today += relativedelta(months=1)
+    eom = date(year=today.year, month=today.month, day=calendar.monthrange(today.year, today.month)[1])
+    return eom.isoformat()
+
+
+def end_of_week(day=None):
+    if day is None:
+        day = date.today()
+    return (day + timedelta((6 - day.weekday()) % 7)).isoformat()
+
+
+def end_of_next_week(day=None):
+    if day is None:
+        day = date.today()
+    return (day + timedelta((13 - day.weekday()) % 14)).isoformat()
+
+
+def end_of_year(day=None):
+    if day is None:
+        day = date.today()
+    return (date(year=day.year + 1, month=1, day=1) - timedelta(days=1)).isoformat()
 
 
 class TaskEditorDialog(QtWidgets.QDialog):
@@ -40,18 +80,6 @@ class TaskEditorDialog(QtWidgets.QDialog):
         self._initUI(values)
         self._populateKeys(self.autocomplete_pairs)
 
-    def _endOfMonth(self, month):
-        today = date.today()
-        month = month + 1
-        year = today.year
-        if month > 12:
-            month = month - 12
-            year += 1
-        if month <= today.month:
-            year += 1
-        eom = date(year=year, month=month, day=1) - timedelta(days=1)
-        return eom.isoformat()
-
     def _populateKeys(self, keys):
         self._populateDues(keys)
         self._populateThresholds(keys)
@@ -59,43 +87,32 @@ class TaskEditorDialog(QtWidgets.QDialog):
     def _populateThresholds(self, keys):
         keys['t:Today'] = 't:' + date.today().isoformat()
         keys['t:Tomorrow'] = 't:' + (date.today() + timedelta(days=1)).isoformat()
-        keys['t:EndOfWeek'] = 't:' + (date.today() + timedelta((6 - date.today().weekday()) % 7)).isoformat()
-
-        keys['t:EndOfNextWeek'] = 't:' + (date.today() + timedelta((13 - date.today().weekday()) % 14)).isoformat()
-
-        keys['t:EndOfMonth'] = 't:' + self._endOfMonth(date.today().month)
-
-        keys['t:EndOfNextMonth'] = 't:' + self._endOfMonth(date.today().month + 1)
-        keys['t:EndOfYear'] = 't:' + (date(year=date.today().year + 1, month=1, day=1) - timedelta(days=1)).isoformat()
+        keys['t:EndOfWeek'] = 't:' + end_of_week()
+        keys['t:EndOfNextWeek'] = 't:' + end_of_next_week()
+        keys['t:EndOfMonth'] = 't:' + end_of_month()
+        keys['t:EndOfNextMonth'] = 't:' + end_of_next_month()
+        keys['t:EndOfYear'] = 't:' + end_of_year()
 
     def _populateDues(self, keys):
-        today = 'due:' + date.today().isoformat()
-        tomorrow = 'due:' + (date.today() + timedelta(days=1)).isoformat()
-        EOW = 'due:' + (date.today() + timedelta((6 - date.today().weekday()) % 7)).isoformat()
-        EONW = 'due:' + (date.today() + timedelta((13 - date.today().weekday()) % 14)).isoformat()
-        EOM = 'due:' + self._endOfMonth(date.today().month)
-        EONM = 'due:' + self._endOfMonth(date.today().month + 1)
-        EOY = 'due:' + (date(year=date.today().year + 1, month=1, day=1) - timedelta(days=1)).isoformat()
-
-        keys['due:EndOfWeek'] = EOW
-        keys['due:EndOfNextWeek'] = EONW
-        keys['due:EndOfMonth'] = EOM
-        keys['due:EndOfNextMonth'] = EONM
-        keys['due:EndOfYear'] = EOY
-        keys['due:Today'] = today
-        keys['due:Tomorrow'] = tomorrow
-        keys['due:January'] = "due:" + self._endOfMonth(1)
-        keys['due:February'] = "due:" + self._endOfMonth(2)
-        keys['due:March'] = "due:" + self._endOfMonth(3)
-        keys['due:April'] = "due:" + self._endOfMonth(4)
-        keys['due:May'] = "due:" + self._endOfMonth(5)
-        keys['due:June'] = "due:" + self._endOfMonth(6)
-        keys['due:July'] = "due:" + self._endOfMonth(7)
-        keys['due:August'] = "due:" + self._endOfMonth(8)
-        keys['due:September'] = "due:" + self._endOfMonth(9)
-        keys['due:October'] = "due:" + self._endOfMonth(10)
-        keys['due:November'] = "due:" + self._endOfMonth(11)
-        keys['due:December'] = "due:" + self._endOfMonth(12)
+        keys['due:Today'] = 'due:' + date.today().isoformat()
+        keys['due:Tomorrow'] = 'due:' + (date.today() + timedelta(days=1)).isoformat()
+        keys['due:EndOfWeek'] = 'due:' + end_of_week()
+        keys['due:EndOfNextWeek'] = 'due:' + end_of_next_week()
+        keys['due:EndOfMonth'] = 'due:' + end_of_month()
+        keys['due:EndOfNextMonth'] = 'due:' + end_of_next_month()
+        keys['due:EndOfYear'] = 'due:' + end_of_year()
+        keys['due:January'] = "due:" + end_of_month(month=1)
+        keys['due:February'] = "due:" + end_of_month(month=2)
+        keys['due:March'] = "due:" + end_of_month(month=3)
+        keys['due:April'] = "due:" + end_of_month(month=4)
+        keys['due:May'] = "due:" + end_of_month(month=5)
+        keys['due:June'] = "due:" + end_of_month(month=6)
+        keys['due:July'] = "due:" + end_of_month(month=7)
+        keys['due:August'] = "due:" + end_of_month(month=8)
+        keys['due:September'] = "due:" + end_of_month(month=9)
+        keys['due:October'] = "due:" + end_of_month(month=10)
+        keys['due:November'] = "due:" + end_of_month(month=11)
+        keys['due:December'] = "due:" + end_of_month(month=12)
 
     def _initUI(self, values):
         self.setWindowTitle("Task Editor")
