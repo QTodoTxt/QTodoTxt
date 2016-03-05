@@ -25,6 +25,13 @@ class TaskEditorDialog(QtWidgets.QDialog):
         ('due:September', ''),
         ('due:October', ''),
         ('due:November', ''),
+        ('t:Today', ''),
+        ('t:Tomorrow', ''),
+        ('t:EndOfWeek', ''),
+        ('t:EndOfNextWeek', ''),
+        ('t:EndOfMonth', ''),
+        ('t:EndOfNextMonth', ''),
+        ('t:EndOfYear', ''),
         ('due:December', '')
     ])
 
@@ -46,6 +53,22 @@ class TaskEditorDialog(QtWidgets.QDialog):
         return eom.isoformat()
 
     def _populateKeys(self, keys):
+        self._populateDues(keys)
+        self._populateThresholds(keys)
+
+    def _populateThresholds(self, keys):
+        keys['t:Today'] = 't:' + date.today().isoformat()
+        keys['t:Tomorrow'] = 't:' + (date.today() + timedelta(days=1)).isoformat()
+        keys['t:EndOfWeek'] = 't:' + (date.today() + timedelta((6 - date.today().weekday()) % 7)).isoformat()
+
+        keys['t:EndOfNextWeek'] = 't:' + (date.today() + timedelta((13 - date.today().weekday()) % 14)).isoformat()
+
+        keys['t:EndOfMonth'] = 't:' + self._endOfMonth(date.today().month)
+
+        keys['t:EndOfNextMonth'] = 't:' + self._endOfMonth(date.today().month + 1)
+        keys['t:EndOfYear'] = 't:' + (date(year=date.today().year + 1, month=1, day=1) - timedelta(days=1)).isoformat()
+
+    def _populateDues(self, keys):
         today = 'due:' + date.today().isoformat()
         tomorrow = 'due:' + (date.today() + timedelta(days=1)).isoformat()
         EOW = 'due:' + (date.today() + timedelta((6 - date.today().weekday()) % 7)).isoformat()
@@ -73,7 +96,6 @@ class TaskEditorDialog(QtWidgets.QDialog):
         keys['due:October'] = "due:" + self._endOfMonth(10)
         keys['due:November'] = "due:" + self._endOfMonth(11)
         keys['due:December'] = "due:" + self._endOfMonth(12)
-        return keys
 
     def _initUI(self, values):
         self.setWindowTitle("Task Editor")
