@@ -1,7 +1,7 @@
 import re
 from datetime import datetime, date
 
-from PySide import QtCore
+from PyQt5 import QtCore
 
 from qtodotxt.lib.task_htmlizer import TaskHtmlizer
 

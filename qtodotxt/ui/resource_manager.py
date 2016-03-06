@@ -1,6 +1,6 @@
 import os
 import sys
-from PySide.QtGui import QIcon
+from PyQt5.QtGui import QIcon
 
 
 def _getRoot():

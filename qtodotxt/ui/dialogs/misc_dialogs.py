@@ -1,4 +1,4 @@
-from PySide import QtGui
+from PyQt5 import QtGui
 
 
 class Dialogs(object):

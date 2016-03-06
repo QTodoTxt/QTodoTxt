@@ -1,14 +1,14 @@
 import sys
 
-from PySide import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 from qtodotxt.ui.dialogs.settingsui import Ui_SettingsUI
 
 
-class Settings(QtGui.QDialog):
+class Settings(QtWidgets.QDialog):
 
     def __init__(self, maincontroller):
-        QtGui.QDialog.__init__(self, maincontroller._view)
+        QtWidgets.QDialog.__init__(self, maincontroller._view)
         self.maincontroller = maincontroller
         self.ui = Ui_SettingsUI()
         self.ui.setupUi(self)

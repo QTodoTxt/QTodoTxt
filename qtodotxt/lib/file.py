@@ -1,6 +1,6 @@
 import logging
 import os
-from PySide import QtCore
+from PyQt5 import QtCore
 from qtodotxt.lib.filters import DueTodayFilter, DueTomorrowFilter, DueThisWeekFilter, DueThisMonthFilter, \
     DueOverdueFilter
 from qtodotxt.lib.tasklib import Task
@@ -224,7 +224,7 @@ class FileObserver(QtCore.QFileSystemWatcher):
         self._file = file
         self.fileChanged.connect(self.fileChangedHandler)
 
-    @QtCore.Slot(str)
+    @QtCore.pyqtSlot(str)
     def fileChangedHandler(self, path):
         logger.debug('Detected change on {}\nremoving it from watchlist'.format(path))
         self.removePath(path)

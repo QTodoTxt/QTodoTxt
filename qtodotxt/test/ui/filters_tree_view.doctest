@@ -5,11 +5,11 @@ Test Settings
 >>> sys.path.insert(0, os.path.join('.', '..', '..'))
 >>> from qtodotxt.ui.views.filters_tree_view import FiltersTreeView,FilterTreeWidgetItem
 >>> from qtodotxt.lib.filters import ContextFilter
->>> from PySide import QtGui,QtCore
->>> app=QtGui.QApplication.instance() 
+>>> from PyQt5 import QtWidgets, QtCore
+>>> app=QtWidgets.QApplication.instance() 
 >>> if not app:
-...     app = QtGui.QApplication([])
->>> splitter = QtGui.QSplitter()
+...     app = QtWidgets.QApplication([])
+>>> splitter = QtWidgets.QSplitter()
 >>> filters_tree_view = FiltersTreeView(splitter)
 >>> filter = ContextFilter("work")
 >>> filters_tree_view.addFilter(filter,2)
