@@ -1,5 +1,4 @@
 from PyQt5 import QtCore
-from PyQt5 import QtGui
 from PyQt5 import QtWidgets
 
 from qtodotxt.lib import tasklib
@@ -28,7 +27,6 @@ class TasksListController(QtCore.QObject):
         self._initCompleteSelectedTasksAction()
         self._initDecreasePrioritySelectedTasksAction()
         self._initIncreasePrioritySelectedTasksAction()
-        self._confirm_complete = int(QtCore.QSettings().value("confirm_complete", 1))
 
     def _initEditTaskAction(self):
         action = QtWidgets.QAction(getIcon('TaskEdit.png'), '&Edit Task', self)
@@ -85,7 +83,8 @@ class TasksListController(QtCore.QObject):
     def _completeSelectedTasks(self):
         tasks = self._view.getSelectedTasks()
         if tasks:
-            if not self._confirm_complete or self._confirmTasksAction(tasks, 'Toggle Completeness of'):
+            confirm = int(QtCore.QSettings().value("confirm_complete", 1))
+            if not confirm or self._confirmTasksAction(tasks, 'Toggle Completeness of'):
                 for task in tasks:
                     self.completeTask(task)
 
@@ -105,10 +104,10 @@ class TasksListController(QtCore.QObject):
         for task in tasks:
             message += '<li>%s</li>' % self._task_htmlizer.task2html(task)
         message += '</ul>'
-        result = QtGui.QMessageBox.question(self._view, 'Confirm', message,
-                                            buttons=QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
-                                            defaultButton=QtGui.QMessageBox.Yes)
-        return result == QtGui.QMessageBox.Yes
+        result = QtWidgets.QMessageBox.question(self._view, 'Confirm', message,
+                                            buttons=QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                            defaultButton=QtWidgets.QMessageBox.Yes)
+        return result == QtWidgets.QMessageBox.Yes
 
     def _decreasePriority(self):
         tasks = self._view.getSelectedTasks()
@@ -161,7 +160,7 @@ class TasksListController(QtCore.QObject):
             self.taskCreated.emit(task)
 
     def editTask(self, task=None):
-        if task is None:
+        if not task:
             tasks = self._view.getSelectedTasks()
             # FIXME: instead of this we should disable icon when no task or serveral tasks are selected
             if len(tasks) == 0:
