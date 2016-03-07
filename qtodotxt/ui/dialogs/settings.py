@@ -64,7 +64,7 @@ class Settings(QtWidgets.QDialog):
         self.maincontroller.updateFilters()
 
     def setConfirmCompletion(self, val):
-        self._save_int_cb("comfirm_complete", val)
+        self._save_int_cb("confirm_complete", val)
 
     def enableTray(self, val):
         self._save_int_cb("enable_tray", val)
