@@ -104,9 +104,12 @@ class TasksListController(QtCore.QObject):
         for task in tasks:
             message += '<li>%s</li>' % self._task_htmlizer.task2html(task)
         message += '</ul>'
-        result = QtWidgets.QMessageBox.question(self._view, 'Confirm', message,
-                                            buttons=QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-                                            defaultButton=QtWidgets.QMessageBox.Yes)
+        result = QtWidgets.QMessageBox.question(self._view,
+                                                'Confirm',
+                                                message,
+                                                buttons=QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                                defaultButton=QtWidgets.QMessageBox.Yes
+                                                )
         return result == QtWidgets.QMessageBox.Yes
 
     def _decreasePriority(self):
