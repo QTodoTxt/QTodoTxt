@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>552</width>
-    <height>309</height>
+    <width>557</width>
+    <height>337</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -70,6 +70,13 @@
         </property>
        </widget>
       </item>
+      <item row="9" column="2">
+       <widget class="QPushButton" name="closeButton">
+        <property name="text">
+         <string>Close</string>
+        </property>
+       </widget>
+      </item>
       <item row="5" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
@@ -96,7 +103,7 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="2">
+      <item row="8" column="2">
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -109,10 +116,10 @@
         </property>
        </spacer>
       </item>
-      <item row="7" column="2">
-       <widget class="QPushButton" name="closeButton">
+      <item row="6" column="0">
+       <widget class="QCheckBox" name="trayCheckBox">
         <property name="text">
-         <string>Close</string>
+         <string>Enable system tray (Require restart)</string>
         </property>
        </widget>
       </item>

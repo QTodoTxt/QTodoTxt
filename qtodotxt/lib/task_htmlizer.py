@@ -33,9 +33,9 @@ class TaskHtmlizer(object):
             # add space, so tasks get evenly aligned when there's no priority
             html = '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;' + html
         if task.completion_date:
-            html += '<font color="gray">(completed: {})</font>'.format(task.completion_date)
+            html += ' <font color="gray">(completed: {})</font>'.format(task.completion_date)
         if task.creation_date:
-            html += '<font color="gray">(created: {})</font>'.format(task.creation_date)
+            html += ' <font color="gray">(created: {})</font>'.format(task.creation_date)
         return html
 
     def _htmlizeContext(self, context):

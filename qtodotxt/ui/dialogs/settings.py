@@ -23,6 +23,7 @@ class Settings(QtWidgets.QDialog):
         self._int_settings_to_cb("add_created_date", self.ui.addCreatedDateCheckBox)
         self._int_settings_to_cb("hide_future_tasks", self.ui.hideFutureTasksCheckBox)
         self._int_settings_to_cb("confirm_complete", self.ui.confirmCompletionCheckBox)
+        self._int_settings_to_cb("enable_tray", self.ui.trayCheckBox)
         priority = self.settings.value("lowest_priority", "D")
         self.ui.lowestPriorityLineEdit.setText(priority)
 
@@ -40,6 +41,7 @@ class Settings(QtWidgets.QDialog):
         self.ui.addCreatedDateCheckBox.stateChanged.connect(self.setAddCreatedDate)
         self.ui.hideFutureTasksCheckBox.stateChanged.connect(self.setHideFutureTasks)
         self.ui.confirmCompletionCheckBox.stateChanged.connect(self.setConfirmCompletion)
+        self.ui.trayCheckBox.stateChanged.connect(self.enableTray)
         self.ui.lowestPriorityLineEdit.textChanged.connect(self.setLowestPriority)
 
     def _save_int_cb(self, name, val):
@@ -62,7 +64,10 @@ class Settings(QtWidgets.QDialog):
         self.maincontroller.updateFilters()
 
     def setConfirmCompletion(self, val):
-        self._save_int_cb("comfirm_complete", val)
+        self._save_int_cb("confirm_complete", val)
+
+    def enableTray(self, val):
+        self._save_int_cb("enable_tray", val)
 
     def setLowestPriority(self, text):
         self.settings.setValue("lowest_priority", text)

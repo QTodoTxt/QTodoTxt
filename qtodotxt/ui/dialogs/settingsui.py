@@ -6,14 +6,14 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_SettingsUI(object):
 
     def setupUi(self, SettingsUI):
         SettingsUI.setObjectName("SettingsUI")
-        SettingsUI.resize(552, 309)
+        SettingsUI.resize(557, 337)
         self.horizontalLayout = QtWidgets.QHBoxLayout(SettingsUI)
         self.horizontalLayout.setContentsMargins(11, 11, 11, 11)
         self.horizontalLayout.setSpacing(6)
@@ -44,6 +44,9 @@ class Ui_SettingsUI(object):
         self.confirmCompletionCheckBox.setChecked(True)
         self.confirmCompletionCheckBox.setObjectName("confirmCompletionCheckBox")
         self.gridLayout.addWidget(self.confirmCompletionCheckBox, 4, 0, 1, 2)
+        self.closeButton = QtWidgets.QPushButton(self.groupBox)
+        self.closeButton.setObjectName("closeButton")
+        self.gridLayout.addWidget(self.closeButton, 9, 2, 1, 1)
         self.label = QtWidgets.QLabel(self.groupBox)
         self.label.setObjectName("label")
         self.gridLayout.addWidget(self.label, 5, 0, 1, 1)
@@ -57,10 +60,10 @@ class Ui_SettingsUI(object):
         self.lowestPriorityLineEdit.setObjectName("lowestPriorityLineEdit")
         self.gridLayout.addWidget(self.lowestPriorityLineEdit, 5, 1, 1, 1)
         spacerItem = QtWidgets.QSpacerItem(20, 80, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout.addItem(spacerItem, 6, 2, 1, 1)
-        self.closeButton = QtWidgets.QPushButton(self.groupBox)
-        self.closeButton.setObjectName("closeButton")
-        self.gridLayout.addWidget(self.closeButton, 7, 2, 1, 1)
+        self.gridLayout.addItem(spacerItem, 8, 2, 1, 1)
+        self.trayCheckBox = QtWidgets.QCheckBox(self.groupBox)
+        self.trayCheckBox.setObjectName("trayCheckBox")
+        self.gridLayout.addWidget(self.trayCheckBox, 6, 0, 1, 1)
         self.horizontalLayout.addWidget(self.groupBox)
 
         self.retranslateUi(SettingsUI)
@@ -75,6 +78,7 @@ class Ui_SettingsUI(object):
         self.addCreatedDateCheckBox.setText(_translate("SettingsUI", "Add created date"))
         self.hideFutureTasksCheckBox.setText(_translate("SettingsUI", "Hide future tasks"))
         self.confirmCompletionCheckBox.setText(_translate("SettingsUI", "Ask for confirmation before task completion"))
+        self.closeButton.setText(_translate("SettingsUI", "Close"))
         self.label.setText(_translate("SettingsUI", "Lowest task priority"))
         self.lowestPriorityLineEdit.setText(_translate("SettingsUI", "D"))
-        self.closeButton.setText(_translate("SettingsUI", "Close"))
+        self.trayCheckBox.setText(_translate("SettingsUI", "Enable system tray (Require restart)"))
