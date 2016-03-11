@@ -12,6 +12,7 @@ from qtodotxt.ui.controllers.tasks_list_controller import TasksListController
 from qtodotxt.ui.controllers.filters_tree_controller import FiltersTreeController
 from qtodotxt.lib.filters import SimpleTextFilter, FutureFilter
 from qtodotxt.ui.controllers.menu_controller import MenuController
+from qtodotxt.ui.resource_manager import getIcon
 
 
 logger = logging.getLogger(__name__)
@@ -46,6 +47,7 @@ class MainController(QtCore.QObject):
         self._view.closeEventSignal.connect(self._view_onCloseEvent)
         filters = self._settings.value("current_filters", ["All"])
         self._filters_tree_controller._view.setSelectedFiltersByNames(filters)
+        self._restoreFilterView()
 
     def auto_save(self):
         if int(self._settings.value("auto_save", 1)):
@@ -65,6 +67,16 @@ class MainController(QtCore.QObject):
     def _initToolBar(self):
         toolbar = self._view.addToolBar("Main Toolbar")
         toolbar.setObjectName("mainToolbar")
+
+
+        self.filterViewAction = QtWidgets.QAction(getIcon('sidepane.svg'), '&Show Filters', self)
+        self.filterViewAction.setCheckable(True)
+        #action.setShortcuts(['Ctrl+E']) # what should it be?
+        self.filterViewAction.triggered.connect(self._toggleFilterView)
+        toolbar.addAction(self.filterViewAction)
+
+        toolbar.addSeparator()
+
         toolbar.addAction(self._menu_controller.openAction)
         toolbar.addAction(self._menu_controller.saveAction)
         toolbar.addSeparator()
@@ -79,6 +91,34 @@ class MainController(QtCore.QObject):
         toolbar.visibilityChanged.connect(self._toolbar_visibility_changed)
         if not self._show_toolbar:
             toolbar.hide()
+
+    def _toggleFilterView(self):
+        if self._filters_tree_controller._view.isVisible():
+            self._hide_filter_tree()
+        else:
+            self._show_filter_tree()
+
+    def _hide_filter_tree(self):
+            self._settings.setValue("show_filter_tree", 0)
+            self._filters_tree_controller._view.hide()
+            self.filterViewAction.setChecked(False)
+
+    def _show_filter_tree(self):
+        self.filterViewAction.setChecked(True)
+        self._settings.setValue("show_filter_tree", 1)
+        self._filters_tree_controller._view.show()
+        self._filters_tree_controller._view.adjustSize()
+        if self._view.splitter.sizes()[0] < 50:
+            # FIXME: why do we get that stuff?
+            self._settings.value("filter_tree_width", 200)
+            self._view.splitter.setSizes([200, self._view.splitter.sizes()[1] - 200])
+
+    def _restoreFilterView(self):
+        val = int(self._settings.value("show_filter_tree", 1))
+        if val:
+            self._show_filter_tree()
+        else:
+            self._hide_filter_tree()
 
     def _toolbar_visibility_changed(self, val):
         self._show_toolbar = int(val)
