@@ -18,19 +18,19 @@ class FiltersTreeController(QtCore.QObject):
 
     def __init__(self, view):
         QtCore.QObject.__init__(self)
-        self._view = view
-        self._view.filterSelectionChanged.connect(self._view_filterSelectionChanged)
+        self.view = view
+        self.view.filterSelectionChanged.connect(self.view_filterSelectionChanged)
         self._is_showing_filters = False
 
-    def _view_filterSelectionChanged(self, filters):
+    def view_filterSelectionChanged(self, filters):
         if not self._is_showing_filters:
             self.filterSelectionChanged.emit(filters)
 
     def showFilters(self, file):
         self._is_showing_filters = True
-        previouslySelectedFilters = self._view.getSelectedFilters()
-        self._view.clearSelection()
-        self._view.clear()
+        previouslySelectedFilters = self.view.getSelectedFilters()
+        self.view.clearSelection()
+        self.view.clear()
         self._addAllContexts(file)
         self._addAllProjects(file)
         self._addAllDueRanges(file)
@@ -40,19 +40,19 @@ class FiltersTreeController(QtCore.QObject):
 
     def _updateCounter(self, file):
         rootCounters = file.getTasksCounters()
-        self._view.updateTopLevelTitles(rootCounters)
+        self.view.updateTopLevelTitles(rootCounters)
 
     def _addAllContexts(self, file):
         contexts = file.getAllContexts()
         for context, number in contexts.items():
             filter = ContextFilter(context)
-            self._view.addFilter(filter, number)
+            self.view.addFilter(filter, number)
 
     def _addAllProjects(self, file):
         projects = file.getAllProjects()
         for project, number in projects.items():
             filter = ProjectFilter(project)
-            self._view.addFilter(filter, number)
+            self.view.addFilter(filter, number)
 
     def _addAllDueRanges(self, file):
 
@@ -75,10 +75,10 @@ class FiltersTreeController(QtCore.QObject):
                 filter = DueOverdueFilter(range)
                 sortKey = rangeSorting['Overdue']
 
-            self._view.addDueRangeFilter(filter, number, sortKey)
+            self.view.addDueRangeFilter(filter, number, sortKey)
 
     def _reselect(self, previouslySelectedFilters):
         for filter in previouslySelectedFilters:
-            self._view.selectFilter(filter)
-        if not self._view.getSelectedFilters():
-            self._view.selectAllTasksFilter()
+            self.view.selectFilter(filter)
+        if not self.view.getSelectedFilters():
+            self.view.selectAllTasksFilter()
