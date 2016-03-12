@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>557</width>
-    <height>337</height>
+    <width>579</width>
+    <height>283</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -50,17 +50,7 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QCheckBox" name="hideFutureTasksCheckBox">
-        <property name="text">
-         <string>Hide future tasks</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0" colspan="2">
+      <item row="3" column="0" colspan="2">
        <widget class="QCheckBox" name="confirmCompletionCheckBox">
         <property name="text">
          <string>Ask for confirmation before task completion</string>
@@ -70,7 +60,14 @@
         </property>
        </widget>
       </item>
-      <item row="9" column="2">
+      <item row="4" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Lowest task priority</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="2">
        <widget class="QPushButton" name="closeButton">
         <property name="text">
          <string>Close</string>
@@ -78,13 +75,13 @@
        </widget>
       </item>
       <item row="5" column="0">
-       <widget class="QLabel" name="label">
+       <widget class="QCheckBox" name="trayCheckBox">
         <property name="text">
-         <string>Lowest task priority</string>
+         <string>Enable system tray (Require restart)</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="1">
+      <item row="4" column="1">
        <widget class="QLineEdit" name="lowestPriorityLineEdit">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -103,7 +100,7 @@
         </property>
        </widget>
       </item>
-      <item row="8" column="2">
+      <item row="7" column="2">
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -115,13 +112,6 @@
          </size>
         </property>
        </spacer>
-      </item>
-      <item row="6" column="0">
-       <widget class="QCheckBox" name="trayCheckBox">
-        <property name="text">
-         <string>Enable system tray (Require restart)</string>
-        </property>
-       </widget>
       </item>
      </layout>
     </widget>

@@ -48,6 +48,7 @@ class MainController(QtCore.QObject):
         filters = self._settings.value("current_filters", ["All"])
         self._filters_tree_controller.view.setSelectedFiltersByNames(filters)
         self._restoreFilterView()
+        self._restoreHideFuture()
 
     def auto_save(self):
         if int(self._settings.value("auto_save", 1)):
@@ -57,6 +58,7 @@ class MainController(QtCore.QObject):
         self._initFiltersTree()
         self._initTasksList()
         self._initMenuBar()
+        self._initActions()
         self._initToolBar()
         self._initSearchText()
 
@@ -64,16 +66,23 @@ class MainController(QtCore.QObject):
         menu = self.view.menuBar()
         self._menu_controller = MenuController(self, menu)
 
-    def _initToolBar(self):
-        toolbar = self.view.addToolBar("Main Toolbar")
-        toolbar.setObjectName("mainToolbar")
-
-
+    def _initActions(self):
         self.filterViewAction = QtWidgets.QAction(getIcon('sidepane.svg'), '&Show Filters', self)
         self.filterViewAction.setCheckable(True)
         #action.setShortcuts(['Ctrl+E']) # what should it be?
         self.filterViewAction.triggered.connect(self._toggleFilterView)
+
+        self.hideFutureAction = QtWidgets.QAction(getIcon('sidepane.svg'), '&Hide Future Tasks', self)
+        self.hideFutureAction.setCheckable(True)
+        #action.setShortcuts(['Ctrl+E']) # what should it be?
+        self.hideFutureAction.triggered.connect(self._toggleHideFuture)
+
+    def _initToolBar(self):
+        toolbar = self.view.addToolBar("Main Toolbar")
+        toolbar.setObjectName("mainToolbar")
+
         toolbar.addAction(self.filterViewAction)
+        toolbar.addAction(self.hideFutureAction)
 
         toolbar.addSeparator()
 
@@ -91,6 +100,14 @@ class MainController(QtCore.QObject):
         toolbar.visibilityChanged.connect(self._toolbar_visibility_changed)
         if not self._show_toolbar:
             toolbar.hide()
+
+    def _toggleHideFuture(self):
+        if self.hideFutureAction.isChecked():
+            self._settings.setValue("hide_future_tasks", 1)
+            self.updateFilters()
+        else:
+            self._settings.setValue("hide_future_tasks", 0)
+            self.updateFilters()
 
     def _toggleFilterView(self):
         if self._filters_tree_controller.view.isVisible():
@@ -119,6 +136,13 @@ class MainController(QtCore.QObject):
             self._show_filter_tree()
         else:
             self._hide_filter_tree()
+
+    def _restoreHideFuture(self):
+        val = int(self._settings.value("hide_future_tasks", 0))
+        if val:
+            self.hideFutureAction.setChecked(True)
+        else:
+            self.hideFutureAction.setChecked(False)
 
     def _toolbar_visibility_changed(self, val):
         self._show_toolbar = int(val)
@@ -153,7 +177,7 @@ class MainController(QtCore.QObject):
 
     def _initFiltersTree(self):
         controller = self._filters_tree_controller = \
-            FiltersTreeController(self.view.filters_treeview)
+            FiltersTreeController(self.view.filters_tree_view)
         controller.filterSelectionChanged.connect(
             self._onFilterSelectionChanged)
 
@@ -161,7 +185,7 @@ class MainController(QtCore.QObject):
         # First we filter with filters tree
         treeTasks = tasklib.filterTasks(filters, self._file.tasks)
         # Then with our search text
-        searchText = self.view.tasksview.tasks_searchview.getSearchText()
+        searchText = self.view.tasks_view.tasks_search_view.getSearchText()
         tasks = tasklib.filterTasks([SimpleTextFilter(searchText)], treeTasks)
         # And finally with future filter if needed
         # TODO: refactor all that filters
@@ -170,7 +194,7 @@ class MainController(QtCore.QObject):
         self._tasks_list_controller.showTasks(tasks)
 
     def _initSearchText(self):
-        self.view.tasksview.tasks_searchview.searchTextChanged.connect(
+        self.view.tasks_view.tasks_search_view.searchTextChanged.connect(
             self._onSearchTextChanged)
 
     def _onSearchTextChanged(self, searchText):
@@ -187,7 +211,7 @@ class MainController(QtCore.QObject):
 
     def _initTasksList(self):
         controller = self._tasks_list_controller = \
-            TasksListController(self.view.tasksview.tasks_listview, self._task_editor_service)
+            TasksListController(self.view.tasks_view.tasks_list_view, self._task_editor_service)
 
         controller.taskCreated.connect(self._tasks_list_taskCreated)
         controller.taskModified.connect(self._tasks_list_taskModified)
