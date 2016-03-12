@@ -10,7 +10,7 @@ from qtodotxt.lib.file import ErrorLoadingFile, File, FileObserver
 
 from qtodotxt.ui.controllers.tasks_list_controller import TasksListController
 from qtodotxt.ui.controllers.filters_tree_controller import FiltersTreeController
-from qtodotxt.lib.filters import SimpleTextFilter, FutureFilter
+from qtodotxt.lib.filters import SimpleTextFilter, FutureFilter, IncompleteTasksFilter
 from qtodotxt.ui.controllers.menu_controller import MenuController
 from qtodotxt.ui.resource_manager import getIcon
 
@@ -74,6 +74,10 @@ class MainController(QtCore.QObject):
         self.hideFutureAction.setCheckable(True)
         #action.setShortcuts(['Ctrl+E']) # what should it be?
         self.hideFutureAction.triggered.connect(self._toggleHideFuture)
+        self.showCompletedAction = QtWidgets.QAction(getIcon('sidepane.svg'), '&Show Completed Tasks', self)
+        self.showCompletedAction.setCheckable(True)
+        #action.setShortcuts(['Ctrl+E']) # what should it be?
+        self.showCompletedAction.triggered.connect(self._toggleShowCompleted)
 
     def _initToolBar(self):
         toolbar = self.view.addToolBar("Main Toolbar")
@@ -81,6 +85,7 @@ class MainController(QtCore.QObject):
 
         toolbar.addAction(self.filterViewAction)
         toolbar.addAction(self.hideFutureAction)
+        toolbar.addAction(self.showCompletedAction)
 
         toolbar.addSeparator()
 
@@ -98,6 +103,14 @@ class MainController(QtCore.QObject):
         toolbar.visibilityChanged.connect(self._toolbar_visibility_changed)
         if not self._show_toolbar:
             toolbar.hide()
+
+    def _toggleShowCompleted(self):
+        if self.showCompletedAction.isChecked():
+            self._settings.setValue("show_completed_tasks", 1)
+            self.updateFilters()
+        else:
+            self._settings.setValue("show_completed_tasks", 0)
+            self.updateFilters()
 
     def _toggleHideFuture(self):
         if self.hideFutureAction.isChecked():
@@ -180,9 +193,10 @@ class MainController(QtCore.QObject):
         searchText = self.view.tasks_view.tasks_search_view.getSearchText()
         tasks = tasklib.filterTasks([SimpleTextFilter(searchText)], treeTasks)
         # And finally with future filter if needed
-        # TODO: refactor all that filters
-        if int(self._settings.value("hide_future_tasks", 1)):
+        if self.hideFutureAction.isChecked():
             tasks = tasklib.filterTasks([FutureFilter()], tasks)
+        if not self.showCompletedAction.isChecked():
+            tasks = tasklib.filterTasks([IncompleteTasksFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
 
     def _initSearchText(self):
@@ -196,9 +210,10 @@ class MainController(QtCore.QObject):
         # Then with our search text
         tasks = tasklib.filterTasks([SimpleTextFilter(searchText)], treeTasks)
         # And finally with future filter if needed
-        # TODO: refactor all that filters
-        if int(self._settings.value("hide_future_tasks", 1)):
+        if self.hideFutureAction.isChecked():
             tasks = tasklib.filterTasks([FutureFilter()], tasks)
+        if not self.showCompletedAction.isChecked():
+            tasks = tasklib.filterTasks([IncompleteTasksFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
 
     def _initTasksList(self):
@@ -350,6 +365,11 @@ class MainController(QtCore.QObject):
         splitterPosition = [int(x) for x in splitterPosition]
         self.view.centralWidget().setSizes(splitterPosition)
         self._restoreFilterView()
+        val = int(self._settings.value("show_completed_tasks", 1))
+        if val:
+            self.showCompletedAction.setChecked(True)
+        else:
+            self.showCompletedAction.setChecked(False)
         self._restoreHideFuture()
 
     def updateFilters(self):
