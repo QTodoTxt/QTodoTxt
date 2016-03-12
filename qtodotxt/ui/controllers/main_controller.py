@@ -47,8 +47,6 @@ class MainController(QtCore.QObject):
         self.view.closeEventSignal.connect(self.view_onCloseEvent)
         filters = self._settings.value("current_filters", ["All"])
         self._filters_tree_controller.view.setSelectedFiltersByNames(filters)
-        self._restoreFilterView()
-        self._restoreHideFuture()
 
     def auto_save(self):
         if int(self._settings.value("auto_save", 1)):
@@ -109,40 +107,34 @@ class MainController(QtCore.QObject):
             self._settings.setValue("hide_future_tasks", 0)
             self.updateFilters()
 
-    def _toggleFilterView(self):
-        if self._filters_tree_controller.view.isVisible():
-            self._hide_filter_tree()
-        else:
-            self._show_filter_tree()
-
-    def _hide_filter_tree(self):
-            self._settings.setValue("show_filter_tree", 0)
-            self._filters_tree_controller.view.hide()
-            self.filterViewAction.setChecked(False)
-
-    def _show_filter_tree(self):
-        self.filterViewAction.setChecked(True)
-        self._settings.setValue("show_filter_tree", 1)
-        self._filters_tree_controller.view.show()
-        self._filters_tree_controller.view.adjustSize()
-        if self.view.splitter.sizes()[0] < 50:
-            # FIXME: why do we get that stuff?
-            self._settings.value("filter_tree_width", 200)
-            self.view.splitter.setSizes([200, self.view.splitter.sizes()[1] - 200])
-
-    def _restoreFilterView(self):
-        val = int(self._settings.value("show_filter_tree", 1))
-        if val:
-            self._show_filter_tree()
-        else:
-            self._hide_filter_tree()
-
     def _restoreHideFuture(self):
         val = int(self._settings.value("hide_future_tasks", 0))
         if val:
             self.hideFutureAction.setChecked(True)
+            self._toggleHideFuture()
         else:
             self.hideFutureAction.setChecked(False)
+            self._toggleHideFuture()
+
+    def _toggleFilterView(self):
+        if self.filterViewAction.isChecked():
+            self._settings.setValue("show_filter_tree", 1)
+            self._filters_tree_controller.view.show()
+        else:
+            # first save splitter pose
+            self._settings.setValue("splitter_pos", self.view.centralWidget().sizes())
+            # not hide 
+            self._settings.setValue("show_filter_tree", 0)
+            self._filters_tree_controller.view.hide()
+
+    def _restoreFilterView(self):
+        val = int(self._settings.value("show_filter_tree", 1))
+        if val:
+            self.filterViewAction.setChecked(True)
+            self._toggleFilterView()
+        else:
+            self.filterViewAction.setChecked(False)
+            self._toggleFilterView()
 
     def _toolbar_visibility_changed(self, val):
         self._show_toolbar = int(val)
@@ -271,7 +263,8 @@ class MainController(QtCore.QObject):
     def view_onCloseEvent(self, closeEvent):
         if self._canExit():
             self._settings.setValue("show_toolbar", self._show_toolbar)
-            self._settings.setValue("splitter_pos", self.view.centralWidget().sizes())
+            if self.filterViewAction.isChecked():  # we only save size if it is visible
+                self._settings.setValue("splitter_pos", self.view.centralWidget().sizes())
             self._settings.setValue("current_filters", self._filters_tree_controller.view.getSelectedFilterNames())
             self._settings.setValue("main_window_geometry", self.view.saveGeometry())
             self._settings.setValue("main_window_state", self.view.saveState())
@@ -353,10 +346,11 @@ class MainController(QtCore.QObject):
     def _updateView(self):
         self.view.restoreGeometry(self._settings.value("main_window_geometry"))
         self.view.restoreState(self._settings.value("main_window_state"))
-        splitterPosition = self._settings.value("splitter_pos", None)
-        if splitterPosition:
-            splitterPosition = [int(x) for x in splitterPosition]
-            self.view.centralWidget().setSizes(splitterPosition)
+        splitterPosition = self._settings.value("splitter_pos", 200)
+        splitterPosition = [int(x) for x in splitterPosition]
+        self.view.centralWidget().setSizes(splitterPosition)
+        self._restoreFilterView()
+        self._restoreHideFuture()
 
     def updateFilters(self):
         self._onFilterSelectionChanged(self._filters_tree_controller.view.getSelectedFilters())
