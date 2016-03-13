@@ -72,7 +72,7 @@ class UncategorizedTasksFilter(BaseFilter):
         BaseFilter.__init__(self, 'Uncategorized')
 
     def isMatch(self, task):
-        return  (not task.contexts) and (not task.projects)
+        return (not task.contexts) and (not task.projects)
 
 
 class CompleteTasksFilter(BaseFilter):

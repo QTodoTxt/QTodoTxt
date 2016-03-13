@@ -67,16 +67,16 @@ class MainController(QtCore.QObject):
     def _initActions(self):
         self.filterViewAction = QtWidgets.QAction(getIcon('sidepane.svg'), '&Show Filters', self)
         self.filterViewAction.setCheckable(True)
-        #action.setShortcuts(['Ctrl+E']) # what should it be?
+        # action.setShortcuts(['Ctrl+E']) # what should it be?
         self.filterViewAction.triggered.connect(self._toggleFilterView)
 
         self.showFutureAction = QtWidgets.QAction(getIcon('future.svg'), '&Show Future Tasks', self)
         self.showFutureAction.setCheckable(True)
-        #action.setShortcuts(['Ctrl+E']) # what should it be?
+        # action.setShortcuts(['Ctrl+E']) # what should it be?
         self.showFutureAction.triggered.connect(self._toggleShowFuture)
         self.showCompletedAction = QtWidgets.QAction(getIcon('show_completed.png'), '&Show Completed Tasks', self)
         self.showCompletedAction.setCheckable(True)
-        #action.setShortcuts(['Ctrl+E']) # what should it be?
+        # action.setShortcuts(['Ctrl+E']) # what should it be?
         self.showCompletedAction.triggered.connect(self._toggleShowCompleted)
 
     def _initToolBar(self):
@@ -134,9 +134,7 @@ class MainController(QtCore.QObject):
             self._settings.setValue("show_filter_tree", 1)
             self._filters_tree_controller.view.show()
         else:
-            # first save splitter pose
             self._settings.setValue("splitter_pos", self.view.centralWidget().sizes())
-            # not hide 
             self._settings.setValue("show_filter_tree", 0)
             self._filters_tree_controller.view.hide()
 

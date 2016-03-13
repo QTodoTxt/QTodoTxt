@@ -2,7 +2,7 @@ from PyQt5 import QtCore
 from PyQt5 import QtWidgets
 from qtodotxt.lib.filters import ContextFilter, CompleteTasksFilter, DueFilter, DueOverdueFilter, DueThisMonthFilter, \
     DueThisWeekFilter, DueTodayFilter, DueTomorrowFilter, HasContextsFilter, HasDueDateFilter, HasProjectsFilter, \
-    IncompleteTasksFilter, ProjectFilter, UncategorizedTasksFilter, AllTasksFilter
+    ProjectFilter, UncategorizedTasksFilter, AllTasksFilter
 from qtodotxt.ui.resource_manager import getIcon
 
 
