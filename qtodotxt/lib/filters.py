@@ -72,7 +72,7 @@ class UncategorizedTasksFilter(BaseFilter):
         BaseFilter.__init__(self, 'Uncategorized')
 
     def isMatch(self, task):
-        return (not task.is_complete) and (not task.contexts) and (not task.projects)
+        return (not task.contexts) and (not task.projects)
 
 
 class CompleteTasksFilter(BaseFilter):
@@ -97,7 +97,7 @@ class ContextFilter(BaseFilter):
         BaseFilter.__init__(self, context)
 
     def isMatch(self, task):
-        return (not task.is_complete) and (self.text in task.contexts)
+        return self.text in task.contexts
 
     def __str__(self):
         return "ContextFilter(%s)" % self.text
@@ -112,7 +112,7 @@ class ProjectFilter(BaseFilter):
         BaseFilter.__init__(self, project)
 
     def isMatch(self, task):
-        return (not task.is_complete) and (self.text in task.projects)
+        return self.text in task.projects
 
     def __str__(self):
         return "ProjectFilter(%s)" % self.text
@@ -127,7 +127,7 @@ class DueFilter(BaseFilter):
         BaseFilter.__init__(self, dueRange)
 
     def isMatch(self, task):
-        return (not task.is_complete) and (self.text in task.dueRanges)
+        return self.text in task.dueRanges
 
     def __str__(self):
         return "DueFilter(%s)" % self.text
@@ -142,7 +142,7 @@ class DueTodayFilter(BaseFilter):
         BaseFilter.__init__(self, dueRange)
 
     def isMatch(self, task):
-        if (not task.due) or (task.is_complete):
+        if (not task.due):
             return False
         else:
             self.due_date = task.due
@@ -162,7 +162,7 @@ class DueTomorrowFilter(BaseFilter):
         BaseFilter.__init__(self, dueRange)
 
     def isMatch(self, task):
-        if (not task.due) or (task.is_complete):
+        if not task.due:
             return False
         else:
             due_date = task.due
@@ -182,7 +182,7 @@ class DueThisWeekFilter(BaseFilter):
         BaseFilter.__init__(self, dueRange)
 
     def isMatch(self, task):
-        if (not task.due) or (task.is_complete):
+        if not task.due:
             return False
         else:
             due_date = task.due
@@ -202,7 +202,7 @@ class DueThisMonthFilter(BaseFilter):
         BaseFilter.__init__(self, dueRange)
 
     def isMatch(self, task):
-        if (not task.due) or (task.is_complete):
+        if not task.due:
             return False
         else:
             due_date = task.due
@@ -226,7 +226,7 @@ class DueOverdueFilter(BaseFilter):
         BaseFilter.__init__(self, dueRange)
 
     def isMatch(self, task):
-        if (not task.due) or (task.is_complete):
+        if not task.due:
             return False
         else:
             if not task.due:
@@ -250,7 +250,7 @@ class HasProjectsFilter(BaseFilter):
         BaseFilter.__init__(self, 'Projects')
 
     def isMatch(self, task):
-        return (not task.is_complete) and task.projects
+        return task.projects
 
     def __str__(self):
         return "HasProjectsFilter" % self.text
@@ -266,7 +266,7 @@ class HasContextsFilter(BaseFilter):
         BaseFilter.__init__(self, 'Contexts')
 
     def isMatch(self, task):
-        return (not task.is_complete) and task.contexts
+        return task.contexts
 
     def __str__(self):
         return "HasContextsFilter" % self.text
@@ -282,7 +282,7 @@ class HasDueDateFilter(BaseFilter):
         BaseFilter.__init__(self, 'DueRange')
 
     def isMatch(self, task):
-        return (not task.is_complete) and task.due
+        return task.due
 
     def __str__(self):
         return "HasDueDateFilter" % self.text
@@ -298,7 +298,7 @@ class HasDueRangesFilter(BaseFilter):
         BaseFilter.__init__(self, 'DueRange')
 
     def isMatch(self, task):
-        return (not task.is_complete) and task.dueRanges
+        return task.dueRanges
 
     def __str__(self):
         return "HasDueRangesFilter" % self.text

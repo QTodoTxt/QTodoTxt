@@ -10,8 +10,9 @@ from qtodotxt.lib.file import ErrorLoadingFile, File, FileObserver
 
 from qtodotxt.ui.controllers.tasks_list_controller import TasksListController
 from qtodotxt.ui.controllers.filters_tree_controller import FiltersTreeController
-from qtodotxt.lib.filters import SimpleTextFilter, FutureFilter
+from qtodotxt.lib.filters import SimpleTextFilter, FutureFilter, IncompleteTasksFilter
 from qtodotxt.ui.controllers.menu_controller import MenuController
+from qtodotxt.ui.resource_manager import getIcon
 
 
 logger = logging.getLogger(__name__)
@@ -25,7 +26,7 @@ class MainController(QtCore.QObject):
     def __init__(self, view, dialogs, task_editor_service, args):
         super(MainController, self).__init__()
         self._args = args
-        self._view = view
+        self.view = view
 
         # use object variable for setting only used in this class
         # others are accessed through QSettings
@@ -43,9 +44,9 @@ class MainController(QtCore.QObject):
         self._fileObserver = FileObserver(self, self._file)
         self._is_modified = False
         self._setIsModified(False)
-        self._view.closeEventSignal.connect(self._view_onCloseEvent)
+        self.view.closeEventSignal.connect(self.view_onCloseEvent)
         filters = self._settings.value("current_filters", ["All"])
-        self._filters_tree_controller._view.setSelectedFiltersByNames(filters)
+        self._filters_tree_controller.view.setSelectedFiltersByNames(filters)
 
     def auto_save(self):
         if int(self._settings.value("auto_save", 1)):
@@ -55,16 +56,39 @@ class MainController(QtCore.QObject):
         self._initFiltersTree()
         self._initTasksList()
         self._initMenuBar()
+        self._initActions()
         self._initToolBar()
         self._initSearchText()
 
     def _initMenuBar(self):
-        menu = self._view.menuBar()
+        menu = self.view.menuBar()
         self._menu_controller = MenuController(self, menu)
 
+    def _initActions(self):
+        self.filterViewAction = QtWidgets.QAction(getIcon('sidepane.svg'), '&Show Filters', self)
+        self.filterViewAction.setCheckable(True)
+        # action.setShortcuts(['Ctrl+E']) # what should it be?
+        self.filterViewAction.triggered.connect(self._toggleFilterView)
+
+        self.showFutureAction = QtWidgets.QAction(getIcon('future.svg'), '&Show Future Tasks', self)
+        self.showFutureAction.setCheckable(True)
+        # action.setShortcuts(['Ctrl+E']) # what should it be?
+        self.showFutureAction.triggered.connect(self._toggleShowFuture)
+        self.showCompletedAction = QtWidgets.QAction(getIcon('show_completed.png'), '&Show Completed Tasks', self)
+        self.showCompletedAction.setCheckable(True)
+        # action.setShortcuts(['Ctrl+E']) # what should it be?
+        self.showCompletedAction.triggered.connect(self._toggleShowCompleted)
+
     def _initToolBar(self):
-        toolbar = self._view.addToolBar("Main Toolbar")
+        toolbar = self.view.addToolBar("Main Toolbar")
         toolbar.setObjectName("mainToolbar")
+
+        toolbar.addAction(self.filterViewAction)
+        toolbar.addAction(self.showFutureAction)
+        toolbar.addAction(self.showCompletedAction)
+
+        toolbar.addSeparator()
+
         toolbar.addAction(self._menu_controller.openAction)
         toolbar.addAction(self._menu_controller.saveAction)
         toolbar.addSeparator()
@@ -80,19 +104,62 @@ class MainController(QtCore.QObject):
         if not self._show_toolbar:
             toolbar.hide()
 
+    def _toggleShowCompleted(self):
+        if self.showCompletedAction.isChecked():
+            self._settings.setValue("show_completed_tasks", 1)
+            self.updateFilters()
+        else:
+            self._settings.setValue("show_completed_tasks", 0)
+            self.updateFilters()
+
+    def _toggleShowFuture(self):
+        if self.showFutureAction.isChecked():
+            self._settings.setValue("show_future_tasks", 1)
+            self.updateFilters()
+        else:
+            self._settings.setValue("show_future_tasks", 0)
+            self.updateFilters()
+
+    def _restoreShowFuture(self):
+        val = int(self._settings.value("show_future_tasks", 1))
+        if val:
+            self.showFutureAction.setChecked(True)
+            self._toggleShowFuture()
+        else:
+            self.showFutureAction.setChecked(False)
+            self._toggleShowFuture()
+
+    def _toggleFilterView(self):
+        if self.filterViewAction.isChecked():
+            self._settings.setValue("show_filter_tree", 1)
+            self._filters_tree_controller.view.show()
+        else:
+            self._settings.setValue("splitter_pos", self.view.centralWidget().sizes())
+            self._settings.setValue("show_filter_tree", 0)
+            self._filters_tree_controller.view.hide()
+
+    def _restoreFilterView(self):
+        val = int(self._settings.value("show_filter_tree", 1))
+        if val:
+            self.filterViewAction.setChecked(True)
+            self._toggleFilterView()
+        else:
+            self.filterViewAction.setChecked(False)
+            self._toggleFilterView()
+
     def _toolbar_visibility_changed(self, val):
         self._show_toolbar = int(val)
 
     def exit(self):
-        self._view.close()
+        self.view.close()
         sys.exit()
 
     def getView(self):
-        return self._view
+        return self.view
 
     def show(self):
         self._updateView()
-        self._view.show()
+        self.view.show()
         self._updateTitle()
 
         if self._args.file:
@@ -113,7 +180,7 @@ class MainController(QtCore.QObject):
 
     def _initFiltersTree(self):
         controller = self._filters_tree_controller = \
-            FiltersTreeController(self._view.filters_tree_view)
+            FiltersTreeController(self.view.filters_tree_view)
         controller.filterSelectionChanged.connect(
             self._onFilterSelectionChanged)
 
@@ -121,33 +188,35 @@ class MainController(QtCore.QObject):
         # First we filter with filters tree
         treeTasks = tasklib.filterTasks(filters, self._file.tasks)
         # Then with our search text
-        searchText = self._view.tasks_view.tasks_search_view.getSearchText()
+        searchText = self.view.tasks_view.tasks_search_view.getSearchText()
         tasks = tasklib.filterTasks([SimpleTextFilter(searchText)], treeTasks)
         # And finally with future filter if needed
-        # TODO: refactor all that filters
-        if int(self._settings.value("hide_future_tasks", 1)):
+        if not self.showFutureAction.isChecked():
             tasks = tasklib.filterTasks([FutureFilter()], tasks)
+        if not self.showCompletedAction.isChecked():
+            tasks = tasklib.filterTasks([IncompleteTasksFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
 
     def _initSearchText(self):
-        self._view.tasks_view.tasks_search_view.searchTextChanged.connect(
+        self.view.tasks_view.tasks_search_view.searchTextChanged.connect(
             self._onSearchTextChanged)
 
     def _onSearchTextChanged(self, searchText):
         # First we filter with filters tree
-        filters = self._filters_tree_controller._view.getSelectedFilters()
+        filters = self._filters_tree_controller.view.getSelectedFilters()
         treeTasks = tasklib.filterTasks(filters, self._file.tasks)
         # Then with our search text
         tasks = tasklib.filterTasks([SimpleTextFilter(searchText)], treeTasks)
         # And finally with future filter if needed
-        # TODO: refactor all that filters
-        if int(self._settings.value("hide_future_tasks", 1)):
+        if not self.showFutureAction.isChecked():
             tasks = tasklib.filterTasks([FutureFilter()], tasks)
+        if not self.showCompletedAction.isChecked():
+            tasks = tasklib.filterTasks([IncompleteTasksFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
 
     def _initTasksList(self):
         controller = self._tasks_list_controller = \
-            TasksListController(self._view.tasks_view.tasks_list_view, self._task_editor_service)
+            TasksListController(self.view.tasks_view.tasks_list_view, self._task_editor_service)
 
         controller.taskCreated.connect(self._tasks_list_taskCreated)
         controller.taskModified.connect(self._tasks_list_taskModified)
@@ -155,9 +224,9 @@ class MainController(QtCore.QObject):
         controller.taskArchived.connect(self._tasks_list_taskArchived)
 
         # Context menu
-        # controller._view.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
-        controller._view.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        controller._view.customContextMenuRequested.connect(self.showContextMenu)
+        # controller.view.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+        controller.view.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        controller.view.customContextMenuRequested.connect(self.showContextMenu)
         self._contextMenu = QtWidgets.QMenu()
         self._contextMenu.addAction(self._tasks_list_controller.editTaskAction)
         self._contextMenu.addSeparator()
@@ -168,9 +237,9 @@ class MainController(QtCore.QObject):
         self._contextMenu.addAction(self._tasks_list_controller.decreasePrioritySelectedTasksAction)
 
     def showContextMenu(self, position):
-        tasks = self._tasks_list_controller._view.getSelectedTasks()
+        tasks = self._tasks_list_controller.view.getSelectedTasks()
         if tasks:
-            self._contextMenu.exec_(self._tasks_list_controller._view.mapToGlobal(position))
+            self._contextMenu.exec_(self._tasks_list_controller.view.mapToGlobal(position))
 
     def _tasks_list_taskDeleted(self, task):
         self._file.tasks.remove(task)
@@ -204,13 +273,14 @@ class MainController(QtCore.QObject):
         else:
             return button == QtWidgets.QMessageBox.Discard
 
-    def _view_onCloseEvent(self, closeEvent):
+    def view_onCloseEvent(self, closeEvent):
         if self._canExit():
             self._settings.setValue("show_toolbar", self._show_toolbar)
-            self._settings.setValue("splitter_pos", self._view.centralWidget().sizes())
-            self._settings.setValue("current_filters", self._filters_tree_controller._view.getSelectedFilterNames())
-            self._settings.setValue("main_window_geometry", self._view.saveGeometry())
-            self._settings.setValue("main_window_state", self._view.saveState())
+            if self.filterViewAction.isChecked():  # we only save size if it is visible
+                self._settings.setValue("splitter_pos", self.view.centralWidget().sizes())
+            self._settings.setValue("current_filters", self._filters_tree_controller.view.getSelectedFilterNames())
+            self._settings.setValue("main_window_geometry", self.view.saveGeometry())
+            self._settings.setValue("main_window_state", self.view.saveState())
 
             closeEvent.accept()
         else:
@@ -229,7 +299,7 @@ class MainController(QtCore.QObject):
         ok = True
         if not filename:
             (filename, ok) = \
-                QtWidgets.QFileDialog.getSaveFileName(self._view, filter=FILENAME_FILTERS)
+                QtWidgets.QFileDialog.getSaveFileName(self.view, filter=FILENAME_FILTERS)
         if ok and filename:
             self._file.save(filename)
             self._settings.setValue("last_open_file", filename)
@@ -247,11 +317,11 @@ class MainController(QtCore.QObject):
             title += 'Untitled'
         if self._is_modified:
             title += ' (*)'
-        self._view.setWindowTitle(title)
+        self.view.setWindowTitle(title)
 
     def open(self):
         (filename, ok) = \
-            QtWidgets.QFileDialog.getOpenFileName(self._view, filter=FILENAME_FILTERS)
+            QtWidgets.QFileDialog.getOpenFileName(self.view, filter=FILENAME_FILTERS)
 
         if ok and filename:
             try:
@@ -287,19 +357,25 @@ class MainController(QtCore.QObject):
         self._task_editor_service.updateValues(self._file)
 
     def _updateView(self):
-        self._view.restoreGeometry(self._settings.value("main_window_geometry"))
-        self._view.restoreState(self._settings.value("main_window_state"))
-        splitterPosition = self._settings.value("splitter_pos", None)
-        if splitterPosition:
-            splitterPosition = [int(x) for x in splitterPosition]
-            self._view.centralWidget().setSizes(splitterPosition)
+        self.view.restoreGeometry(self._settings.value("main_window_geometry"))
+        self.view.restoreState(self._settings.value("main_window_state"))
+        splitterPosition = self._settings.value("splitter_pos", 200)
+        splitterPosition = [int(x) for x in splitterPosition]
+        self.view.centralWidget().setSizes(splitterPosition)
+        self._restoreFilterView()
+        val = int(self._settings.value("show_completed_tasks", 1))
+        if val:
+            self.showCompletedAction.setChecked(True)
+        else:
+            self.showCompletedAction.setChecked(False)
+        self._restoreShowFuture()
 
     def updateFilters(self):
-        self._onFilterSelectionChanged(self._filters_tree_controller._view.getSelectedFilters())
+        self._onFilterSelectionChanged(self._filters_tree_controller.view.getSelectedFilters())
 
     def toggleVisible(self):
-        if self._view.isMinimized():
-            self._view.showNormal()
-            self._view.activateWindow()
+        if self.view.isMinimized():
+            self.view.showNormal()
+            self.view.activateWindow()
         else:
-            self._view.showMinimized()
+            self.view.showMinimized()

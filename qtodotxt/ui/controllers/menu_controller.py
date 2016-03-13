@@ -93,6 +93,6 @@ class MenuController(QtCore.QObject):
         return action
 
     def _show_preferences(self):
-        print(self._main_controller._view)
+        print(self._main_controller.view)
         settings = Settings(self._main_controller)
         settings.show()
