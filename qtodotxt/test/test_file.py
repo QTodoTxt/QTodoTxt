@@ -113,7 +113,7 @@ class TestFile(unittest.TestCase):
             Task('due:' + yesterday + ' task of yesterday'),
         ])
         self.saveAndReload()
-        self.assertEqual(self.file.getAllDueRanges()[0], {'Today': 2, 'This week': 2, 'This month': 2, 'Overdue': 1})
+        self.assertEqual(self.file.getAllDueRanges()[0], {'Today': 3, 'This week': 3, 'This month': 3, 'Overdue': 1})
         self.assertIsInstance(self.file.getAllDueRanges()[1], dict)
 
     def test_get_all_completed_projects(self):
