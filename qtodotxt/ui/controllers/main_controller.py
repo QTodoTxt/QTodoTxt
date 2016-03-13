@@ -70,11 +70,11 @@ class MainController(QtCore.QObject):
         #action.setShortcuts(['Ctrl+E']) # what should it be?
         self.filterViewAction.triggered.connect(self._toggleFilterView)
 
-        self.hideFutureAction = QtWidgets.QAction(getIcon('sidepane.svg'), '&Hide Future Tasks', self)
-        self.hideFutureAction.setCheckable(True)
+        self.showFutureAction = QtWidgets.QAction(getIcon('future.svg'), '&Show Future Tasks', self)
+        self.showFutureAction.setCheckable(True)
         #action.setShortcuts(['Ctrl+E']) # what should it be?
-        self.hideFutureAction.triggered.connect(self._toggleHideFuture)
-        self.showCompletedAction = QtWidgets.QAction(getIcon('sidepane.svg'), '&Show Completed Tasks', self)
+        self.showFutureAction.triggered.connect(self._toggleShowFuture)
+        self.showCompletedAction = QtWidgets.QAction(getIcon('show_completed.png'), '&Show Completed Tasks', self)
         self.showCompletedAction.setCheckable(True)
         #action.setShortcuts(['Ctrl+E']) # what should it be?
         self.showCompletedAction.triggered.connect(self._toggleShowCompleted)
@@ -84,7 +84,7 @@ class MainController(QtCore.QObject):
         toolbar.setObjectName("mainToolbar")
 
         toolbar.addAction(self.filterViewAction)
-        toolbar.addAction(self.hideFutureAction)
+        toolbar.addAction(self.showFutureAction)
         toolbar.addAction(self.showCompletedAction)
 
         toolbar.addSeparator()
@@ -112,22 +112,22 @@ class MainController(QtCore.QObject):
             self._settings.setValue("show_completed_tasks", 0)
             self.updateFilters()
 
-    def _toggleHideFuture(self):
-        if self.hideFutureAction.isChecked():
-            self._settings.setValue("hide_future_tasks", 1)
+    def _toggleShowFuture(self):
+        if self.showFutureAction.isChecked():
+            self._settings.setValue("show_future_tasks", 1)
             self.updateFilters()
         else:
-            self._settings.setValue("hide_future_tasks", 0)
+            self._settings.setValue("show_future_tasks", 0)
             self.updateFilters()
 
-    def _restoreHideFuture(self):
-        val = int(self._settings.value("hide_future_tasks", 0))
+    def _restoreShowFuture(self):
+        val = int(self._settings.value("show_future_tasks", 1))
         if val:
-            self.hideFutureAction.setChecked(True)
-            self._toggleHideFuture()
+            self.showFutureAction.setChecked(True)
+            self._toggleShowFuture()
         else:
-            self.hideFutureAction.setChecked(False)
-            self._toggleHideFuture()
+            self.showFutureAction.setChecked(False)
+            self._toggleShowFuture()
 
     def _toggleFilterView(self):
         if self.filterViewAction.isChecked():
@@ -193,7 +193,7 @@ class MainController(QtCore.QObject):
         searchText = self.view.tasks_view.tasks_search_view.getSearchText()
         tasks = tasklib.filterTasks([SimpleTextFilter(searchText)], treeTasks)
         # And finally with future filter if needed
-        if self.hideFutureAction.isChecked():
+        if not self.showFutureAction.isChecked():
             tasks = tasklib.filterTasks([FutureFilter()], tasks)
         if not self.showCompletedAction.isChecked():
             tasks = tasklib.filterTasks([IncompleteTasksFilter()], tasks)
@@ -210,7 +210,7 @@ class MainController(QtCore.QObject):
         # Then with our search text
         tasks = tasklib.filterTasks([SimpleTextFilter(searchText)], treeTasks)
         # And finally with future filter if needed
-        if self.hideFutureAction.isChecked():
+        if not self.showFutureAction.isChecked():
             tasks = tasklib.filterTasks([FutureFilter()], tasks)
         if not self.showCompletedAction.isChecked():
             tasks = tasklib.filterTasks([IncompleteTasksFilter()], tasks)
@@ -370,7 +370,7 @@ class MainController(QtCore.QObject):
             self.showCompletedAction.setChecked(True)
         else:
             self.showCompletedAction.setChecked(False)
-        self._restoreHideFuture()
+        self._restoreShowFuture()
 
     def updateFilters(self):
         self._onFilterSelectionChanged(self._filters_tree_controller.view.getSelectedFilters())
