@@ -75,7 +75,7 @@ class TasksListController(QtCore.QObject):
             task.setCompleted()
         else:
             task.setPending()
-        if int(QtCore.QSettings().value("auto_archive", 1)):
+        if int(QtCore.QSettings().value("auto_archive", 0)):
             self.taskArchived.emit(task)
         else:
             self.taskModified.emit(task)
