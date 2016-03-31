@@ -74,10 +74,15 @@ class MainController(QtCore.QObject):
         self.showFutureAction.setCheckable(True)
         # action.setShortcuts(['Ctrl+E']) # what should it be?
         self.showFutureAction.triggered.connect(self._toggleShowFuture)
+
         self.showCompletedAction = QtWidgets.QAction(getIcon('show_completed.png'), '&Show Completed Tasks', self)
         self.showCompletedAction.setCheckable(True)
         # action.setShortcuts(['Ctrl+E']) # what should it be?
         self.showCompletedAction.triggered.connect(self._toggleShowCompleted)
+
+        self.archiveAction = QtWidgets.QAction(getIcon('archive.svg'), '&Archive Completed Tasks', self)
+        # action.setShortcuts(['Ctrl+E']) # what should it be?
+        self.archiveAction.triggered.connect(self._archive_all_done_tasks)
 
     def _initToolBar(self):
         toolbar = self.view.addToolBar("Main Toolbar")
@@ -100,6 +105,8 @@ class MainController(QtCore.QObject):
         toolbar.addSeparator()
         toolbar.addAction(self._tasks_list_controller.increasePrioritySelectedTasksAction)
         toolbar.addAction(self._tasks_list_controller.decreasePrioritySelectedTasksAction)
+        toolbar.addSeparator()
+        toolbar.addAction(self.archiveAction)
         toolbar.visibilityChanged.connect(self._toolbar_visibility_changed)
         if not self._show_toolbar:
             toolbar.hide()
@@ -255,6 +262,13 @@ class MainController(QtCore.QObject):
     def _tasks_list_taskArchived(self, task):
         self._file.saveDoneTask(task)
         self._file.tasks.remove(task)
+        self._onFileUpdated()
+
+    def _archive_all_done_tasks(self):
+        done = [task for task in self._file.tasks if task.is_complete]
+        for task in done:
+            self._file.saveDoneTask(task)
+            self._file.tasks.remove(task)
         self._onFileUpdated()
 
     def _onFileUpdated(self):
