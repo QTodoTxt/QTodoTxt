@@ -20,20 +20,20 @@ class MainView(QtWidgets.QMainWindow):
 
     def _initUI(self):
 
-        splitter = QtWidgets.QSplitter()
-        splitter.setHandleWidth(1)
+        self.splitter = QtWidgets.QSplitter()
+        self.splitter.setHandleWidth(1)
 
         cssPath = getResourcePath("css/default.css")
         css = open(cssPath, 'r', encoding='utf-8').read()
         self.setStyleSheet(css)
 
-        self.filters_tree_view = FiltersTreeView(splitter)
-        self.tasks_view = TasksView(splitter)
+        self.filters_tree_view = FiltersTreeView(self.splitter)
+        self.tasks_view = TasksView(self.splitter)
 
-        self.setCentralWidget(splitter)
+        self.setCentralWidget(self.splitter)
 
         self.resize(800, 400)
-        splitter.setSizes([250, 550])
+        self.splitter.setSizes([250, 550])
         self.setWindowIcon(getIcon('qtodotxt.ico'))
 
     def closeEvent(self, closeEvent):
