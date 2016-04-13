@@ -106,40 +106,32 @@ class File(object):
         except IOError as e:
             raise ErrorSavingFile("Error saving to file '%s'" % doneFilename, e)
 
-    def getAllCompletedContexts(self):
+    def getAllContexts(self, return_completed=False):
         contexts = dict()
         for task in self.tasks:
-            if task.is_complete:
+            if return_completed or not task.is_complete:
                 for context in task.contexts:
+                    count = 0 if task.is_complete else 1
                     if context in contexts:
-                        contexts[context] += 1
+                        contexts[context] += count
                     else:
-                        contexts[context] = 1
+                        contexts[context] = count
         return contexts
 
-    def getAllCompletedProjects(self):
+    def getAllProjects(self, return_completed=False):
         projects = dict()
         for task in self.tasks:
-            if task.is_complete:
+            if return_completed or not task.is_complete:
                 for project in task.projects:
+                    count = 0 if task.is_complete else 1
                     if project in projects:
-                        projects[project] += 1
+                        projects[project] += count
                     else:
-                        projects[project] = 1
+                        projects[project] = count
         return projects
 
-    def getAllContexts(self):
-        contexts = dict()
-        for task in self.tasks:
-            if not task.is_complete:
-                for context in task.contexts:
-                    if context in contexts:
-                        contexts[context] += 1
-                    else:
-                        contexts[context] = 1
-        return contexts
 
-    def getAllDueRanges(self):
+    def getAllDueRanges(self, return_completed=False):
         dueRanges = dict()
         # This determines the sorting of the ranges in the tree view. Lowest value first.
         rangeSorting = {'Today': 20,
@@ -149,48 +141,41 @@ class File(object):
                         'Overdue': 10}
 
         for task in self.tasks:
+            if not return_completed and task.is_complete:
+                continue
+
+            count = 0 if task.is_complete else 1
             if DueTodayFilter('Today').isMatch(task):
                 if not ('Today' in dueRanges):
-                    dueRanges['Today'] = 1
+                    dueRanges['Today'] = count
                 else:
-                    dueRanges['Today'] += 1
+                    dueRanges['Today'] += count
 
             if DueTomorrowFilter('Tomorrow').isMatch(task):
                 if not ('Tomorrow' in dueRanges):
-                    dueRanges['Tomorrow'] = 1
+                    dueRanges['Tomorrow'] = count
                 else:
-                    dueRanges['Tomorrow'] += 1
+                    dueRanges['Tomorrow'] += count
 
             if DueThisWeekFilter('This week').isMatch(task):
                 if not ('This week' in dueRanges):
-                    dueRanges['This week'] = 1
+                    dueRanges['This week'] = count
                 else:
-                    dueRanges['This week'] += 1
+                    dueRanges['This week'] += count
 
             if DueThisMonthFilter('This month').isMatch(task):
                 if not ('This month' in dueRanges):
-                    dueRanges['This month'] = 1
+                    dueRanges['This month'] = count
                 else:
-                    dueRanges['This month'] += 1
+                    dueRanges['This month'] += count
 
             if DueOverdueFilter('Overdue').isMatch(task):
                 if not ('Overdue' in dueRanges):
-                    dueRanges['Overdue'] = 1
+                    dueRanges['Overdue'] = count
                 else:
-                    dueRanges['Overdue'] += 1
+                    dueRanges['Overdue'] += count
 
         return dueRanges, rangeSorting
-
-    def getAllProjects(self):
-        projects = dict()
-        for task in self.tasks:
-            if not task.is_complete:
-                for project in task.projects:
-                    if project in projects:
-                        projects[project] += 1
-                    else:
-                        projects[project] = 1
-        return projects
 
     def getTasksCounters(self):
         counters = dict({'Pending': 0,
