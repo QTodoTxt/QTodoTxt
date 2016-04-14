@@ -10,7 +10,7 @@ from qtodotxt.lib.file import ErrorLoadingFile, File, FileObserver
 
 from qtodotxt.ui.controllers.tasks_list_controller import TasksListController
 from qtodotxt.ui.controllers.filters_tree_controller import FiltersTreeController
-from qtodotxt.lib.filters import SimpleTextFilter, FutureFilter, IncompleteTasksFilter
+from qtodotxt.lib.filters import SimpleTextFilter, FutureFilter, IncompleteTasksFilter, CompleteTasksFilter
 from qtodotxt.ui.controllers.menu_controller import MenuController
 from qtodotxt.ui.resource_manager import getIcon
 
@@ -37,6 +37,7 @@ class MainController(QtCore.QObject):
         if show_toolbar in ("true", "false"):
             show_toolbar = 1
         self._show_toolbar = int(show_toolbar)
+        self._show_completed = True
         self._dialogs = dialogs
         self._task_editor_service = task_editor_service
         self._initControllers()
@@ -114,10 +115,13 @@ class MainController(QtCore.QObject):
     def _toggleShowCompleted(self):
         if self.showCompletedAction.isChecked():
             self._settings.setValue("show_completed_tasks", 1)
+            self._show_completed = True
             self.updateFilters()
         else:
             self._settings.setValue("show_completed_tasks", 0)
+            self._show_completed = False
             self.updateFilters()
+        self._filters_tree_controller.showFilters(self._file, self._show_completed)
 
     def _toggleShowFuture(self):
         if self.showFutureAction.isChecked():
@@ -192,15 +196,22 @@ class MainController(QtCore.QObject):
             self._onFilterSelectionChanged)
 
     def _onFilterSelectionChanged(self, filters):
+        self._applyFilters(filters=filters)
+
+    def _applyFilters(self, filters=None, searchText=None):
         # First we filter with filters tree
-        treeTasks = tasklib.filterTasks(filters, self._file.tasks)
+        if filters is None:
+            filters = self._filters_tree_controller.view.getSelectedFilters()
+        tasks = tasklib.filterTasks(filters, self._file.tasks)
         # Then with our search text
-        searchText = self.view.tasks_view.tasks_search_view.getSearchText()
-        tasks = tasklib.filterTasks([SimpleTextFilter(searchText)], treeTasks)
-        # And finally with future filter if needed
+        if searchText is None:
+            searchText = self.view.tasks_view.tasks_search_view.getSearchText()
+        tasks = tasklib.filterTasks([SimpleTextFilter(searchText)], tasks)
+        # with future filter if needed
         if not self.showFutureAction.isChecked():
             tasks = tasklib.filterTasks([FutureFilter()], tasks)
-        if not self.showCompletedAction.isChecked():
+        # with complete filter if needed
+        if not CompleteTasksFilter() in filters and not self.showCompletedAction.isChecked():
             tasks = tasklib.filterTasks([IncompleteTasksFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
 
@@ -209,17 +220,7 @@ class MainController(QtCore.QObject):
             self._onSearchTextChanged)
 
     def _onSearchTextChanged(self, searchText):
-        # First we filter with filters tree
-        filters = self._filters_tree_controller.view.getSelectedFilters()
-        treeTasks = tasklib.filterTasks(filters, self._file.tasks)
-        # Then with our search text
-        tasks = tasklib.filterTasks([SimpleTextFilter(searchText)], treeTasks)
-        # And finally with future filter if needed
-        if not self.showFutureAction.isChecked():
-            tasks = tasklib.filterTasks([FutureFilter()], tasks)
-        if not self.showCompletedAction.isChecked():
-            tasks = tasklib.filterTasks([IncompleteTasksFilter()], tasks)
-        self._tasks_list_controller.showTasks(tasks)
+        self._applyFilters(searchText=searchText)
 
     def _initTasksList(self):
         controller = self._tasks_list_controller = \
@@ -272,7 +273,7 @@ class MainController(QtCore.QObject):
         self._onFileUpdated()
 
     def _onFileUpdated(self):
-        self._filters_tree_controller.showFilters(self._file)
+        self._filters_tree_controller.showFilters(self._file, self._show_completed)
         self._task_editor_service.updateValues(self._file)
         self._setIsModified(True)
         self.auto_save()
@@ -367,22 +368,27 @@ class MainController(QtCore.QObject):
 
     def _loadFileToUI(self):
         self._setIsModified(False)
-        self._filters_tree_controller.showFilters(self._file)
+        self._filters_tree_controller.showFilters(self._file, self._show_completed)
         self._task_editor_service.updateValues(self._file)
 
     def _updateView(self):
-        self.view.restoreGeometry(self._settings.value("main_window_geometry"))
-        self.view.restoreState(self._settings.value("main_window_state"))
+        self.view.restoreGeometry(self._settings.value("main_window_geometry", b""))
+        self.view.restoreState(self._settings.value("main_window_state", b""))
         splitterPosition = self._settings.value("splitter_pos", 200)
         splitterPosition = [int(x) for x in splitterPosition]
         self.view.centralWidget().setSizes(splitterPosition)
+        self._restoreShowCompleted()
         self._restoreFilterView()
+        self._restoreShowFuture()
+
+    def _restoreShowCompleted(self):
         val = int(self._settings.value("show_completed_tasks", 1))
         if val:
+            self._show_completed = True
             self.showCompletedAction.setChecked(True)
         else:
+            self._show_completed = False
             self.showCompletedAction.setChecked(False)
-        self._restoreShowFuture()
 
     def updateFilters(self):
         self._onFilterSelectionChanged(self._filters_tree_controller.view.getSelectedFilters())

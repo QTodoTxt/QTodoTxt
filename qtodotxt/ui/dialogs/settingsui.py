@@ -6,7 +6,8 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtWidgets
+
 
 class Ui_SettingsUI(object):
     def setupUi(self, SettingsUI):
@@ -75,4 +76,3 @@ class Ui_SettingsUI(object):
         self.closeButton.setText(_translate("SettingsUI", "Close"))
         self.trayCheckBox.setText(_translate("SettingsUI", "Enable system tray (Require restart)"))
         self.lowestPriorityLineEdit.setText(_translate("SettingsUI", "D"))
-

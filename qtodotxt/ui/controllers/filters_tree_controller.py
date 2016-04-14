@@ -26,14 +26,14 @@ class FiltersTreeController(QtCore.QObject):
         if not self._is_showing_filters:
             self.filterSelectionChanged.emit(filters)
 
-    def showFilters(self, file):
+    def showFilters(self, file, show_completed=False):
         self._is_showing_filters = True
         previouslySelectedFilters = self.view.getSelectedFilters()
         self.view.clearSelection()
         self.view.clear()
-        self._addAllContexts(file)
-        self._addAllProjects(file)
-        self._addAllDueRanges(file)
+        self._addAllContexts(file, show_completed)
+        self._addAllProjects(file, show_completed)
+        self._addAllDueRanges(file, show_completed)
         self._updateCounter(file)
         self._is_showing_filters = False
         self._reselect(previouslySelectedFilters)
@@ -42,21 +42,21 @@ class FiltersTreeController(QtCore.QObject):
         rootCounters = file.getTasksCounters()
         self.view.updateTopLevelTitles(rootCounters)
 
-    def _addAllContexts(self, file):
-        contexts = file.getAllContexts()
+    def _addAllContexts(self, file, show_completed):
+        contexts = file.getAllContexts(show_completed)
         for context, number in contexts.items():
             filter = ContextFilter(context)
             self.view.addFilter(filter, number)
 
-    def _addAllProjects(self, file):
-        projects = file.getAllProjects()
+    def _addAllProjects(self, file, show_completed):
+        projects = file.getAllProjects(show_completed)
         for project, number in projects.items():
             filter = ProjectFilter(project)
             self.view.addFilter(filter, number)
 
-    def _addAllDueRanges(self, file):
+    def _addAllDueRanges(self, file, show_completed):
 
-        dueRanges, rangeSorting = file.getAllDueRanges()
+        dueRanges, rangeSorting = file.getAllDueRanges(show_completed)
 
         for range, number in dueRanges.items():
             if range == 'Today':
