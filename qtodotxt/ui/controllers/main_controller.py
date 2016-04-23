@@ -66,12 +66,12 @@ class MainController(QtCore.QObject):
         self._menu_controller = MenuController(self, menu)
 
     def _initActions(self):
-        self.filterViewAction = QtWidgets.QAction(getIcon('sidepane.svg'), '&Show Filters', self)
+        self.filterViewAction = QtWidgets.QAction(getIcon('sidepane.png'), '&Show Filters', self)
         self.filterViewAction.setCheckable(True)
         # action.setShortcuts(['Ctrl+E']) # what should it be?
         self.filterViewAction.triggered.connect(self._toggleFilterView)
 
-        self.showFutureAction = QtWidgets.QAction(getIcon('future.svg'), '&Show Future Tasks', self)
+        self.showFutureAction = QtWidgets.QAction(getIcon('future.png'), '&Show Future Tasks', self)
         self.showFutureAction.setCheckable(True)
         # action.setShortcuts(['Ctrl+E']) # what should it be?
         self.showFutureAction.triggered.connect(self._toggleShowFuture)
@@ -81,7 +81,7 @@ class MainController(QtCore.QObject):
         # action.setShortcuts(['Ctrl+E']) # what should it be?
         self.showCompletedAction.triggered.connect(self._toggleShowCompleted)
 
-        self.archiveAction = QtWidgets.QAction(getIcon('archive.svg'), '&Archive Completed Tasks', self)
+        self.archiveAction = QtWidgets.QAction(getIcon('archive.png'), '&Archive Completed Tasks', self)
         # action.setShortcuts(['Ctrl+E']) # what should it be?
         self.archiveAction.triggered.connect(self._archive_all_done_tasks)
 
