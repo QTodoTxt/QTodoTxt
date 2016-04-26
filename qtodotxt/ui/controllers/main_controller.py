@@ -374,7 +374,7 @@ class MainController(QtCore.QObject):
     def _updateView(self):
         self.view.restoreGeometry(self._settings.value("main_window_geometry", b""))
         self.view.restoreState(self._settings.value("main_window_state", b""))
-        splitterPosition = self._settings.value("splitter_pos", 200)
+        splitterPosition = self._settings.value("splitter_pos", (200, 400))
         splitterPosition = [int(x) for x in splitterPosition]
         self.view.centralWidget().setSizes(splitterPosition)
         self._restoreShowCompleted()
