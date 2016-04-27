@@ -40,19 +40,22 @@ class TaskHtmlizer(object):
 
     def _addUrl(self, word, color="none"):
         if int(QtCore.QSettings().value("support_jira", 1)):
-            regexp = re.compile(r"jira.*?\/([A-Z]+-\d+)$")
+            parts = word.split('|')
 
-            id = regexp.search(word);
+            if len(parts) > 1:
+                cleanWord = "JIRA: " + parts[0]
+                word = parts[1]
+            else:
+                regexp = re.compile(r"jira.*?\/([A-Z]+-\d+)$")
+                id = regexp.search(word);
 
-            if id is not None:
-                cleanWord = id.group(1)
+                if id is not None:
+                    cleanWord = "JIRA: " + id.group(1)
 
         if "cleanWord" not in locals():
             cleanWord = re.sub(r"https?://", "", word)
 
-        word = '<a style="color:' + color + ';" href="{}">{}</a>'.format(word, cleanWord)
-
-        return word
+        return '<a style="color:' + color + ';" href="{}">{}</a>'.format(word, cleanWord)
 
     def _htmlizeContext(self, context):
         context = context.replace("@", "")
