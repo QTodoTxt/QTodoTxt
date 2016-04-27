@@ -42,13 +42,14 @@ class TaskHtmlizer(object):
     def _addUrl(self, word, color="none"):
         if "://" in word:
             cleanWord = re.sub(r"https?://", "", word)
-            word = '<a style="color: ' + color + ';" href="{}">{}</a>'.format(cleanWord, cleanWord)
+            word = '<a style="color:' + color + ';" href="{}">{}</a>'.format(word, cleanWord)
         return word
 
     def _htmlizeContext(self, context):
         context = context.replace("@", "")
         context = self._addUrl(context, "green")
-        return '<font style="color: green !important">@%s</font>' % context
+
+        return '<font style="color:green">@%s</font>' % context
 
     def _htmlizeProject(self, project):
         project = project.replace("+", "")
@@ -58,7 +59,7 @@ class TaskHtmlizer(object):
     def _htmlizePriority(self, priority):
         if priority in self.priority_colors:
             color = self.priority_colors[priority]
-            return '<font color="{}"><tt>({})</tt>&nbsp;</font>'.format(color, priority)
+            return '<font style="color:{}"><tt>({})</tt>&nbsp;</font>'.format(color, priority)
         return '<tt>(%s)</tt>&nbsp;' % priority
 
     def _htmlizeDueDate(self, task, string):
@@ -71,7 +72,7 @@ class TaskHtmlizer(object):
         if tdelta.days > 7:
             return '<b>due:{}</b>'.format(task.due)
         elif tdelta.days > 0:
-            return '<b><font color="orange">due:{}</font></b>'.format(task.due)
+            return '<b><font style="color:orange">due:{}</font></b>'.format(task.due)
         else:
             return '<b><font style="color:red">due:{}</font></b>'.format(task.due)
 
