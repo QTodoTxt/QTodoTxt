@@ -1,4 +1,5 @@
 from datetime import date
+import re
 
 
 class TaskHtmlizer(object):
@@ -21,8 +22,8 @@ class TaskHtmlizer(object):
                 word = self._htmlizeDueDate(task, word)
             elif word.startswith("t:"):
                 word = self._htmlizeThresholdDate(task, word)
-            elif "://" in word:
-                word = '<a href="{}">{}</a>'.format(word, word)
+            else:
+                word = self._addUrl(word)
             newwords.append(word)
         html = " ".join(newwords)
         if task.is_complete:
@@ -38,11 +39,21 @@ class TaskHtmlizer(object):
             html += ' <font color="gray">(created: {})</font>'.format(task.creation_date)
         return html
 
+    def _addUrl(self, word, color="none"):
+        if "://" in word:
+            cleanWord = re.sub(r"https?://", "", word)
+            word = '<a style="color: ' + color + ';" href="{}">{}</a>'.format(cleanWord, cleanWord)
+        return word
+
     def _htmlizeContext(self, context):
-        return '<font color="green">%s</font>' % context
+        context = context.replace("@", "")
+        context = self._addUrl(context, "green")
+        return '<font style="color: green !important">@%s</font>' % context
 
     def _htmlizeProject(self, project):
-        return '<font style="color:#64AAD0">%s</font>' % project
+        project = project.replace("+", "")
+        project = self._addUrl(project, "#64AAD0")
+        return '<font style="color:#64AAD0">+%s</font>' % project
 
     def _htmlizePriority(self, priority):
         if priority in self.priority_colors:
