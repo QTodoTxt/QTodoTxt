@@ -22,7 +22,7 @@ class TaskHtmlizer(object):
                 word = self._htmlizeDueDate(task, word)
             elif word.startswith("t:"):
                 word = self._htmlizeThresholdDate(task, word)
-            else:
+            elif "://" in word:
                 word = self._addUrl(word)
             newwords.append(word)
         html = " ".join(newwords)
@@ -40,20 +40,23 @@ class TaskHtmlizer(object):
         return html
 
     def _addUrl(self, word, color="none"):
-        if "://" in word:
-            cleanWord = re.sub(r"https?://", "", word)
-            word = '<a style="color:' + color + ';" href="{}">{}</a>'.format(word, cleanWord)
+        cleanWord = re.sub(r"https?://", "", word)
+        word = '<a style="color:' + color + ';" href="{}">{}</a>'.format(word, cleanWord)
+
         return word
 
     def _htmlizeContext(self, context):
         context = context.replace("@", "")
-        context = self._addUrl(context, "green")
+        if "://" in context:
+            context = self._addUrl(context, "green")
 
         return '<font style="color:green">@%s</font>' % context
 
     def _htmlizeProject(self, project):
         project = project.replace("+", "")
-        project = self._addUrl(project, "#64AAD0")
+        if "://" in project:
+            project = self._addUrl(project, "#64AAD0")
+
         return '<font style="color:#64AAD0">+%s</font>' % project
 
     def _htmlizePriority(self, priority):
