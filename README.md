@@ -5,16 +5,20 @@ QTodoTxt is a cross-platform UI client for todo.txt files (see [todo.txt](http:/
 ![Main view](https://github.com/QTodoTxt/QTodoTxt/wiki/screenshots/QTodoTxt_main_view.png)
 
 
-## Downloads
-###Beta testing the next stable release (v1.5.0):
-Check out the [release branch](https://github.com/QTodoTxt/QTodoTxt/tree/1.5) for the next stable release of QTodoTxt and [give us feedback](https://github.com/QTodoTxt/QTodoTxt/issues)!
+### Latest alpha/beta relase:
+Download code from git or use pip: pip install qtodotxt
+
+And please report bugs to github!
 
 
-###Latest stable release (v1.4.0):
+###Latest stable release:
+
+V1.6.0 is released but binary packages have not been made yet and the following links may point to older versions (pip should alway point to latest release). If you want the binary releases, generate them, upload file and send a pull request to update the link in this README
+
 - For Ubuntu / Debian: [.deb package](http://dl.bintray.com/mnantern/deb/qtodotxt_1.4.0_all.deb)
 - For Windows: [Windows installer](http://dl.bintray.com/mnantern/generic/qtodotxt_1.4.0.exe)
 - For Mac OS X: [Mac OS X installer](http://dl.bintray.com/mnantern/generic/QTodoTxt_1.4.0.dmg)
-- Everywhere: ```pip install --pre qtodotxt```
+- Everywhere: ```pip install qtodotxt``` (BUT to void unwanted pyqt5 compilation, pyqt5 is not specified as a dependency on pip, install pyqt5 manually before!)
 - Everywhere: [tar.gz archive](https://github.com/mNantern/QTodoTxt/archive/1.4.0.tar.gz)
 
 For Debian/Ubuntu you can also add the following repo to your sources.list:
