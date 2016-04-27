@@ -17,14 +17,14 @@ class TestHtmlizer(unittest.TestCase):
         # Test task with a single context at the end
         task = tasklib.Task('this is my task @context')
         self.assertEqual(self.htmlizer.task2html(task),
-                         '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <font color="green">@context</font>')
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <font style="color:green">@context</font>')
 
     def test_03(self):
         # Test task with a single context at the center
         task = tasklib.Task('this is my task @context and some more words')
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task '
-                         '<font color="green">@context</font> and some more words')
+                         '<font style="color:green">@context</font> and some more words')
 
     def test_04(self):
         # Test task with a single project at the end
@@ -46,7 +46,7 @@ class TestHtmlizer(unittest.TestCase):
         task = tasklib.Task('this is my task @context and +project and some more words')
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task '
-                         '<font color="green">@context</font> and '
+                         '<font style="color:green">@context</font> and '
                          '<font style="color:#64AAD0">+project</font> and some more words')
 
     def test_07(self):
@@ -56,8 +56,8 @@ class TestHtmlizer(unittest.TestCase):
                             'words')
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task '
-                         '<font color="green">@context1</font> and '
-                         '<font color="green">@context2</font> and '
+                         '<font style="color:green">@context1</font> and '
+                         '<font style="color:green">@context2</font> and '
                          '<font style="color:#64AAD0">+project1</font> '
                          '<font style="color:#64AAD0">+project2</font> and '
                          '<font style="color:#64AAD0">+project3</font>'
@@ -67,19 +67,19 @@ class TestHtmlizer(unittest.TestCase):
         # Test task with priority A
         task = tasklib.Task('(A) this is my task')
         self.assertEqual(self.htmlizer.task2html(task),
-                         '<font color="red"><tt>(A)</tt>&nbsp;</font>this is my task')
+                         '<font style="color:red"><tt>(A)</tt>&nbsp;</font>this is my task')
 
     def test_09(self):
         # Test task with priority B
         task = tasklib.Task('(B) this is my task')
         self.assertEqual(self.htmlizer.task2html(task),
-                         '<font color="green"><tt>(B)</tt>&nbsp;</font>this is my task')
+                         '<font style="color:green"><tt>(B)</tt>&nbsp;</font>this is my task')
 
     def test_10(self):
         # Test task with priority C
         task = tasklib.Task('(C) this is my task')
         self.assertEqual(self.htmlizer.task2html(task),
-                         '<font color="navy"><tt>(C)</tt>&nbsp;</font>this is my task')
+                         '<font style="color:navy"><tt>(C)</tt>&nbsp;</font>this is my task')
 
     def test_11(self):
         # Test task with priority D
@@ -156,13 +156,29 @@ class TestHtmlizer(unittest.TestCase):
         task = tasklib.Task('Download https://github.com/mNantern/QTodoTxt/archive/master.zip and extract')
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;Download '
-                         '<a href="https://github.com/mNantern/QTodoTxt/archive/master.zip">'
-                         'https://github.com/mNantern/QTodoTxt/archive/master.zip</a> and extract')
+                         '<a style="color:none;" href="https://github.com/mNantern/QTodoTxt/archive/master.zip">'
+                         'github.com/mNantern/QTodoTxt/archive/master.zip</a> and extract')
 
     def test_21(self):
         # Test task with solely an URL
         task = tasklib.Task('https://github.com/mNantern/QTodoTxt/archive/master.zip')
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;'
-                         '<a href="https://github.com/mNantern/QTodoTxt/archive/master.zip">'
-                         'https://github.com/mNantern/QTodoTxt/archive/master.zip</a>')
+                         '<a style="color:none;" href="https://github.com/mNantern/QTodoTxt/archive/master.zip">'
+                         'github.com/mNantern/QTodoTxt/archive/master.zip</a>')
+
+    def test_22(self):
+        # Test task with an URL in context
+        task = tasklib.Task('Test @https://github.com/mNantern/QTodoTxt/')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;Test <font style="color:green">'
+                         '@<a style="color:green;" href="https://github.com/mNantern/QTodoTxt/">'
+                         'github.com/mNantern/QTodoTxt/</a></font>')
+
+    def test_23(self):
+        # Test task with an URL in project
+        task = tasklib.Task('Test +https://github.com/mNantern/QTodoTxt/')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;Test <font style="color:#64AAD0">'
+                         '+<a style="color:#64AAD0;" href="https://github.com/mNantern/QTodoTxt/">'
+                         'github.com/mNantern/QTodoTxt/</a></font>')
