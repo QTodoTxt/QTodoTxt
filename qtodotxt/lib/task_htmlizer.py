@@ -1,9 +1,8 @@
 from datetime import date
+from PyQt5 import QtCore
 import re
 
-
 class TaskHtmlizer(object):
-
     def __init__(self):
         self.priority_colors = dict(
             A='red',
@@ -40,7 +39,17 @@ class TaskHtmlizer(object):
         return html
 
     def _addUrl(self, word, color="none"):
-        cleanWord = re.sub(r"https?://", "", word)
+        if int(QtCore.QSettings().value("support_jira", 1)):
+            regexp = re.compile(r"jira.*?\/([A-Z]+-\d+)$")
+
+            id = regexp.search(word);
+
+            if id is not None:
+                cleanWord = id.group(1)
+
+        if "cleanWord" not in locals():
+            cleanWord = re.sub(r"https?://", "", word)
+
         word = '<a style="color:' + color + ';" href="{}">{}</a>'.format(word, cleanWord)
 
         return word
