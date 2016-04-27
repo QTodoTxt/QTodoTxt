@@ -59,6 +59,7 @@ class MenuController(QtCore.QObject):
         # infrequent action, I prefer to use ctrl+n for new task.
         action.setShortcuts(["Ctrl+Shift+N"])
         action.triggered.connect(self._main_controller.new)
+        self.newAction = action
         return action
 
     def _createOpenAction(self):
