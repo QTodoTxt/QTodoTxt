@@ -23,7 +23,8 @@ class TasksListController(QtCore.QObject):
         self.view.taskActivated.connect(self.editTask)
         self._initCreateTaskAction()
         self._initEditTaskAction()
-        self._initDeleteSelectedTasksAction()
+        if int(QtCore.QSettings().value("show_delete", 0)):
+            self._initDeleteSelectedTasksAction()
         self._initCompleteSelectedTasksAction()
         self._initDecreasePrioritySelectedTasksAction()
         self._initIncreasePrioritySelectedTasksAction()
@@ -154,7 +155,7 @@ class TasksListController(QtCore.QObject):
     def createTask(self):
         (text, ok) = self._task_editor_service.createTask()
         if ok and text:
-            if int(QtCore.QSettings().value("add_created_date", 1)):
+            if int(QtCore.QSettings().value("add_created_date", 0)):
                 text = self._addCreationDate(text)
             task = tasklib.Task(text)
             self.view.addTask(task)

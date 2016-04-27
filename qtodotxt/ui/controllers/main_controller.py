@@ -102,7 +102,8 @@ class MainController(QtCore.QObject):
         toolbar.addAction(self._tasks_list_controller.editTaskAction)
         toolbar.addSeparator()
         toolbar.addAction(self._tasks_list_controller.completeSelectedTasksAction)
-        toolbar.addAction(self._tasks_list_controller.deleteSelectedTasksAction)
+        if int(self._settings.value("show_delete", 0)):
+            toolbar.addAction(self._tasks_list_controller.deleteSelectedTasksAction)
         toolbar.addSeparator()
         toolbar.addAction(self._tasks_list_controller.increasePrioritySelectedTasksAction)
         toolbar.addAction(self._tasks_list_controller.decreasePrioritySelectedTasksAction)
@@ -239,7 +240,8 @@ class MainController(QtCore.QObject):
         self._contextMenu.addAction(self._tasks_list_controller.editTaskAction)
         self._contextMenu.addSeparator()
         self._contextMenu.addAction(self._tasks_list_controller.completeSelectedTasksAction)
-        self._contextMenu.addAction(self._tasks_list_controller.deleteSelectedTasksAction)
+        if int(self._settings.value("show_delete", 0)):
+            self._contextMenu.addAction(self._tasks_list_controller.deleteSelectedTasksAction)
         self._contextMenu.addSeparator()
         self._contextMenu.addAction(self._tasks_list_controller.increasePrioritySelectedTasksAction)
         self._contextMenu.addAction(self._tasks_list_controller.decreasePrioritySelectedTasksAction)

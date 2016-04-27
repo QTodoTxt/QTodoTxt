@@ -2,17 +2,16 @@
 
 # Form implementation generated from reading ui file 'settingsui.ui'
 #
-# Created by: PyQt5 UI code generator 5.4.2
+# Created by: PyQt5 UI code generator 5.5.1
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtWidgets
-
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_SettingsUI(object):
     def setupUi(self, SettingsUI):
         SettingsUI.setObjectName("SettingsUI")
-        SettingsUI.resize(579, 283)
+        SettingsUI.resize(579, 298)
         self.horizontalLayout = QtWidgets.QHBoxLayout(SettingsUI)
         self.horizontalLayout.setContentsMargins(11, 11, 11, 11)
         self.horizontalLayout.setSpacing(6)
@@ -41,13 +40,13 @@ class Ui_SettingsUI(object):
         self.gridLayout.addWidget(self.confirmCompletionCheckBox, 3, 0, 1, 2)
         self.label = QtWidgets.QLabel(self.groupBox)
         self.label.setObjectName("label")
-        self.gridLayout.addWidget(self.label, 4, 0, 1, 1)
+        self.gridLayout.addWidget(self.label, 5, 0, 1, 1)
         self.closeButton = QtWidgets.QPushButton(self.groupBox)
         self.closeButton.setObjectName("closeButton")
-        self.gridLayout.addWidget(self.closeButton, 8, 2, 1, 1)
+        self.gridLayout.addWidget(self.closeButton, 9, 2, 1, 1)
         self.trayCheckBox = QtWidgets.QCheckBox(self.groupBox)
         self.trayCheckBox.setObjectName("trayCheckBox")
-        self.gridLayout.addWidget(self.trayCheckBox, 5, 0, 1, 1)
+        self.gridLayout.addWidget(self.trayCheckBox, 6, 0, 1, 1)
         self.lowestPriorityLineEdit = QtWidgets.QLineEdit(self.groupBox)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -56,9 +55,12 @@ class Ui_SettingsUI(object):
         self.lowestPriorityLineEdit.setSizePolicy(sizePolicy)
         self.lowestPriorityLineEdit.setMaximumSize(QtCore.QSize(16777212, 16777215))
         self.lowestPriorityLineEdit.setObjectName("lowestPriorityLineEdit")
-        self.gridLayout.addWidget(self.lowestPriorityLineEdit, 4, 1, 1, 1)
+        self.gridLayout.addWidget(self.lowestPriorityLineEdit, 5, 1, 1, 1)
         spacerItem = QtWidgets.QSpacerItem(20, 80, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout.addItem(spacerItem, 7, 2, 1, 1)
+        self.gridLayout.addItem(spacerItem, 8, 2, 1, 1)
+        self.deleteActionCheckBox = QtWidgets.QCheckBox(self.groupBox)
+        self.deleteActionCheckBox.setObjectName("deleteActionCheckBox")
+        self.gridLayout.addWidget(self.deleteActionCheckBox, 4, 0, 1, 1)
         self.horizontalLayout.addWidget(self.groupBox)
 
         self.retranslateUi(SettingsUI)
@@ -76,3 +78,5 @@ class Ui_SettingsUI(object):
         self.closeButton.setText(_translate("SettingsUI", "Close"))
         self.trayCheckBox.setText(_translate("SettingsUI", "Enable system tray (Require restart)"))
         self.lowestPriorityLineEdit.setText(_translate("SettingsUI", "D"))
+        self.deleteActionCheckBox.setText(_translate("SettingsUI", "Show Delete action (Require restart)"))
+
