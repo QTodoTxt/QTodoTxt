@@ -1,6 +1,6 @@
 from qtodotxt.lib import task_htmlizer, tasklib
 import unittest
-from PyQt5 import QtCore
+
 
 class TestHtmlizer(unittest.TestCase):
     @classmethod
@@ -182,21 +182,3 @@ class TestHtmlizer(unittest.TestCase):
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;Test <font style="color:#64AAD0">'
                          '+<a style="color:#64AAD0;" href="https://github.com/mNantern/QTodoTxt/">'
                          'github.com/mNantern/QTodoTxt/</a></font>')
-
-    def test_24(self):
-        # Test replace Jira URL without description
-        QtCore.QSettings().setValue("support_jira", 1)
-        task = tasklib.Task('Test +https://jirapage.com/JIRATASK-101')
-        self.assertEqual(self.htmlizer.task2html(task),
-                         '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;Test <font style="color:#64AAD0">'
-                         '+<a style="color:#64AAD0;" href="https://jirapage.com/JIRATASK-101">'
-                         'JIRA: JIRATASK-101</a></font>')
-
-    def test_24(self):
-        # Test replace Jira URL with description
-        QtCore.QSettings().setValue("support_jira", 1)
-        task = tasklib.Task('Test +TestDescription|https://jirapage.com/JIRATASK-101')
-        self.assertEqual(self.htmlizer.task2html(task),
-                         '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;Test <font style="color:#64AAD0">'
-                         '+<a style="color:#64AAD0;" href="https://jirapage.com/JIRATASK-101">'
-                         'JIRA: TestDescription</a></font>')
