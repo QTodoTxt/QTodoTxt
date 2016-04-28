@@ -4,8 +4,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 from qtodotxt.ui.dialogs.settingsui import Ui_SettingsUI
 
-def get_int_setting(name, default=0):
-    return int(QtCore.QSettings().value(name, default))
 
 class Settings(QtWidgets.QDialog):
 
