@@ -23,7 +23,6 @@ class Settings(QtWidgets.QDialog):
         self._int_settings_to_cb("add_created_date", self.ui.addCreatedDateCheckBox)
         self._int_settings_to_cb("confirm_complete", self.ui.confirmCompletionCheckBox)
         self._int_settings_to_cb("enable_tray", self.ui.trayCheckBox)
-        self._int_settings_to_cb("support_jira", self.ui.addJiraCheckBox)
         priority = self.settings.value("lowest_priority", "D")
         self.ui.lowestPriorityLineEdit.setText(priority)
 
@@ -42,7 +41,6 @@ class Settings(QtWidgets.QDialog):
         self.ui.confirmCompletionCheckBox.stateChanged.connect(self.setConfirmCompletion)
         self.ui.trayCheckBox.stateChanged.connect(self.enableTray)
         self.ui.lowestPriorityLineEdit.textChanged.connect(self.setLowestPriority)
-        self.ui.addJiraCheckBox.stateChanged.connect(self.setSupportJira)
 
     def _save_int_cb(self, name, val):
         if val == 0:
@@ -68,8 +66,6 @@ class Settings(QtWidgets.QDialog):
     def setLowestPriority(self, text):
         self.settings.setValue("lowest_priority", text)
 
-    def setSupportJira(self, val):
-        self.settings.setValue("support_jira", val)
 
 if __name__ == "__main__":
     QtCore.QCoreApplication.setOrganizationName("QTodoTxt")
