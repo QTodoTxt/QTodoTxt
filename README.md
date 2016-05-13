@@ -13,7 +13,7 @@ And please report bugs to github!
 
 ###Latest stable release:
 
-V1.6.0 is released but binary packages have not been made yet and the following links may point to older versions (pip should alway point to latest release). If you want the binary releases, generate them, upload file and send a pull request to update the link in this README
+V1.6.0 is released but not all binary packages have been created yet and the following links may point to older versions (pip should alway point to latest release). If you want a missing binary release, generate it then contact the authors to upload the file and update the link in this README
 
 - For Ubuntu / Debian: [.deb package](http://dl.bintray.com/mnantern/deb/qtodotxt_1.4.0_all.deb)
 - For Windows: [Windows installer](https://github.com/QTodoTxt/QTodoTxt/releases/download/1.6.0/qtodotxt_1.6.0.exe)
