@@ -17,6 +17,8 @@ def reroute_py2exe_logs():
     sys.stderr = open(appdata + "\\stderr.log", "w")
 
 if sys.argv[0].lower().endswith('.exe'):
+# If something goes wrong, logging information might help.
+# Uncommenting line below allows logging to be stored at same location where exe resides
     reroute_py2exe_logs()
     sys.path.insert(0, os.path.join(os.path.dirname(__file__)))
 

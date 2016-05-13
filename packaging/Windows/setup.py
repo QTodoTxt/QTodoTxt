@@ -51,7 +51,7 @@ collect_resources(resources_root,css)
 # ======================================
 # Setup parameters
 setup(name='qtodotxt',
-      version='1.5.0',
+      version='1.6.0',
       author='QTT Development Team',
       author_email='qtodotxt@googlegroups.com',
       url='https://github.com/QTodoTxt/QTodoTxt',
@@ -60,7 +60,11 @@ setup(name='qtodotxt',
 
       data_files=[
               ('resources', resources), 
-			  ('imageformats', [r'C:\Python34\Lib\site-packages\PyQt5\plugins\imageformats\qico4.dll']), 
+# You need to adapt file paths below to fit your development settins/environment
+# File paths are for WinPython-32bit-3.4.4.2Qt5 being installed in folder d:\Development\Python\QTodoTxt\WinPython-32bit-3.4.4.2Qt5
+			  ('platforms',[r'd:\Development\Python\QTodoTxt\WinPython-32bit-3.4.4.2Qt5\python-3.4.4\Lib\site-packages\PyQt5\plugins\platforms\qwindows.dll']),
+			  ('platforms',[r'd:\Development\Python\QTodoTxt\WinPython-32bit-3.4.4.2Qt5\python-3.4.4\Lib\site-packages\PyQt5\plugins\platforms\qoffscreen.dll']),
+			  ('platforms',[r'd:\Development\Python\QTodoTxt\WinPython-32bit-3.4.4.2Qt5\python-3.4.4\Lib\site-packages\PyQt5\plugins\platforms\qminimal.dll']),
 			  ('resources/css', css)
 		  ],
 
@@ -73,7 +77,7 @@ setup(name='qtodotxt',
         ],
         options={
             "py2exe": {
-                "includes": ["argparse"],
+                "includes": ["argparse", "sip"],
                 "dist_dir": os.path.join(current_dir, 'dist')
             },
             "build": {
