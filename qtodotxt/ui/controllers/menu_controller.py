@@ -36,7 +36,8 @@ class MenuController(QtCore.QObject):
         editMenu.addAction(tlc.editTaskAction)
         editMenu.addSeparator()
         editMenu.addAction(tlc.completeSelectedTasksAction)
-        editMenu.addAction(tlc.deleteSelectedTasksAction)
+        if int(QtCore.QSettings().value("show_delete", 0)):
+            editMenu.addAction(tlc.deleteSelectedTasksAction)
         editMenu.addSeparator()
         editMenu.addAction(tlc.increasePrioritySelectedTasksAction)
         editMenu.addAction(tlc.decreasePrioritySelectedTasksAction)
@@ -58,6 +59,7 @@ class MenuController(QtCore.QObject):
         # infrequent action, I prefer to use ctrl+n for new task.
         action.setShortcuts(["Ctrl+Shift+N"])
         action.triggered.connect(self._main_controller.new)
+        self.newAction = action
         return action
 
     def _createOpenAction(self):

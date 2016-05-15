@@ -57,6 +57,7 @@ class MainController(QtCore.QObject):
         self._initFiltersTree()
         self._initTasksList()
         self._initMenuBar()
+        self._initContextualMenu()
         self._initActions()
         self._initToolBar()
         self._initSearchText()
@@ -102,7 +103,8 @@ class MainController(QtCore.QObject):
         toolbar.addAction(self._tasks_list_controller.editTaskAction)
         toolbar.addSeparator()
         toolbar.addAction(self._tasks_list_controller.completeSelectedTasksAction)
-        toolbar.addAction(self._tasks_list_controller.deleteSelectedTasksAction)
+        if int(self._settings.value("show_delete", 0)):
+            toolbar.addAction(self._tasks_list_controller.deleteSelectedTasksAction)
         toolbar.addSeparator()
         toolbar.addAction(self._tasks_list_controller.increasePrioritySelectedTasksAction)
         toolbar.addAction(self._tasks_list_controller.decreasePrioritySelectedTasksAction)
@@ -231,15 +233,19 @@ class MainController(QtCore.QObject):
         controller.taskDeleted.connect(self._tasks_list_taskDeleted)
         controller.taskArchived.connect(self._tasks_list_taskArchived)
 
+    def _initContextualMenu(self):
+
         # Context menu
         # controller.view.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
-        controller.view.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        controller.view.customContextMenuRequested.connect(self.showContextMenu)
+        self._tasks_list_controller.view.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self._tasks_list_controller.view.customContextMenuRequested.connect(self.showContextMenu)
         self._contextMenu = QtWidgets.QMenu()
+        self._contextMenu.addAction(self._tasks_list_controller.createTaskAction)
         self._contextMenu.addAction(self._tasks_list_controller.editTaskAction)
         self._contextMenu.addSeparator()
         self._contextMenu.addAction(self._tasks_list_controller.completeSelectedTasksAction)
-        self._contextMenu.addAction(self._tasks_list_controller.deleteSelectedTasksAction)
+        if int(self._settings.value("show_delete", 0)):
+            self._contextMenu.addAction(self._tasks_list_controller.deleteSelectedTasksAction)
         self._contextMenu.addSeparator()
         self._contextMenu.addAction(self._tasks_list_controller.increasePrioritySelectedTasksAction)
         self._contextMenu.addAction(self._tasks_list_controller.decreasePrioritySelectedTasksAction)
