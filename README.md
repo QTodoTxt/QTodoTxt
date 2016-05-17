@@ -16,7 +16,7 @@ And please report bugs to github!
 V1.6.0 is released but not all binary packages have been created yet and the following links may point to older versions (pip should alway point to latest release). If you want a missing binary release, generate it then contact the authors to upload the file and update the link in this README
 
 - For Ubuntu / Debian: [.deb package](http://dl.bintray.com/mnantern/deb/qtodotxt_1.4.0_all.deb)
-- For Windows: [Windows installer](https://github.com/QTodoTxt/QTodoTxt/releases/download/1.6.0/qtodotxt_1.6.0.exe)
+- For Windows: [Windows installer](https://github.com/QTodoTxt/QTodoTxt/releases/download/v1.6.1/qtodotxt_1.6.1.exe)
 - For Mac OS X: [Mac OS X installer](http://dl.bintray.com/mnantern/generic/QTodoTxt_1.4.0.dmg)
 - Everywhere: ```pip install qtodotxt``` (BUT to void unwanted pyqt5 compilation, pyqt5 is not specified as a dependency on pip, install pyqt5 manually before!)
 - Everywhere: [tar.gz archive](https://github.com/mNantern/QTodoTxt/archive/1.4.0.tar.gz)
