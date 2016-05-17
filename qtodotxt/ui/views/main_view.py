@@ -34,7 +34,7 @@ class MainView(QtWidgets.QMainWindow):
 
         self.resize(800, 400)
         self.splitter.setSizes([250, 550])
-        self.setWindowIcon(getIcon('qtodotxt.ico'))
+        self.setWindowIcon(getIcon('qtodotxt.png'))
 
     def closeEvent(self, closeEvent):
         super(MainView, self).closeEvent(closeEvent)

@@ -51,7 +51,7 @@ collect_resources(resources_root,css)
 # ======================================
 # Setup parameters
 setup(name='qtodotxt',
-      version='1.6.0',
+      version='1.6.1',
       author='QTT Development Team',
       author_email='qtodotxt@googlegroups.com',
       url='https://github.com/QTodoTxt/QTodoTxt',

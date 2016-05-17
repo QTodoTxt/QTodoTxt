@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "QTodoTxt"
-#define MyAppVersion "1.6.0"
+#define MyAppVersion "1.6.1"
 #define MyAppPublisher "QTT Development Team"
 #define MyAppURL "https://github.com/QTodoTxt/QTodoTxt"
 #define MyAppExeName "qtodotxt.exe"
