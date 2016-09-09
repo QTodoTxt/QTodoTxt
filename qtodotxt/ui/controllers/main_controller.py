@@ -378,8 +378,12 @@ class MainController(QtCore.QObject):
         self._task_editor_service.updateValues(self._file)
 
     def _updateView(self):
-        self.view.restoreGeometry(self._settings.value("main_window_geometry", b""))
-        self.view.restoreState(self._settings.value("main_window_state", b""))
+        wgeo = self._settings.value("main_window_geometry", None)
+        if wgeo is not None:
+            self.view.restoreGeometry(wgeo)
+        wstate = self._settings.value("main_window_state", None)
+        if wstate is not None:
+            self.view.restoreState(wstate)
         splitterPosition = self._settings.value("splitter_pos", (200, 400))
         splitterPosition = [int(x) for x in splitterPosition]
         self.view.centralWidget().setSizes(splitterPosition)
