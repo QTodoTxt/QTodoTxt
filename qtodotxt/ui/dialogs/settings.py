@@ -22,10 +22,18 @@ class Settings(QtWidgets.QDialog):
         self._int_settings_to_cb("auto_archive", self.ui.autoArchiveCheckBox, 0)
         self._int_settings_to_cb("add_created_date", self.ui.addCreatedDateCheckBox, 0)
         self._int_settings_to_cb("confirm_complete", self.ui.confirmCompletionCheckBox)
-        self._int_settings_to_cb("enable_tray", self.ui.trayCheckBox, 0)
         self._int_settings_to_cb("show_delete", self.ui.deleteActionCheckBox, 0)
         priority = self.settings.value("lowest_priority", "D")
         self.ui.lowestPriorityLineEdit.setText(priority)
+        self._int_settings_to_cb("enable_tray", self.ui.trayCheckBox, 0)
+        self._int_settings_to_cb("hide_to_tray", self.ui.hideToTrayCheckBox, 0)
+        self._int_settings_to_cb("hide_on_startup", self.ui.hideOnStartupCheckBox, 0)
+        self._int_settings_to_cb("close_to_tray", self.ui.closeToTrayCheckBox, 0)
+
+        val = int(self.settings.value("enable_tray", 0))
+        self.ui.hideToTrayCheckBox.setEnabled(val)
+        self.ui.hideOnStartupCheckBox.setEnabled(val)
+        self.ui.closeToTrayCheckBox.setEnabled(val)
 
     def _int_settings_to_cb(self, name, checkBox, default=1):
         val = int(self.settings.value(name, default))
@@ -40,9 +48,12 @@ class Settings(QtWidgets.QDialog):
         self.ui.autoArchiveCheckBox.stateChanged.connect(self.setAutoArchive)
         self.ui.addCreatedDateCheckBox.stateChanged.connect(self.setAddCreatedDate)
         self.ui.confirmCompletionCheckBox.stateChanged.connect(self.setConfirmCompletion)
-        self.ui.trayCheckBox.stateChanged.connect(self.enableTray)
         self.ui.deleteActionCheckBox.stateChanged.connect(self.setDeleteAction)
         self.ui.lowestPriorityLineEdit.textChanged.connect(self.setLowestPriority)
+        self.ui.trayCheckBox.stateChanged.connect(self.enableTray)
+        self.ui.hideToTrayCheckBox.stateChanged.connect(self.setHideToTray)
+        self.ui.hideOnStartupCheckBox.stateChanged.connect(self.setHideOnStartup)
+        self.ui.closeToTrayCheckBox.stateChanged.connect(self.setCloseToTray)
 
     def _save_int_cb(self, name, val):
         if val == 0:
@@ -65,12 +76,23 @@ class Settings(QtWidgets.QDialog):
     def setConfirmCompletion(self, val):
         self._save_int_cb("confirm_complete", val)
 
-    def enableTray(self, val):
-        self._save_int_cb("enable_tray", val)
-
     def setLowestPriority(self, text):
         self.settings.setValue("lowest_priority", text)
 
+    def enableTray(self, val):
+        self._save_int_cb("enable_tray", val)
+        self.ui.hideToTrayCheckBox.setEnabled(val)
+        self.ui.hideOnStartupCheckBox.setEnabled(val)
+        self.ui.closeToTrayCheckBox.setEnabled(val)
+
+    def setHideToTray(self, val):
+        self._save_int_cb("hide_to_tray", val)
+
+    def setHideOnStartup(self, val):
+        self._save_int_cb("hide_on_startup", val)
+
+    def setCloseToTray(self, val):
+        self._save_int_cb("close_to_tray", val)
 
 if __name__ == "__main__":
     QtCore.QCoreApplication.setOrganizationName("QTodoTxt")
