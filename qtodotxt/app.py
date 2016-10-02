@@ -27,8 +27,23 @@ class TrayIcon(QtWidgets.QSystemTrayIcon):
         self.activated.connect(self._onActivated)
         self.setToolTip('QTodoTxt')
 
-    def _onActivated(self):
-        self._controller._tasks_list_controller.createTask()
+        menu = QtWidgets.QMenu()
+        create_task_action = menu.addAction("Create New Task")
+        create_task_action.triggered.connect(self._controller._tasks_list_controller.createTask)
+        exit_action = menu.addAction("Exit")
+        exit_action.triggered.connect(self._controller.exit)
+        self.setContextMenu(menu)
+
+    def _onActivated(self, activation_reason):
+        """Tray Icon has been activated.
+            [0] QSystemTrayIcon.Unknown       Unknown reason
+            [1] QSystemTrayIcon.Context       The context menu for the system tray entry was requested
+            [2] QSystemTrayIcon.DoubleClick   The system tray entry was double clicked
+            [3] QSystemTrayIcon.Trigger       The system tray entry was clicked
+            [4] QSystemTrayIcon.MiddleClick   The system tray entry was clicked with the middle mouse button
+        """
+        if activation_reason == QtWidgets.QSystemTrayIcon.Trigger:
+            self._controller._tasks_list_controller.createTask()
 
 
 def _parseArgs():
