@@ -77,7 +77,7 @@
       <item row="6" column="0">
        <widget class="QCheckBox" name="trayCheckBox">
         <property name="text">
-         <string>Enable system tray (Require restart)</string>
+         <string>Enable system tray (Requires restart)</string>
         </property>
        </widget>
       </item>
@@ -116,7 +116,7 @@
       <item row="4" column="0">
        <widget class="QCheckBox" name="deleteActionCheckBox">
         <property name="text">
-         <string>Show Delete action (Require restart)</string>
+         <string>Show Delete action (Requires restart)</string>
         </property>
        </widget>
       </item>
