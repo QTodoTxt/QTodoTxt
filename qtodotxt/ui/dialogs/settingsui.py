@@ -6,7 +6,8 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtWidgets
+
 
 class Ui_SettingsUI(object):
     def setupUi(self, SettingsUI):
@@ -99,4 +100,3 @@ class Ui_SettingsUI(object):
         self.hideToTrayCheckBox.setText(_translate("SettingsUI", "Show/Hide on Tray Click"))
         self.hideOnStartupCheckBox.setText(_translate("SettingsUI", "Hide on Startup"))
         self.closeToTrayCheckBox.setText(_translate("SettingsUI", "Close to Tray"))
-
