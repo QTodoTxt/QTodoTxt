@@ -47,6 +47,9 @@ class Ui_SettingsUI(object):
         self.trayCheckBox = QtWidgets.QCheckBox(self.groupBox)
         self.trayCheckBox.setObjectName("trayCheckBox")
         self.gridLayout.addWidget(self.trayCheckBox, 6, 0, 1, 1)
+        self.trayMinimizedCheckBox = QtWidgets.QCheckBox(self.groupBox)
+        self.trayMinimizedCheckBox.setObjectName("trayMinimizedCheckBox")
+        self.gridLayout.addWidget(self.trayMinimizedCheckBox, 7, 0, 1, 1)
         self.lowestPriorityLineEdit = QtWidgets.QLineEdit(self.groupBox)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -79,4 +82,5 @@ class Ui_SettingsUI(object):
         self.trayCheckBox.setText(_translate("SettingsUI", "Enable system tray (Require restart)"))
         self.lowestPriorityLineEdit.setText(_translate("SettingsUI", "D"))
         self.deleteActionCheckBox.setText(_translate("SettingsUI", "Show Delete action (Require restart)"))
+        self.trayMinimizedCheckBox.setText(_translate("SettingsUI", "Minimized to tray"))
 

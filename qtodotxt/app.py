@@ -28,7 +28,10 @@ class TrayIcon(QtWidgets.QSystemTrayIcon):
         self.setToolTip('QTodoTxt')
 
     def _onActivated(self):
-        self._controller._tasks_list_controller.createTask()
+        if int(QtCore.QSettings().value("Minimized_to_tray", 0)):
+            self._controller.toggleVisible()
+        else:
+            self._controller._tasks_list_controller.createTask()
 
 
 def _parseArgs():
