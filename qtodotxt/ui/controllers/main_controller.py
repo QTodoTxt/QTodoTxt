@@ -48,6 +48,7 @@ class MainController(QtCore.QObject):
         self.view.closeEventSignal.connect(self.view_onCloseEvent)
         filters = self._settings.value("current_filters", ["All"])
         self._filters_tree_controller.view.setSelectedFiltersByNames(filters)
+        self.hasTrayIcon = False
 
     def auto_save(self):
         if int(self._settings.value("auto_save", 1)):
@@ -295,6 +296,12 @@ class MainController(QtCore.QObject):
             return button == QtWidgets.QMessageBox.Discard
 
     def view_onCloseEvent(self, closeEvent):
+
+        if (self.hasTrayIcon and int(self._settings.value("close_to_tray", 0))):
+            self.view.hide()
+            closeEvent.ignore()
+            return
+
         if self._canExit():
             self._settings.setValue("show_toolbar", self._show_toolbar)
             if self.filterViewAction.isChecked():  # we only save size if it is visible
@@ -404,8 +411,8 @@ class MainController(QtCore.QObject):
         self._onFilterSelectionChanged(self._filters_tree_controller.view.getSelectedFilters())
 
     def toggleVisible(self):
-        if self.view.isMinimized():
+        if self.view.isMinimized() or self.view.isHidden():
             self.view.showNormal()
             self.view.activateWindow()
         else:
-            self.view.showMinimized()
+            self.view.hide()
