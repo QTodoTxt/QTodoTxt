@@ -24,8 +24,11 @@ class Settings(QtWidgets.QDialog):
         self._int_settings_to_cb("confirm_complete", self.ui.confirmCompletionCheckBox)
         self._int_settings_to_cb("enable_tray", self.ui.trayCheckBox, 0)
         self._int_settings_to_cb("show_delete", self.ui.deleteActionCheckBox, 0)
+        self._int_settings_to_cb("Minimized_to_tray", self.ui.trayMinimizedCheckBox, 0)
         priority = self.settings.value("lowest_priority", "D")
         self.ui.lowestPriorityLineEdit.setText(priority)
+        if self.ui.trayCheckBox.isChecked() is False:
+            self.ui.trayMinimizedCheckBox.setEnabled(False)
 
     def _int_settings_to_cb(self, name, checkBox, default=1):
         val = int(self.settings.value(name, default))
@@ -41,6 +44,7 @@ class Settings(QtWidgets.QDialog):
         self.ui.addCreatedDateCheckBox.stateChanged.connect(self.setAddCreatedDate)
         self.ui.confirmCompletionCheckBox.stateChanged.connect(self.setConfirmCompletion)
         self.ui.trayCheckBox.stateChanged.connect(self.enableTray)
+        self.ui.trayMinimizedCheckBox.stateChanged.connect(self.MinimizedToTray)
         self.ui.deleteActionCheckBox.stateChanged.connect(self.setDeleteAction)
         self.ui.lowestPriorityLineEdit.textChanged.connect(self.setLowestPriority)
 
@@ -67,6 +71,12 @@ class Settings(QtWidgets.QDialog):
 
     def enableTray(self, val):
         self._save_int_cb("enable_tray", val)
+        self.ui.trayMinimizedCheckBox.setEnabled(val)
+        if val == 0:
+            self._save_int_cb("Minimized_to_tray", 0)
+
+    def MinimizedToTray(self, val):
+        self._save_int_cb("Minimized_to_tray", val)
 
     def setLowestPriority(self, text):
         self.settings.setValue("lowest_priority", text)

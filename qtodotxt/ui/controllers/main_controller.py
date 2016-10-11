@@ -404,8 +404,15 @@ class MainController(QtCore.QObject):
         self._onFilterSelectionChanged(self._filters_tree_controller.view.getSelectedFilters())
 
     def toggleVisible(self):
-        if self.view.isMinimized():
-            self.view.showNormal()
-            self.view.activateWindow()
+        if int(QtCore.QSettings().value("Minimized_to_tray", 0)):
+            if self.view.isVisible() is False:
+                self.view.show()
+                self.view.activateWindow()
+            else:
+                self.view.hide()
         else:
-            self.view.showMinimized()
+            if self.view.isMinimized():
+                self.view.showNormal()
+                self.view.activateWindow()
+            else:
+                self.view.showMinimized()
