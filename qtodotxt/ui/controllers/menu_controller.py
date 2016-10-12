@@ -95,6 +95,8 @@ class MenuController(QtCore.QObject):
         return action
 
     def _show_preferences(self):
-        print(self._main_controller.view)
         settings = Settings(self._main_controller)
+        # simplest way to stop the preferences dialog from being left on screen
+        #  when the main app window is hidden is to create it as a modal dialog
+        settings.setModal(True)
         settings.show()

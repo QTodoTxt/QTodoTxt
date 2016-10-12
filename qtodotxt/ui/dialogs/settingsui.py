@@ -6,12 +6,13 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtWidgets
+
 
 class Ui_SettingsUI(object):
     def setupUi(self, SettingsUI):
         SettingsUI.setObjectName("SettingsUI")
-        SettingsUI.resize(579, 298)
+        SettingsUI.resize(579, 334)
         self.horizontalLayout = QtWidgets.QHBoxLayout(SettingsUI)
         self.horizontalLayout.setContentsMargins(11, 11, 11, 11)
         self.horizontalLayout.setSpacing(6)
@@ -44,9 +45,6 @@ class Ui_SettingsUI(object):
         self.closeButton = QtWidgets.QPushButton(self.groupBox)
         self.closeButton.setObjectName("closeButton")
         self.gridLayout.addWidget(self.closeButton, 9, 2, 1, 1)
-        self.trayCheckBox = QtWidgets.QCheckBox(self.groupBox)
-        self.trayCheckBox.setObjectName("trayCheckBox")
-        self.gridLayout.addWidget(self.trayCheckBox, 6, 0, 1, 1)
         self.lowestPriorityLineEdit = QtWidgets.QLineEdit(self.groupBox)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -56,11 +54,31 @@ class Ui_SettingsUI(object):
         self.lowestPriorityLineEdit.setMaximumSize(QtCore.QSize(16777212, 16777215))
         self.lowestPriorityLineEdit.setObjectName("lowestPriorityLineEdit")
         self.gridLayout.addWidget(self.lowestPriorityLineEdit, 5, 1, 1, 1)
-        spacerItem = QtWidgets.QSpacerItem(20, 80, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout.addItem(spacerItem, 8, 2, 1, 1)
         self.deleteActionCheckBox = QtWidgets.QCheckBox(self.groupBox)
         self.deleteActionCheckBox.setObjectName("deleteActionCheckBox")
         self.gridLayout.addWidget(self.deleteActionCheckBox, 4, 0, 1, 1)
+        self.trayOptionsVerticalLayout = QtWidgets.QVBoxLayout()
+        self.trayOptionsVerticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.trayOptionsVerticalLayout.setSpacing(0)
+        self.trayOptionsVerticalLayout.setObjectName("trayOptionsVerticalLayout")
+        self.trayCheckBox = QtWidgets.QCheckBox(self.groupBox)
+        self.trayCheckBox.setObjectName("trayCheckBox")
+        self.trayOptionsVerticalLayout.addWidget(self.trayCheckBox)
+        self.traySubOptionsVerticalLayout = QtWidgets.QVBoxLayout()
+        self.traySubOptionsVerticalLayout.setContentsMargins(20, 0, 0, 0)
+        self.traySubOptionsVerticalLayout.setSpacing(0)
+        self.traySubOptionsVerticalLayout.setObjectName("traySubOptionsVerticalLayout")
+        self.hideToTrayCheckBox = QtWidgets.QCheckBox(self.groupBox)
+        self.hideToTrayCheckBox.setObjectName("hideToTrayCheckBox")
+        self.traySubOptionsVerticalLayout.addWidget(self.hideToTrayCheckBox)
+        self.hideOnStartupCheckBox = QtWidgets.QCheckBox(self.groupBox)
+        self.hideOnStartupCheckBox.setObjectName("hideOnStartupCheckBox")
+        self.traySubOptionsVerticalLayout.addWidget(self.hideOnStartupCheckBox)
+        self.closeToTrayCheckBox = QtWidgets.QCheckBox(self.groupBox)
+        self.closeToTrayCheckBox.setObjectName("closeToTrayCheckBox")
+        self.traySubOptionsVerticalLayout.addWidget(self.closeToTrayCheckBox)
+        self.trayOptionsVerticalLayout.addLayout(self.traySubOptionsVerticalLayout)
+        self.gridLayout.addLayout(self.trayOptionsVerticalLayout, 6, 0, 3, 1)
         self.horizontalLayout.addWidget(self.groupBox)
 
         self.retranslateUi(SettingsUI)
@@ -76,7 +94,9 @@ class Ui_SettingsUI(object):
         self.confirmCompletionCheckBox.setText(_translate("SettingsUI", "Ask for confirmation before task completion"))
         self.label.setText(_translate("SettingsUI", "Lowest task priority"))
         self.closeButton.setText(_translate("SettingsUI", "Close"))
-        self.trayCheckBox.setText(_translate("SettingsUI", "Enable system tray (Require restart)"))
         self.lowestPriorityLineEdit.setText(_translate("SettingsUI", "D"))
-        self.deleteActionCheckBox.setText(_translate("SettingsUI", "Show Delete action (Require restart)"))
-
+        self.deleteActionCheckBox.setText(_translate("SettingsUI", "Show Delete action (Requires restart)"))
+        self.trayCheckBox.setText(_translate("SettingsUI", "Enable system tray (Requires restart)"))
+        self.hideToTrayCheckBox.setText(_translate("SettingsUI", "Show/Hide on Tray Click"))
+        self.hideOnStartupCheckBox.setText(_translate("SettingsUI", "Hide on Startup"))
+        self.closeToTrayCheckBox.setText(_translate("SettingsUI", "Close to Tray"))

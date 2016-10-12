@@ -18,6 +18,9 @@ class MainView(QtWidgets.QMainWindow):
     def show(self):
         super(MainView, self).show()
 
+    def hide(self):
+        super(MainView, self).hide()
+
     def _initUI(self):
 
         self.splitter = QtWidgets.QSplitter()

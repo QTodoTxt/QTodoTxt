@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>579</width>
-    <height>298</height>
+    <height>334</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -74,13 +74,6 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="0">
-       <widget class="QCheckBox" name="trayCheckBox">
-        <property name="text">
-         <string>Enable system tray (Require restart)</string>
-        </property>
-       </widget>
-      </item>
       <item row="5" column="1">
        <widget class="QLineEdit" name="lowestPriorityLineEdit">
         <property name="sizePolicy">
@@ -100,25 +93,78 @@
         </property>
        </widget>
       </item>
-      <item row="8" column="2">
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>80</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
       <item row="4" column="0">
        <widget class="QCheckBox" name="deleteActionCheckBox">
         <property name="text">
-         <string>Show Delete action (Require restart)</string>
+         <string>Show Delete action (Requires restart)</string>
         </property>
        </widget>
+      </item>
+      <item row="6" column="0" rowspan="3">
+       <layout class="QVBoxLayout" name="trayOptionsVerticalLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QCheckBox" name="trayCheckBox">
+          <property name="text">
+           <string>Enable system tray (Requires restart)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="traySubOptionsVerticalLayout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>20</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QCheckBox" name="hideToTrayCheckBox">
+            <property name="text">
+             <string>Show/Hide on Tray Click</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="hideOnStartupCheckBox">
+            <property name="text">
+             <string>Hide on Startup</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="closeToTrayCheckBox">
+            <property name="text">
+             <string>Close to Tray</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
