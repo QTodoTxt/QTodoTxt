@@ -83,7 +83,7 @@ class MenuController(QtCore.QObject):
         return action
 
     def _createPreferenceAction(self):
-        action = QtWidgets.QAction('&Preferences', self)
+        action = QtWidgets.QAction(getIcon('ApplicationPreferences.png'), '&Preferences', self)
         action.triggered.connect(self._show_preferences)
         self.preferencesAction = action
         return action

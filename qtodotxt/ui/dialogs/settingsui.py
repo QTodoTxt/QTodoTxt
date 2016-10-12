@@ -86,7 +86,7 @@ class Ui_SettingsUI(object):
 
     def retranslateUi(self, SettingsUI):
         _translate = QtCore.QCoreApplication.translate
-        SettingsUI.setWindowTitle(_translate("SettingsUI", "SettingsUI"))
+        SettingsUI.setWindowTitle(_translate("SettingsUI", "Preferences"))
         self.groupBox.setTitle(_translate("SettingsUI", "QTodoTxt Settings"))
         self.autoSaveCheckBox.setText(_translate("SettingsUI", "Autosave"))
         self.autoArchiveCheckBox.setText(_translate("SettingsUI", "AutoArchive"))
