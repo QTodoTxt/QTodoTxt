@@ -412,7 +412,7 @@ class MainController(QtCore.QObject):
 
     def toggleVisible(self):
         if self.view.isMinimized() or self.view.isHidden():
-            self.view.showNormal()
+            self.view.show()
             self.view.activateWindow()
         else:
             self.view.hide()
