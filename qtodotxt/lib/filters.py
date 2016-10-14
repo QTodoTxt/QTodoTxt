@@ -375,8 +375,12 @@ class SimpleTextFilter(BaseFilter):
             restring2 = comp2.sub(r'\\(', restring, re.U)
             comp3 = re.compile(r'(?<!\))\)(?=\))', re.U)
             restring3 = comp3.sub(r'\\)', restring2, re.U)
-            mymatch = re.search(restring3, task.text, re.I | re.U)
-
+            """temporary solution: user input illegal characters in the
+            search string (+,?,\) otherwise the program crashed"""
+            try:
+                mymatch = re.search(restring3, task.text, re.I | re.U)
+            except Exception:
+                mymatch = True
         return mymatch
 
     def __str__(self):
