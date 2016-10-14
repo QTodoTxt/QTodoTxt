@@ -94,6 +94,9 @@ class Settings(QtWidgets.QDialog):
     def setCloseToTray(self, val):
         self._save_int_cb("close_to_tray", val)
 
+    def closeEvent(self, event):
+        self.maincontroller.view.show()
+
 if __name__ == "__main__":
     QtCore.QCoreApplication.setOrganizationName("QTodoTxt")
     QtCore.QCoreApplication.setApplicationName("QTodoTxt")
