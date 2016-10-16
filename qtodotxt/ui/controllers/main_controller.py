@@ -102,6 +102,7 @@ class MainController(QtCore.QObject):
         toolbar.addSeparator()
         toolbar.addAction(self._tasks_list_controller.createTaskAction)
         toolbar.addAction(self._tasks_list_controller.editTaskAction)
+        toolbar.addAction(self._tasks_list_controller.copySelectedTasksAction)
         toolbar.addSeparator()
         toolbar.addAction(self._tasks_list_controller.completeSelectedTasksAction)
         if int(self._settings.value("show_delete", 0)):
@@ -243,6 +244,7 @@ class MainController(QtCore.QObject):
         self._contextMenu = QtWidgets.QMenu()
         self._contextMenu.addAction(self._tasks_list_controller.createTaskAction)
         self._contextMenu.addAction(self._tasks_list_controller.editTaskAction)
+        self._contextMenu.addAction(self._tasks_list_controller.copySelectedTasksAction)
         self._contextMenu.addSeparator()
         self._contextMenu.addAction(self._tasks_list_controller.completeSelectedTasksAction)
         if int(self._settings.value("show_delete", 0)):
