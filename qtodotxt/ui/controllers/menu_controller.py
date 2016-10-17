@@ -34,6 +34,7 @@ class MenuController(QtCore.QObject):
         tlc = self._main_controller._tasks_list_controller
         editMenu.addAction(tlc.createTaskAction)
         editMenu.addAction(tlc.editTaskAction)
+        editMenu.addAction(tlc.copySelectedTasksAction)
         editMenu.addSeparator()
         editMenu.addAction(tlc.completeSelectedTasksAction)
         if int(QtCore.QSettings().value("show_delete", 0)):

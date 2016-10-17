@@ -1,4 +1,5 @@
 from PyQt5 import QtCore
+from PyQt5 import QtGui
 from PyQt5 import QtWidgets
 
 from qtodotxt.lib import tasklib
@@ -6,6 +7,8 @@ from qtodotxt.lib.task_htmlizer import TaskHtmlizer
 from qtodotxt.ui.resource_manager import getIcon
 
 from datetime import date
+
+import os
 
 
 class TasksListController(QtCore.QObject):
@@ -23,6 +26,7 @@ class TasksListController(QtCore.QObject):
         self.view.taskActivated.connect(self.editTask)
         self._initCreateTaskAction()
         self._initEditTaskAction()
+        self._initCopySelectedTasksAction()
         if int(QtCore.QSettings().value("show_delete", 0)):
             self._initDeleteSelectedTasksAction()
         self._initCompleteSelectedTasksAction()
@@ -42,6 +46,13 @@ class TasksListController(QtCore.QObject):
         action.triggered.connect(self.createTask)
         self.view.addListAction(action)
         self.createTaskAction = action
+
+    def _initCopySelectedTasksAction(self):
+        action = QtWidgets.QAction(getIcon('TaskCopy.png'), 'Copy Selected Tasks', self)
+        action.setShortcuts([QtGui.QKeySequence.Copy])
+        action.triggered.connect(self._copySelectedTasks)
+        self.view.addListAction(action)
+        self.copySelectedTasksAction = action
 
     def _initDeleteSelectedTasksAction(self):
         action = QtWidgets.QAction(getIcon('TaskDelete.png'), '&Delete Selected Tasks', self)
@@ -180,3 +191,10 @@ class TasksListController(QtCore.QObject):
                 task.parseLine(text)
                 self.view.updateTask(task)
                 self.taskModified.emit(task)
+
+    def _copySelectedTasks(self):
+        tasks = self.view.getSelectedTasks()
+        if tasks:
+            text = "".join(str(task) + os.linesep for task in tasks)
+            app = QtWidgets.QApplication.instance()
+            app.clipboard().setText(text)
