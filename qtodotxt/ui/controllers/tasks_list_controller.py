@@ -8,6 +8,8 @@ from qtodotxt.ui.resource_manager import getIcon
 
 from datetime import date
 
+import os
+
 
 class TasksListController(QtCore.QObject):
 
@@ -193,6 +195,6 @@ class TasksListController(QtCore.QObject):
     def _copySelectedTasks(self):
         tasks = self.view.getSelectedTasks()
         if tasks:
-            text = "".join(str(task) + "\n" for task in tasks)
+            text = "".join(str(task) + os.linesep for task in tasks)
             app = QtWidgets.QApplication.instance()
             app.clipboard().setText(text)
