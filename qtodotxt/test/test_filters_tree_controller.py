@@ -41,7 +41,7 @@ class FakeTreeView(QtCore.QObject):
     def selectAllTasksFilter(self):
         self.selectedFilters = [IncompleteTasksFilter()]
 
-    def updateTopLevelTitles(self, counters):
+    def updateTopLevelTitles(self, counters, show_completed=False):
         return
 
 

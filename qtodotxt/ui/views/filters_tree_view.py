@@ -63,19 +63,31 @@ class FiltersTreeView(QtWidgets.QWidget):
         parentItem.setExpanded(True)
         parentItem.sortChildren(1, QtCore.Qt.AscendingOrder)
 
-    def updateTopLevelTitles(self, counters):
+    def updateTopLevelTitles(self, counters, show_completed=False):
         nbPending = counters['Pending']
         nbDue = counters['Due']
         nbUncategorized = counters['Uncategorized']
         nbContexts = counters['Contexts']
         nbProjects = counters['Projects']
         nbComplete = counters['Complete']
-        self._allTasksItem.setText(0, "All (%d)" % nbPending)
-        self._dueItem.setText(0, "Due (%d)" % nbDue)
-        self._uncategorizedTasksItem.setText(0, "Uncategorized (%d)" % nbUncategorized)
-        self._contextsItem.setText(0, "Contexts (%d)" % nbContexts)
-        self._projectsItem.setText(0, "Projects (%d)" % nbProjects)
+        nbContCompl = counters['ContCompl']
+        nbProjCompl = counters['ProjCompl']
+        nbDueCompl = counters['DueCompl']
+        nbUncatCompl = counters['UncatCompl']
+
         self._completeTasksItem.setText(0, "Complete (%d)" % nbComplete)
+        if (show_completed is True):
+            self._allTasksItem.setText(0, "All ({0}; {1})".format(nbPending, nbComplete))
+            self._dueItem.setText(0, "Due ({0}; {1})".format(nbDue, nbDueCompl))
+            self._contextsItem.setText(0, "Contexts ({0}; {1})".format(nbContexts, nbContCompl))
+            self._projectsItem.setText(0, "Projects ({0}; {1})".format(nbProjects, nbProjCompl))
+            self._uncategorizedTasksItem.setText(0, "Uncategorized ({0}; {1})".format(nbUncategorized, nbUncatCompl))
+        else:
+            self._allTasksItem.setText(0, "All (%d)" % nbPending)
+            self._contextsItem.setText(0, "Contexts (%d)" % nbContexts)
+            self._projectsItem.setText(0, "Projects (%d)" % nbProjects)
+            self._dueItem.setText(0, "Due (%d)" % nbDue)
+            self._uncategorizedTasksItem.setText(0, "Uncategorized (%d)" % nbUncategorized)
 
     def selectAllTasksFilter(self):
         self._allTasksItem.setSelected(True)
