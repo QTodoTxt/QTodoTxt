@@ -182,12 +182,16 @@ class File(object):
                          'Contexts': 0,
                          'Projects': 0,
                          'Complete': 0,
+                         'DueCompl': 0,
+                         'ProjCompl': 0,
+                         'ContCompl': 0,
+                         'UncatCompl': 0,
                          'Due': 0})
         for task in self.tasks:
+            nbProjects = len(task.projects)
+            nbContexts = len(task.contexts)
             if not task.is_complete:
                 counters['Pending'] += 1
-                nbProjects = len(task.projects)
-                nbContexts = len(task.contexts)
                 if nbProjects > 0:
                     counters['Projects'] += 1
                 if nbContexts > 0:
@@ -198,6 +202,14 @@ class File(object):
                     counters['Due'] += 1
             else:
                 counters['Complete'] += 1
+                if nbProjects > 0:
+                    counters['ProjCompl'] += 1
+                if nbContexts > 0:
+                    counters['ContCompl'] += 1
+                if nbContexts == 0 and nbProjects == 0:
+                    counters['UncatCompl'] += 1
+                if task.due:
+                    counters['DueCompl'] += 1
         return counters
 
 

@@ -34,13 +34,13 @@ class FiltersTreeController(QtCore.QObject):
         self._addAllContexts(file, show_completed)
         self._addAllProjects(file, show_completed)
         self._addAllDueRanges(file, show_completed)
-        self._updateCounter(file)
+        self._updateCounter(file, show_completed)
         self._is_showing_filters = False
         self._reselect(previouslySelectedFilters)
 
-    def _updateCounter(self, file):
+    def _updateCounter(self, file, show_completed=False):
         rootCounters = file.getTasksCounters()
-        self.view.updateTopLevelTitles(rootCounters)
+        self.view.updateTopLevelTitles(rootCounters, show_completed)
 
     def _addAllContexts(self, file, show_completed):
         contexts = file.getAllContexts(show_completed)
