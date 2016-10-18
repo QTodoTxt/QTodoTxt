@@ -101,6 +101,7 @@ class Settings(QtWidgets.QDialog):
         self._save_int_cb("close_to_tray", val)
 
     def closeEvent(self, event):
+        self.deleteLater()
         self.maincontroller.view.show()
 
 if __name__ == "__main__":
