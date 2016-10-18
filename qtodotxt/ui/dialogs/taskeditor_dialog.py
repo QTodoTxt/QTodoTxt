@@ -1,5 +1,5 @@
 import sys
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 from qtodotxt.ui.dialogs.taskeditor_lineedit import TaskEditorLineEdit
 from datetime import date, timedelta
 import collections
@@ -79,6 +79,12 @@ class TaskEditorDialog(QtWidgets.QDialog):
         super(TaskEditorDialog, self).__init__(parent)
         self._initUI(values)
         self._populateKeys(self.autocomplete_pairs)
+        self.setWindowFlags(QtCore.Qt.Dialog
+                            | QtCore.Qt.MSWindowsFixedSizeDialogHint
+                            | QtCore.Qt.WindowStaysOnBottomHint
+                            | QtCore.Qt.WindowSystemMenuHint
+                            | QtCore.Qt.WindowTitleHint
+                            | QtCore.Qt.WindowCloseButtonHint)
 
     def _populateKeys(self, keys):
         self._populateDues(keys)

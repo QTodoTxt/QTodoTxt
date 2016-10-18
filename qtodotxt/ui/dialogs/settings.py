@@ -13,6 +13,12 @@ class Settings(QtWidgets.QDialog):
         self.ui = Ui_SettingsUI()
         self.ui.setupUi(self)
         self.settings = QtCore.QSettings()
+        self.setWindowFlags(QtCore.Qt.Dialog
+                            | QtCore.Qt.MSWindowsFixedSizeDialogHint
+                            | QtCore.Qt.WindowStaysOnBottomHint
+                            | QtCore.Qt.WindowSystemMenuHint
+                            | QtCore.Qt.WindowTitleHint
+                            | QtCore.Qt.WindowCloseButtonHint)
 
         self.load_settings()
         self.connect_all()
