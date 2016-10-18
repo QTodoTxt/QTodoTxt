@@ -35,7 +35,7 @@ class TasksListController(QtCore.QObject):
 
     def _initEditTaskAction(self):
         action = QtWidgets.QAction(getIcon('TaskEdit.png'), '&Edit Task', self)
-        action.setShortcuts(['Ctrl+E'])
+        action.setShortcuts(['Ctrl+E', 'Enter'])
         action.triggered.connect(self.editTask)
         self.view.addListAction(action)
         self.editTaskAction = action
