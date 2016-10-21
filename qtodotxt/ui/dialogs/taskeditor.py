@@ -26,9 +26,18 @@ class TaskEditor(object):
         for project in projects:
             self._values.append('+' + project)
 
+    def updateCompletedValues(self, file):
+        contexts = file.getAllContexts(True)
+        projects = file.getAllProjects(True)
+        for context in contexts:
+            self._completedValues.append('@' + context)
+        for project in projects:
+            self._completedValues.append('+' + project)
+
     def updateValues(self, file):
         self._resetValues()
         self.updateTodoValues(file)
+        self.updateCompletedValues(file)
 
     def createTask(self):
         (text, ok) = self._openTaskEditor("Create Task")
