@@ -91,7 +91,7 @@ class MenuController(QtCore.QObject):
 
     def _createExitAction(self):
         action = QtWidgets.QAction(getIcon('ApplicationExit.png'), 'E&xit', self)
-        action.setShortcuts(["Alt+F4"])
+        action.setShortcuts(["Ctrl+Q"])
         action.triggered.connect(self._main_controller.exit)
         return action
 
