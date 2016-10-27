@@ -25,6 +25,7 @@ class Settings(QtWidgets.QDialog):
 
     def load_settings(self):
         self._int_settings_to_cb("auto_save", self.ui.autoSaveCheckBox)
+        self._int_settings_to_cb("sigleton", self.ui.sigletonCheckBox)
         self._int_settings_to_cb("auto_archive", self.ui.autoArchiveCheckBox, 0)
         self._int_settings_to_cb("add_created_date", self.ui.addCreatedDateCheckBox, 0)
         self._int_settings_to_cb("confirm_complete", self.ui.confirmCompletionCheckBox)
@@ -50,6 +51,7 @@ class Settings(QtWidgets.QDialog):
 
     def connect_all(self):
         self.ui.closeButton.clicked.connect(self.close)
+        self.ui.sigletonCheckBox.stateChanged.connect(self.setSigletonCheckBox)
         self.ui.autoSaveCheckBox.stateChanged.connect(self.setAutoSave)
         self.ui.autoArchiveCheckBox.stateChanged.connect(self.setAutoArchive)
         self.ui.addCreatedDateCheckBox.stateChanged.connect(self.setAddCreatedDate)
@@ -66,6 +68,9 @@ class Settings(QtWidgets.QDialog):
             self.settings.setValue(name, 0)
         else:
             self.settings.setValue(name, 1)
+
+    def setSigletonCheckBox(self, val):
+        self._save_int_cb("sigleton", val)
 
     def setAutoSave(self, val):
         self._save_int_cb("auto_save", val)
