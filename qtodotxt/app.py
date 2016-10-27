@@ -5,7 +5,6 @@ import argparse
 import logging
 import sys
 import mmap
-import threading
 
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
@@ -17,29 +16,30 @@ from qtodotxt.ui.resource_manager import getIcon
 from qtodotxt.ui.views.main_view import MainView
 from qtodotxt.lib.tendo_singleton import SingleInstance
 
+file = r'qtodo.tmp'
+size = 1024
 
-class MmapReading(threading.Thread):
-    def __init__(self, controller):
-        self.contr = controller
-        thread = threading.Thread(target=self.run, args=())
-        thread.daemon = True  # Daemonize thread
-        thread.start()
+class MmapReading(QtCore.QThread):
+
+    finished = QtCore.pyqtSignal(int)
+
+    def __init__(self):
+        QtCore.QThread.__init__(self)
+        self.daemon = True  # Daemonize thread
 
     def run(self):
-        file = r'qtotodo.txt'
-        size = 1024
+
         f = open(file, 'r+b')
         map = mmap.mmap(f.fileno(), 0)
         while True:
             line = map.readline()
             line = line.strip()
             if line == b"1":
-                self.contr.show()
+                self.finished.emit(1)
                 map.seek(0)
                 map.write(b"   ")
             if line == b"2":
-                self.contr.show()
-                self.contr._tasks_list_controller.createTask()
+                self.finished.emit(2)
                 map.seek(0)
                 map.write(b"   ")
             map.seek(0)
@@ -49,8 +49,6 @@ class TrayIcon(QtWidgets.QSystemTrayIcon):
     def __init__(self, main_controller):
         self._controller = main_controller
         self._initIcon()
-
-
 
     def _initIcon(self):
         view = self._controller.getView()
@@ -83,7 +81,6 @@ class TrayIcon(QtWidgets.QSystemTrayIcon):
                 self._createTask()
 
     def _createTask(self):
-
         self._controller.view.show()
         self._controller._tasks_list_controller.createTask()
 
@@ -126,11 +123,8 @@ def run():
     args = _parseArgs()
 
     me = SingleInstance()
-    if ( QtCore.QSettings().value("sigleton",1) ):
-        #if we must be singleton and we are the first
-        file = r'qtotodo.txt'
-        size = 1024
-
+    # if we must be singleton and we are the first
+    if ( QtCore.QSettings().value("sigleton",0) ):
         if ( me.initialized is True ):
             f = open(file, 'w+')
             f.write(" " * size)
@@ -147,16 +141,16 @@ def run():
         map.close()
 
     #exit if NOT init and in settings we must be in single mode
-    if ((me.initialized is False) and (QtCore.QSettings().value("sigleton",1))):
+    if ((me.initialized is False) and (QtCore.QSettings().value("sigleton",0))):
         sys.exit(-1)
 
     _setupLogging(args.loglevel)
     #    logger = logging.getLogger(__file__[:-3]) # in case someone wants to log here
     controller = _createController(args)
 
-    if (QtCore.QSettings().value("sigleton", 1)):
-        threadRead = threading.Thread(name="threadReadMmap", group = None, target = MmapReading, args = (controller,))
-        threadRead.setDaemon(True)
+    if (QtCore.QSettings().value("sigleton", 0)):
+        threadRead = MmapReading()
+        threadRead.finished.connect(controller.threadEvent)
         threadRead.start()
 
     controller.show()

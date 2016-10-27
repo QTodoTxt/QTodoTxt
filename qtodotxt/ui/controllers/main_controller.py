@@ -418,3 +418,12 @@ class MainController(QtCore.QObject):
             self.view.activateWindow()
         else:
             self.view.hide()
+
+    def threadEvent(self, tip):
+        if tip == 1:
+            self.view.show()
+            self.view.activateWindow()
+        if tip == 2:
+            self.view.show()
+            self.view.activateWindow()
+            self._tasks_list_controller.createTask()

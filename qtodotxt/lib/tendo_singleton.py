@@ -6,11 +6,6 @@ import tempfile
 import logging
 
 
-
-class SingleInstanceException(BaseException):
-    pass
-
-
 class SingleInstance:
 
     """
@@ -72,14 +67,3 @@ class SingleInstance:
                     os.unlink(self.lockfile)
         except Exception as e:
             raise
-
-
-def f(name):
-    tmp = logger.level
-    logger.setLevel(logging.CRITICAL)  # we do not want to see the warning
-    try:
-        me2 = SingleInstance(flavor_id=name)  # noqa
-    except SingleInstanceException:
-        sys.exit(-1)
-    logger.setLevel(tmp)
-    pass
