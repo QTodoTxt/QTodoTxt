@@ -25,7 +25,7 @@ class Settings(QtWidgets.QDialog):
 
     def load_settings(self):
         self._int_settings_to_cb("auto_save", self.ui.autoSaveCheckBox)
-        self._int_settings_to_cb("sigleton", self.ui.sigletonCheckBox)
+        self._int_settings_to_cb("sigleton", self.ui.sigletonCheckBox, 0)
         self._int_settings_to_cb("auto_archive", self.ui.autoArchiveCheckBox, 0)
         self._int_settings_to_cb("add_created_date", self.ui.addCreatedDateCheckBox, 0)
         self._int_settings_to_cb("confirm_complete", self.ui.confirmCompletionCheckBox)
