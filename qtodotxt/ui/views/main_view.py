@@ -2,7 +2,7 @@ from PyQt5 import QtCore
 from PyQt5 import QtGui
 from PyQt5 import QtWidgets
 
-from qtodotxt.ui.resource_manager import getIcon, getResourcePath
+from qtodotxt.ui.resource_manager import getIcon
 from qtodotxt.ui.views.filters_tree_view import FiltersTreeView
 from qtodotxt.ui.views.tasks_view import TasksView
 
@@ -25,10 +25,6 @@ class MainView(QtWidgets.QMainWindow):
 
         self.splitter = QtWidgets.QSplitter()
         self.splitter.setHandleWidth(1)
-
-        cssPath = getResourcePath("css/default.css")
-        css = open(cssPath, 'r', encoding='utf-8').read()
-        self.setStyleSheet(css)
 
         self.filters_tree_view = FiltersTreeView(self.splitter)
         self.tasks_view = TasksView(self.splitter)
