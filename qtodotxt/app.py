@@ -19,6 +19,7 @@ from qtodotxt.lib.tendo_singleton import SingleInstance
 file = r'qtodo.tmp'
 size = 1024
 
+
 class MmapReading(QtCore.QThread):
 
     finished = QtCore.pyqtSignal(int)
@@ -124,8 +125,8 @@ def run():
 
     me = SingleInstance()
     # if we must be singleton and we are the first
-    if ( QtCore.QSettings().value("sigleton",0) ):
-        if ( me.initialized is True ):
+    if QtCore.QSettings().value("sigleton", 0):
+        if me.initialized is True:
             f = open(file, 'w+')
             f.write(" " * size)
             f.flush()
@@ -134,21 +135,21 @@ def run():
         f = open(file, "r+b")
         map = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_WRITE)
         map.seek(0)
-        if ( (me.initialized is False) and (args.quickadd is False)):
+        if (me.initialized is False) and (args.quickadd is False):
             map.write(b"1")
-        if ( (me.initialized is False) and (args.quickadd is True)):
+        if (me.initialized is False) and (args.quickadd is True):
             map.write(b"2")
         map.close()
 
-    #exit if NOT init and in settings we must be in single mode
-    if ((me.initialized is False) and (QtCore.QSettings().value("sigleton",0))):
+    # exit if NOT init and in settings we must be in single mode
+    if (me.initialized is False) and (QtCore.QSettings().value("sigleton", 0)):
         sys.exit(-1)
 
     _setupLogging(args.loglevel)
     #    logger = logging.getLogger(__file__[:-3]) # in case someone wants to log here
     controller = _createController(args)
 
-    if (QtCore.QSettings().value("sigleton", 0)):
+    if QtCore.QSettings().value("sigleton", 0):
         threadRead = MmapReading()
         threadRead.finished.connect(controller.threadEvent)
         threadRead.start()
