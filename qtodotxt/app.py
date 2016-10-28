@@ -123,36 +123,35 @@ def run():
     app = QtWidgets.QApplication(sys.argv)
     args = _parseArgs()
 
-    me = SingleInstance()
-    # if we must be singleton and we are the first
-    if QtCore.QSettings().value("sigleton", 0):
+    needSingleton = QtCore.QSettings().value("singleton", 0)
+
+    if needSingleton:
+        me = SingleInstance()
         if me.initialized is True:
             f = open(file, 'w+')
             f.write(" " * size)
             f.flush()
             f.close()
-
-        f = open(file, "r+b")
-        map = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_WRITE)
-        map.seek(0)
-        if (me.initialized is False) and (args.quickadd is False):
-            map.write(b"1")
-        if (me.initialized is False) and (args.quickadd is True):
-            map.write(b"2")
-        map.close()
-
-    # exit if NOT init and in settings we must be in single mode
-    if (me.initialized is False) and (QtCore.QSettings().value("sigleton", 0)):
-        sys.exit(-1)
+        else:
+            f = open(file, "r+b")
+            map = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_WRITE)
+            map.seek(0)
+            if args.quickadd is False:
+                map.write(b"1")
+            if args.quickadd is True:
+                map.write(b"2")
+            map.close()
+            sys.exit(-1)
+        # if we must be singleton, create a thread to monitor attempts to start a new instance
+        threadRead = MmapReading()
+        threadRead.start()
 
     _setupLogging(args.loglevel)
     #    logger = logging.getLogger(__file__[:-3]) # in case someone wants to log here
     controller = _createController(args)
 
-    if QtCore.QSettings().value("sigleton", 0):
-        threadRead = MmapReading()
+    if needSingleton:
         threadRead.finished.connect(controller.threadEvent)
-        threadRead.start()
 
     controller.show()
     if int(QtCore.QSettings().value("enable_tray", 0)):
