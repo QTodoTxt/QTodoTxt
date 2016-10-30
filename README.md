@@ -1,4 +1,4 @@
-# QTodoTxt [![Build Status](https://travis-ci.org/QTodoTxt/QTodoTxt.png?branch=master)](https://travis-ci.org/QTodoTxt/QTodoTxt)
+# QTodoTxt [![Build Status](https://travis-ci.org/QTodoTxt/QTodoTxt.png?branch=master)](https://travis-ci.org/QTodoTxt/QTodoTxt) [![GPLv3+](https://img.shields.io/badge/license-GPLv3%2B-blue.svg?style=plastic)](https://github.com/QTodoTxt/QTodoTxt/blob/master/gpl.txt)
 
 QTodoTxt is a cross-platform UI client for todo.txt files (see [todo.txt](http://todotxt.com)).
 
