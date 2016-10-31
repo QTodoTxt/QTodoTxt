@@ -4,7 +4,7 @@
 import argparse
 import logging
 import sys
-import mmap
+import os
 
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
@@ -26,24 +26,20 @@ class MmapReading(QtCore.QThread):
 
     def __init__(self):
         QtCore.QThread.__init__(self)
-        self.daemon = True  # Daemonize thread
 
+    @QtCore.pyqtSlot()
     def run(self):
-
+        if not os.path.isfile(file):
+            return
         f = open(file, 'r+b')
-        map = mmap.mmap(f.fileno(), 0)
-        while True:
-            line = map.readline()
-            line = line.strip()
-            if line == b"1":
-                self.finished.emit(1)
-                map.seek(0)
-                map.write(b"   ")
-            if line == b"2":
-                self.finished.emit(2)
-                map.seek(0)
-                map.write(b"   ")
-            map.seek(0)
+        line = f.readline()
+        line = line.strip()
+        if line == b"1":
+            self.finished.emit(1)
+        if line == b"2":
+            self.finished.emit(2)
+        f.close()
+        os.remove(file)
 
 
 class TrayIcon(QtWidgets.QSystemTrayIcon):
@@ -128,23 +124,21 @@ def run():
     if needSingleton:
         me = SingleInstance()
         if me.initialized is True:
+            if os.path.isfile(file):
+                os.remove(file)
+        else:
             f = open(file, 'w+')
-            f.write(" " * size)
+            if args.quickadd is False:
+                f.write("1")
+            if args.quickadd is True:
+                f.write("2")
             f.flush()
             f.close()
-        else:
-            f = open(file, "r+b")
-            map = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_WRITE)
-            map.seek(0)
-            if args.quickadd is False:
-                map.write(b"1")
-            if args.quickadd is True:
-                map.write(b"2")
-            map.close()
             sys.exit(-1)
         # if we must be singleton, create a thread to monitor attempts to start a new instance
         threadRead = MmapReading()
-        threadRead.start()
+        _fileWatcher = QtCore.QFileSystemWatcher(['.'])
+        _fileWatcher.directoryChanged.connect(threadRead.run)
 
     _setupLogging(args.loglevel)
     #    logger = logging.getLogger(__file__[:-3]) # in case someone wants to log here
