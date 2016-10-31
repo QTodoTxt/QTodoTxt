@@ -45,6 +45,7 @@ class MainController(QtCore.QObject):
         self._fileObserver = FileObserver(self, self._file)
         self._is_modified = False
         self._setIsModified(False)
+        self._fileObserver.fileChangetSig.connect(self.openFileByName)
         self.view.closeEventSignal.connect(self.view_onCloseEvent)
         filters = self._settings.value("current_filters", ["All"])
         self._filters_tree_controller.view.setSelectedFiltersByNames(filters)
