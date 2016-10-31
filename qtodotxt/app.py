@@ -4,6 +4,7 @@
 import argparse
 import logging
 import sys
+import os
 
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
@@ -13,6 +14,32 @@ from qtodotxt.ui.dialogs.misc_dialogs import Dialogs
 from qtodotxt.ui.dialogs.taskeditor import TaskEditor
 from qtodotxt.ui.resource_manager import getIcon
 from qtodotxt.ui.views.main_view import MainView
+from qtodotxt.lib.tendo_singleton import SingleInstance
+
+file = r'qtodo.tmp'
+size = 1024
+
+
+class MmapReading(QtCore.QThread):
+
+    finished = QtCore.pyqtSignal(int)
+
+    def __init__(self):
+        QtCore.QThread.__init__(self)
+
+    @QtCore.pyqtSlot()
+    def run(self):
+        if not os.path.isfile(file):
+            return
+        f = open(file, 'r+b')
+        line = f.readline()
+        line = line.strip()
+        if line == b"1":
+            self.finished.emit(1)
+        if line == b"2":
+            self.finished.emit(2)
+        f.close()
+        os.remove(file)
 
 
 class TrayIcon(QtWidgets.QSystemTrayIcon):
@@ -51,7 +78,6 @@ class TrayIcon(QtWidgets.QSystemTrayIcon):
                 self._createTask()
 
     def _createTask(self):
-
         self._controller.view.show()
         self._controller._tasks_list_controller.createTask()
 
@@ -88,12 +114,39 @@ def run():
     # First set some application settings for QSettings
     QtCore.QCoreApplication.setOrganizationName("QTodoTxt")
     QtCore.QCoreApplication.setApplicationName("QTodoTxt")
+
     # Now set up our application and start
     app = QtWidgets.QApplication(sys.argv)
     args = _parseArgs()
+
+    needSingleton = QtCore.QSettings().value("singleton", 0)
+
+    if needSingleton:
+        me = SingleInstance()
+        if me.initialized is True:
+            if os.path.isfile(file):
+                os.remove(file)
+        else:
+            f = open(file, 'w+')
+            if args.quickadd is False:
+                f.write("1")
+            if args.quickadd is True:
+                f.write("2")
+            f.flush()
+            f.close()
+            sys.exit(-1)
+        # if we must be singleton, create a thread to monitor attempts to start a new instance
+        threadRead = MmapReading()
+        _fileWatcher = QtCore.QFileSystemWatcher(['.'])
+        _fileWatcher.directoryChanged.connect(threadRead.run)
+
     _setupLogging(args.loglevel)
     #    logger = logging.getLogger(__file__[:-3]) # in case someone wants to log here
     controller = _createController(args)
+
+    if needSingleton:
+        threadRead.finished.connect(controller.threadEvent)
+
     controller.show()
     if int(QtCore.QSettings().value("enable_tray", 0)):
         # If the controller.show() method is not called, the todo.txt file
