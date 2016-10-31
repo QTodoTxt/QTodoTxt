@@ -4,6 +4,7 @@
 import argparse
 import logging
 import sys
+import os
 
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
@@ -13,6 +14,8 @@ from qtodotxt.ui.dialogs.misc_dialogs import Dialogs
 from qtodotxt.ui.dialogs.taskeditor import TaskEditor
 from qtodotxt.ui.resource_manager import getIcon
 from qtodotxt.ui.views.main_view import MainView
+from qtodotxt.lib.file import FileObserver
+from qtodotxt.lib.tendo_singleton import SingleInstance
 
 
 class TrayIcon(QtWidgets.QSystemTrayIcon):
@@ -84,6 +87,12 @@ def _createController(args):
     return MainController(window, dialogs, taskeditor, args)
 
 
+def setupAnotherInstanceEvent(controller, dir):
+    fileObserver = FileObserver(controller, dir)
+    fileObserver.addPath(dir)
+    fileObserver.dirChangetSig.connect(controller.anotherInstanceEvent)
+
+
 def run():
     # First set some application settings for QSettings
     QtCore.QCoreApplication.setOrganizationName("QTodoTxt")
@@ -91,9 +100,35 @@ def run():
     # Now set up our application and start
     app = QtWidgets.QApplication(sys.argv)
     args = _parseArgs()
+
+    dir = os.path.dirname(sys.argv[0])
+    needSingleton = QtCore.QSettings().value("singleton", 0)
+
+    # clear or write to TMP file, of main instance
+    tempFileName = dir + "/qtodo.tmp"
+    if needSingleton:
+        me = SingleInstance()
+        if me.initialized is True:
+            if os.path.isfile(tempFileName):
+                os.remove(tempFileName)
+        else:
+            f = open(tempFileName, 'w')
+            if args.quickadd is False:
+                f.write("1")
+            if args.quickadd is True:
+                f.write("2")
+            f.flush()
+            f.close()
+            sys.exit(-1)
+
     _setupLogging(args.loglevel)
     #    logger = logging.getLogger(__file__[:-3]) # in case someone wants to log here
     controller = _createController(args)
+
+    # Connecting to a processor reading TMP file
+    if needSingleton:
+        setupAnotherInstanceEvent(controller, dir)
+
     controller.show()
     if int(QtCore.QSettings().value("enable_tray", 0)):
         # If the controller.show() method is not called, the todo.txt file

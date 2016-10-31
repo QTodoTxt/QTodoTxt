@@ -216,12 +216,14 @@ class File(object):
 class FileObserver(QtCore.QFileSystemWatcher):
 
     fileChangetSig = QtCore.pyqtSignal(str)
+    dirChangetSig = QtCore.pyqtSignal(str)
 
     def __init__(self, parent, file):
         logger.debug('Setting up FileObserver instance.')
         super().__init__(parent)
         self._file = file
         self.fileChanged.connect(self.fileChangedHandler)
+        self.directoryChanged.connect(self.dirChangedHandler)
 
     @QtCore.pyqtSlot(str)
     def fileChangedHandler(self, path):
@@ -239,6 +241,10 @@ class FileObserver(QtCore.QFileSystemWatcher):
                 else:
                     logger.debug('It took {} additional attempts until the file could be read.'.format(debug_counter))
                     break
+
+    @QtCore.pyqtSlot(str)
+    def dirChangedHandler(self, path):
+        self.dirChangetSig.emit(path)
 
     def clear(self):
         if self.files():
