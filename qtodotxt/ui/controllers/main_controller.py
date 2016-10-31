@@ -23,6 +23,9 @@ FILENAME_FILTERS = ';;'.join([
 
 
 class MainController(QtCore.QObject):
+
+    _show_toolbar = QtCore.pyqtSignal(int)
+
     def __init__(self, view, dialogs, task_editor_service, args):
         super(MainController, self).__init__()
         self._args = args
@@ -31,12 +34,6 @@ class MainController(QtCore.QObject):
         # use object variable for setting only used in this class
         # others are accessed through QSettings
         self._settings = QtCore.QSettings()
-        # self._show_toolbar = int(self._settings.value("show_toolbar", 1))
-        # fix migration issue from old settings
-        show_toolbar = self._settings.value("show_toolbar", 1)
-        if show_toolbar in ("true", "false"):
-            show_toolbar = 1
-        self._show_toolbar = int(show_toolbar)
         self._show_completed = True
         self._dialogs = dialogs
         self._task_editor_service = task_editor_service
@@ -58,9 +55,9 @@ class MainController(QtCore.QObject):
     def _initControllers(self):
         self._initFiltersTree()
         self._initTasksList()
-        self._initMenuBar()
         self._initContextualMenu()
         self._initActions()
+        self._initMenuBar()
         self._initToolBar()
         self._initSearchText()
 
@@ -69,17 +66,17 @@ class MainController(QtCore.QObject):
         self._menu_controller = MenuController(self, menu)
 
     def _initActions(self):
-        self.filterViewAction = QtWidgets.QAction(getIcon('sidepane.png'), '&Show Filters', self)
+        self.filterViewAction = QtWidgets.QAction(getIcon('sidepane.png'), 'Show &Filters', self)
         self.filterViewAction.setCheckable(True)
         # action.setShortcuts(['Ctrl+E']) # what should it be?
         self.filterViewAction.triggered.connect(self._toggleFilterView)
 
-        self.showFutureAction = QtWidgets.QAction(getIcon('future.png'), '&Show Future Tasks', self)
+        self.showFutureAction = QtWidgets.QAction(getIcon('future.png'), 'Show Future &Tasks', self)
         self.showFutureAction.setCheckable(True)
         # action.setShortcuts(['Ctrl+E']) # what should it be?
         self.showFutureAction.triggered.connect(self._toggleShowFuture)
 
-        self.showCompletedAction = QtWidgets.QAction(getIcon('show_completed.png'), '&Show Completed Tasks', self)
+        self.showCompletedAction = QtWidgets.QAction(getIcon('show_completed.png'), 'Show &Completed Tasks', self)
         self.showCompletedAction.setCheckable(True)
         # action.setShortcuts(['Ctrl+E']) # what should it be?
         self.showCompletedAction.triggered.connect(self._toggleShowCompleted)
@@ -87,6 +84,10 @@ class MainController(QtCore.QObject):
         self.archiveAction = QtWidgets.QAction(getIcon('archive.png'), '&Archive Completed Tasks', self)
         # action.setShortcuts(['Ctrl+E']) # what should it be?
         self.archiveAction.triggered.connect(self._archive_all_done_tasks)
+
+        self.showToolBarAction = QtWidgets.QAction('Show Tool&Bar', self)
+        self.showToolBarAction.setCheckable(True)
+        self.showToolBarAction.triggered.connect(self._toggleShowToolBar)
 
     def _initToolBar(self):
         toolbar = self.view.addToolBar("Main Toolbar")
@@ -113,9 +114,15 @@ class MainController(QtCore.QObject):
         toolbar.addAction(self._tasks_list_controller.decreasePrioritySelectedTasksAction)
         toolbar.addSeparator()
         toolbar.addAction(self.archiveAction)
-        toolbar.visibilityChanged.connect(self._toolbar_visibility_changed)
-        if not self._show_toolbar:
-            toolbar.hide()
+        self._show_toolbar.connect(toolbar.setVisible)
+
+    def _toggleShowToolBar(self):
+        if self.showToolBarAction.isChecked():
+            self._settings.setValue("show_toolbar", 1)
+            self._toolbar_visibility_changed(1)
+        else:
+            self._settings.setValue("show_toolbar", 0)
+            self._toolbar_visibility_changed(0)
 
     def _toggleShowCompleted(self):
         if self.showCompletedAction.isChecked():
@@ -164,7 +171,7 @@ class MainController(QtCore.QObject):
             self._toggleFilterView()
 
     def _toolbar_visibility_changed(self, val):
-        self._show_toolbar = int(val)
+        self._show_toolbar.emit(val)
 
     def exit(self):
         self.view.close()
@@ -306,7 +313,6 @@ class MainController(QtCore.QObject):
             return
 
         if self._canExit():
-            self._settings.setValue("show_toolbar", self._show_toolbar)
             if self.filterViewAction.isChecked():  # we only save size if it is visible
                 self._settings.setValue("splitter_pos", self.view.centralWidget().sizes())
             self._settings.setValue("current_filters", self._filters_tree_controller.view.getSelectedFilterNames())
@@ -400,6 +406,7 @@ class MainController(QtCore.QObject):
         self._restoreShowCompleted()
         self._restoreFilterView()
         self._restoreShowFuture()
+        self._restoreShowToolBar()
 
     def _restoreShowCompleted(self):
         val = int(self._settings.value("show_completed_tasks", 1))
@@ -409,6 +416,15 @@ class MainController(QtCore.QObject):
         else:
             self._show_completed = False
             self.showCompletedAction.setChecked(False)
+
+    def _restoreShowToolBar(self):
+        val = int(self._settings.value("show_toolbar", 1))
+        if val:
+            self._toolbar_visibility_changed(1)
+            self.showToolBarAction.setChecked(True)
+        else:
+            self._toolbar_visibility_changed(0)
+            self.showToolBarAction.setChecked(False)
 
     def updateFilters(self):
         self._onFilterSelectionChanged(self._filters_tree_controller.view.getSelectedFilters())
