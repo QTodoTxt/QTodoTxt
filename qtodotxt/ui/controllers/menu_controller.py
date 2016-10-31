@@ -16,6 +16,7 @@ class MenuController(QtCore.QObject):
     def _initMenuBar(self):
         self._initFileMenu()
         self._initEditMenu()
+        self._initViewMenu()
         self._initHelpMenu()
 
     def _initFileMenu(self):
@@ -42,6 +43,14 @@ class MenuController(QtCore.QObject):
         editMenu.addSeparator()
         editMenu.addAction(tlc.increasePrioritySelectedTasksAction)
         editMenu.addAction(tlc.decreasePrioritySelectedTasksAction)
+
+    def _initViewMenu(self):
+        viewMenu = self._menu.addMenu('&View')
+        viewMenu.addAction(self._main_controller.showToolBarAction)
+        viewMenu.addSeparator()
+        viewMenu.addAction(self._main_controller.filterViewAction)
+        viewMenu.addAction(self._main_controller.showFutureAction)
+        viewMenu.addAction(self._main_controller.showCompletedAction)
 
     def _initHelpMenu(self):
         helpMenu = self._menu.addMenu('&Help')
