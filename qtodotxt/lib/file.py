@@ -214,6 +214,9 @@ class File(object):
 
 
 class FileObserver(QtCore.QFileSystemWatcher):
+
+    fileChangetSig = QtCore.pyqtSignal(str)
+
     def __init__(self, parent, file):
         logger.debug('Setting up FileObserver instance.')
         super().__init__(parent)
@@ -229,7 +232,7 @@ class FileObserver(QtCore.QFileSystemWatcher):
             max_time = time.time() + 1
             while time.time() < max_time:
                 try:
-                    self.parent().openFileByName(self._file.filename)  # TODO make that emit a signal
+                    self.fileChangetSig.emit(path)
                 except ErrorLoadingFile:
                     time.sleep(0.01)
                     debug_counter += 1
