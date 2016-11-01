@@ -28,7 +28,7 @@ class Settings(QtWidgets.QDialog):
         self._int_settings_to_cb("auto_archive", self.ui.autoArchiveCheckBox, 0)
         self._int_settings_to_cb("add_created_date", self.ui.addCreatedDateCheckBox, 0)
         self._int_settings_to_cb("confirm_complete", self.ui.confirmCompletionCheckBox)
-        self._int_settings_to_cb("show_delete", self.ui.deleteActionCheckBox, 0)
+        self._int_settings_to_cb("show_delete", self.ui.deleteActionCheckBox, 1)
         priority = self.settings.value("lowest_priority", "D")
         self.ui.lowestPriorityLineEdit.setText(priority)
         self._int_settings_to_cb("enable_tray", self.ui.trayCheckBox, 0)
