@@ -47,6 +47,7 @@ class MainController(QtCore.QObject):
         filters = self._settings.value("current_filters", ["All"])
         self._filters_tree_controller.view.setSelectedFiltersByNames(filters)
         self.hasTrayIcon = False
+        self._menu_controller.updateRecentFileActions()
 
     def auto_save(self):
         if int(self._settings.value("auto_save", 1)):
@@ -387,6 +388,23 @@ class MainController(QtCore.QObject):
         self._settings.sync()
         logger.debug('Adding {} to watchlist'.format(filename))
         self._fileObserver.addPath(self._file.filename)
+        self.updateRecentFile()
+
+    def updateRecentFile(self):
+        lastOpenedArray = self._menu_controller.getRecentFileNames()
+        if self._file.filename in lastOpenedArray:
+            pos = lastOpenedArray.index(self._file.filename)
+            del lastOpenedArray[pos]
+            lastOpenedArray.insert(0, self._file.filename)
+        else:
+            lastOpenedArray.pop()
+            lastOpenedArray.insert(0, self._file.filename)
+        ind = 1
+        for file in lastOpenedArray:
+            name = "lastOpened" + str(ind)
+            self._settings.setValue(name, file)
+            ind += 1
+        self._menu_controller.updateRecentFileActions()
 
     def _loadFileToUI(self):
         self._setIsModified(False)

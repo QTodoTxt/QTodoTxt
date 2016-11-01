@@ -1,5 +1,6 @@
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
+import os
 
 from qtodotxt.ui.dialogs import about_dialog
 from qtodotxt.ui.resource_manager import getIcon
@@ -7,6 +8,10 @@ from qtodotxt.ui.dialogs.settings import Settings
 
 
 class MenuController(QtCore.QObject):
+
+    maxRecentFiles = 3
+    recentFileArray = []
+
     def __init__(self, main_controller, menu):
         super(MenuController, self).__init__()
         self._main_controller = main_controller
@@ -23,12 +28,44 @@ class MenuController(QtCore.QObject):
         fileMenu = self._menu.addMenu('&File')
         fileMenu.addAction(self._createNewAction())
         fileMenu.addAction(self._createOpenAction())
+
+        lastOpened = fileMenu.addMenu("Open &Recent")
+        for ind in range(self.maxRecentFiles):
+            self.recentFileArray.append(QtWidgets.QAction(self, visible=False, triggered=self.openRecentFile))
+            lastOpened.addAction(self.recentFileArray[ind])
+
         fileMenu.addAction(self._createSaveAction())
         fileMenu.addAction(self._createRevertAction())
         fileMenu.addSeparator()
         fileMenu.addAction(self._createPreferenceAction())
         fileMenu.addSeparator()
         fileMenu.addAction(self._createExitAction())
+
+    def updateRecentFileActions(self):
+        recentFileNames = self.getRecentFileNames()
+        ind = 1
+        for i in range(self.maxRecentFiles):
+            if not os.path.exists(recentFileNames[i]):
+                self.recentFileArray[i].setVisible(False)
+                continue
+            text = "&%d %s" % (ind, recentFileNames[i])
+            self.recentFileArray[i].setText(text)
+            self.recentFileArray[i].setData(recentFileNames[i])
+            self.recentFileArray[i].setVisible(True)
+            self.recentFileArray[i].setShortcuts(["Ctrl+" + str(ind)])
+            ind += 1
+
+    def getRecentFileNames(self):
+        recentFileNames = []
+        for ind in range(self.maxRecentFiles):
+            name = "lastOpened" + str(ind+1)
+            recentFileNames.append(str(QtCore.QSettings().value(name, 0)))
+        return recentFileNames
+
+    def openRecentFile(self):
+        action = self.sender()
+        if action:
+            self._main_controller.openFileByName(action.data())
 
     def _initEditMenu(self):
         editMenu = self._menu.addMenu('&Edit')
