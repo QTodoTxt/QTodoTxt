@@ -94,7 +94,7 @@ class Ui_SettingsUI(object):
         self.confirmCompletionCheckBox.setText(_translate("SettingsUI", "Ask for confirmation before task completion"))
         self.label.setText(_translate("SettingsUI", "Lowest task priority"))
         self.closeButton.setText(_translate("SettingsUI", "Close"))
-        self.lowestPriorityLineEdit.setText(_translate("SettingsUI", "D"))
+        self.lowestPriorityLineEdit.setText("D")
         self.deleteActionCheckBox.setText(_translate("SettingsUI", "Show Delete action (Requires restart)"))
         self.trayCheckBox.setText(_translate("SettingsUI", "Enable system tray (Requires restart)"))
         self.hideToTrayCheckBox.setText(_translate("SettingsUI", "Show/Hide on Tray Click"))

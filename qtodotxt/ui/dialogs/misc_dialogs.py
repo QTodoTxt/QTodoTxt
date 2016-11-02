@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 
 
 class Dialogs(object):
@@ -44,16 +44,17 @@ class Dialogs(object):
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
+    _tr = QtCore.QCoreApplication.translate
     service = Dialogs(None, 'Default Title')
     service.showMessage("DialogsService.message()")
     service.showError("DialogsService.error()")
-    result = service.showSaveDiscardCancel("Unsaved changes...")
-    message = 'You clicked '
+    result = service.showSaveDiscardCancel(_tr("misc_dialog","Unsaved changes..."))
+    message = _tr("misc_dialog",'You clicked ')
     if result == QtWidgets.QMessageBox.Save:
-        message += '"Save"'
+        message += _tr("misc_dialog",'"Save"')
     elif result == QtWidgets.QMessageBox.Discard:
-        message += '"Discard"'
+        message += _tr("misc_dialog", '"Discard"')
     else:
-        message += '"Cancel"'
+        message += _tr("misc_dialog", '"Cancel"')
     service.showMessage(message)
-    service.showConfirm('Sure?')
+    service.showConfirm(_tr("misc_dialog", 'Sure?'))

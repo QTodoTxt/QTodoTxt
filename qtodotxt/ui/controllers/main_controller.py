@@ -372,7 +372,7 @@ class MainController(QtCore.QObject):
             self._loadFileToUI()
 
     def revert(self):
-        if self._dialogs.showConfirm('Revert to saved file (and lose unsaved changes)?'):
+        if self._dialogs.showConfirm(self.tr('Revert to saved file (and lose unsaved changes)?')):
             try:
                 self.openFileByName(self._file.filename)
             except ErrorLoadingFile as ex:
