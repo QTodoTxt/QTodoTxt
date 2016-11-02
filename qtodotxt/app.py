@@ -28,11 +28,11 @@ class TrayIcon(QtWidgets.QSystemTrayIcon):
         self.setToolTip('QTodoTxt')
 
         menu = QtWidgets.QMenu()
-        create_task_action = menu.addAction(getIcon('TaskCreate.png'), "Create New Task")
+        create_task_action = menu.addAction(getIcon('TaskCreate.png'), self.tr("Create New Task"))
         create_task_action.triggered.connect(self._createTask)
-        toggle_visible_action = menu.addAction("Show/Hide Window")
+        toggle_visible_action = menu.addAction(self.tr("Show/Hide Window"))
         toggle_visible_action.triggered.connect(self._controller.toggleVisible)
-        exit_action = menu.addAction(getIcon('ApplicationExit.png'), "Exit")
+        exit_action = menu.addAction(getIcon('ApplicationExit.png'), self.tr("Exit"))
         exit_action.triggered.connect(self._controller.exit)
         self.setContextMenu(menu)
 
@@ -90,6 +90,12 @@ def run():
     QtCore.QCoreApplication.setApplicationName("QTodoTxt")
     # Now set up our application and start
     app = QtWidgets.QApplication(sys.argv)
+
+    name = QtCore.QLocale.system().name()
+    translator = QtCore.QTranslator()
+    if translator.load(str(name) + ".qm", "..//i18n"):
+        app.installTranslator(translator)
+
     args = _parseArgs()
     _setupLogging(args.loglevel)
     #    logger = logging.getLogger(__file__[:-3]) # in case someone wants to log here
