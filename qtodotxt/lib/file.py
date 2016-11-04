@@ -5,6 +5,7 @@ from qtodotxt.lib.filters import DueTodayFilter, DueTomorrowFilter, DueThisWeekF
     DueOverdueFilter
 from qtodotxt.lib.tasklib import Task
 from sys import version
+
 import time
 
 logger = logging.getLogger(__name__)
@@ -50,16 +51,19 @@ class File(object):
     __repr__ = __str__
 
     def load(self, filename):
-
+        lines = ""
         try:
             with open(filename, 'rt', encoding='utf-8') as fd:
                 lines = fd.readlines()
         except FileNotFoundError:
-            raise ErrorLoadingFile("Trying to load a non-existing file: '{}".format(filename))
+            ErrorLoadingFile("Trying to load a non-existing file: '{}".format(filename))
+            return False
         except IOError as ex:                # deprecated since Python 3.3, it would be OSError for =>3.3-support
-            raise ErrorLoadingFile(str(ex))
+            ErrorLoadingFile(str(ex))
+            return False
         self.filename = filename
         self._createTasksFromLines(lines)
+        return True
 
     def _createTasksFromLines(self, lines):
         self.tasks = []
