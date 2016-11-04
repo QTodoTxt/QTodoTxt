@@ -93,6 +93,23 @@ def setupAnotherInstanceEvent(controller, dir):
     fileObserver.dirChangetSig.connect(controller.anotherInstanceEvent)
 
 
+def setupSingleton(args, me):
+    dir = os.path.dirname(sys.argv[0])
+    tempFileName = dir + "/qtodo.tmp"
+    if me.initialized is True:
+        if os.path.isfile(tempFileName):
+            os.remove(tempFileName)
+    else:
+        f = open(tempFileName, 'w')
+        if args.quickadd is False:
+            f.write("1")
+        if args.quickadd is True:
+            f.write("2")
+        f.flush()
+        f.close()
+        sys.exit(-1)
+
+
 def run():
     # First set some application settings for QSettings
     QtCore.QCoreApplication.setOrganizationName("QTodoTxt")
@@ -105,21 +122,9 @@ def run():
     needSingleton = QtCore.QSettings().value("singleton", 0)
 
     # clear or write to TMP file, of main instance
-    tempFileName = dir + "/qtodo.tmp"
-    if needSingleton:
+    if int(needSingleton):
         me = SingleInstance()
-        if me.initialized is True:
-            if os.path.isfile(tempFileName):
-                os.remove(tempFileName)
-        else:
-            f = open(tempFileName, 'w')
-            if args.quickadd is False:
-                f.write("1")
-            if args.quickadd is True:
-                f.write("2")
-            f.flush()
-            f.close()
-            sys.exit(-1)
+        setupSingleton(args, me)
 
     _setupLogging(args.loglevel)
     #    logger = logging.getLogger(__file__[:-3]) # in case someone wants to log here
