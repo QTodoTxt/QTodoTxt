@@ -7,10 +7,13 @@ from qtodotxt.ui.dialogs.settings import Settings
 
 
 class MenuController(QtCore.QObject):
+
     def __init__(self, main_controller, menu):
         super(MenuController, self).__init__()
         self._main_controller = main_controller
         self._menu = menu
+        self.maxRecentFiles = 3  # constant determines the number of files stored in the history
+        self.recentFileArray = []
         self._initMenuBar()
 
     def _initMenuBar(self):
@@ -23,12 +26,39 @@ class MenuController(QtCore.QObject):
         fileMenu = self._menu.addMenu('&File')
         fileMenu.addAction(self._createNewAction())
         fileMenu.addAction(self._createOpenAction())
+
+        lastOpened = fileMenu.addMenu("Open &Recent")
+        for ind in range(self.maxRecentFiles):
+            self.recentFileArray.append(QtWidgets.QAction(self, visible=False, triggered=self.openRecentFile))
+            lastOpened.addAction(self.recentFileArray[ind])
+
         fileMenu.addAction(self._createSaveAction())
         fileMenu.addAction(self._createRevertAction())
         fileMenu.addSeparator()
         fileMenu.addAction(self._createPreferenceAction())
         fileMenu.addSeparator()
         fileMenu.addAction(self._createExitAction())
+
+    def updateRecentFileActions(self):
+        recentFileNames = self.getRecentFileNames()
+        ind = 1
+        for i in range(len(recentFileNames)):
+            text = "&%d %s" % (ind, recentFileNames[i])
+            self.recentFileArray[i].setText(text)
+            self.recentFileArray[i].setData(recentFileNames[i])
+            self.recentFileArray[i].setVisible(True)
+            self.recentFileArray[i].setShortcuts(["Ctrl+" + str(ind)])
+            ind += 1
+
+    def getRecentFileNames(self):
+        recentFileNames = []
+        recentFileNames.append(QtCore.QSettings().value("lastOpened", []))
+        return recentFileNames[0]
+
+    def openRecentFile(self):
+        action = self.sender()
+        if action:
+            self._main_controller.openFileByName(action.data())
 
     def _initEditMenu(self):
         editMenu = self._menu.addMenu('&Edit')
