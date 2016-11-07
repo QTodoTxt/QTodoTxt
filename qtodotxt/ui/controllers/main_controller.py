@@ -384,7 +384,13 @@ class MainController(QtCore.QObject):
     def openFileByName(self, filename):
         logger.debug('MainController.openFileByName called with filename="{}"'.format(filename))
         self._fileObserver.clear()
-        self._file.load(filename)
+        if not self._file.load(filename):
+            currentfile = self._settings.value("last_open_file", "")
+            if currentfile == filename:
+                self._dialogs.showError(self.tr("Current file '{}' was deleted".format(filename)))
+            else:
+                self._dialogs.showError(self.tr("Error opening file: {}".format(filename)))
+            return
         self._loadFileToUI()
         self._settings.setValue("last_open_file", filename)
         self._settings.sync()
