@@ -48,10 +48,10 @@ if __name__ == "__main__":
     service = Dialogs(None, 'Default Title')
     service.showMessage("DialogsService.message()")
     service.showError("DialogsService.error()")
-    result = service.showSaveDiscardCancel(_tr("misc_dialog","Unsaved changes..."))
-    message = _tr("misc_dialog",'You clicked ')
+    result = service.showSaveDiscardCancel(_tr("misc_dialog", "Unsaved changes..."))
+    message = _tr("misc_dialog", 'You clicked ')
     if result == QtWidgets.QMessageBox.Save:
-        message += _tr("misc_dialog",'"Save"')
+        message += _tr("misc_dialog", '"Save"')
     elif result == QtWidgets.QMessageBox.Discard:
         message += _tr("misc_dialog", '"Discard"')
     else:

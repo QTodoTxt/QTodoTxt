@@ -66,26 +66,27 @@ class MainController(QtCore.QObject):
         self._menu_controller = MenuController(self, menu)
 
     def _initActions(self):
-        self.filterViewAction = QtWidgets.QAction(getIcon('sidepane.png'), 'Show &Filters', self)
+        self.filterViewAction = QtWidgets.QAction(getIcon('sidepane.png'), self.tr('Show &Filters'), self)
         self.filterViewAction.setCheckable(True)
         # action.setShortcuts(['Ctrl+E']) # what should it be?
         self.filterViewAction.triggered.connect(self._toggleFilterView)
 
-        self.showFutureAction = QtWidgets.QAction(getIcon('future.png'), 'Show Future &Tasks', self)
+        self.showFutureAction = QtWidgets.QAction(getIcon('future.png'), self.tr('Show Future &Tasks'), self)
         self.showFutureAction.setCheckable(True)
         # action.setShortcuts(['Ctrl+E']) # what should it be?
         self.showFutureAction.triggered.connect(self._toggleShowFuture)
 
-        self.showCompletedAction = QtWidgets.QAction(getIcon('show_completed.png'), 'Show &Completed Tasks', self)
+        self.showCompletedAction = QtWidgets.QAction(getIcon('show_completed.png'),
+                                                     self.tr('Show &Completed Tasks'), self)
         self.showCompletedAction.setCheckable(True)
         # action.setShortcuts(['Ctrl+E']) # what should it be?
         self.showCompletedAction.triggered.connect(self._toggleShowCompleted)
 
-        self.archiveAction = QtWidgets.QAction(getIcon('archive.png'), '&Archive Completed Tasks', self)
+        self.archiveAction = QtWidgets.QAction(getIcon('archive.png'), self.tr('&Archive Completed Tasks'), self)
         # action.setShortcuts(['Ctrl+E']) # what should it be?
         self.archiveAction.triggered.connect(self._archive_all_done_tasks)
 
-        self.showToolBarAction = QtWidgets.QAction('Show Tool&Bar', self)
+        self.showToolBarAction = QtWidgets.QAction(self.tr('Show Tool&Bar'), self)
         self.showToolBarAction.setCheckable(True)
         self.showToolBarAction.triggered.connect(self._toggleShowToolBar)
 
@@ -298,7 +299,7 @@ class MainController(QtCore.QObject):
     def _canExit(self):
         if not self._is_modified:
             return True
-        button = self._dialogs.showSaveDiscardCancel('Unsaved changes...')
+        button = self._dialogs.showSaveDiscardCancel(self.tr('Unsaved changes...'))
         if button == QtWidgets.QMessageBox.Save:
             self.save()
             return True

@@ -42,12 +42,12 @@ class TaskEditor(object):
 
     def createTask(self):
         _tr = QtCore.QCoreApplication.translate
-        (text, ok) = self._openTaskEditor(_tr("taskEditor","Create Task"))
+        (text, ok) = self._openTaskEditor(_tr("taskEditor", "Create Task"))
         return text, ok
 
     def editTask(self, task):
         _tr = QtCore.QCoreApplication.translate
-        (text, ok) = self._openTaskEditor(_tr("taskEditor",'Edit Task'), task)
+        (text, ok) = self._openTaskEditor(_tr("taskEditor", 'Edit Task'), task)
         return text, ok
 
     def _openTaskEditor(self, title, task=None):
