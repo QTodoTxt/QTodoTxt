@@ -383,7 +383,11 @@ class MainController(QtCore.QObject):
     def openFileByName(self, filename):
         logger.debug('MainController.openFileByName called with filename="{}"'.format(filename))
         self._fileObserver.clear()
-        self._file.load(filename)
+        try:
+            self._file.load(filename)
+        except:
+            logger.debug("Can't open file: {}".format(filename))
+            return
         self._loadFileToUI()
         self._settings.setValue("last_open_file", filename)
         self._settings.sync()
