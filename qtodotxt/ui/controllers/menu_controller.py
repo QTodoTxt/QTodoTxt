@@ -23,7 +23,7 @@ class MenuController(QtCore.QObject):
         self._initHelpMenu()
 
     def _initFileMenu(self):
-        fileMenu = self._menu.addMenu('&File')
+        fileMenu = self._menu.addMenu(self.tr('&File'))
         fileMenu.addAction(self._createNewAction())
         fileMenu.addAction(self._createOpenAction())
 
@@ -61,7 +61,7 @@ class MenuController(QtCore.QObject):
             self._main_controller.openFileByName(action.data())
 
     def _initEditMenu(self):
-        editMenu = self._menu.addMenu('&Edit')
+        editMenu = self._menu.addMenu(self.tr('&Edit'))
         tlc = self._main_controller._tasks_list_controller
         editMenu.addAction(tlc.createTaskAction)
         editMenu.addAction(tlc.editTaskAction)
@@ -75,7 +75,7 @@ class MenuController(QtCore.QObject):
         editMenu.addAction(tlc.decreasePrioritySelectedTasksAction)
 
     def _initViewMenu(self):
-        viewMenu = self._menu.addMenu('&View')
+        viewMenu = self._menu.addMenu(self.tr('&View'))
         viewMenu.addAction(self._main_controller.showToolBarAction)
         viewMenu.addSeparator()
         viewMenu.addAction(self._main_controller.filterViewAction)
@@ -83,7 +83,7 @@ class MenuController(QtCore.QObject):
         viewMenu.addAction(self._main_controller.showCompletedAction)
 
     def _initHelpMenu(self):
-        helpMenu = self._menu.addMenu('&Help')
+        helpMenu = self._menu.addMenu(self.tr('&Help'))
         helpMenu.addAction(self._createAboutAction())
 
     def _createAboutAction(self):
@@ -95,7 +95,7 @@ class MenuController(QtCore.QObject):
         about_dialog.show(self._menu)
 
     def _createNewAction(self):
-        action = QtWidgets.QAction(getIcon('FileNew.png'), '&New', self)
+        action = QtWidgets.QAction(getIcon('FileNew.png'), self.tr('&New'), self)
         # infrequent action, I prefer to use ctrl+n for new task.
         action.setShortcuts(["Ctrl+Shift+N"])
         action.triggered.connect(self._main_controller.new)
@@ -103,33 +103,33 @@ class MenuController(QtCore.QObject):
         return action
 
     def _createOpenAction(self):
-        action = QtWidgets.QAction(getIcon('FileOpen.png'), '&Open', self)
+        action = QtWidgets.QAction(getIcon('FileOpen.png'), self.tr('&Open'), self)
         action.setShortcuts(["Ctrl+O"])
         action.triggered.connect(self._main_controller.open)
         self.openAction = action
         return action
 
     def _createSaveAction(self):
-        action = QtWidgets.QAction(getIcon('FileSave.png'), '&Save', self)
+        action = QtWidgets.QAction(getIcon('FileSave.png'), self.tr('&Save'), self)
         action.setShortcuts(["Ctrl+S"])
         action.triggered.connect(self._main_controller.save)
         self.saveAction = action
         return action
 
     def _createRevertAction(self):
-        action = QtWidgets.QAction(getIcon('FileRevert.png'), '&Revert', self)
+        action = QtWidgets.QAction(getIcon('FileRevert.png'), self.tr('&Revert'), self)
         action.triggered.connect(self._main_controller.revert)
         self.revertAction = action
         return action
 
     def _createPreferenceAction(self):
-        action = QtWidgets.QAction(getIcon('ApplicationPreferences.png'), '&Preferences', self)
+        action = QtWidgets.QAction(getIcon('ApplicationPreferences.png'), self.tr('&Preferences'), self)
         action.triggered.connect(self._show_preferences)
         self.preferencesAction = action
         return action
 
     def _createExitAction(self):
-        action = QtWidgets.QAction(getIcon('ApplicationExit.png'), 'E&xit', self)
+        action = QtWidgets.QAction(getIcon('ApplicationExit.png'), self.tr('E&xit'), self)
         action.setShortcuts(["Ctrl+Q"])
         action.triggered.connect(self._main_controller.exit)
         return action

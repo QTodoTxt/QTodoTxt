@@ -34,49 +34,49 @@ class TasksListController(QtCore.QObject):
         self._initIncreasePrioritySelectedTasksAction()
 
     def _initEditTaskAction(self):
-        action = QtWidgets.QAction(getIcon('TaskEdit.png'), '&Edit Task', self)
+        action = QtWidgets.QAction(getIcon('TaskEdit.png'), self.tr('&Edit Task'), self)
         action.setShortcuts(['Ctrl+E', 'Enter'])
         action.triggered.connect(self.editTask)
         self.view.addListAction(action)
         self.editTaskAction = action
 
     def _initCreateTaskAction(self):
-        action = QtWidgets.QAction(getIcon('TaskCreate.png'), '&Create New Task', self)
+        action = QtWidgets.QAction(getIcon('TaskCreate.png'), self.tr('&Create New Task'), self)
         action.setShortcuts(['Insert', 'Ctrl+I', 'Ctrl+N'])
         action.triggered.connect(self.createTask)
         self.view.addListAction(action)
         self.createTaskAction = action
 
     def _initCopySelectedTasksAction(self):
-        action = QtWidgets.QAction(getIcon('TaskCopy.png'), 'Copy Selected Tasks', self)
+        action = QtWidgets.QAction(getIcon('TaskCopy.png'), self.tr('Copy Selected Tasks'), self)
         action.setShortcuts([QtGui.QKeySequence.Copy])
         action.triggered.connect(self._copySelectedTasks)
         self.view.addListAction(action)
         self.copySelectedTasksAction = action
 
     def _initDeleteSelectedTasksAction(self):
-        action = QtWidgets.QAction(getIcon('TaskDelete.png'), '&Delete Selected Tasks', self)
+        action = QtWidgets.QAction(getIcon('TaskDelete.png'), self.tr('&Delete Selected Tasks'), self)
         action.setShortcut('Delete')
         action.triggered.connect(self._deleteSelectedTasks)
         self.view.addListAction(action)
         self.deleteSelectedTasksAction = action
 
     def _initCompleteSelectedTasksAction(self):
-        action = QtWidgets.QAction(getIcon('TaskComplete.png'), 'C&omplete Selected Tasks', self)
+        action = QtWidgets.QAction(getIcon('TaskComplete.png'), self.tr('C&omplete Selected Tasks'), self)
         action.setShortcuts(['x', 'c'])
         action.triggered.connect(self._completeSelectedTasks)
         self.view.addListAction(action)
         self.completeSelectedTasksAction = action
 
     def _initDecreasePrioritySelectedTasksAction(self):
-        action = QtWidgets.QAction(getIcon('TaskPriorityDecrease.png'), 'Decrease Priority', self)
+        action = QtWidgets.QAction(getIcon('TaskPriorityDecrease.png'), self.tr('Decrease Priority'), self)
         action.setShortcuts(['-', '<'])
         action.triggered.connect(self._decreasePriority)
         self.view.addListAction(action)
         self.decreasePrioritySelectedTasksAction = action
 
     def _initIncreasePrioritySelectedTasksAction(self):
-        action = QtWidgets.QAction(getIcon('TaskPriorityIncrease.png'), 'Increase Priority', self)
+        action = QtWidgets.QAction(getIcon('TaskPriorityIncrease.png'), self.tr('Increase Priority'), self)
         action.setShortcuts(['+', '>'])
         action.triggered.connect(self._increasePriority)
         self.view.addListAction(action)
@@ -96,28 +96,28 @@ class TasksListController(QtCore.QObject):
         tasks = self.view.getSelectedTasks()
         if tasks:
             confirm = int(QtCore.QSettings().value("confirm_complete", 1))
-            if not confirm or self._confirmTasksAction(tasks, 'Toggle Completeness of'):
+            if not confirm or self._confirmTasksAction(tasks, self.tr('Toggle Completeness of')):
                 for task in tasks:
                     self.completeTask(task)
 
     def _deleteSelectedTasks(self):
         tasks = self.view.getSelectedTasks()
         if tasks:
-            if self._confirmTasksAction(tasks, 'Delete'):
+            if self._confirmTasksAction(tasks, self.tr('Delete')):
                 for task in tasks:
                     self.view.removeTask(task)
                     self.taskDeleted.emit(task)
 
     def _confirmTasksAction(self, tasks, messagePrefix):
         if len(tasks) == 1:
-            message = '<b>%s the following task?</b><ul>' % messagePrefix
+            message = self.tr('<b>%s the following task?</b><ul>') % messagePrefix
         else:
-            message = '<b>%s the following tasks?</b><ul>' % messagePrefix
+            message = self.tr('<b>%s the following tasks?</b><ul>') % messagePrefix
         for task in tasks:
             message += '<li>%s</li>' % self._task_htmlizer.task2html(task)
         message += '</ul>'
         result = QtWidgets.QMessageBox.question(self.view,
-                                                'Confirm',
+                                                self.tr('Confirm'),
                                                 message,
                                                 buttons=QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
                                                 defaultButton=QtWidgets.QMessageBox.Yes

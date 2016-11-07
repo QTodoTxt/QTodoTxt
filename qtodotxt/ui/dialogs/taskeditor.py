@@ -1,6 +1,7 @@
 import string
 from qtodotxt.ui.dialogs.taskeditor_dialog import TaskEditorDialog
 from collections import OrderedDict
+from PyQt5 import QtCore
 
 
 class TaskEditor(object):
@@ -40,11 +41,13 @@ class TaskEditor(object):
         self.updateCompletedValues(file)
 
     def createTask(self):
-        (text, ok) = self._openTaskEditor("Create Task")
+        _tr = QtCore.QCoreApplication.translate
+        (text, ok) = self._openTaskEditor(_tr("taskEditor", "Create Task"))
         return text, ok
 
     def editTask(self, task):
-        (text, ok) = self._openTaskEditor('Edit Task', task)
+        _tr = QtCore.QCoreApplication.translate
+        (text, ok) = self._openTaskEditor(_tr("taskEditor", 'Edit Task'), task)
         return text, ok
 
     def _openTaskEditor(self, title, task=None):
