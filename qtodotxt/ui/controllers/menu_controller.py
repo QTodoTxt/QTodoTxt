@@ -43,9 +43,6 @@ class MenuController(QtCore.QObject):
         recentFileNames = self.getRecentFileNames()
         ind = 1
         for i in range(len(recentFileNames)):
-            if recentFileNames[i] is None:
-                self.recentFileArray[i].setVisible(False)
-                continue
             text = "&%d %s" % (ind, recentFileNames[i])
             self.recentFileArray[i].setText(text)
             self.recentFileArray[i].setData(recentFileNames[i])
