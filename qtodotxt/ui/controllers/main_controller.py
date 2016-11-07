@@ -393,17 +393,11 @@ class MainController(QtCore.QObject):
     def updateRecentFile(self):
         lastOpenedArray = self._menu_controller.getRecentFileNames()
         if self._file.filename in lastOpenedArray:
-            pos = lastOpenedArray.index(self._file.filename)
-            del lastOpenedArray[pos]
-            lastOpenedArray.insert(0, self._file.filename)
-        else:
+            lastOpenedArray.remove(self._file.filename)
+        if len(lastOpenedArray) > self._menu_controller.maxRecentFiles:
             lastOpenedArray.pop()
-            lastOpenedArray.insert(0, self._file.filename)
-        ind = 1
-        for file in lastOpenedArray:
-            name = "lastOpened" + str(ind)
-            self._settings.setValue(name, file)
-            ind += 1
+        lastOpenedArray.insert(0, self._file.filename)
+        self._settings.setValue("lastOpened", lastOpenedArray[: self._menu_controller.maxRecentFiles])
         self._menu_controller.updateRecentFileActions()
 
     def _loadFileToUI(self):

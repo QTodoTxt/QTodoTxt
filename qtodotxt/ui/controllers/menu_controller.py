@@ -9,13 +9,12 @@ from qtodotxt.ui.dialogs.settings import Settings
 
 class MenuController(QtCore.QObject):
 
-    maxRecentFiles = 3
-    recentFileArray = []
-
     def __init__(self, main_controller, menu):
         super(MenuController, self).__init__()
         self._main_controller = main_controller
         self._menu = menu
+        self.maxRecentFiles = 3  # constant determines the number of files stored in the history
+        self.recentFileArray = []
         self._initMenuBar()
 
     def _initMenuBar(self):
@@ -44,8 +43,12 @@ class MenuController(QtCore.QObject):
     def updateRecentFileActions(self):
         recentFileNames = self.getRecentFileNames()
         ind = 1
-        for i in range(self.maxRecentFiles):
-            if not os.path.exists(recentFileNames[i]):
+        for i in range(len(recentFileNames)):
+            try:
+                exist = os.path.isfile(recentFileNames[i])
+            except:
+                exist = False
+            if (recentFileNames[i] is None) or (not exist):
                 self.recentFileArray[i].setVisible(False)
                 continue
             text = "&%d %s" % (ind, recentFileNames[i])
@@ -57,10 +60,11 @@ class MenuController(QtCore.QObject):
 
     def getRecentFileNames(self):
         recentFileNames = []
-        for ind in range(self.maxRecentFiles):
-            name = "lastOpened" + str(ind+1)
-            recentFileNames.append(str(QtCore.QSettings().value(name, 0)))
-        return recentFileNames
+        recentFileNames.append(QtCore.QSettings().value("lastOpened", []))
+        recentFileNamesStr = []
+        for name in recentFileNames[0]:
+            recentFileNamesStr.append(name)
+        return recentFileNamesStr
 
     def openRecentFile(self):
         action = self.sender()
