@@ -1,6 +1,5 @@
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
-import os
 
 from qtodotxt.ui.dialogs import about_dialog
 from qtodotxt.ui.resource_manager import getIcon
@@ -44,11 +43,7 @@ class MenuController(QtCore.QObject):
         recentFileNames = self.getRecentFileNames()
         ind = 1
         for i in range(len(recentFileNames)):
-            try:
-                exist = os.path.isfile(recentFileNames[i])
-            except:
-                exist = False
-            if (recentFileNames[i] is None) or (not exist):
+            if recentFileNames[i] is None:
                 self.recentFileArray[i].setVisible(False)
                 continue
             text = "&%d %s" % (ind, recentFileNames[i])
@@ -61,10 +56,7 @@ class MenuController(QtCore.QObject):
     def getRecentFileNames(self):
         recentFileNames = []
         recentFileNames.append(QtCore.QSettings().value("lastOpened", []))
-        recentFileNamesStr = []
-        for name in recentFileNames[0]:
-            recentFileNamesStr.append(name)
-        return recentFileNamesStr
+        return recentFileNames[0]
 
     def openRecentFile(self):
         action = self.sender()

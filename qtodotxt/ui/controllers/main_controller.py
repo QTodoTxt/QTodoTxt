@@ -394,8 +394,7 @@ class MainController(QtCore.QObject):
         lastOpenedArray = self._menu_controller.getRecentFileNames()
         if self._file.filename in lastOpenedArray:
             lastOpenedArray.remove(self._file.filename)
-        if len(lastOpenedArray) > self._menu_controller.maxRecentFiles:
-            lastOpenedArray.pop()
+        lastOpenedArray = lastOpenedArray[:self._menu_controller.maxRecentFiles]
         lastOpenedArray.insert(0, self._file.filename)
         self._settings.setValue("lastOpened", lastOpenedArray[: self._menu_controller.maxRecentFiles])
         self._menu_controller.updateRecentFileActions()
