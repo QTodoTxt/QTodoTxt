@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+import time
 
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
@@ -435,3 +436,22 @@ class MainController(QtCore.QObject):
             self.view.activateWindow()
         else:
             self.view.hide()
+
+    def anotherInstanceEvent(self, dir):
+        tFile = dir + "/qtodo.tmp"
+        if not os.path.isfile(tFile):
+            return
+        time.sleep(0.01)
+        f = open(tFile, 'r+b')
+        line = f.readline()
+        line = line.strip()
+        if line == b"1":
+            self.view.show()
+            self.view.activateWindow()
+        if line == b"2":
+            self.view.show()
+            self.view.activateWindow()
+            self._tasks_list_controller.createTask()
+
+        f.close()
+        os.remove(tFile)
