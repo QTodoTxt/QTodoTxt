@@ -386,7 +386,11 @@ class MainController(QtCore.QObject):
         try:
             self._file.load(filename)
         except:
-            logger.debug("Can't open file: {}".format(filename))
+            currentfile = self._settings.value("last_open_file", "")
+            if currentfile == filename:
+                self._dialogs.showError(self.tr("Current file '{}' was deleted".format(filename)))
+            else:
+                self._dialogs.showError(self.tr("Error opening file: {}".format(filename)))
             return
         self._loadFileToUI()
         self._settings.setValue("last_open_file", filename)
