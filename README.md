@@ -48,3 +48,4 @@ Be sure to have all [prerequisites](http://github.com/QTodoTxt/QTodoTxt/wiki) in
 - [Defects and Enhancements](https://github.com/QTodoTxt/QTodoTxt/issues)
 - [Contributor's Guide](https://github.com/QTodoTxt/QTodoTxt/blob/master/CONTRIBUTING.md)
 - [Building QTodoTxt Binaries](https://github.com/QTodoTxt/QTodoTxt/wiki/Building-QTodoTxt-Binaries)
+- [Translation QTodoTxt into other languages](https://github.com/QTodoTxt/QTodoTxt/blob/master/TRANSLATION.md)
