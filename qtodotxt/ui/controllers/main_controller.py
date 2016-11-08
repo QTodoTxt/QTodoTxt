@@ -384,7 +384,16 @@ class MainController(QtCore.QObject):
     def openFileByName(self, filename):
         logger.debug('MainController.openFileByName called with filename="{}"'.format(filename))
         self._fileObserver.clear()
-        self._file.load(filename)
+        try:
+            self._file.load(filename)
+        except Exception as ex:
+            currentfile = self._settings.value("last_open_file", "")
+            if currentfile == filename:
+                self._dialogs.showError(self.tr("Current file '{}' is not available.\nException: {}").
+                                        format(filename, ex))
+            else:
+                self._dialogs.showError(self.tr("Error opening file: {}.\n Exception:{}").format(filename, ex))
+            return
         self._loadFileToUI()
         self._settings.setValue("last_open_file", filename)
         self._settings.sync()
