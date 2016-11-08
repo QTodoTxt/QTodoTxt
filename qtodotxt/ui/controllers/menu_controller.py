@@ -27,7 +27,7 @@ class MenuController(QtCore.QObject):
         fileMenu.addAction(self._createNewAction())
         fileMenu.addAction(self._createOpenAction())
 
-        lastOpened = fileMenu.addMenu("Open &Recent")
+        lastOpened = fileMenu.addMenu(getIcon('FileOpen.png'), "Open &Recent")
         for ind in range(self.maxRecentFiles):
             self.recentFileArray.append(QtWidgets.QAction(self, visible=False, triggered=self.openRecentFile))
             lastOpened.addAction(self.recentFileArray[ind])
@@ -45,6 +45,7 @@ class MenuController(QtCore.QObject):
         for i in range(len(recentFileNames)):
             text = "&%d %s" % (ind, recentFileNames[i])
             self.recentFileArray[i].setText(text)
+            self.recentFileArray[i].setIcon(getIcon('FileOpen.png'))
             self.recentFileArray[i].setData(recentFileNames[i])
             self.recentFileArray[i].setVisible(True)
             self.recentFileArray[i].setShortcuts(["Ctrl+" + str(ind)])
