@@ -8,6 +8,7 @@ import os
 
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
+import qdarkstyle
 
 from qtodotxt.ui.controllers.main_controller import MainController
 from qtodotxt.ui.dialogs.misc_dialogs import Dialogs
