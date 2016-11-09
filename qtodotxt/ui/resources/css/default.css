@@ -366,6 +366,7 @@ QGroupBox::title {
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 10px;
+    color: white;
 }
 
 QAbstractScrollArea
@@ -752,6 +753,7 @@ QAbstractSpinBox::down-arrow:hover
 QLabel
 {
     border: 0px solid black;
+    color: white;
 }
 
 QTabWidget{
