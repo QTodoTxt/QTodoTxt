@@ -26,6 +26,7 @@ FILENAME_FILTERS = ';;'.join([
 class MainController(QtCore.QObject):
 
     _show_toolbar = QtCore.pyqtSignal(int)
+    _show_search = QtCore.pyqtSignal(int)
 
     def __init__(self, view, dialogs, task_editor_service, args):
         super(MainController, self).__init__()
@@ -92,6 +93,10 @@ class MainController(QtCore.QObject):
         self.showToolBarAction.setCheckable(True)
         self.showToolBarAction.triggered.connect(self._toggleShowToolBar)
 
+        self.showSearchAction = QtWidgets.QAction(getIcon('ActionSearch.png'), self.tr('Show Search Bar'), self)
+        self.showSearchAction.setCheckable(True)
+        self.showSearchAction.triggered.connect(self._toggleShowSearch)
+
     def _initToolBar(self):
         toolbar = self.view.addToolBar("Main Toolbar")
         toolbar.setObjectName("mainToolbar")
@@ -99,6 +104,7 @@ class MainController(QtCore.QObject):
         toolbar.addAction(self.filterViewAction)
         toolbar.addAction(self.showFutureAction)
         toolbar.addAction(self.showCompletedAction)
+        toolbar.addAction(self.showSearchAction)
 
         toolbar.addSeparator()
 
@@ -118,6 +124,7 @@ class MainController(QtCore.QObject):
         toolbar.addSeparator()
         toolbar.addAction(self.archiveAction)
         self._show_toolbar.connect(toolbar.setVisible)
+        self._show_search.connect(self.view.tasks_view.tasks_search_view.setVisible)
 
     def _toggleShowToolBar(self):
         if self.showToolBarAction.isChecked():
@@ -126,6 +133,14 @@ class MainController(QtCore.QObject):
         else:
             self._settings.setValue("show_toolbar", 0)
             self._toolbar_visibility_changed(0)
+
+    def _toggleShowSearch(self):
+        if self.showSearchAction.isChecked():
+            self._settings.setValue("show_search", 1)
+            self._search_visibility_changed(1)
+        else:
+            self._settings.setValue("show_search", 0)
+            self._search_visibility_changed(0)
 
     def _toggleShowCompleted(self):
         if self.showCompletedAction.isChecked():
@@ -175,6 +190,9 @@ class MainController(QtCore.QObject):
 
     def _toolbar_visibility_changed(self, val):
         self._show_toolbar.emit(val)
+
+    def _search_visibility_changed(self, val):
+        self._show_search.emit(val)
 
     def exit(self):
         self.view.close()
@@ -429,6 +447,7 @@ class MainController(QtCore.QObject):
         self._restoreFilterView()
         self._restoreShowFuture()
         self._restoreShowToolBar()
+        self._restoreShowSearch()
 
     def _restoreShowCompleted(self):
         val = int(self._settings.value("show_completed_tasks", 1))
@@ -447,6 +466,15 @@ class MainController(QtCore.QObject):
         else:
             self._toolbar_visibility_changed(0)
             self.showToolBarAction.setChecked(False)
+
+    def _restoreShowSearch(self):
+        val = int(self._settings.value("show_search", 1))
+        if val:
+            self._search_visibility_changed(1)
+            self.showSearchAction.setChecked(True)
+        else:
+            self._search_visibility_changed(0)
+            self.showSearchAction.setChecked(False)
 
     def updateFilters(self):
         self._onFilterSelectionChanged(self._filters_tree_controller.view.getSelectedFilters())
