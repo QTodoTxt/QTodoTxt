@@ -7,15 +7,31 @@ QToolTip
     opacity: 200;
 }
 
-QWidget
+QMainWindow
 {
     color: #eff0f1;
     background-color: #31363b;
+    /*background: yellow ;*/
     selection-background-color:#3daee9;
     selection-color: #eff0f1;
     background-clip: border;
     border-image: none;
     border: 0px transparent black;
+    alternate-background-color: #f6fafb;
+    outline: 0;
+}
+
+QDialog
+{
+    color: #eff0f1;
+    background-color: #31363b;
+    /*background: yellow ;*/
+    selection-background-color:#3daee9;
+    selection-color: #eff0f1;
+    background-clip: border;
+    border-image: none;
+    border: 0px transparent black;
+    alternate-background-color: #f6fafb;
     outline: 0;
 }
 
@@ -921,7 +937,7 @@ QTreeView::branch:closed:has-children:has-siblings {
 
 QTreeView::branch:open:has-children:!has-siblings,
 QTreeView::branch:open:has-children:has-siblings  {
-    image: url(:/qss_icons/rc/branch_open.png);
+    image: url("../qtodotxt/ui/resources/css/rc/branch_open.png");
 }
 
 QTreeView::branch:has-children:!has-siblings:closed:hover,
@@ -937,7 +953,7 @@ QTreeView::branch:open:has-children:has-siblings:hover  {
 QListView::item:!selected:hover, QListView::item:!selected:hover, QTreeView::item:!selected:hover  {
     background: rgba(0, 0, 0, 0);
     outline: 0;
-    color: #eff0f1
+    color: #eff0f1;
 }
 
 QListView::item:selected:hover, QListView::item:selected:hover, QTreeView::item:selected:hover  {
