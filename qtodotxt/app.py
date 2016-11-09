@@ -8,7 +8,9 @@ import os
 
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
-import qdarkstyle
+# import resource for darkstyle
+# taken from https://github.com/ColinDuquesnoy/QDarkStyleSheet
+import pyqt5_style_rc
 
 from qtodotxt.ui.controllers.main_controller import MainController
 from qtodotxt.ui.dialogs.misc_dialogs import Dialogs
