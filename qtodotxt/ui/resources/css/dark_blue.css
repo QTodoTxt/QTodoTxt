@@ -31,7 +31,7 @@ QToolTip
 {
     border: 1px solid #76797C;
     background-color: rgb(90, 102, 117);;
-    color: white;
+    color: #eff0f1;
     padding: 5px;
     opacity: 200;
 }
@@ -51,6 +51,20 @@ QMainWindow
 }
 
 QDialog
+{
+    color: #eff0f1;
+    background-color: #31363b;
+    /*background: yellow ;*/
+    selection-background-color:#3daee9;
+    selection-color: #eff0f1;
+    background-clip: border;
+    border-image: none;
+    border: 0px transparent black;
+    alternate-background-color: #f6fafb;
+    outline: 0;
+}
+
+QComboBox
 {
     color: #eff0f1;
     background-color: #31363b;
@@ -366,7 +380,7 @@ QGroupBox::title {
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 10px;
-    color: white;
+    color: #eff0f1;
 }
 
 QAbstractScrollArea
@@ -542,7 +556,7 @@ QSizeGrip {
 QMainWindow::separator
 {
     background-color: #31363b;
-    color: white;
+    color: #eff0f1;
     padding-left: 4px;
     spacing: 2px;
     border: 1px dashed #76797C;
@@ -552,7 +566,7 @@ QMainWindow::separator:hover
 {
 
     background-color: #787876;
-    color: white;
+    color: #eff0f1;
     padding-left: 4px;
     border: 1px solid #76797C;
     spacing: 2px;
@@ -563,7 +577,7 @@ QMenu::separator
 {
     height: 1px;
     background-color: #76797C;
-    color: white;
+    color: #eff0f1;
     padding-left: 4px;
     margin-left: 10px;
     margin-right: 5px;
@@ -634,7 +648,7 @@ QPushButton:disabled
 
 QPushButton:focus {
     background-color: #3daee9;
-    color: white;
+    color: #eff0f1;
 }
 
 QPushButton:pressed
@@ -753,7 +767,7 @@ QAbstractSpinBox::down-arrow:hover
 QLabel
 {
     border: 0px solid black;
-    color: white;
+    color: #eff0f1;
 }
 
 QTabWidget{
@@ -1155,7 +1169,7 @@ QHeaderView::section::horizontal
 
 QHeaderView::section:checked
  {
-    color: white;
+    color: #eff0f1;
     background-color: #334e5e;
  }
 
