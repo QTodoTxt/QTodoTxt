@@ -26,7 +26,6 @@ FILENAME_FILTERS = ';;'.join([
 class MainController(QtCore.QObject):
 
     _show_toolbar = QtCore.pyqtSignal(int)
-    _show_search = QtCore.pyqtSignal(int)
 
     def __init__(self, view, dialogs, task_editor_service, args):
         super(MainController, self).__init__()
@@ -124,7 +123,6 @@ class MainController(QtCore.QObject):
         toolbar.addSeparator()
         toolbar.addAction(self.archiveAction)
         self._show_toolbar.connect(toolbar.setVisible)
-        self._show_search.connect(self.view.tasks_view.tasks_search_view.setVisible)
 
     def _toggleShowToolBar(self):
         if self.showToolBarAction.isChecked():
@@ -137,10 +135,11 @@ class MainController(QtCore.QObject):
     def _toggleShowSearch(self):
         if self.showSearchAction.isChecked():
             self._settings.setValue("show_search", 1)
-            self._search_visibility_changed(1)
+            self.view.tasks_view.tasks_search_view.setVisible(True)
         else:
             self._settings.setValue("show_search", 0)
-            self._search_visibility_changed(0)
+            self.view.tasks_view.tasks_search_view.setVisible(False)
+            self.view.tasks_view.tasks_search_view.setText("")
 
     def _toggleShowCompleted(self):
         if self.showCompletedAction.isChecked():
@@ -190,9 +189,6 @@ class MainController(QtCore.QObject):
 
     def _toolbar_visibility_changed(self, val):
         self._show_toolbar.emit(val)
-
-    def _search_visibility_changed(self, val):
-        self._show_search.emit(val)
 
     def exit(self):
         self.view.close()
@@ -470,10 +466,10 @@ class MainController(QtCore.QObject):
     def _restoreShowSearch(self):
         val = int(self._settings.value("show_search", 1))
         if val:
-            self._search_visibility_changed(1)
+            self.view.tasks_view.tasks_search_view.setVisible(True)
             self.showSearchAction.setChecked(True)
         else:
-            self._search_visibility_changed(0)
+            self.view.tasks_view.tasks_search_view.setVisible(False)
             self.showSearchAction.setChecked(False)
 
     def updateFilters(self):
