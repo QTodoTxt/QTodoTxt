@@ -30,6 +30,8 @@ class TaskHtmlizer(object):
             self.errorColor = "red"
             self.linkColor = "none"
 
+        self.complColor = "gray"
+
     def task2html(self, task):
         words = task.description.split(" ")
         newwords = []
@@ -54,14 +56,14 @@ class TaskHtmlizer(object):
             # add space, so tasks get evenly aligned when there's no priority
             html = '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;' + html
         if task.completion_date:
-            html += ' <font color="gray">(completed: {})</font>'.format(task.completion_date)
+            html += ' <font color="{1!s}">(completed: {0!s})</font>'.format(task.completion_date, self.complColor)
         if task.creation_date:
-            html += ' <font color="gray">(created: {})</font>'.format(task.creation_date)
+            html += ' <font color="{1!s}">(created: {0!s})</font>'.format(task.creation_date, self.complColor)
         return html
 
     def _addUrl(self, word, color="none"):
         cleanWord = re.sub(r"https?://", "", word)
-        word = '<a style=color:{2!s}; href={0!s}>{1!s}</a>'.format(word, cleanWord, color)
+        word = '<a style="color:{2!s};" href="{0!s}">{1!s}</a>'.format(word, cleanWord, color)
 
         return word
 
@@ -70,24 +72,24 @@ class TaskHtmlizer(object):
         if "://" in context:
             context = self._addUrl(context, self.contextColor)
 
-        return '<font style=color:{0!s}>@{1!s}</font>'.format(self.contextColor, context)
+        return '<font style="color:{0!s}">@{1!s}</font>'.format(self.contextColor, context)
 
     def _htmlizeProject(self, project):
         project = project.replace("+", "")
         if "://" in project:
             project = self._addUrl(project, self.projectColor)
 
-        return "<font style=color:{0!s}>+{1!s}</font>".format(self.projectColor, project)
+        return '<font style="color:{0!s}">+{1!s}</font>'.format(self.projectColor, project)
 
     def _htmlizePriority(self, priority):
         if priority in self.priority_colors:
             color = self.priority_colors[priority]
-            return "<font style=color:{}><tt>({})</tt>&nbsp;</font>".format(color, priority)
+            return '<font style="color:{}"><tt>({})</tt>&nbsp;</font>'.format(color, priority)
         return '<tt>(%s)</tt>&nbsp;' % priority
 
     def _htmlizeDueDate(self, task, string):
         if not task.due:
-            return ("<b><font style=color:{1!s}>*** {0!s}"
+            return ('<b><font style="color:{1!s}">*** {0!s}'
                     ' Invalid date format, expected YYYY-MM-DD. ***</font></b>'.format(string, self.errorColor))
 
         date_now = date.today()
@@ -95,20 +97,20 @@ class TaskHtmlizer(object):
         if tdelta.days > 7:
             return '<b>due:{}</b>'.format(task.due)
         elif tdelta.days > 0:
-            return "<b><font style=color:{1!s}>due:{0!s}</font></b>".format(task.due, self.priorityDuecolors[1])
+            return '<b><font style="color:{1!s}">due:{0!s}</font></b>'.format(task.due, self.priorityDuecolors[1])
         else:
-            return "<b><font style=color:{1!s}>due:{0!s}</font></b>".format(task.due, self.priorityDuecolors[0])
+            return '<b><font style="color:{1!s}">due:{0!s}</font></b>'.format(task.due, self.priorityDuecolors[0])
 
     def _htmlizeThresholdDate(self, task, string):
         if not task.threshold:
-            return ("<b><font style=color:{1!s}>*** {0!s}"
-                    " Invalid date format, expected YYYY-MM-DD. ***</font></b>".format(string, self.errorColor))
+            return ('<b><font style="color:{1!s}">*** {0!s}'
+                    ' Invalid date format, expected YYYY-MM-DD. ***</font></b>'.format(string, self.errorColor))
 
         date_now = date.today()
         tdelta = task.threshold - date_now
         if tdelta.days > 0:
-            return "<i><font style=color:{1!s}>t:{0!s}</font></i>".\
+            return '<i><font style="color:{1!s}">t:{0!s}</font></i>'.\
                 format(task.threshold, self.priorityThresholdColors[1])
         else:
-            return "<font style=color:{1!s}>t:{0!s}</font>".\
+            return '<font style="color:{1!s}">t:{0!s}</font>'.\
                 format(task.threshold, self.priorityThresholdColors[0])
