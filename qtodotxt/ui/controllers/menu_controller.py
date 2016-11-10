@@ -82,6 +82,7 @@ class MenuController(QtCore.QObject):
         viewMenu.addAction(self._main_controller.filterViewAction)
         viewMenu.addAction(self._main_controller.showFutureAction)
         viewMenu.addAction(self._main_controller.showCompletedAction)
+        viewMenu.addAction(self._main_controller.showSearchAction)
 
     def _initHelpMenu(self):
         helpMenu = self._menu.addMenu(self.tr('&Help'))

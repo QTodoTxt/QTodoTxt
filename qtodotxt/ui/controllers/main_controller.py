@@ -92,6 +92,10 @@ class MainController(QtCore.QObject):
         self.showToolBarAction.setCheckable(True)
         self.showToolBarAction.triggered.connect(self._toggleShowToolBar)
 
+        self.showSearchAction = QtWidgets.QAction(getIcon('ActionSearch.png'), self.tr('Show Search Bar'), self)
+        self.showSearchAction.setCheckable(True)
+        self.showSearchAction.triggered.connect(self._toggleShowSearch)
+
     def _initToolBar(self):
         toolbar = self.view.addToolBar("Main Toolbar")
         toolbar.setObjectName("mainToolbar")
@@ -99,6 +103,7 @@ class MainController(QtCore.QObject):
         toolbar.addAction(self.filterViewAction)
         toolbar.addAction(self.showFutureAction)
         toolbar.addAction(self.showCompletedAction)
+        toolbar.addAction(self.showSearchAction)
 
         toolbar.addSeparator()
 
@@ -126,6 +131,15 @@ class MainController(QtCore.QObject):
         else:
             self._settings.setValue("show_toolbar", 0)
             self._toolbar_visibility_changed(0)
+
+    def _toggleShowSearch(self):
+        if self.showSearchAction.isChecked():
+            self._settings.setValue("show_search", 1)
+            self.view.tasks_view.tasks_search_view.setVisible(True)
+        else:
+            self._settings.setValue("show_search", 0)
+            self.view.tasks_view.tasks_search_view.setVisible(False)
+            self.view.tasks_view.tasks_search_view.setText("")
 
     def _toggleShowCompleted(self):
         if self.showCompletedAction.isChecked():
@@ -429,6 +443,7 @@ class MainController(QtCore.QObject):
         self._restoreFilterView()
         self._restoreShowFuture()
         self._restoreShowToolBar()
+        self._restoreShowSearch()
 
     def _restoreShowCompleted(self):
         val = int(self._settings.value("show_completed_tasks", 1))
@@ -447,6 +462,15 @@ class MainController(QtCore.QObject):
         else:
             self._toolbar_visibility_changed(0)
             self.showToolBarAction.setChecked(False)
+
+    def _restoreShowSearch(self):
+        val = int(self._settings.value("show_search", 1))
+        if val:
+            self.view.tasks_view.tasks_search_view.setVisible(True)
+            self.showSearchAction.setChecked(True)
+        else:
+            self.view.tasks_view.tasks_search_view.setVisible(False)
+            self.showSearchAction.setChecked(False)
 
     def updateFilters(self):
         self._onFilterSelectionChanged(self._filters_tree_controller.view.getSelectedFilters())
