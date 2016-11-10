@@ -50,6 +50,20 @@ QMainWindow
     outline: 0;
 }
 
+QMenu
+{
+    color: #eff0f1;
+    background-color: #31363b;
+    /*background: yellow ;*/
+    selection-background-color:#e9783d;
+    selection-color: #eff0f1;
+    background-clip: border;
+    border-image: none;
+    border: 0px transparent black;
+    alternate-background-color: #f6fafb;
+    outline: 0;
+}
+
 QDialog
 {
     color: #eff0f1;

@@ -33,7 +33,7 @@ class TrayIcon(QtWidgets.QSystemTrayIcon):
         self.activated.connect(self._onActivated)
         self.setToolTip('QTodoTxt')
 
-        menu = QtWidgets.QMenu()
+        menu = QtWidgets.QMenu(self._controller.view)
         create_task_action = menu.addAction(getIcon('TaskCreate.png'), self.tr("Create New Task"))
         create_task_action.triggered.connect(self._createTask)
         toggle_visible_action = menu.addAction(self.tr("Show/Hide Window"))
