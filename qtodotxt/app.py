@@ -8,6 +8,9 @@ import os
 
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
+# import resource for darkstyle
+# taken from https://github.com/ColinDuquesnoy/QDarkStyleSheet
+import pyqt5_style_rc  # noqa: F401
 
 from qtodotxt.ui.controllers.main_controller import MainController
 from qtodotxt.ui.dialogs.misc_dialogs import Dialogs
@@ -30,7 +33,7 @@ class TrayIcon(QtWidgets.QSystemTrayIcon):
         self.activated.connect(self._onActivated)
         self.setToolTip('QTodoTxt')
 
-        menu = QtWidgets.QMenu()
+        menu = QtWidgets.QMenu(self._controller.view)
         create_task_action = menu.addAction(getIcon('TaskCreate.png'), self.tr("Create New Task"))
         create_task_action.triggered.connect(self._createTask)
         toggle_visible_action = menu.addAction(self.tr("Show/Hide Window"))

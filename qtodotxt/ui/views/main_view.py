@@ -1,8 +1,9 @@
 from PyQt5 import QtCore
 from PyQt5 import QtGui
 from PyQt5 import QtWidgets
+import os
 
-from qtodotxt.ui.resource_manager import getIcon
+from qtodotxt.ui.resource_manager import getIcon, getResourcePath
 from qtodotxt.ui.views.filters_tree_view import FiltersTreeView
 from qtodotxt.ui.views.tasks_view import TasksView
 
@@ -28,6 +29,13 @@ class MainView(QtWidgets.QMainWindow):
 
         self.filters_tree_view = FiltersTreeView(self.splitter)
         self.tasks_view = TasksView(self.splitter)
+
+        colorSchemName = QtCore.QSettings().value("color_schem", "")
+        tFile = "css/{}.css".format(colorSchemName)
+        cssPath = getResourcePath(tFile)
+        if os.path.isfile(cssPath):
+            css = open(cssPath, 'r', encoding='utf-8').read()
+            self.setStyleSheet(css)
 
         self.setCentralWidget(self.splitter)
 
