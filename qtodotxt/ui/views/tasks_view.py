@@ -3,7 +3,6 @@ from qtodotxt.ui.views.tasks_search_view import TasksSearchView
 from qtodotxt.ui.views.tasks_list_view import TasksListView
 
 
-
 class TasksView(QtWidgets.QWidget):
 
     def __init__(self, parent=None):

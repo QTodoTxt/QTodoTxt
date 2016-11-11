@@ -16,7 +16,6 @@ import qTodoTxt_style_rc  # noqa: F401
 from qtodotxt.ui.controllers.main_controller import MainController
 from qtodotxt.ui.dialogs.misc_dialogs import Dialogs
 from qtodotxt.ui.dialogs.taskeditor import TaskEditor
-from qtodotxt.ui.resource_manager import getIcon
 from qtodotxt.ui.views.main_view import MainView
 from qtodotxt.lib.file import FileObserver
 from qtodotxt.lib.tendo_singleton import SingleInstance
@@ -35,7 +34,8 @@ class TrayIcon(QtWidgets.QSystemTrayIcon):
         self.setToolTip('QTodoTxt')
 
         menu = QtWidgets.QMenu(self._controller.view)
-        create_task_action = menu.addAction(QtGui.QIcon(":/white_icons/resources/TaskCreate.png"), self.tr("Create New Task"))
+        create_task_action = menu.addAction(QtGui.QIcon(":/white_icons/resources/TaskCreate.png"),
+                                            self.tr("Create New Task"))
         create_task_action.triggered.connect(self._createTask)
         toggle_visible_action = menu.addAction(self.tr("Show/Hide Window"))
         toggle_visible_action.triggered.connect(self._controller.toggleVisible)
