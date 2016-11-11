@@ -100,7 +100,7 @@ class Ui_SettingsUI(object):
         SettingsUI.setWindowTitle(_translate("SettingsUI", "Preferences"))
         self.groupBox.setTitle(_translate("SettingsUI", "QTodoTxt Settings"))
         self.autoSaveCheckBox.setText(_translate("SettingsUI", "Autosave"))
-        self.singletonCheckBox.setText(_translate("SettingsUI", "Single instanse (need restart)"))
+        self.singletonCheckBox.setText(_translate("SettingsUI", "Single instance (need restart)"))
         self.autoArchiveCheckBox.setText(_translate("SettingsUI", "AutoArchive"))
         self.addCreatedDateCheckBox.setText(_translate("SettingsUI", "Add created date"))
         self.confirmCompletionCheckBox.setText(_translate("SettingsUI", "Ask for confirmation before task completion"))
