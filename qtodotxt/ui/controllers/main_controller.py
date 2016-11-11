@@ -272,7 +272,7 @@ class MainController(QtCore.QObject):
         self._contextMenu.addAction(self._tasks_list_controller.copySelectedTasksAction)
         self._contextMenu.addSeparator()
         self._contextMenu.addAction(self._tasks_list_controller.completeSelectedTasksAction)
-        if int(self._settings.value("show_delete", 0)):
+        if int(self._settings.value("show_delete", 1)):
             self._contextMenu.addAction(self._tasks_list_controller.deleteSelectedTasksAction)
         self._contextMenu.addSeparator()
         self._contextMenu.addAction(self._tasks_list_controller.increasePrioritySelectedTasksAction)

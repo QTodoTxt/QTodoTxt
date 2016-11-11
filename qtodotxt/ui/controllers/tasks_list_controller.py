@@ -27,7 +27,7 @@ class TasksListController(QtCore.QObject):
         self._initCreateTaskAction()
         self._initEditTaskAction()
         self._initCopySelectedTasksAction()
-        if int(QtCore.QSettings().value("show_delete", 0)):
+        if int(QtCore.QSettings().value("show_delete", 1)):
             self._initDeleteSelectedTasksAction()
         self._initCompleteSelectedTasksAction()
         self._initDecreasePrioritySelectedTasksAction()
