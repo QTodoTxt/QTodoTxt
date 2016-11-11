@@ -69,7 +69,7 @@ class MenuController(QtCore.QObject):
         editMenu.addAction(tlc.copySelectedTasksAction)
         editMenu.addSeparator()
         editMenu.addAction(tlc.completeSelectedTasksAction)
-        if int(QtCore.QSettings().value("show_delete", 0)):
+        if int(QtCore.QSettings().value("show_delete", 1)):
             editMenu.addAction(tlc.deleteSelectedTasksAction)
         editMenu.addSeparator()
         editMenu.addAction(tlc.increasePrioritySelectedTasksAction)
