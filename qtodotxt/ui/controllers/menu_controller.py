@@ -4,6 +4,7 @@ from PyQt5 import QtWidgets
 from qtodotxt.ui.dialogs import about_dialog
 from qtodotxt.ui.resource_manager import getIcon
 from qtodotxt.ui.dialogs.settings import Settings
+from qtodotxt.ui.dialogs.shortcuts import Shortcuts
 
 
 class MenuController(QtCore.QObject):
@@ -87,14 +88,27 @@ class MenuController(QtCore.QObject):
     def _initHelpMenu(self):
         helpMenu = self._menu.addMenu(self.tr('&Help'))
         helpMenu.addAction(self._createAboutAction())
+        helpMenu.addAction(self._createShortcutsListAction())
 
     def _createAboutAction(self):
-        action = QtWidgets.QAction(getIcon('ApplicationAbout.png'), '&About', self)
+        action = QtWidgets.QAction(getIcon('ApplicationAbout.png'), self.tr('&About'), self)
+        action.setShortcuts(["F1"])
         action.triggered.connect(self._about)
+        return action
+
+    def _createShortcutsListAction(self):
+        action = QtWidgets.QAction(getIcon('ApplicationAbout.png'), self.tr('&Shortcuts list'), self)
+        action.setShortcuts(["Ctrl+F1"])
+        action.triggered.connect(self._show_shortcuts)
         return action
 
     def _about(self):
         about_dialog.show(self._menu)
+
+    def _show_shortcuts(self):
+        shortcuts = Shortcuts(self._main_controller)
+        shortcuts.setModal(True)
+        shortcuts.show()
 
     def _createNewAction(self):
         action = QtWidgets.QAction(getIcon('FileNew.png'), self.tr('&New'), self)
