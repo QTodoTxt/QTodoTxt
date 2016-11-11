@@ -24,6 +24,7 @@ class TasksListController(QtCore.QObject):
         self._task_editor_service = task_editor_service
         self._task_htmlizer = TaskHtmlizer()
         self.view.taskActivated.connect(self.editTask)
+        self.view.itemSelectionChanged.connect(self.availabilityEditAction)
         self._initCreateTaskAction()
         self._initEditTaskAction()
         self._initCopySelectedTasksAction()
@@ -36,6 +37,7 @@ class TasksListController(QtCore.QObject):
     def _initEditTaskAction(self):
         action = QtWidgets.QAction(getIcon('TaskEdit.png'), self.tr('&Edit Task'), self)
         action.setShortcuts(['Ctrl+E', 'Enter'])
+        action.setDisabled(True)
         action.triggered.connect(self.editTask)
         self.view.addListAction(action)
         self.editTaskAction = action
@@ -177,13 +179,6 @@ class TasksListController(QtCore.QObject):
     def editTask(self, task=None):
         if not task:
             tasks = self.view.getSelectedTasks()
-            # FIXME: instead of this we should disable icon when no task or serveral tasks are selected
-            if len(tasks) == 0:
-                print("No task selected")
-                return
-            elif len(tasks) > 1:
-                print("More than one task selected")
-                return
             task = tasks[0]
         (text, ok) = self._task_editor_service.editTask(task)
         if ok and text:
@@ -198,3 +193,9 @@ class TasksListController(QtCore.QObject):
             text = "".join(str(task) + os.linesep for task in tasks)
             app = QtWidgets.QApplication.instance()
             app.clipboard().setText(text)
+
+    def availabilityEditAction(self):
+        if len(self.view.getSelectedTasks()) == 1:
+            self.editTaskAction.setDisabled(False)
+        else:
+            self.editTaskAction.setDisabled(True)
