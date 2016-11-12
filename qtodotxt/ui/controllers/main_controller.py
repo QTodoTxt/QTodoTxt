@@ -3,7 +3,7 @@ import os
 import sys
 import time
 
-from PyQt5 import QtCore
+from PyQt5 import QtCore, QtGui
 from PyQt5 import QtWidgets
 
 from qtodotxt.lib import tasklib
@@ -13,7 +13,6 @@ from qtodotxt.ui.controllers.tasks_list_controller import TasksListController
 from qtodotxt.ui.controllers.filters_tree_controller import FiltersTreeController
 from qtodotxt.lib.filters import SimpleTextFilter, FutureFilter, IncompleteTasksFilter, CompleteTasksFilter
 from qtodotxt.ui.controllers.menu_controller import MenuController
-from qtodotxt.ui.resource_manager import getIcon
 
 
 logger = logging.getLogger(__name__)
@@ -68,23 +67,26 @@ class MainController(QtCore.QObject):
         self._menu_controller = MenuController(self, menu)
 
     def _initActions(self):
-        self.filterViewAction = QtWidgets.QAction(getIcon('sidepane.png'), self.tr('Show &Filters'), self)
+        self.filterViewAction = QtWidgets.QAction(QtGui.QIcon(':/white_icons/resources/sidepane.png'),
+                                                  self.tr('Show &Filters'), self)
         self.filterViewAction.setCheckable(True)
         self.filterViewAction.setShortcuts(['Ctrl+Shift+F'])
         self.filterViewAction.triggered.connect(self._toggleFilterView)
 
-        self.showFutureAction = QtWidgets.QAction(getIcon('future.png'), self.tr('Show Future &Tasks'), self)
+        self.showFutureAction = QtWidgets.QAction(QtGui.QIcon(':/white_icons/resources/future.png'),
+                                                  self.tr('Show Future &Tasks'), self)
         self.showFutureAction.setCheckable(True)
         self.showFutureAction.setShortcuts(['Ctrl+Shift+T'])
         self.showFutureAction.triggered.connect(self._toggleShowFuture)
 
-        self.showCompletedAction = QtWidgets.QAction(getIcon('show_completed.png'),
+        self.showCompletedAction = QtWidgets.QAction(QtGui.QIcon(':/white_icons/resources/show_completed.png'),
                                                      self.tr('Show &Completed Tasks'), self)
         self.showCompletedAction.setCheckable(True)
         self.showCompletedAction.setShortcuts(['Ctrl+Shift+C'])
         self.showCompletedAction.triggered.connect(self._toggleShowCompleted)
 
-        self.archiveAction = QtWidgets.QAction(getIcon('archive.png'), self.tr('&Archive Completed Tasks'), self)
+        self.archiveAction = QtWidgets.QAction(QtGui.QIcon(':/white_icons/resources/archive.png'),
+                                               self.tr('&Archive Completed Tasks'), self)
         self.archiveAction.setShortcuts(['Ctrl+Shift+A'])
         self.archiveAction.triggered.connect(self._archive_all_done_tasks)
 
@@ -93,7 +95,8 @@ class MainController(QtCore.QObject):
         self.showToolBarAction.setShortcuts(['Ctrl+Shift+B'])
         self.showToolBarAction.triggered.connect(self._toggleShowToolBar)
 
-        self.showSearchAction = QtWidgets.QAction(getIcon('ActionSearch.png'), self.tr('Show Search Bar'), self)
+        self.showSearchAction = QtWidgets.QAction(QtGui.QIcon(':/white_icons/resources/ActionSearch.png'),
+                                                  self.tr('Show Search Bar'), self)
         self.showSearchAction.setCheckable(True)
         self.showSearchAction.setShortcuts(['Ctrl+F'])
         self.showSearchAction.triggered.connect(self._toggleShowSearch)

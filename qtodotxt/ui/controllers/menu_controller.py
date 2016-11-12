@@ -1,8 +1,7 @@
-from PyQt5 import QtCore
+from PyQt5 import QtCore, QtGui
 from PyQt5 import QtWidgets
 
 from qtodotxt.ui.dialogs import about_dialog
-from qtodotxt.ui.resource_manager import getIcon
 from qtodotxt.ui.dialogs.settings import Settings
 from qtodotxt.ui.dialogs.shortcuts import Shortcuts
 
@@ -28,7 +27,7 @@ class MenuController(QtCore.QObject):
         fileMenu.addAction(self._createNewAction())
         fileMenu.addAction(self._createOpenAction())
 
-        lastOpened = fileMenu.addMenu(getIcon('FileOpen.png'), "Open &Recent")
+        lastOpened = fileMenu.addMenu(QtGui.QIcon(':/white_icons/resources/FileOpen.png'), "Open &Recent")
         for ind in range(self.maxRecentFiles):
             self.recentFileArray.append(QtWidgets.QAction(self, visible=False, triggered=self.openRecentFile))
             lastOpened.addAction(self.recentFileArray[ind])
@@ -46,7 +45,7 @@ class MenuController(QtCore.QObject):
         for i in range(len(recentFileNames)):
             text = "&%d %s" % (ind, recentFileNames[i])
             self.recentFileArray[i].setText(text)
-            self.recentFileArray[i].setIcon(getIcon('FileOpen.png'))
+            self.recentFileArray[i].setIcon(QtGui.QIcon(':/white_icons/resources/FileOpen.png'))
             self.recentFileArray[i].setData(recentFileNames[i])
             self.recentFileArray[i].setVisible(True)
             self.recentFileArray[i].setShortcuts(["Ctrl+" + str(ind)])
@@ -91,7 +90,7 @@ class MenuController(QtCore.QObject):
         helpMenu.addAction(self._createShortcutsListAction())
 
     def _createAboutAction(self):
-        action = QtWidgets.QAction(getIcon('ApplicationAbout.png'), self.tr('&About'), self)
+        action = QtWidgets.QAction(QtGui.QIcon(':/white_icons/resources/ApplicationAbout.png'), '&About', self)
         action.setShortcuts(["F1"])
         action.triggered.connect(self._about)
         return action
@@ -111,7 +110,7 @@ class MenuController(QtCore.QObject):
         shortcuts.show()
 
     def _createNewAction(self):
-        action = QtWidgets.QAction(getIcon('FileNew.png'), self.tr('&New'), self)
+        action = QtWidgets.QAction(QtGui.QIcon(':/white_icons/resources/FileNew.png'), self.tr('&New'), self)
         # infrequent action, I prefer to use ctrl+n for new task.
         action.setShortcuts(["Ctrl+Shift+N"])
         action.triggered.connect(self._main_controller.new)
@@ -119,33 +118,34 @@ class MenuController(QtCore.QObject):
         return action
 
     def _createOpenAction(self):
-        action = QtWidgets.QAction(getIcon('FileOpen.png'), self.tr('&Open'), self)
+        action = QtWidgets.QAction(QtGui.QIcon(':/white_icons/resources/FileOpen.png'), self.tr('&Open'), self)
         action.setShortcuts(["Ctrl+O"])
         action.triggered.connect(self._main_controller.open)
         self.openAction = action
         return action
 
     def _createSaveAction(self):
-        action = QtWidgets.QAction(getIcon('FileSave.png'), self.tr('&Save'), self)
+        action = QtWidgets.QAction(QtGui.QIcon(':/white_icons/resources/FileSave.png'), self.tr('&Save'), self)
         action.setShortcuts(["Ctrl+S"])
         action.triggered.connect(self._main_controller.save)
         self.saveAction = action
         return action
 
     def _createRevertAction(self):
-        action = QtWidgets.QAction(getIcon('FileRevert.png'), self.tr('&Revert'), self)
+        action = QtWidgets.QAction(QtGui.QIcon(':/white_icons/resources/FileRevert.png'), self.tr('&Revert'), self)
         action.triggered.connect(self._main_controller.revert)
         self.revertAction = action
         return action
 
     def _createPreferenceAction(self):
-        action = QtWidgets.QAction(getIcon('ApplicationPreferences.png'), self.tr('&Preferences'), self)
+        action = QtWidgets.QAction(QtGui.QIcon(':/white_icons/resources/ApplicationPreferences.png'),
+                                   self.tr('&Preferences'), self)
         action.triggered.connect(self._show_preferences)
         self.preferencesAction = action
         return action
 
     def _createExitAction(self):
-        action = QtWidgets.QAction(getIcon('ApplicationExit.png'), self.tr('E&xit'), self)
+        action = QtWidgets.QAction(QtGui.QIcon(':/white_icons/resources/ApplicationExit.png'), self.tr('E&xit'), self)
         action.setShortcuts(["Ctrl+Q"])
         action.triggered.connect(self._main_controller.exit)
         return action

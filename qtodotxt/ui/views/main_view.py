@@ -3,7 +3,7 @@ from PyQt5 import QtGui
 from PyQt5 import QtWidgets
 import os
 
-from qtodotxt.ui.resource_manager import getIcon, getResourcePath
+from qtodotxt.ui.resource_manager import getResourcePath
 from qtodotxt.ui.views.filters_tree_view import FiltersTreeView
 from qtodotxt.ui.views.tasks_view import TasksView
 
@@ -41,7 +41,7 @@ class MainView(QtWidgets.QMainWindow):
 
         self.resize(800, 400)
         self.splitter.setSizes([250, 550])
-        self.setWindowIcon(getIcon('qtodotxt.png'))
+        self.setWindowIcon(QtGui.QIcon(':/white_icons/resources/qtodotxt.png'))
 
         self.setTabOrder(self.tasks_view.tasks_search_view, self.tasks_view.tasks_list_view)
         self.setTabOrder(self.tasks_view.tasks_list_view, self.filters_tree_view)
