@@ -96,7 +96,7 @@ class MenuController(QtCore.QObject):
         return action
 
     def _createShortcutsListAction(self):
-        action = QtWidgets.QAction(getIcon('ApplicationAbout.png'), self.tr('&Shortcuts list'), self)
+        action = QtWidgets.QAction(QtGui.QIcon(':/white_icons/resources/ApplicationAbout.png'), self.tr('&Shortcuts list'), self)
         action.setShortcuts(["Ctrl+F1"])
         action.triggered.connect(self._show_shortcuts)
         return action
