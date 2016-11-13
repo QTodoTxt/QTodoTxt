@@ -24,7 +24,7 @@ class TasksListController(QtCore.QObject):
         self._task_editor_service = task_editor_service
         self._task_htmlizer = TaskHtmlizer()
         self.view.taskActivated.connect(self.editTask)
-        self.view.itemSelectionChanged.connect(self.availabilityEditAction)
+        self.view.itemSelectionChanged.connect(self.updateActions)
         self._initCreateTaskAction()
         self._initEditTaskAction()
         self._initCopySelectedTasksAction()
@@ -33,6 +33,7 @@ class TasksListController(QtCore.QObject):
         self._initCompleteSelectedTasksAction()
         self._initDecreasePrioritySelectedTasksAction()
         self._initIncreasePrioritySelectedTasksAction()
+        self.disableTaskActions()
 
     def _initEditTaskAction(self):
         action = QtWidgets.QAction(getIcon('TaskEdit.png'), self.tr('&Edit Task'), self)
@@ -194,8 +195,24 @@ class TasksListController(QtCore.QObject):
             app = QtWidgets.QApplication.instance()
             app.clipboard().setText(text)
 
-    def availabilityEditAction(self):
+    def updateActions(self):
         if len(self.view.getSelectedTasks()) == 1:
-            self.editTaskAction.setDisabled(False)
+            self.enableTaskActions()
         else:
-            self.editTaskAction.setDisabled(True)
+            self.disableTaskActions()
+
+    def enableTaskActions(self):
+        self.editTaskAction.setEnabled(True)
+        self.deleteSelectedTasksAction.setEnabled(True)
+        self.completeSelectedTasksAction.setEnabled(True)
+        self.copySelectedTasksAction.setEnabled(True)
+        self.increasePrioritySelectedTasksAction.setEnabled(True)
+        self.decreasePrioritySelectedTasksAction.setEnabled(True)
+
+    def disableTaskActions(self):
+        self.editTaskAction.setEnabled(False)
+        self.deleteSelectedTasksAction.setEnabled(False)
+        self.completeSelectedTasksAction.setEnabled(False)
+        self.copySelectedTasksAction.setEnabled(False)
+        self.increasePrioritySelectedTasksAction.setEnabled(False)
+        self.decreasePrioritySelectedTasksAction.setEnabled(False)
