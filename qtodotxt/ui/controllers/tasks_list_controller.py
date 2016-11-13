@@ -201,8 +201,10 @@ class TasksListController(QtCore.QObject):
             app.clipboard().setText(text)
 
     def updateActions(self):
-        if len(self.view.getSelectedTasks()) == 1:
+        if len(self.view.getSelectedTasks()) > 0:
             self.enableTaskActions()
+            if len(self.view.getSelectedTasks()) > 1:
+                self.editTaskAction.setEnabled(False)
         else:
             self.disableTaskActions()
 
