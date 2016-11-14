@@ -152,6 +152,7 @@ class TaskEditorDialog(QtWidgets.QDialog):
     def setLabelText(self, text):
         self._label.setText(text)
 
+
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     values = ['(A)', '(B)', '(C)', '@home', '@call', '@work', '+qtodotxt', '+sqlvisualizer']

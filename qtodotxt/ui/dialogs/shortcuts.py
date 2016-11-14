@@ -55,6 +55,7 @@ class Shortcuts(QtWidgets.QDialog):
         self.deleteLater()
         self.maincontroller.view.show()
 
+
 if __name__ == "__main__":
     QtCore.QCoreApplication.setOrganizationName("QTodoTxt")
     QtCore.QCoreApplication.setApplicationName("QTodoTxt")

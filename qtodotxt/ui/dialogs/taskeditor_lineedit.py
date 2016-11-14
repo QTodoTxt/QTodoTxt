@@ -71,6 +71,7 @@ class TaskEditorLineEdit(QtWidgets.QLineEdit):
         self._completer.popup().setCurrentIndex(
             self._completer.completionModel().index(0, 0))
 
+
 if __name__ == '__main__':
     def demo():
         import sys
