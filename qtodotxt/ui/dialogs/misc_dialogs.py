@@ -42,6 +42,7 @@ class Dialogs(object):
             defaultButton=QtWidgets.QMessageBox.Yes)
         return result == QtWidgets.QMessageBox.Yes
 
+
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
     _tr = QtCore.QCoreApplication.translate

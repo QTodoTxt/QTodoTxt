@@ -32,6 +32,7 @@ def run_doctests(testsdir):
 
     return exit_code
 
+
 if __name__ == "__main__":
     exit_code = 0
 
