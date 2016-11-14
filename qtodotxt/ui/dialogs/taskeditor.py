@@ -40,9 +40,9 @@ class TaskEditor(object):
         self.updateTodoValues(file)
         self.updateCompletedValues(file)
 
-    def createTask(self):
+    def createTask(self, task=None):
         _tr = QtCore.QCoreApplication.translate
-        (text, ok) = self._openTaskEditor(_tr("taskEditor", "Create Task"))
+        (text, ok) = self._openTaskEditor(_tr("taskEditor", "Create Task"), task)
         return text, ok
 
     def editTask(self, task):

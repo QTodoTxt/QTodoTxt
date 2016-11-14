@@ -116,6 +116,8 @@ class MainController(QtCore.QObject):
         toolbar.addAction(self._menu_controller.saveAction)
         toolbar.addSeparator()
         toolbar.addAction(self._tasks_list_controller.createTaskAction)
+        toolbar.addAction(self._tasks_list_controller.createTaskActionOnTemplate)
+
         toolbar.addAction(self._tasks_list_controller.editTaskAction)
         toolbar.addAction(self._tasks_list_controller.copySelectedTasksAction)
         toolbar.addSeparator()

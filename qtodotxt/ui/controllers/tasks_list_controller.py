@@ -35,6 +35,7 @@ class TasksListController(QtCore.QObject):
         self._initCompleteSelectedTasksAction()
         self._initDecreasePrioritySelectedTasksAction()
         self._initIncreasePrioritySelectedTasksAction()
+        self._initCreateTaskActionOnTemplate()
         self.disableTaskActions()
 
     def _initEditTaskAction(self):
@@ -53,6 +54,14 @@ class TasksListController(QtCore.QObject):
         action.triggered.connect(self.createTask)
         self.view.addListAction(action)
         self.createTaskAction = action
+
+    def _initCreateTaskActionOnTemplate(self):
+        action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskCreate.png'),
+                                   self.tr('&Create New Task on Template'), self)
+        # action.setShortcuts(['Insert', 'Ctrl+I', 'Ctrl+N'])
+        action.triggered.connect(self.createTaskOnTemplate())
+        self.view.addListAction(action)
+        self.createTaskActionOnTemplate = action
 
     def _initCopySelectedTasksAction(self):
         action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskCopy.png'),
@@ -177,6 +186,21 @@ class TasksListController(QtCore.QObject):
 
     def createTask(self):
         (text, ok) = self._task_editor_service.createTask()
+        if ok and text:
+            if int(QtCore.QSettings().value("add_created_date", 0)):
+                text = self._addCreationDate(text)
+            task = tasklib.Task(text)
+            self.view.addTask(task)
+            self.view.clearSelection()
+            self.view.selectTask(task)
+            self.taskCreated.emit(task)
+
+    def createTaskOnTemplate(self):
+        tasks = self.view.getSelectedTasks()
+        if len(tasks) != 1:
+            return
+        task = tasks[0]
+        (text, ok) = self._task_editor_service.createTask(task)
         if ok and text:
             if int(QtCore.QSettings().value("add_created_date", 0)):
                 text = self._addCreationDate(text)
