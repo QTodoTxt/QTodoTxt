@@ -19,6 +19,9 @@ class TasksListController(QtCore.QObject):
 
     def __init__(self, view, task_editor_service):
         QtCore.QObject.__init__(self)
+        self.style = ":/white_icons"
+        if str(QtCore.QSettings().value("color_schem", "")).find("dark") >= 0:
+            self.style = ":/dark_icons"
         self.view = view
         self._task_editor_service = task_editor_service
         self._task_htmlizer = TaskHtmlizer()
@@ -35,7 +38,8 @@ class TasksListController(QtCore.QObject):
         self.disableTaskActions()
 
     def _initEditTaskAction(self):
-        action = QtWidgets.QAction(QtGui.QIcon(':/white_icons/resources/TaskEdit.png'), self.tr('&Edit Task'), self)
+        action = QtWidgets.QAction(QtGui.QIcon(self.style +
+                                               '/resources/TaskEdit.png'), self.tr('&Edit Task'), self)
         action.setShortcuts(['Ctrl+E', 'Enter'])
         action.setDisabled(True)
         action.triggered.connect(self.editTask)
@@ -43,7 +47,7 @@ class TasksListController(QtCore.QObject):
         self.editTaskAction = action
 
     def _initCreateTaskAction(self):
-        action = QtWidgets.QAction(QtGui.QIcon(':/white_icons/resources/TaskCreate.png'),
+        action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskCreate.png'),
                                    self.tr('&Create New Task'), self)
         action.setShortcuts(['Insert', 'Ctrl+I', 'Ctrl+N'])
         action.triggered.connect(self.createTask)
@@ -51,7 +55,7 @@ class TasksListController(QtCore.QObject):
         self.createTaskAction = action
 
     def _initCopySelectedTasksAction(self):
-        action = QtWidgets.QAction(QtGui.QIcon(':/white_icons/resources/TaskCopy.png'),
+        action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskCopy.png'),
                                    self.tr('Copy Selected Tasks'), self)
         action.setShortcuts([QtGui.QKeySequence.Copy])
         action.triggered.connect(self._copySelectedTasks)
@@ -59,7 +63,7 @@ class TasksListController(QtCore.QObject):
         self.copySelectedTasksAction = action
 
     def _initDeleteSelectedTasksAction(self):
-        action = QtWidgets.QAction(QtGui.QIcon(':/white_icons/resources/TaskDelete.png'),
+        action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskDelete.png'),
                                    self.tr('&Delete Selected Tasks'), self)
         action.setShortcut('Delete')
         action.triggered.connect(self._deleteSelectedTasks)
@@ -67,7 +71,7 @@ class TasksListController(QtCore.QObject):
         self.deleteSelectedTasksAction = action
 
     def _initCompleteSelectedTasksAction(self):
-        action = QtWidgets.QAction(QtGui.QIcon(':/white_icons/resources/TaskComplete.png'),
+        action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskComplete.png'),
                                    self.tr('C&omplete Selected Tasks'), self)
         action.setShortcuts(['x', 'c'])
         action.triggered.connect(self._completeSelectedTasks)
@@ -75,7 +79,7 @@ class TasksListController(QtCore.QObject):
         self.completeSelectedTasksAction = action
 
     def _initDecreasePrioritySelectedTasksAction(self):
-        action = QtWidgets.QAction(QtGui.QIcon(':/white_icons/resources/TaskPriorityDecrease.png'),
+        action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskPriorityDecrease.png'),
                                    self.tr('Decrease Priority'), self)
         action.setShortcuts(['-', '<'])
         action.triggered.connect(self._decreasePriority)
@@ -83,7 +87,7 @@ class TasksListController(QtCore.QObject):
         self.decreasePrioritySelectedTasksAction = action
 
     def _initIncreasePrioritySelectedTasksAction(self):
-        action = QtWidgets.QAction(QtGui.QIcon(':/white_icons/resources/TaskPriorityIncrease.png'),
+        action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskPriorityIncrease.png'),
                                    self.tr('Increase Priority'), self)
         action.setShortcuts(['+', '>'])
         action.triggered.connect(self._increasePriority)

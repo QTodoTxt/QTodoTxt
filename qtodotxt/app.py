@@ -12,6 +12,7 @@ from PyQt5 import QtWidgets
 # taken from https://github.com/ColinDuquesnoy/QDarkStyleSheet
 import pyqt5_style_rc  # noqa: F401
 import qTodoTxt_style_rc  # noqa: F401
+import qTodoTxt_dark_style_rc  # noqa: F401
 
 from qtodotxt.ui.controllers.main_controller import MainController
 from qtodotxt.ui.dialogs.misc_dialogs import Dialogs
@@ -24,22 +25,26 @@ from qtodotxt.lib.tendo_singleton import SingleInstance
 class TrayIcon(QtWidgets.QSystemTrayIcon):
     def __init__(self, main_controller):
         self._controller = main_controller
+        self.style = ":/white_icons"
+        if str(QtCore.QSettings().value("color_schem", "")).find("dark") >= 0:
+            self.style = ":/dark_icons"
         self._initIcon()
 
     def _initIcon(self):
         view = self._controller.getView()
-        icon = QtGui.QIcon(":/white_icons/resources/qtodotxt.png")
+
+        icon = QtGui.QIcon(self.style + "/resources/qtodotxt.png")
         QtWidgets.QSystemTrayIcon.__init__(self, icon, view)
         self.activated.connect(self._onActivated)
         self.setToolTip('QTodoTxt')
 
         menu = QtWidgets.QMenu(self._controller.view)
-        create_task_action = menu.addAction(QtGui.QIcon(":/white_icons/resources/TaskCreate.png"),
+        create_task_action = menu.addAction(QtGui.QIcon(self.style + "/resources/TaskCreate.png"),
                                             self.tr("Create New Task"))
         create_task_action.triggered.connect(self._createTask)
         toggle_visible_action = menu.addAction(self.tr("Show/Hide Window"))
         toggle_visible_action.triggered.connect(self._controller.toggleVisible)
-        exit_action = menu.addAction(QtGui.QIcon(':/white_icons/resources/ApplicationExit.png'), self.tr("Exit"))
+        exit_action = menu.addAction(QtGui.QIcon(self.style + '/resources/ApplicationExit.png'), self.tr("Exit"))
         exit_action.triggered.connect(self._controller.exit)
         self.setContextMenu(menu)
 
