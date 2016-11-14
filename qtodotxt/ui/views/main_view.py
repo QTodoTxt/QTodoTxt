@@ -14,6 +14,9 @@ class MainView(QtWidgets.QMainWindow):
 
     def __init__(self, parent=None):
         super(MainView, self).__init__(parent)
+        self.style = ":/white_icons"
+        if str(QtCore.QSettings().value("color_schem", "")).find("dark") >= 0:
+            self.style = ":/dark_icons"
         self._initUI()
 
     def show(self):
@@ -41,7 +44,7 @@ class MainView(QtWidgets.QMainWindow):
 
         self.resize(800, 400)
         self.splitter.setSizes([250, 550])
-        self.setWindowIcon(QtGui.QIcon(':/white_icons/resources/qtodotxt.png'))
+        self.setWindowIcon(QtGui.QIcon(self.style + '/resources/qtodotxt.png'))
 
         self.setTabOrder(self.tasks_view.tasks_search_view, self.tasks_view.tasks_list_view)
         self.setTabOrder(self.tasks_view.tasks_list_view, self.filters_tree_view)
