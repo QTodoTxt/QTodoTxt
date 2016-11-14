@@ -44,12 +44,12 @@ class Shortcuts(QtWidgets.QDialog):
         row = self.model.rowCount()
         for action in list:
             if action.shortcut().toString() != "":
-                self.model.insertRow(row)
                 comment = action.text()
-                shortcut = action.shortcut().toString()
-                self.model.setData(self.model.index(row, 0), comment)
-                self.model.setData(self.model.index(row, 1), shortcut)
-                row += 1
+                for shortcut in action.shortcuts():
+                    self.model.insertRow(row)
+                    self.model.setData(self.model.index(row, 0), comment)
+                    self.model.setData(self.model.index(row, 1), shortcut.toString())
+                    row += 1
 
     def closeEvent(self, event):
         self.deleteLater()
