@@ -39,6 +39,20 @@ def end_of_next_week(day=None):
     return (day + timedelta((13 - day.weekday()) % 14)).isoformat()
 
 
+def end_of_work_week(day=None):
+    if day is None:
+        day = date.today()
+    if day.weekday() > 4:
+        return end_of_next_work_week()
+    return (day + timedelta((4 - day.weekday()) % 7)).isoformat()
+
+
+def end_of_next_work_week(day=None):
+    if day is None:
+        day = date.today()
+    return (day + timedelta((11 - day.weekday()) % 14)).isoformat()
+
+
 def end_of_year(day=None):
     if day is None:
         day = date.today()
@@ -49,6 +63,8 @@ class TaskEditorDialog(QtWidgets.QDialog):
     autocomplete_pairs = collections.OrderedDict([
         ('due:Today', ''),
         ('due:Tomorrow', ''),
+        ('due:EndOfWorkWeek', ''),
+        ('due:EndOfNextWorkWeek', ''),
         ('due:EndOfWeek', ''),
         ('due:EndOfNextWeek', ''),
         ('due:EndOfMonth', ''),
@@ -93,6 +109,8 @@ class TaskEditorDialog(QtWidgets.QDialog):
     def _populateThresholds(self, keys):
         keys['t:Today'] = 't:' + date.today().isoformat()
         keys['t:Tomorrow'] = 't:' + (date.today() + timedelta(days=1)).isoformat()
+        keys['t:EndOfWorkWeek'] = 't:' + end_of_work_week()
+        keys['t:EndOfNextWorkWeek'] = 't:' + end_of_next_work_week()
         keys['t:EndOfWeek'] = 't:' + end_of_week()
         keys['t:EndOfNextWeek'] = 't:' + end_of_next_week()
         keys['t:EndOfMonth'] = 't:' + end_of_month()
@@ -102,6 +120,8 @@ class TaskEditorDialog(QtWidgets.QDialog):
     def _populateDues(self, keys):
         keys['due:Today'] = 'due:' + date.today().isoformat()
         keys['due:Tomorrow'] = 'due:' + (date.today() + timedelta(days=1)).isoformat()
+        keys['due:EndOfWorkWeek'] = 'due:' + end_of_work_week()
+        keys['due:EndOfNextWorkWeek'] = 'due:' + end_of_next_work_week()
         keys['due:EndOfWeek'] = 'due:' + end_of_week()
         keys['due:EndOfNextWeek'] = 'due:' + end_of_next_week()
         keys['due:EndOfMonth'] = 'due:' + end_of_month()
