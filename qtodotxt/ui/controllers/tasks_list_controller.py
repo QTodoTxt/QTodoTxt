@@ -56,10 +56,10 @@ class TasksListController(QtCore.QObject):
         self.createTaskAction = action
 
     def _initCreateTaskActionOnTemplate(self):
-        action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskCreate.png'),
-                                   self.tr('&Create New Task on Template'), self)
-        # action.setShortcuts(['Insert', 'Ctrl+I', 'Ctrl+N'])
-        action.triggered.connect(self.createTaskOnTemplate())
+        action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskAddOnTem.png'),
+                                   self.tr('&Create a new Task based on a template'), self)
+        action.setShortcuts(['Shift+Insert', 'Ctrl+Shift+I'])
+        action.triggered.connect(self.createTaskOnTemplate)
         self.view.addListAction(action)
         self.createTaskActionOnTemplate = action
 
@@ -233,11 +233,13 @@ class TasksListController(QtCore.QObject):
             self.enableTaskActions()
             if len(self.view.getSelectedTasks()) > 1:
                 self.editTaskAction.setEnabled(False)
+                self.createTaskActionOnTemplate.setEnabled(False)
         else:
             self.disableTaskActions()
 
     def enableTaskActions(self):
         self.editTaskAction.setEnabled(True)
+        self.createTaskActionOnTemplate.setEnabled(True)
         self.deleteSelectedTasksAction.setEnabled(True)
         self.completeSelectedTasksAction.setEnabled(True)
         self.copySelectedTasksAction.setEnabled(True)
@@ -246,6 +248,7 @@ class TasksListController(QtCore.QObject):
 
     def disableTaskActions(self):
         self.editTaskAction.setEnabled(False)
+        self.createTaskActionOnTemplate.setEnabled(False)
         self.deleteSelectedTasksAction.setEnabled(False)
         self.completeSelectedTasksAction.setEnabled(False)
         self.copySelectedTasksAction.setEnabled(False)

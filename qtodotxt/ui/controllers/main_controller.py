@@ -275,6 +275,7 @@ class MainController(QtCore.QObject):
         self._tasks_list_controller.view.customContextMenuRequested.connect(self.showContextMenu)
         self._contextMenu = QtWidgets.QMenu(self.view)
         self._contextMenu.addAction(self._tasks_list_controller.createTaskAction)
+        self._contextMenu.addAction(self._tasks_list_controller.createTaskActionOnTemplate)
         self._contextMenu.addAction(self._tasks_list_controller.editTaskAction)
         self._contextMenu.addAction(self._tasks_list_controller.copySelectedTasksAction)
         self._contextMenu.addSeparator()
