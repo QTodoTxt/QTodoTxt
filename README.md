@@ -2,7 +2,9 @@
 
 QTodoTxt is a cross-platform UI client for todo.txt files (see [todo.txt](http://todotxt.com)).
 
-![Main view](https://github.com/QTodoTxt/QTodoTxt/wiki/screenshots/QTodoTxt_main_view.png)
+![Main view](https://github.com/QTodoTxt/QTodoTxt/wiki/screenshots/QTodoTxt_main_view.gif)
+
+[more screenshots..](https://github.com/QTodoTxt/QTodoTxt/wiki/Screenshots)
 
 
 ### Latest alpha/beta relase:
