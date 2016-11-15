@@ -67,6 +67,7 @@ class MenuController(QtCore.QObject):
         editMenu = self._menu.addMenu(self.tr('&Edit'))
         tlc = self._main_controller._tasks_list_controller
         editMenu.addAction(tlc.createTaskAction)
+        editMenu.addAction(tlc.createTaskActionOnTemplate)
         editMenu.addAction(tlc.editTaskAction)
         editMenu.addAction(tlc.copySelectedTasksAction)
         editMenu.addSeparator()

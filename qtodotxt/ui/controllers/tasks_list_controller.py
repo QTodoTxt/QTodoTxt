@@ -35,6 +35,7 @@ class TasksListController(QtCore.QObject):
         self._initCompleteSelectedTasksAction()
         self._initDecreasePrioritySelectedTasksAction()
         self._initIncreasePrioritySelectedTasksAction()
+        self._initCreateTaskActionOnTemplate()
         self.disableTaskActions()
 
     def _initEditTaskAction(self):
@@ -53,6 +54,14 @@ class TasksListController(QtCore.QObject):
         action.triggered.connect(self.createTask)
         self.view.addListAction(action)
         self.createTaskAction = action
+
+    def _initCreateTaskActionOnTemplate(self):
+        action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskAddOnTem.png'),
+                                   self.tr('&Create a new Task based on a template'), self)
+        action.setShortcuts(['Shift+Insert', 'Ctrl+Shift+I'])
+        action.triggered.connect(self.createTaskOnTemplate)
+        self.view.addListAction(action)
+        self.createTaskActionOnTemplate = action
 
     def _initCopySelectedTasksAction(self):
         action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskCopy.png'),
@@ -186,6 +195,21 @@ class TasksListController(QtCore.QObject):
             self.view.selectTask(task)
             self.taskCreated.emit(task)
 
+    def createTaskOnTemplate(self):
+        tasks = self.view.getSelectedTasks()
+        if len(tasks) != 1:
+            return
+        task = tasks[0]
+        (text, ok) = self._task_editor_service.createTask(task)
+        if ok and text:
+            if int(QtCore.QSettings().value("add_created_date", 0)):
+                text = self._addCreationDate(text)
+            task = tasklib.Task(text)
+            self.view.addTask(task)
+            self.view.clearSelection()
+            self.view.selectTask(task)
+            self.taskCreated.emit(task)
+
     def editTask(self, task=None):
         if not task:
             tasks = self.view.getSelectedTasks()
@@ -209,11 +233,13 @@ class TasksListController(QtCore.QObject):
             self.enableTaskActions()
             if len(self.view.getSelectedTasks()) > 1:
                 self.editTaskAction.setEnabled(False)
+                self.createTaskActionOnTemplate.setEnabled(False)
         else:
             self.disableTaskActions()
 
     def enableTaskActions(self):
         self.editTaskAction.setEnabled(True)
+        self.createTaskActionOnTemplate.setEnabled(True)
         self.deleteSelectedTasksAction.setEnabled(True)
         self.completeSelectedTasksAction.setEnabled(True)
         self.copySelectedTasksAction.setEnabled(True)
@@ -222,6 +248,7 @@ class TasksListController(QtCore.QObject):
 
     def disableTaskActions(self):
         self.editTaskAction.setEnabled(False)
+        self.createTaskActionOnTemplate.setEnabled(False)
         self.deleteSelectedTasksAction.setEnabled(False)
         self.completeSelectedTasksAction.setEnabled(False)
         self.copySelectedTasksAction.setEnabled(False)
