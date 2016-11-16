@@ -8,7 +8,7 @@ QTodoTxt is a cross-platform UI client for todo.txt files (see [todo.txt](http:/
 
 
 ### Latest alpha/beta relase:
-Download code from git or use pip: pip install qtodotxt
+Download code from git or use pip: pip install qtodotxt --upgrade --pre
 
 And please report bugs to github!
 
@@ -20,7 +20,7 @@ V1.6.1 is released but not all binary packages have been created yet and the fol
 - For Ubuntu / Debian: [.deb package](https://github.com/QTodoTxt/QTodoTxt/releases/download/v1.6.1/qtodotxt_1.6.1_all_deb.zip)
 - For Windows: [Windows installer](https://github.com/QTodoTxt/QTodoTxt/releases/download/v1.6.1/qtodotxt_1.6.1.exe)
 - For Mac OS X: [Mac OS X installer](http://dl.bintray.com/mnantern/generic/QTodoTxt_1.4.0.dmg)
-- Everywhere: ```pip install qtodotxt``` (BUT to void unwanted pyqt5 compilation, pyqt5 is not specified as a dependency on pip, install pyqt5 manually before!)
+- Everywhere: ```pip install qtodotxt --upgrade``` (BUT to void unwanted pyqt5 compilation, pyqt5 is not specified as a dependency on pip, install pyqt5 manually before!)
 - Everywhere: [tar.gz archive](https://github.com/QTodoTxt/QTodoTxt/archive/v1.6.1.tar.gz)
 
 For Debian/Ubuntu you can also add the following repo to your sources.list:
