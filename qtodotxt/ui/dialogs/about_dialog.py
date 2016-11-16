@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets
 
 
-__version__ = "1.6.2"
+__version__ = "1.7.0"
 
 description = """<p>QTodoTxt is a cross-platform UI client for todo.txt files
  (see <a href="http://todotxt.com">http://todotxt.com</a>)</p>
