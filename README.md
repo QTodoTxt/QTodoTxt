@@ -8,6 +8,9 @@ QTodoTxt is a cross-platform UI client for todo.txt files (see [todo.txt](http:/
 
 
 ### Latest alpha/beta relase:
+
+!!!! v1.7.0 beta released !!!! . Get it with pip:
+
 Download code from git or use pip: pip install qtodotxt --upgrade --pre
 
 And please report bugs to github!
