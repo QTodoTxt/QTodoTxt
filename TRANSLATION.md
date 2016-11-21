@@ -1,5 +1,9 @@
 # QTodoTxt translations
 
+## Web translation:
+You can help with translation, and without programming using a web service WebLate
+https://hosted.weblate.org/projects/qtodotxt/
+
 ## For translation in your language is necessary:
 
 1. The change in the script "pylupdate.py" variable "local"
