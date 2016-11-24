@@ -49,7 +49,7 @@ class TasksListController(QtCore.QObject):
 
     def _initCreateTaskAction(self):
         action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskCreate.png'),
-                                   self.tr('&Create New Task'), self)
+                                   self.tr('&Create new task'), self)
         action.setShortcuts(['Insert', 'Ctrl+I', 'Ctrl+N'])
         action.triggered.connect(self.createTask)
         self.view.addListAction(action)
@@ -57,7 +57,7 @@ class TasksListController(QtCore.QObject):
 
     def _initCreateTaskActionOnTemplate(self):
         action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskAddOnTem.png'),
-                                   self.tr('&Create a new Task based on a template'), self)
+                                   self.tr('&Create a new task based on current task'), self)
         action.setShortcuts(['Shift+Insert', 'Ctrl+Shift+I'])
         action.triggered.connect(self.createTaskOnTemplate)
         self.view.addListAction(action)
@@ -65,7 +65,7 @@ class TasksListController(QtCore.QObject):
 
     def _initCopySelectedTasksAction(self):
         action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskCopy.png'),
-                                   self.tr('Copy Selected Tasks'), self)
+                                   self.tr('Copy selected tasks'), self)
         action.setShortcuts([QtGui.QKeySequence.Copy])
         action.triggered.connect(self._copySelectedTasks)
         self.view.addListAction(action)
@@ -73,7 +73,7 @@ class TasksListController(QtCore.QObject):
 
     def _initDeleteSelectedTasksAction(self):
         action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskDelete.png'),
-                                   self.tr('&Delete Selected Tasks'), self)
+                                   self.tr('&Delete selected tasks'), self)
         action.setShortcut('Delete')
         action.triggered.connect(self._deleteSelectedTasks)
         self.view.addListAction(action)
@@ -81,7 +81,7 @@ class TasksListController(QtCore.QObject):
 
     def _initCompleteSelectedTasksAction(self):
         action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskComplete.png'),
-                                   self.tr('C&omplete Selected Tasks'), self)
+                                   self.tr('C&omplete selected tasks'), self)
         action.setShortcuts(['x', 'c'])
         action.triggered.connect(self._completeSelectedTasks)
         self.view.addListAction(action)
@@ -89,7 +89,7 @@ class TasksListController(QtCore.QObject):
 
     def _initDecreasePrioritySelectedTasksAction(self):
         action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskPriorityDecrease.png'),
-                                   self.tr('Decrease Priority'), self)
+                                   self.tr('Decrease priority'), self)
         action.setShortcuts(['-', '<'])
         action.triggered.connect(self._decreasePriority)
         self.view.addListAction(action)
@@ -97,7 +97,7 @@ class TasksListController(QtCore.QObject):
 
     def _initIncreasePrioritySelectedTasksAction(self):
         action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskPriorityIncrease.png'),
-                                   self.tr('Increase Priority'), self)
+                                   self.tr('Increase priority'), self)
         action.setShortcuts(['+', '>'])
         action.triggered.connect(self._increasePriority)
         self.view.addListAction(action)
@@ -117,7 +117,7 @@ class TasksListController(QtCore.QObject):
         tasks = self.view.getSelectedTasks()
         if tasks:
             confirm = int(QtCore.QSettings().value("confirm_complete", 1))
-            if not confirm or self._confirmTasksAction(tasks, self.tr('Toggle Completeness of')):
+            if not confirm or self._confirmTasksAction(tasks, self.tr('Toggle completeness of')):
                 for task in tasks:
                     self.completeTask(task)
 

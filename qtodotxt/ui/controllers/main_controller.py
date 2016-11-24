@@ -74,29 +74,29 @@ class MainController(QtCore.QObject):
         self.filterViewAction.triggered.connect(self._toggleFilterView)
 
         self.showFutureAction = QtWidgets.QAction(QtGui.QIcon(self.view.style + '/resources/future.png'),
-                                                  self.tr('Show Future &Tasks'), self)
+                                                  self.tr('Show future &Tasks'), self)
         self.showFutureAction.setCheckable(True)
         self.showFutureAction.setShortcuts(['Ctrl+Shift+T'])
         self.showFutureAction.triggered.connect(self._toggleShowFuture)
 
         self.showCompletedAction = QtWidgets.QAction(QtGui.QIcon(self.view.style + '/resources/show_completed.png'),
-                                                     self.tr('Show &Completed Tasks'), self)
+                                                     self.tr('Show &Completed tasks'), self)
         self.showCompletedAction.setCheckable(True)
         self.showCompletedAction.setShortcuts(['Ctrl+Shift+C'])
         self.showCompletedAction.triggered.connect(self._toggleShowCompleted)
 
         self.archiveAction = QtWidgets.QAction(QtGui.QIcon(self.view.style + '/resources/archive.png'),
-                                               self.tr('&Archive Completed Tasks'), self)
+                                               self.tr('&Archive completed tasks'), self)
         self.archiveAction.setShortcuts(['Ctrl+Shift+A'])
         self.archiveAction.triggered.connect(self._archive_all_done_tasks)
 
-        self.showToolBarAction = QtWidgets.QAction(self.tr('Show Tool&Bar'), self)
+        self.showToolBarAction = QtWidgets.QAction(self.tr('Show tool&Bar'), self)
         self.showToolBarAction.setCheckable(True)
         self.showToolBarAction.setShortcuts(['Ctrl+Shift+B'])
         self.showToolBarAction.triggered.connect(self._toggleShowToolBar)
 
         self.showSearchAction = QtWidgets.QAction(QtGui.QIcon(self.view.style + '/resources/ActionSearch.png'),
-                                                  self.tr('Show Search Bar'), self)
+                                                  self.tr('Show search bar'), self)
         self.showSearchAction.setCheckable(True)
         self.showSearchAction.setShortcuts(['Ctrl+F'])
         self.showSearchAction.triggered.connect(self._toggleShowSearch)
