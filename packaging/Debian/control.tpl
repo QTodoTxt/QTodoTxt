@@ -3,7 +3,7 @@ Version: $version
 Architecture: all
 Maintainer: QTT Development Team
 Installed-Size: 3
-Depends: python3 (>=3.2), python3-pyqt5
+Depends: python3 (>=3.2), python3-pyqt5, python3-dateutil
 Section: utils
 Priority: optional
 Homepage: https://github.com/QTodoTxt/QTodoTxt.git
