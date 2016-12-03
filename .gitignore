@@ -51,3 +51,6 @@ nosetests.xml
 tempfile.txt
 .testOutput
 .tox
+
+# Visual Studio Code IDE
+.vscode

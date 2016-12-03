@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import datetime, date, time
 import re
 
 from PyQt5 import QtCore
@@ -56,7 +56,7 @@ class Task(object):
             words = words[1:]
             # parse next word as a completion date
             # required by todotxt but often not here
-            self.completion_date = self._parseDate(words[0])
+            self.completion_date = self._parseDate(words[0]).date()
             if self.completion_date:
                 words = words[1:]
         elif re.search(r'^\([A-Z]\)$', words[0]):
@@ -65,7 +65,7 @@ class Task(object):
 
         dato = self._parseDate(words[0])
         if dato:
-            self.creation_date = dato
+            self.creation_date = dato.date()
             words = words[1:]
 
         self.description = " ".join(words)
@@ -93,14 +93,25 @@ class Task(object):
                         print("Error parsing threshold '{}'".format(word))
                         self.threshold_error = word[2:]
                     else:
-                        if self.threshold > date.today():
+                        if self.threshold > datetime.today():
                             self.is_future = True
 
     def _parseDate(self, string):
         try:
-            return datetime.strptime(string, '%Y-%m-%d').date()
+            return datetime.strptime(string, '%Y-%m-%d')
         except ValueError:
-            return None
+            try:
+                return datetime.strptime(string, '%Y-%m-%dT%H:%M')
+            except ValueError:
+                return None
+
+    @property
+    def dueString(self):
+        return dateString(self.due)
+
+    @property
+    def thresholdString(self):
+        return dateString(self.threshold)
 
     def setCompleted(self):
         """
@@ -178,6 +189,16 @@ class Task(object):
         if not self.is_complete and other.is_complete:
             return False
         raise RuntimeError("Could not compare completeness of 2 tasks, please report")
+
+
+def dateString(date):
+    """
+    Return a datetime as a nicely formatted string
+    """
+    if date.time() == time.min:
+        return date.strftime('%Y-%m-%d')
+    else:
+        return date.strftime('%Y-%m-%d %H:%M')
 
 
 def filterTasks(filters, tasks):
