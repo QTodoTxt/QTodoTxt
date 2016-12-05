@@ -93,7 +93,7 @@ class TestHtmlizer(unittest.TestCase):
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
                          '<font style="color:red">*** due:abc Invalid date format, '
-                         'expected YYYY-MM-DD. ***</font></b>')
+                         'expected yyyy-mm-dd or yyyy-mm-ddThh:mm. ***</font></b>')
 
     def test_13(self):
         # Test task with an invalid due date
@@ -101,7 +101,7 @@ class TestHtmlizer(unittest.TestCase):
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
                          '<font style="color:red">*** due:2014-04 Invalid date format, '
-                         'expected YYYY-MM-DD. ***</font></b>')
+                         'expected yyyy-mm-dd or yyyy-mm-ddThh:mm. ***</font></b>')
 
     def test_14(self):
         # Test task with an invalid due month
@@ -109,7 +109,7 @@ class TestHtmlizer(unittest.TestCase):
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
                          '<font style="color:red">*** due:2014-13-01 Invalid date format, '
-                         'expected YYYY-MM-DD. ***</font></b>')
+                         'expected yyyy-mm-dd or yyyy-mm-ddThh:mm. ***</font></b>')
 
     def test_15(self):
         # Test task with an invalid due day
@@ -117,7 +117,7 @@ class TestHtmlizer(unittest.TestCase):
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
                          '<font style="color:red">*** due:2014-04-31 Invalid date format, '
-                         'expected YYYY-MM-DD. ***</font></b>')
+                         'expected yyyy-mm-dd or yyyy-mm-ddThh:mm. ***</font></b>')
 
     def test_16(self):
         # Test task with an invalid threshold date
@@ -125,7 +125,7 @@ class TestHtmlizer(unittest.TestCase):
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
                          '<font style="color:red">*** t:abc Invalid date format, '
-                         'expected YYYY-MM-DD. ***</font></b>')
+                         'expected yyyy-mm-dd or yyyy-mm-ddThh:mm. ***</font></b>')
 
     def test_17(self):
         # Test task with an invalid threshold date
@@ -133,7 +133,7 @@ class TestHtmlizer(unittest.TestCase):
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
                          '<font style="color:red">*** t:2014-04 Invalid date format, '
-                         'expected YYYY-MM-DD. ***</font></b>')
+                         'expected yyyy-mm-dd or yyyy-mm-ddThh:mm. ***</font></b>')
 
     def test_18(self):
         # Test task with an invalid threshold month
@@ -141,7 +141,7 @@ class TestHtmlizer(unittest.TestCase):
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
                          '<font style="color:red">*** t:2014-13-01 Invalid date format, '
-                         'expected YYYY-MM-DD. ***</font></b>')
+                         'expected yyyy-mm-dd or yyyy-mm-ddThh:mm. ***</font></b>')
 
     def test_19(self):
         # Test task with an invalid threshold day
@@ -149,7 +149,7 @@ class TestHtmlizer(unittest.TestCase):
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
                          '<font style="color:red">*** t:2014-04-31 Invalid date format, '
-                         'expected YYYY-MM-DD. ***</font></b>')
+                         'expected yyyy-mm-dd or yyyy-mm-ddThh:mm. ***</font></b>')
 
     def test_20(self):
         # Test task with an URL

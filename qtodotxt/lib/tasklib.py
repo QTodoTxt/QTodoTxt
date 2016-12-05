@@ -56,7 +56,7 @@ class Task(object):
             words = words[1:]
             # parse next word as a completion date
             # required by todotxt but often not here
-            self.completion_date = self._parseDate(words[0]).date()
+            self.completion_date = self._parseDate(words[0])
             if self.completion_date:
                 words = words[1:]
         elif re.search(r'^\([A-Z]\)$', words[0]):
@@ -65,7 +65,7 @@ class Task(object):
 
         dato = self._parseDate(words[0])
         if dato:
-            self.creation_date = dato.date()
+            self.creation_date = dato
             words = words[1:]
 
         self.description = " ".join(words)
@@ -83,12 +83,12 @@ class Task(object):
                 key, val = word.split(":", 1)
                 self.keywords[key] = val
                 if word.startswith('due:'):
-                    self.due = self._parseDate(word[4:])
+                    self.due = self._parseDateTime(word[4:])
                     if not self.due:
                         print("Error parsing due date '{}'".format(word))
                         self.due_error = word[4:]
                 elif word.startswith('t:'):
-                    self.threshold = self._parseDate(word[2:])
+                    self.threshold = self._parseDateTime(word[2:])
                     if not self.threshold:
                         print("Error parsing threshold '{}'".format(word))
                         self.threshold_error = word[2:]
@@ -97,6 +97,12 @@ class Task(object):
                             self.is_future = True
 
     def _parseDate(self, string):
+        try:
+            return datetime.strptime(string, '%Y-%m-%d').date()
+        except ValueError:
+            return None
+
+    def _parseDateTime(self, string):
         try:
             return datetime.strptime(string, '%Y-%m-%d')
         except ValueError:

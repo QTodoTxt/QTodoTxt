@@ -89,8 +89,8 @@ class TaskHtmlizer(object):
 
     def _htmlizeDueDate(self, task, string):
         if not task.due:
-            return ('<b><font style="color:{1!s}">*** {0!s}'
-                    ' Invalid date format, expected YYYY-MM-DD. ***</font></b>'.format(string, self.errorColor))
+            return ('<b><font style="color:{1!s}">*** {0!s} Invalid date format,'
+                    ' expected yyyy-mm-dd or yyyy-mm-ddThh:mm. ***</font></b>'.format(string, self.errorColor))
 
         date_now = datetime.today()
         tdelta = task.due - date_now
@@ -103,8 +103,8 @@ class TaskHtmlizer(object):
 
     def _htmlizeThresholdDate(self, task, string):
         if not task.threshold:
-            return ('<b><font style="color:{1!s}">*** {0!s}'
-                    ' Invalid date format, expected YYYY-MM-DD. ***</font></b>'.format(string, self.errorColor))
+            return ('<b><font style="color:{1!s}">*** {0!s} Invalid date format,'
+                    ' expected yyyy-mm-dd or yyyy-mm-ddThh:mm. ***</font></b>'.format(string, self.errorColor))
 
         date_now = datetime.today()
         tdelta = task.threshold - date_now
