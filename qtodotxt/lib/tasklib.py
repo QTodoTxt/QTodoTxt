@@ -44,6 +44,11 @@ class Task(object):
         self.due_error = ""
         self.threshold = None
         self.keywords = {}
+        self.recMode = None
+        self.recModeCompl = 0   # Original due date mode: Task recurs from original due date
+        self.recModeOrDue = 1   # Completion date mode: Task recurs from completion date
+        self.recIncr = None
+        self.recInterv = None
 
     def parseLine(self, line):
         """
@@ -95,6 +100,28 @@ class Task(object):
                     else:
                         if self.threshold > datetime.today():
                             self.is_future = True
+                elif word.startswith('rec:'):
+                    self._parseRecurrence(word)
+
+    def _parseRecurrence(self, word):
+        # Original due date mode
+        if word[4] == '+':
+            # Test if chracters have the right format
+            if re.match('^[1-9][bdwmy]', word[5:7]):
+                self.recMode = self.recModeOrDue
+                self.recIncr = word[5]
+                self.recInterv = word[6]
+            else:
+                print("Error parsing recurrence '{}'".format(word))
+        # Completion mode
+        else:
+            # Test if chracters have the right format
+            if re.match('^[1-9][bdwmy]', word[4:6]):
+                self.recMode = self.recModeCompl
+                self.recIncr = word[4]
+                self.recInterv = word[5]
+            else:
+                print("Error parsing recurrence '{}'".format(word))
 
     def _parseDate(self, string):
         try:
@@ -114,6 +141,11 @@ class Task(object):
     @property
     def dueString(self):
         return dateString(self.due)
+
+    def updateDateInTask(self, text, newDate):
+        # (A) 2016-12-08 Feed Schrodinger's Cat rec:9w due:2016-11-23
+        text = re.sub('\sdue\:[0-9]{4}\-[0-9]{2}\-[0-9]{2}', ' due:' + str(newDate)[0:10], text)
+        return text
 
     @property
     def thresholdString(self):

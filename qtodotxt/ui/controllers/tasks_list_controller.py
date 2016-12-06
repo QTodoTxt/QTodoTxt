@@ -6,8 +6,10 @@ from qtodotxt.lib import tasklib
 from qtodotxt.lib.task_htmlizer import TaskHtmlizer
 
 from datetime import date
+from _datetime import timedelta
 
 import os
+import re
 
 
 class TasksListController(QtCore.QObject):
@@ -105,6 +107,11 @@ class TasksListController(QtCore.QObject):
 
     def completeTask(self, task):
         if not task.is_complete:
+            # Check if task is recurrent
+            # TODO: Many variables checked here - does it work smarter, too?
+            if task.recIncr is not None and task.recInterv is not None \
+                    and task.recMode is not None and task.due is not None:
+                self._recurTask(task)
             task.setCompleted()
         else:
             task.setPending()
@@ -113,7 +120,53 @@ class TasksListController(QtCore.QObject):
         else:
             self.taskModified.emit(task)
 
+    def _recurTask(self, task):
+        if task.recInterv == 'd':
+            if task.recMode == task.recModeOrDue:
+                next_due_date = task.due + timedelta(days=int(task.recIncr))
+            else:
+                next_due_date = date.today() + timedelta(days=int(task.recIncr))
+        elif task.recInterv == 'b':
+            if task.recMode == task.recModeOrDue:
+                next_due_date = self._incrWorkDays(task.due, int(task.recIncr))
+            else:
+                next_due_date = self._incrWorkDays(date.today(), int(task.recIncr))
+        elif task.recInterv == 'w':
+            if task.recMode == task.recModeOrDue:
+                next_due_date = task.due + timedelta(weeks=int(task.recIncr))
+            else:
+                next_due_date = date.today() + timedelta(weeks=int(task.recIncr))
+        elif task.recInterv == 'm':
+            if task.recMode == task.recModeOrDue:
+                next_due_date = task.due + timedelta(weeks=int(task.recIncr) * 4)     # 4 weeks in a month
+            else:
+                next_due_date = date.today() + timedelta(weeks=int(task.recIncr) * 4)     # 4 weeks in a month
+        elif task.recInterv == 'y':
+            if task.recMode == task.recModeOrDue:
+                next_due_date = task.due + timedelta(weeks=int(task.recIncr) * 52)    # 52 weeks in a year
+            else:
+                next_due_date = date.today() + timedelta(weeks=int(task.recIncr) * 52)    # 52 weeks in a year
+        else:
+            # Test already made during line parsing - shouldn't be a problem here
+            None
+        # Set new due date in old task text
+        rec_text = task.updateDateInTask(task.text, next_due_date)
+        # create a new task duplicate
+        return self.createTask(rec_text)
+
+    def _incrWorkDays(self, startDate, daysToIncrement):
+        while (daysToIncrement > 0):
+            if (startDate.weekday() == 4):    # Friday
+                startDate = startDate + timedelta(days=3)
+            elif (startDate.weekday() == 5):    # Saturday
+                startDate = startDate + timedelta(days=2)
+            else:
+                startDate = startDate + timedelta(days=1)
+            daysToIncrement -= 1
+        return startDate
+
     def _completeSelectedTasks(self):
+
         tasks = self.view.getSelectedTasks()
         if tasks:
             confirm = int(QtCore.QSettings().value("confirm_complete", 1))
@@ -176,6 +229,17 @@ class TasksListController(QtCore.QObject):
     def _sortTasks(self, tasks):
         tasks.sort(reverse=True)
 
+    def _removeCreationDate(self, text):
+        # Find the date that has no keyword in advance just whitespaces
+        # TODO: This removes the priority of recurrent tasks
+        match = re.match('^(\([A-Z]\)\s)?[0-9]{4}\-[0-9]{2}\-[0-9]{2}\s(.*)', text)
+        if match:
+            if match.group(1):
+                text = match.group(1) + match.group(2)
+            else:
+                text = match.group(2)
+        return text
+
     def _addCreationDate(self, text):
         date_string = date.today().strftime('%Y-%m-%d')
         if text[:3] in self._task_editor_service._priorities:
@@ -184,16 +248,23 @@ class TasksListController(QtCore.QObject):
             text = '%s %s' % (date_string, text)
         return text
 
-    def createTask(self):
-        (text, ok) = self._task_editor_service.createTask()
+    def createTask(self, arg_text=None):
+        if not arg_text:
+            (text, ok) = self._task_editor_service.createTask()
+        else:
+            text = arg_text
+            ok = True
         if ok and text:
             if int(QtCore.QSettings().value("add_created_date", 0)):
+                # TODO: Remove existing creation date first
+                text = self._removeCreationDate(text)
                 text = self._addCreationDate(text)
             task = tasklib.Task(text)
             self.view.addTask(task)
             self.view.clearSelection()
             self.view.selectTask(task)
             self.taskCreated.emit(task)
+        return task
 
     def createTaskOnTemplate(self):
         tasks = self.view.getSelectedTasks()

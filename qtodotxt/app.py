@@ -10,9 +10,9 @@ from PyQt5 import QtCore, QtGui
 from PyQt5 import QtWidgets
 # import resource for darkstyle
 # taken from https://github.com/ColinDuquesnoy/QDarkStyleSheet
-import qtodotxt.ui.resources.pyqt5_style_rc  # noqa: F401
-import qtodotxt.ui.resources.qTodoTxt_style_rc  # noqa: F401
-import qtodotxt.ui.resources.qTodoTxt_dark_style_rc  # noqa: F401
+import qtodotxt.ui.pyqt5_style_rc  # noqa: F401
+import qtodotxt.ui.qTodoTxt_style_rc  # noqa: F401
+import qtodotxt.ui.qTodoTxt_dark_style_rc  # noqa: F401
 
 from qtodotxt.ui.controllers.main_controller import MainController
 from qtodotxt.ui.dialogs.misc_dialogs import Dialogs

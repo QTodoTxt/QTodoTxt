@@ -182,3 +182,48 @@ class TestTasks(unittest.TestCase):
         self.assertEqual(task.creation_date, date(2016, 3, 15))
         task = Task('x 2017-08-12 do something')
         self.assertFalse(task.creation_date)
+
+    # Recurring tasks
+    # Negative tests
+    def test_recurring_task_wrong_interval(self):
+        task = Task('(B) do something rec:2g')
+        self.assertIsNone(task.recMode)
+        self.assertIsNone(task.recIncr)
+        self.assertIsNone(task.recInterv)
+
+    def test_recurring_task_wrong_increment(self):
+        task = Task('(B) do something rec:0d')
+        self.assertIsNone(task.recMode)
+        self.assertIsNone(task.recIncr)
+        self.assertIsNone(task.recInterv)
+
+    def test_recurring_task_wrong_keyword(self):
+        task = Task('(B) do something rect:5d')
+        self.assertIsNone(task.recMode)
+        self.assertIsNone(task.recIncr)
+        self.assertIsNone(task.recInterv)
+
+    # Positive tests
+    def test_recurring_task_input_days(self):
+        task = Task('(C) do something due:2016-09-05 rec:5d')
+        self.assertTrue(task.recMode == task.recModeCompl)
+        self.assertTrue(task.recIncr == str(5))
+        self.assertTrue(task.recInterv == 'd')
+
+    def test_recurring_task_input_weeks(self):
+        task = Task('(C) do something due:2016-09-05 rec:+7w')
+        self.assertTrue(task.recMode == task.recModeOrDue)
+        self.assertTrue(task.recIncr == str(7))
+        self.assertTrue(task.recInterv == 'w')
+
+    def test_recurring_task_input_months(self):
+        task = Task('(C) do something due:2016-09-05 rec:3m')
+        self.assertTrue(task.recMode == task.recModeCompl)
+        self.assertTrue(task.recIncr == str(3))
+        self.assertTrue(task.recInterv == 'm')
+
+    def test_recurring_task_input_years(self):
+        task = Task('(C) do something due:2016-09-05 rec:+1y')
+        self.assertTrue(task.recMode == task.recModeOrDue)
+        self.assertTrue(task.recIncr == str(1))
+        self.assertTrue(task.recInterv == 'y')

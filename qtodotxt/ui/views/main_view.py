@@ -34,7 +34,7 @@ class MainView(QtWidgets.QMainWindow):
         self.tasks_view = TasksView(self.splitter)
 
         colorSchemName = QtCore.QSettings().value("color_schem", "")
-        tFile = "css/{}.css".format(colorSchemName)
+        tFile = os.path.join("css", "{}.css".format(colorSchemName))
         cssPath = getResourcePath(tFile)
         if os.path.isfile(cssPath):
             css = open(cssPath, 'r', encoding='utf-8').read()
