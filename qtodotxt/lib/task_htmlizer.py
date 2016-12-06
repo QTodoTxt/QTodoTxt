@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import datetime
 import re
 from PyQt5 import QtCore
 
@@ -89,28 +89,28 @@ class TaskHtmlizer(object):
 
     def _htmlizeDueDate(self, task, string):
         if not task.due:
-            return ('<b><font style="color:{1!s}">*** {0!s}'
-                    ' Invalid date format, expected YYYY-MM-DD. ***</font></b>'.format(string, self.errorColor))
+            return ('<b><font style="color:{1!s}">*** {0!s} Invalid date format,'
+                    ' expected yyyy-mm-dd or yyyy-mm-ddThh:mm. ***</font></b>'.format(string, self.errorColor))
 
-        date_now = date.today()
+        date_now = datetime.today()
         tdelta = task.due - date_now
         if tdelta.days > 7:
-            return '<b>due:{}</b>'.format(task.due)
+            return '<b>due:{}</b>'.format(task.dueString)
         elif tdelta.days > 0:
-            return '<b><font style="color:{1!s}">due:{0!s}</font></b>'.format(task.due, self.priorityDuecolors[1])
+            return '<b><font style="color:{1!s}">due:{0!s}</font></b>'.format(task.dueString, self.priorityDuecolors[1])
         else:
-            return '<b><font style="color:{1!s}">due:{0!s}</font></b>'.format(task.due, self.priorityDuecolors[0])
+            return '<b><font style="color:{1!s}">due:{0!s}</font></b>'.format(task.dueString, self.priorityDuecolors[0])
 
     def _htmlizeThresholdDate(self, task, string):
         if not task.threshold:
-            return ('<b><font style="color:{1!s}">*** {0!s}'
-                    ' Invalid date format, expected YYYY-MM-DD. ***</font></b>'.format(string, self.errorColor))
+            return ('<b><font style="color:{1!s}">*** {0!s} Invalid date format,'
+                    ' expected yyyy-mm-dd or yyyy-mm-ddThh:mm. ***</font></b>'.format(string, self.errorColor))
 
-        date_now = date.today()
+        date_now = datetime.today()
         tdelta = task.threshold - date_now
         if tdelta.days > 0:
             return '<i><font style="color:{1!s}">t:{0!s}</font></i>'.\
-                format(task.threshold, self.priorityThresholdColors[1])
+                format(task.thresholdString, self.priorityThresholdColors[1])
         else:
             return '<font style="color:{1!s}">t:{0!s}</font>'.\
-                format(task.threshold, self.priorityThresholdColors[0])
+                format(task.thresholdString, self.priorityThresholdColors[0])

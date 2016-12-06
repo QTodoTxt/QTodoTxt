@@ -1,5 +1,5 @@
 import re
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
 
 class BaseFilter(object):
@@ -146,7 +146,7 @@ class DueTodayFilter(BaseFilter):
             return False
         else:
             self.due_date = task.due
-            today = datetime.today().date()
+            today = datetime.combine(date.today(), datetime.min.time())
             return self.due_date == today
 
     def __str__(self):
@@ -166,7 +166,7 @@ class DueTomorrowFilter(BaseFilter):
             return False
         else:
             due_date = task.due
-            today = datetime.today().date()
+            today = datetime.combine(date.today(), datetime.min.time())
             return today < due_date <= today + timedelta(days=1)
 
     def __str__(self):
@@ -186,7 +186,7 @@ class DueThisWeekFilter(BaseFilter):
             return False
         else:
             due_date = task.due
-            today = datetime.today().date()
+            today = datetime.combine(date.today(), datetime.min.time())
             return today <= due_date <= today + timedelta((6 - today.weekday()) % 7)
 
     def __str__(self):
@@ -206,7 +206,7 @@ class DueThisMonthFilter(BaseFilter):
             return False
         else:
             due_date = task.due
-            today = datetime.today().date()
+            today = datetime.combine(date.today(), datetime.min.time())
             if today.month == 12:
                 last_day_of_month = today.replace(day=31)
             else:
@@ -233,7 +233,7 @@ class DueOverdueFilter(BaseFilter):
                 return False
             else:
                 due_date = task.due
-                today = datetime.today().date()
+                today = datetime.combine(date.today(), datetime.min.time())
                 return due_date < today
 
     def __str__(self):
