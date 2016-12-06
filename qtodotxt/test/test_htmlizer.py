@@ -88,70 +88,150 @@ class TestHtmlizer(unittest.TestCase):
                          '<tt>(D)</tt>&nbsp;this is my task')
 
     def test_12(self):
+        # Test task with a valid due date
+        task = tasklib.Task('this is my task due:2014-04-01')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
+                         '<font style="color:red">due:2014-04-01</font></b>')
+
+    def test_13(self):
+        # Test task with a valid due date and time
+        task = tasklib.Task('this is my task due:2014-04-01T12:34')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
+                         '<font style="color:red">due:2014-04-01 12:34</font></b>')
+
+    def test_14(self):
         # Test task with an invalid due date
         task = tasklib.Task('this is my task due:abc')
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
                          '<font style="color:red">*** due:abc Invalid date format, '
-                         'expected YYYY-MM-DD. ***</font></b>')
+                         'expected yyyy-mm-dd or yyyy-mm-ddThh:mm. ***</font></b>')
 
-    def test_13(self):
+    def test_15(self):
         # Test task with an invalid due date
         task = tasklib.Task('this is my task due:2014-04')
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
                          '<font style="color:red">*** due:2014-04 Invalid date format, '
-                         'expected YYYY-MM-DD. ***</font></b>')
+                         'expected yyyy-mm-dd or yyyy-mm-ddThh:mm. ***</font></b>')
 
-    def test_14(self):
+    def test_16(self):
         # Test task with an invalid due month
         task = tasklib.Task('this is my task due:2014-13-01')
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
                          '<font style="color:red">*** due:2014-13-01 Invalid date format, '
-                         'expected YYYY-MM-DD. ***</font></b>')
+                         'expected yyyy-mm-dd or yyyy-mm-ddThh:mm. ***</font></b>')
 
-    def test_15(self):
+    def test_17(self):
         # Test task with an invalid due day
         task = tasklib.Task('this is my task due:2014-04-31')
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
                          '<font style="color:red">*** due:2014-04-31 Invalid date format, '
-                         'expected YYYY-MM-DD. ***</font></b>')
+                         'expected yyyy-mm-dd or yyyy-mm-ddThh:mm. ***</font></b>')
 
-    def test_16(self):
+    def test_18(self):
+        # Test task with space in due time instead of T. This is valid, but gives an unexpected result
+        task = tasklib.Task('this is my task due:2014-04-01 12:34')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
+                         '<font style="color:red">due:2014-04-01</font></b> 12:34')
+
+    def test_19(self):
+        # Test task with a valid due time corner case
+        task = tasklib.Task('this is my task due:2014-04-01T00:00')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
+                         '<font style="color:red">due:2014-04-01</font></b>')
+
+    def test_20(self):
+        # Test task with a valid due time corner case
+        task = tasklib.Task('this is my task due:2014-04-01T00:01')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
+                         '<font style="color:red">due:2014-04-01 00:01</font></b>')
+
+    def test_21(self):
+        # Test task with a valid due time corner case
+        task = tasklib.Task('this is my task due:2014-04-01T23:59')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
+                         '<font style="color:red">due:2014-04-01 23:59</font></b>')
+
+    def test_22(self):
+        # Test task with an invalid due time corner case
+        task = tasklib.Task('this is my task due:2014-04-01T24:00')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
+                         '<font style="color:red">*** due:2014-04-01T24:00 Invalid date format, '
+                         'expected yyyy-mm-dd or yyyy-mm-ddThh:mm. ***</font></b>')
+
+    def test_23(self):
+        # Test task with a valid threshold date
+        task = tasklib.Task('this is my task t:2014-04-01')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task '
+                         '<font style="color:orange">t:2014-04-01</font>')
+
+    def test_24(self):
+        # Test task with a valid threshold date and time
+        task = tasklib.Task('this is my task t:2014-04-01T12:34')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task '
+                         '<font style="color:orange">t:2014-04-01 12:34</font>')
+
+    def test_25(self):
         # Test task with an invalid threshold date
         task = tasklib.Task('this is my task t:abc')
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
                          '<font style="color:red">*** t:abc Invalid date format, '
-                         'expected YYYY-MM-DD. ***</font></b>')
+                         'expected yyyy-mm-dd or yyyy-mm-ddThh:mm. ***</font></b>')
 
-    def test_17(self):
+    def test_26(self):
         # Test task with an invalid threshold date
         task = tasklib.Task('this is my task t:2014-04')
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
                          '<font style="color:red">*** t:2014-04 Invalid date format, '
-                         'expected YYYY-MM-DD. ***</font></b>')
+                         'expected yyyy-mm-dd or yyyy-mm-ddThh:mm. ***</font></b>')
 
-    def test_18(self):
+    def test_27(self):
         # Test task with an invalid threshold month
         task = tasklib.Task('this is my task t:2014-13-01')
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
                          '<font style="color:red">*** t:2014-13-01 Invalid date format, '
-                         'expected YYYY-MM-DD. ***</font></b>')
+                         'expected yyyy-mm-dd or yyyy-mm-ddThh:mm. ***</font></b>')
 
-    def test_19(self):
+    def test_28(self):
         # Test task with an invalid threshold day
         task = tasklib.Task('this is my task t:2014-04-31')
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
                          '<font style="color:red">*** t:2014-04-31 Invalid date format, '
-                         'expected YYYY-MM-DD. ***</font></b>')
+                         'expected yyyy-mm-dd or yyyy-mm-ddThh:mm. ***</font></b>')
 
-    def test_20(self):
+    def test_29(self):
+        # Test task with an invalid threshold hour
+        task = tasklib.Task('this is my task t:2014-04-31T99:34')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
+                         '<font style="color:red">*** t:2014-04-31T99:34 Invalid date format, '
+                         'expected yyyy-mm-dd or yyyy-mm-ddThh:mm. ***</font></b>')
+
+    def test_30(self):
+        # Test task with an invalid threshold minute
+        task = tasklib.Task('this is my task t:2014-04-31T12:99')
+        self.assertEqual(self.htmlizer.task2html(task),
+                         '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;this is my task <b>'
+                         '<font style="color:red">*** t:2014-04-31T12:99 Invalid date format, '
+                         'expected yyyy-mm-dd or yyyy-mm-ddThh:mm. ***</font></b>')
+
+    def test_31(self):
         # Test task with an URL
         task = tasklib.Task('Download https://github.com/mNantern/QTodoTxt/archive/master.zip and extract')
         self.assertEqual(self.htmlizer.task2html(task),
@@ -159,7 +239,7 @@ class TestHtmlizer(unittest.TestCase):
                          '<a style="color:none;" href="https://github.com/mNantern/QTodoTxt/archive/master.zip">'
                          'github.com/mNantern/QTodoTxt/archive/master.zip</a> and extract')
 
-    def test_21(self):
+    def test_32(self):
         # Test task with solely an URL
         task = tasklib.Task('https://github.com/mNantern/QTodoTxt/archive/master.zip')
         self.assertEqual(self.htmlizer.task2html(task),
@@ -167,7 +247,7 @@ class TestHtmlizer(unittest.TestCase):
                          '<a style="color:none;" href="https://github.com/mNantern/QTodoTxt/archive/master.zip">'
                          'github.com/mNantern/QTodoTxt/archive/master.zip</a>')
 
-    def test_22(self):
+    def test_33(self):
         # Test task with an URL in context
         task = tasklib.Task('Test @https://github.com/mNantern/QTodoTxt/')
         self.assertEqual(self.htmlizer.task2html(task),
@@ -175,7 +255,7 @@ class TestHtmlizer(unittest.TestCase):
                          '@<a style="color:green;" href="https://github.com/mNantern/QTodoTxt/">'
                          'github.com/mNantern/QTodoTxt/</a></font>')
 
-    def test_23(self):
+    def test_34(self):
         # Test task with an URL in project
         task = tasklib.Task('Test +https://github.com/mNantern/QTodoTxt/')
         self.assertEqual(self.htmlizer.task2html(task),
