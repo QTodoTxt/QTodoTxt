@@ -11,49 +11,51 @@
     <message>
         <location filename="main_controller.py" line="76"/>
         <source>Show Future &amp;Tasks</source>
-        <translation>Zeige zukünftige Aufgaben</translation>
+        <translation>Zeige Zukünftige Aufgaben</translation>
     </message>
     <message>
         <location filename="main_controller.py" line="82"/>
         <source>Show &amp;Completed Tasks</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Erledigte Aufgaben</translation>
     </message>
     <message>
         <location filename="main_controller.py" line="88"/>
         <source>&amp;Archive Completed Tasks</source>
-        <translation type="unfinished"></translation>
+        <translation>Archiviere Erledigte Aufgaben</translation>
     </message>
     <message>
         <location filename="main_controller.py" line="93"/>
         <source>Show Tool&amp;Bar</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Werkzeugleiste</translation>
     </message>
     <message>
         <location filename="main_controller.py" line="98"/>
         <source>Show Search Bar</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Suchleiste</translation>
     </message>
     <message>
         <location filename="main_controller.py" line="325"/>
         <source>Unsaved changes...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ungespeicherte Änderungen...</translation>
     </message>
     <message>
         <location filename="main_controller.py" line="399"/>
         <source>Revert to saved file (and lose unsaved changes)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Änderungen verwerfen und zu gespeicherter Datei zurück kehren?</translation>
     </message>
     <message>
         <location filename="main_controller.py" line="413"/>
         <source>Current file '{}' is not available.
 Exception: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktuelle Datei '{}' ist nicht verfügbar.
+Fehler: {}</translation>
     </message>
     <message>
         <location filename="main_controller.py" line="416"/>
         <source>Error opening file: {}.
  Exception:{}</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler beim Öffnen der Datei: {}.
+Fehler:{}</translation>
     </message>
 </context>
 <context>
@@ -61,57 +63,57 @@ Exception: {}</source>
     <message>
         <location filename="menu_controller.py" line="26"/>
         <source>&amp;File</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei</translation>
     </message>
     <message>
         <location filename="menu_controller.py" line="67"/>
         <source>&amp;Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Bearbeiten</translation>
     </message>
     <message>
         <location filename="menu_controller.py" line="82"/>
         <source>&amp;View</source>
-        <translation type="unfinished"></translation>
+        <translation>Ansicht</translation>
     </message>
     <message>
         <location filename="menu_controller.py" line="91"/>
         <source>&amp;Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Hilfe</translation>
     </message>
     <message>
         <location filename="menu_controller.py" line="103"/>
         <source>&amp;Shortcuts list</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste der Tastaturkürzel</translation>
     </message>
     <message>
         <location filename="menu_controller.py" line="119"/>
         <source>&amp;New</source>
-        <translation type="unfinished"></translation>
+        <translation>Neu</translation>
     </message>
     <message>
         <location filename="menu_controller.py" line="128"/>
         <source>&amp;Open</source>
-        <translation type="unfinished"></translation>
+        <translation>Öffnen</translation>
     </message>
     <message>
         <location filename="menu_controller.py" line="136"/>
         <source>&amp;Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Speichern</translation>
     </message>
     <message>
         <location filename="menu_controller.py" line="144"/>
         <source>&amp;Revert</source>
-        <translation type="unfinished"></translation>
+        <translation>Zurück</translation>
     </message>
     <message>
         <location filename="menu_controller.py" line="151"/>
         <source>&amp;Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen</translation>
     </message>
     <message>
         <location filename="menu_controller.py" line="159"/>
         <source>E&amp;xit</source>
-        <translation type="unfinished"></translation>
+        <translation>Beenden</translation>
     </message>
 </context>
 <context>
@@ -119,47 +121,47 @@ Exception: {}</source>
     <message>
         <location filename="settingsui.py" line="100"/>
         <source>Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen</translation>
     </message>
     <message>
         <location filename="settingsui.py" line="101"/>
         <source>QTodoTxt Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>QTodoTxt Einstellungen</translation>
     </message>
     <message>
         <location filename="settingsui.py" line="102"/>
         <source>Autosave</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatisches Speichern</translation>
     </message>
     <message>
         <location filename="settingsui.py" line="103"/>
         <source>Single instance (need restart)</source>
-        <translation type="unfinished"></translation>
+        <translation>Nur eine Insatz erlauben (benötigt Neustart)</translation>
     </message>
     <message>
         <location filename="settingsui.py" line="104"/>
         <source>AutoArchive</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatische Archivierung</translation>
     </message>
     <message>
         <location filename="settingsui.py" line="105"/>
         <source>Add created date</source>
-        <translation type="unfinished"></translation>
+        <translation>Erstellungsdatum hinzu fügen</translation>
     </message>
     <message>
         <location filename="settingsui.py" line="106"/>
         <source>Ask for confirmation before task completion</source>
-        <translation type="unfinished"></translation>
+        <translation>Bestätigen vor dem Abschließen der Aufgabe</translation>
     </message>
     <message>
         <location filename="settingsui.py" line="107"/>
         <source>Lowest task priority</source>
-        <translation type="unfinished"></translation>
+        <translation>Niedrigste Task Priorität</translation>
     </message>
     <message>
         <location filename="settingsui.py" line="108"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Schließen</translation>
     </message>
     <message>
         <location filename="settingsui.py" line="110"/>
