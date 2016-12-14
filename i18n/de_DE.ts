@@ -270,7 +270,7 @@ Fehler:{}</translation>
     <message>
         <location filename="tasks_list_controller.py" line="120"/>
         <source>Toggle Completeness of</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">This type of text combination is not possible in german. It just sounds weird. There need to be two text blocks for the whole sentence.</translation>
     </message>
     <message>
         <location filename="tasks_list_controller.py" line="127"/>
@@ -285,7 +285,7 @@ Fehler:{}</translation>
     <message>
         <location filename="tasks_list_controller.py" line="136"/>
         <source>&lt;b&gt;%s the following tasks?&lt;/b&gt;&lt;ul&gt;</source>
-        <translation>&lt;b&gt;%s die Folgenden Aufgaben?&lt;/b&gt;&lt;ul&gt;</translation>
+        <translation>&lt;b&gt;%s die folgenden Aufgaben?&lt;/b&gt;&lt;ul&gt;</translation>
     </message>
     <message>
         <location filename="tasks_list_controller.py" line="140"/>
