@@ -156,7 +156,7 @@ Fehler:{}</translation>
     <message>
         <location filename="settingsui.py" line="107"/>
         <source>Lowest task priority</source>
-        <translation>Niedrigste Task Priorität</translation>
+        <translation>Niedrigste Aufgaben Priorität</translation>
     </message>
     <message>
         <location filename="settingsui.py" line="108"/>
@@ -166,32 +166,32 @@ Fehler:{}</translation>
     <message>
         <location filename="settingsui.py" line="110"/>
         <source>Show Delete action (Requires restart)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ermögliche Löschen (erfordert Neustart)</translation>
     </message>
     <message>
         <location filename="settingsui.py" line="111"/>
         <source>Enable system tray (Requires restart)</source>
-        <translation type="unfinished"></translation>
+        <translation>Taskleisten Symbol aktivieren (erfordert Neustart)</translation>
     </message>
     <message>
         <location filename="settingsui.py" line="112"/>
         <source>Show/Hide on Tray Click</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeigen/Verstecken beim Klick auf Taskleisten Symbol</translation>
     </message>
     <message>
         <location filename="settingsui.py" line="113"/>
         <source>Hide on Startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimiert starten</translation>
     </message>
     <message>
         <location filename="settingsui.py" line="114"/>
         <source>Close to Tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimieren auf die Taskleiste</translation>
     </message>
     <message>
         <location filename="settingsui.py" line="115"/>
         <source>Color schem (Requires restart):</source>
-        <translation type="unfinished"></translation>
+        <translation>Farbschema (erfordert Neustart):</translation>
     </message>
 </context>
 <context>
@@ -199,12 +199,12 @@ Fehler:{}</translation>
     <message>
         <location filename="shortcuts.py" line="24"/>
         <source>Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Kommentar</translation>
     </message>
     <message>
         <location filename="shortcuts.py" line="25"/>
         <source>Shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Tastenkürzel</translation>
     </message>
 </context>
 <context>
@@ -212,17 +212,17 @@ Fehler:{}</translation>
     <message>
         <location filename="shortcutsui.py" line="47"/>
         <source>Shortcuts</source>
-        <translation type="unfinished"></translation>
+        <translation>Tastenkürzel</translation>
     </message>
     <message>
         <location filename="shortcutsui.py" line="48"/>
         <source>Shortcuts list</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste der Tastenkürzel</translation>
     </message>
     <message>
         <location filename="shortcutsui.py" line="49"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Schließen</translation>
     </message>
 </context>
 <context>
@@ -230,42 +230,42 @@ Fehler:{}</translation>
     <message>
         <location filename="tasks_list_controller.py" line="42"/>
         <source>&amp;Edit Task</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Aufgabe Bearbeiten</translation>
     </message>
     <message>
         <location filename="tasks_list_controller.py" line="51"/>
         <source>&amp;Create New Task</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Neue Aufgabe Erstellen</translation>
     </message>
     <message>
         <location filename="tasks_list_controller.py" line="59"/>
         <source>&amp;Create a new Task based on a template</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Neue Aufgabe basierend auf einem Template erstellen</translation>
     </message>
     <message>
         <location filename="tasks_list_controller.py" line="67"/>
         <source>Copy Selected Tasks</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgewählte Aufgaben kopieren</translation>
     </message>
     <message>
         <location filename="tasks_list_controller.py" line="75"/>
         <source>&amp;Delete Selected Tasks</source>
-        <translation type="unfinished"></translation>
+        <translation>Lösche Ausgewählte Aufgaben</translation>
     </message>
     <message>
         <location filename="tasks_list_controller.py" line="83"/>
         <source>C&amp;omplete Selected Tasks</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgewählte Aufgaben Abschließen</translation>
     </message>
     <message>
         <location filename="tasks_list_controller.py" line="91"/>
         <source>Decrease Priority</source>
-        <translation type="unfinished"></translation>
+        <translation>Priorität Verringern</translation>
     </message>
     <message>
         <location filename="tasks_list_controller.py" line="99"/>
         <source>Increase Priority</source>
-        <translation type="unfinished"></translation>
+        <translation>Priorität Erhöhen</translation>
     </message>
     <message>
         <location filename="tasks_list_controller.py" line="120"/>
@@ -275,22 +275,22 @@ Fehler:{}</translation>
     <message>
         <location filename="tasks_list_controller.py" line="127"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Löschen</translation>
     </message>
     <message>
         <location filename="tasks_list_controller.py" line="134"/>
         <source>&lt;b&gt;%s the following task?&lt;/b&gt;&lt;ul&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%s die folgende Aufgabe?&lt;/b&gt;&lt;ul&gt;</translation>
     </message>
     <message>
         <location filename="tasks_list_controller.py" line="136"/>
         <source>&lt;b&gt;%s the following tasks?&lt;/b&gt;&lt;ul&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%s die Folgenden Aufgaben?&lt;/b&gt;&lt;ul&gt;</translation>
     </message>
     <message>
         <location filename="tasks_list_controller.py" line="140"/>
         <source>Confirm</source>
-        <translation type="unfinished"></translation>
+        <translation>Bestätigen</translation>
     </message>
 </context>
 <context>
@@ -298,17 +298,17 @@ Fehler:{}</translation>
     <message>
         <location filename="app.py" line="42"/>
         <source>Create New Task</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Aufgabe erstellen</translation>
     </message>
     <message>
         <location filename="app.py" line="45"/>
         <source>Show/Hide Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Fenster Zeigen/Verstecken</translation>
     </message>
     <message>
         <location filename="app.py" line="47"/>
         <source>Exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Beenden</translation>
     </message>
 </context>
 </TS>
