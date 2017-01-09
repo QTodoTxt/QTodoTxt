@@ -239,7 +239,7 @@ class TasksListController(QtCore.QObject):
 
     def _addCreationDate(self, text):
         date_string = date.today().strftime('%Y-%m-%d')
-        if text[:3] in self._task_editor_service._priorities:
+        if text[:3] in self._task_editor_service.priorities:
             text = '%s %s %s' % (text[:3], date_string, text[4:])
         else:
             text = '%s %s' % (date_string, text)

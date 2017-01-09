@@ -13,6 +13,7 @@ from qtodotxt.ui.controllers.tasks_list_controller import TasksListController
 from qtodotxt.ui.controllers.filters_tree_controller import FiltersTreeController
 from qtodotxt.lib.filters import SimpleTextFilter, FutureFilter, IncompleteTasksFilter, CompleteTasksFilter
 from qtodotxt.ui.controllers.menu_controller import MenuController
+from qtodotxt.ui.dialogs.taskeditor import TaskEditor
 
 
 logger = logging.getLogger(__name__)
@@ -26,7 +27,7 @@ class MainController(QtCore.QObject):
 
     _show_toolbar = QtCore.pyqtSignal(int)
 
-    def __init__(self, view, dialogs, task_editor_service, args):
+    def __init__(self, view, dialogs, args):
         super(MainController, self).__init__()
         self._args = args
         self.view = view
@@ -36,10 +37,10 @@ class MainController(QtCore.QObject):
         self._settings = QtCore.QSettings()
         self._show_completed = True
         self._dialogs = dialogs
-        self._task_editor_service = task_editor_service
-        self._initControllers()
         self._file = File()
         self._fileObserver = FileObserver(self, self._file)
+        self._task_editor_service = TaskEditor(self.view, self._file)
+        self._initControllers()
         self._is_modified = False
         self._setIsModified(False)
         self._fileObserver.fileChangetSig.connect(self.openFileByName)
@@ -315,7 +316,6 @@ class MainController(QtCore.QObject):
 
     def _onFileUpdated(self):
         self._filters_tree_controller.showFilters(self._file, self._show_completed)
-        self._task_editor_service.updateValues(self._file)
         self._setIsModified(True)
         self.auto_save()
 
@@ -434,7 +434,6 @@ class MainController(QtCore.QObject):
     def _loadFileToUI(self):
         self._setIsModified(False)
         self._filters_tree_controller.showFilters(self._file, self._show_completed)
-        self._task_editor_service.updateValues(self._file)
 
     def _updateView(self):
         wgeo = self._settings.value("main_window_geometry", None)
