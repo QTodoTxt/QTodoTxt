@@ -16,7 +16,7 @@ os.chdir(os.path.join('..', '..'))
 sys.path.append(os.getcwd())
 
 # Data files
-icon = os.path.join(os.path.abspath(os.path.dirname(__file__)),
+icon = os.path.join(os.getcwd(),
                     'qtodotxt', 'ui', 'resources', 'qtodotxt.ico')
 
 def collect_resources(resources_root,resources):					
@@ -51,7 +51,7 @@ collect_resources(resources_root,css)
 # ======================================
 # Setup parameters
 setup(name='qtodotxt',
-      version='1.6.1',
+      version='1.7',
       author='QTT Development Team',
       author_email='qtodotxt@googlegroups.com',
       url='https://github.com/QTodoTxt/QTodoTxt',
@@ -62,9 +62,9 @@ setup(name='qtodotxt',
               ('resources', resources), 
 # You need to adapt file paths below to fit your development settins/environment
 # File paths are for WinPython-32bit-3.4.4.2Qt5 being installed in folder d:\Development\Python\QTodoTxt\WinPython-32bit-3.4.4.2Qt5
-			  ('platforms',[r'd:\Development\Python\QTodoTxt\WinPython-32bit-3.4.4.2Qt5\python-3.4.4\Lib\site-packages\PyQt5\plugins\platforms\qwindows.dll']),
-			  ('platforms',[r'd:\Development\Python\QTodoTxt\WinPython-32bit-3.4.4.2Qt5\python-3.4.4\Lib\site-packages\PyQt5\plugins\platforms\qoffscreen.dll']),
-			  ('platforms',[r'd:\Development\Python\QTodoTxt\WinPython-32bit-3.4.4.2Qt5\python-3.4.4\Lib\site-packages\PyQt5\plugins\platforms\qminimal.dll']),
+			  ('platforms',[r'c:\Qt\Qt5.5.1\5.5\mingw492_32\plugins\platforms\qwindows.dll']),
+			  ('platforms',[r'c:\Qt\Qt5.5.1\5.5\mingw492_32\plugins\platforms\qoffscreen.dll']),
+			  ('platforms',[r'c:\Qt\Qt5.5.1\5.5\mingw492_32\plugins\platforms\qminimal.dll']),
 			  ('resources/css', css)
 		  ],
 
