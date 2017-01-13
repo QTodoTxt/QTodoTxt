@@ -1,3 +1,9 @@
+import os
+from datetime import date
+from datetime import date
+from datetime import timedelta
+import re
+
 from PyQt5 import QtCore
 from PyQt5 import QtGui
 from PyQt5 import QtWidgets
@@ -5,12 +11,10 @@ from PyQt5 import QtWidgets
 from qtodotxt.lib import tasklib
 from qtodotxt.lib.task_htmlizer import TaskHtmlizer
 
-from datetime import date
-from _datetime import timedelta
 
-import os
-import re
 from qtodotxt.lib.tasklib import recursiveMode
+from qtodotxt.ui.dialogs.taskeditor import TaskEditor
+from qtodotxt.ui.dialogs.taskeditor_lineedit import TaskEditorLineEdit
 
 
 class TasksListController(QtCore.QObject):
@@ -20,16 +24,18 @@ class TasksListController(QtCore.QObject):
     taskArchived = QtCore.pyqtSignal(tasklib.Task)
     taskDeleted = QtCore.pyqtSignal(tasklib.Task)
 
-    def __init__(self, view, task_editor_service):
+    def __init__(self, view, mfile):
         QtCore.QObject.__init__(self)
         self.style = ":/white_icons"
         if str(QtCore.QSettings().value("color_schem", "")).find("dark") >= 0:
             self.style = ":/dark_icons"
+        self._settings = QtCore.QSettings()
         self.view = view
-        self._task_editor_service = task_editor_service
         self._task_htmlizer = TaskHtmlizer()
+        self._task_editor_service = TaskEditor(self.view, mfile)
+        self.view.setEditor(TaskEditorLineEdit, [mfile])
         self.view.taskActivated.connect(self.editTask)
-        self.view.itemSelectionChanged.connect(self.updateActions)
+        self.view.currentTaskChanged.connect(self.updateActions)
         self._initCreateTaskAction()
         self._initEditTaskAction()
         self._initCopySelectedTasksAction()
@@ -105,6 +111,10 @@ class TasksListController(QtCore.QObject):
         action.triggered.connect(self._increasePriority)
         self.view.addListAction(action)
         self.increasePrioritySelectedTasksAction = action
+
+    @property
+    def _useTaskDialog(self):
+        return int(self._settings.value("use_task_dialog", 0))
 
     def completeTask(self, task):
         if not task.is_complete:
@@ -278,6 +288,10 @@ class TasksListController(QtCore.QObject):
             self.taskCreated.emit(task)
 
     def editTask(self, task=None):
+        print("EDIT_TASK IN TASKLISTCONTROLLER", self._useTaskDialog)
+        if not self._useTaskDialog:
+            self.view.editCurrentTask()
+            return
         if not task:
             tasks = self.view.getSelectedTasks()
             task = tasks[0]
@@ -295,10 +309,10 @@ class TasksListController(QtCore.QObject):
             app = QtWidgets.QApplication.instance()
             app.clipboard().setText(text)
 
-    def updateActions(self):
-        if len(self.view.getSelectedTasks()) > 0:
+    def updateActions(self, tasks):
+        if tasks:
             self.enableTaskActions()
-            if len(self.view.getSelectedTasks()) > 1:
+            if len(tasks) > 1:
                 self.editTaskAction.setEnabled(False)
                 self.createTaskActionOnTemplate.setEnabled(False)
         else:

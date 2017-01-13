@@ -173,8 +173,8 @@ class ValuesGenerator(object):
 
 
 class TaskEditorLineEdit(QtWidgets.QLineEdit):
-    def __init__(self, mfile):
-        super(TaskEditorLineEdit, self).__init__()
+    def __init__(self, parent, mfile):
+        QtWidgets.QLineEdit.__init__(self, parent)
         self.mfile = mfile
         self._values_generator = ValuesGenerator(mfile, list(CompleterSetup.autocomplete_pairs.keys()))
         model = self._values_generator.get_values()

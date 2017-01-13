@@ -23,7 +23,7 @@ class TaskEditorDialog(QtWidgets.QDialog):
         self._label = QtWidgets.QLabel("Task:")
         vbox.addWidget(self._label)
 
-        self._edit = TaskEditorLineEdit(self._mfile)
+        self._edit = TaskEditorLineEdit(self, self._mfile)
         vbox.addWidget(self._edit)
 
         hbox = QtWidgets.QHBoxLayout()

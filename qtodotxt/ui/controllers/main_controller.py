@@ -13,7 +13,6 @@ from qtodotxt.ui.controllers.tasks_list_controller import TasksListController
 from qtodotxt.ui.controllers.filters_tree_controller import FiltersTreeController
 from qtodotxt.lib.filters import SimpleTextFilter, FutureFilter, IncompleteTasksFilter, CompleteTasksFilter
 from qtodotxt.ui.controllers.menu_controller import MenuController
-from qtodotxt.ui.dialogs.taskeditor import TaskEditor
 
 
 logger = logging.getLogger(__name__)
@@ -35,11 +34,11 @@ class MainController(QtCore.QObject):
         # use object variable for setting only used in this class
         # others are accessed through QSettings
         self._settings = QtCore.QSettings()
+
         self._show_completed = True
         self._dialogs = dialogs
         self._file = File()
         self._fileObserver = FileObserver(self, self._file)
-        self._task_editor_service = TaskEditor(self.view, self._file)
         self._initControllers()
         self._is_modified = False
         self._setIsModified(False)
@@ -260,7 +259,7 @@ class MainController(QtCore.QObject):
 
     def _initTasksList(self):
         controller = self._tasks_list_controller = \
-            TasksListController(self.view.tasks_view.tasks_list_view, self._task_editor_service)
+            TasksListController(self.view.tasks_view.tasks_list_view, self._file)
 
         controller.taskCreated.connect(self._tasks_list_taskCreated)
         controller.taskModified.connect(self._tasks_list_taskModified)
