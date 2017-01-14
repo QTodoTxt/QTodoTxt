@@ -314,6 +314,7 @@ class MainController(QtCore.QObject):
         self._onFileUpdated()
 
     def _onFileUpdated(self):
+        print("SAVING")
         self._filters_tree_controller.showFilters(self._file, self._show_completed)
         self._setIsModified(True)
         self.auto_save()

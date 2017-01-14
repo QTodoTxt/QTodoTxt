@@ -1,5 +1,5 @@
 from PyQt5.QtCore import pyqtSignal, Qt, QSize
-from PyQt5.QtGui import QStandardItemModel, QStandardItem, QTextDocument, QAbstractTextDocumentLayout
+from PyQt5.QtGui import QStandardItemModel, QStandardItem, QTextDocument, QAbstractTextDocumentLayout, QTextOption
 from PyQt5.QtWidgets import QListView, QStyledItemDelegate, QWidget, QStyleOptionViewItem, QApplication, QStyle
 
 from qtodotxt.lib.task_htmlizer import TaskHtmlizer
@@ -10,6 +10,7 @@ class TasksListView(QListView):
 
     taskActivated = pyqtSignal(tasklib.Task)
     currentTaskChanged = pyqtSignal(list)
+    taskModified = pyqtSignal(tasklib.Task)
 
     def __init__(self, parent):
         QListView.__init__(self)
@@ -21,6 +22,7 @@ class TasksListView(QListView):
         self._delegate = MyDelegate(self)
         self.setItemDelegate(self._delegate)
         self.activated.connect(self._taskActivated)
+        self._delegate.taskModified.connect(self.taskModified.emit)
 
     def _taskActivated(self, idx):
         it = self.model.itemFromIndex(idx)
@@ -55,25 +57,19 @@ class TasksListView(QListView):
     def addListAction(self, action):
         self.addAction(action)
 
-    def _findItemByTask(self, task):
-        for index in range(self.count()):
-            item = self.item(index)
-            if item.task == task:
-                return item
-        return None
 
-    def _findItemByTaskText(self, text):
-        for index in range(self.count()):
-            item = self.item(index)
-            if item.task.text == text:
+    def findItemByTask(self, task):
+        for idx in range(self.model.rowCount()):
+            item = self.model.item(idx)
+            listtask = item.data(Qt.UserRole)
+            if listtask == task:
                 return item
         return None
 
     def updateTask(self, task):
-        item = self._findItemByTask(task)
-        label = self.itemWidget(item)
-        text = self._task_htmlizer.task2html(item.task)
-        label.setText(text)
+        item = self.findItemByTask(task)
+        html = self._task_htmlizer.task2html(task)
+        item.setData(html, Qt.DisplayRole)
 
     def _selectItem(self, item):
         if item:
@@ -81,24 +77,32 @@ class TasksListView(QListView):
             self.setCurrentItem(item)
 
     def selectTask(self, task):
-        item = self._findItemByTask(task)
-        self._selectItem(item)
+        for idx in range(self.model.rowCount()):
+            item = self.item(idx)
+            listtask = item.data(Qt.UserRole)
+            if listtask == task:
+                self.setCurrentIndex(self.model.index(idx, 0))
 
     def selectTaskByText(self, text):
-        item = self._findItemByTaskText(text)
-        self._selectItem(item)
+        for idx in range(self.model.rowCount()):
+            item = self.model.item(idx)
+            task = item.data(Qt.UserRole)
+            if task.text == text:
+                self.setCurrentIndex(self.model.index(idx, 0))
 
     def removeTask(self, task):
-        item = self._findItemByTask(task)
-        if item:
-            self.removeItemWidget(item)
+        for idx in range(self.model.rowCount()):
+            item = self.item(idx)
+            listtask = item.data(Qt.UserRole)
+            if listtask == task:
+                self.model.takeRow(idx)
 
     def _list_itemActivated(self, item):
         self.taskActivated.emit(item.task)
 
     def getSelectedTasks(self):
         idxs = self.selectedIndexes()
-        return [self.model.itemFromIndex(idx).data(Qt.USerRole) for idx in idxs]
+        return [self.model.itemFromIndex(idx).data(Qt.UserRole) for idx in idxs]
 
     def getCurrentItem(self):
         idx = self.currentItem()
@@ -115,6 +119,7 @@ class TasksListView(QListView):
 class MyDelegate(QStyledItemDelegate):
 
     error = pyqtSignal(Exception)
+    taskModified = pyqtSignal(tasklib.Task)
 
     def __init__(self, parent):
         QStyledItemDelegate.__init__(self, parent)
@@ -144,6 +149,7 @@ class MyDelegate(QStyledItemDelegate):
         task = it.data(Qt.UserRole)
         task.parseLine(editor.text())
         it.setData(self._task_htmlizer.task2html(task), Qt.DisplayRole)
+        self.taskModified.emit(task)
 
     def paint(self, painter, option, index):
         options = QStyleOptionViewItem(option)
@@ -156,6 +162,12 @@ class MyDelegate(QStyledItemDelegate):
 
         options.text = ""
         style.drawControl(QStyle.CE_ItemViewItem, options, painter);
+
+        # does not worl :-(
+        #toptions = QTextOption()
+        #toptions.setWrapMode(QTextOption.WordWrap)
+        #toptions.setAlignment(Qt.AlignRight)
+        #doc.setDefaultTextOption(toptions)
 
         ctx = QAbstractTextDocumentLayout.PaintContext()
 

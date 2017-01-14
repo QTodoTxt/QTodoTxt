@@ -45,6 +45,7 @@ class TasksListController(QtCore.QObject):
         self._initDecreasePrioritySelectedTasksAction()
         self._initIncreasePrioritySelectedTasksAction()
         self._initCreateTaskActionOnTemplate()
+        self.view.taskModified.connect(self.taskModified.emit)
         self.disableTaskActions()
 
     def _initEditTaskAction(self):
