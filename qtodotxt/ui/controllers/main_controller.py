@@ -299,6 +299,8 @@ class MainController(QtCore.QObject):
         self._onFileUpdated()
 
     def _tasks_list_taskModified(self, task):
+        if task not in self._file.tasks:
+            self._file.tasks.append(task)
         self._onFileUpdated()
 
     def _tasks_list_taskArchived(self, task):

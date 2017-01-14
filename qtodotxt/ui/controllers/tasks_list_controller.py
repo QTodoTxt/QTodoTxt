@@ -256,22 +256,25 @@ class TasksListController(QtCore.QObject):
             text = '%s %s' % (date_string, text)
         return text
 
-    def createTask(self, arg_text=None):
-        if not arg_text:
-            (text, ok) = self._task_editor_service.createTask()
-        else:
-            text = arg_text
-            ok = True
-        if ok and text:
-            if int(QtCore.QSettings().value("add_created_date", 0)):
+    def _createTask(self, text):
+        if int(QtCore.QSettings().value("add_created_date", 0)):
                 text = self._removeCreationDate(text)
                 text = self._addCreationDate(text)
-            task = tasklib.Task(text)
-            self.view.addTask(task)
-            self.view.clearSelection()
-            self.view.selectTask(task)
-            self.taskCreated.emit(task)
+        task = tasklib.Task(text)
+        self.view.addTask(task)
+        self.view.clearSelection()
+        self.view.selectTask(task)
+        self.taskCreated.emit(task)
         return task
+
+    def createTask(self):
+        if not self._useTaskDialog:
+            self.view.createTask()
+            return
+        (text, ok) = self._task_editor_service.createTask()
+        if ok and text:
+            task = self._createTask(text)
+            return task
 
     def createTaskOnTemplate(self):
         tasks = self.view.getSelectedTasks()

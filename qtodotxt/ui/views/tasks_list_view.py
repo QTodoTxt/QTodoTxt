@@ -39,6 +39,21 @@ class TasksListView(QListView):
         self._delegate.editor = editor_type
         self._delegate.editor_args = editor_args
 
+    def createTask(self):
+        task = tasklib.Task("")
+        item = QStandardItem()
+        item.setData(task, Qt.UserRole)
+        idxs = self.selectedIndexes()
+        if not idxs:
+            self.model.appendRow(item)
+            self.edit(self.model.index(self.model.rowCount()-1, 0))
+        else:
+            idx = idxs[-1].row()
+            self.model.insertRow(idx, item)
+            self.edit(self.model.index(idx, 0))
+
+
+
     def addTask(self, task):
         print("APPEND", task)
         item = QStandardItem()
@@ -92,10 +107,11 @@ class TasksListView(QListView):
 
     def removeTask(self, task):
         for idx in range(self.model.rowCount()):
-            item = self.item(idx)
+            item = self.model.item(idx)
             listtask = item.data(Qt.UserRole)
             if listtask == task:
                 self.model.takeRow(idx)
+                return
 
     def _list_itemActivated(self, item):
         self.taskActivated.emit(item.task)
