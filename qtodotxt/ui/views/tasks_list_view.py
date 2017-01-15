@@ -1,5 +1,5 @@
 from PyQt5.QtCore import pyqtSignal, Qt, QSize
-from PyQt5.QtGui import QStandardItemModel, QStandardItem, QTextDocument, QAbstractTextDocumentLayout, QTextOption
+from PyQt5.QtGui import QStandardItemModel, QStandardItem, QTextDocument, QAbstractTextDocumentLayout, QTextOption, QPalette
 from PyQt5.QtWidgets import QListView, QStyledItemDelegate, QWidget, QStyleOptionViewItem, QApplication, QStyle
 
 from qtodotxt.lib.task_htmlizer import TaskHtmlizer
@@ -193,10 +193,8 @@ class MyDelegate(QStyledItemDelegate):
         #doc.setDefaultTextOption(toptions)
 
         ctx = QAbstractTextDocumentLayout.PaintContext()
-
-        # Highlighting text if item is selected
-        #if (optionV4.state & QStyle::State_Selected)
-            #ctx.palette.setColor(QPalette::Text, optionV4.palette.color(QPalette::Active, QPalette::HighlightedText));
+        #ctx.palette.setColor(QPalette.Text, options.palette.color(QPalette.Active, QPalette.HighlightedText))
+        ctx.palette.setColor(QPalette.Text, options.palette.color(QPalette.Active, QPalette.Text))
 
         textRect = style.subElementRect(QStyle.SE_ItemViewItemText, options)
         painter.save()
