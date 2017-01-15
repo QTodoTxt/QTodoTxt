@@ -11,18 +11,19 @@ class TasksListView(QListView):
     taskActivated = pyqtSignal(tasklib.Task)
     currentTaskChanged = pyqtSignal(list)
     taskModified = pyqtSignal(tasklib.Task)
+    taskCreated = pyqtSignal(tasklib.Task)
 
     def __init__(self, parent):
         QListView.__init__(self)
         self.model = QStandardItemModel()
         self.setModel(self.model)
-        #self.setLayoutMode(self.Batched)
         self.setAlternatingRowColors(True)
         self._task_htmlizer = TaskHtmlizer()
         self._delegate = MyDelegate(self)
         self.setItemDelegate(self._delegate)
         self.activated.connect(self._taskActivated)
         self._delegate.taskModified.connect(self.taskModified.emit)
+        self._delegate.taskCreated.connect(self.taskCreated.emit)
 
     def _taskActivated(self, idx):
         it = self.model.itemFromIndex(idx)
@@ -39,10 +40,15 @@ class TasksListView(QListView):
         self._delegate.editor = editor_type
         self._delegate.editor_args = editor_args
 
-    def createTask(self):
-        task = tasklib.Task("")
+    def createTask(self, template_task=None):
+        if template_task is not None:
+            task = tasklib.Task(template_task.text)
+        else:
+            task = tasklib.Task("")
+        task.new = True
         item = QStandardItem()
         item.setData(task, Qt.UserRole)
+        item.setData(self._task_htmlizer.task2html(task), Qt.DisplayRole)
         idxs = self.selectedIndexes()
         if not idxs:
             self.model.appendRow(item)
@@ -51,8 +57,6 @@ class TasksListView(QListView):
             idx = idxs[-1].row()
             self.model.insertRow(idx, item)
             self.edit(self.model.index(idx, 0))
-
-
 
     def addTask(self, task):
         item = QStandardItem()
@@ -108,7 +112,7 @@ class TasksListView(QListView):
             item = self.model.item(idx)
             listtask = item.data(Qt.UserRole)
             if listtask == task:
-                self.model.takeRow(idx)
+                self.model.removeRow(idx)
                 return
 
     def _list_itemActivated(self, item):
@@ -134,6 +138,7 @@ class MyDelegate(QStyledItemDelegate):
 
     error = pyqtSignal(Exception)
     taskModified = pyqtSignal(tasklib.Task)
+    taskCreated = pyqtSignal(tasklib.Task)
 
     def __init__(self, parent):
         QStyledItemDelegate.__init__(self, parent)
@@ -163,11 +168,15 @@ class MyDelegate(QStyledItemDelegate):
         task = it.data(Qt.UserRole)
         task.parseLine(editor.text())
         it.setData(self._task_htmlizer.task2html(task), Qt.DisplayRole)
-        self.taskModified.emit(task)
+        if task.new and editor.text():
+            self.taskCreated.emit(task)
+            task.new = False
+        else:
+            self.taskModified.emit(task)
 
     def paint(self, painter, option, index):
         options = QStyleOptionViewItem(option)
-        self.initStyleOption(options,index)
+        self.initStyleOption(options, index)
 
         style = QApplication.style() if options.widget is None else options.widget.style()
 
@@ -205,3 +214,16 @@ class MyDelegate(QStyledItemDelegate):
         doc.setHtml(options.text)
         doc.setTextWidth(options.rect.width())
         return QSize(doc.idealWidth(), doc.size().height())
+
+    def destroyEditor(self, editor, idx):
+        print("DELETE")
+        it = self.parent.model.item(idx.row())
+        if not it:
+            return
+        task = it.data(Qt.UserRole)
+        #if task.text != editor.text():
+            # the operation was cancelled by user
+        if not editor.text():
+            print("REMOVE ROW")
+            self.parent.model.removeRow(idx.row())
+        editor.deleteLater()

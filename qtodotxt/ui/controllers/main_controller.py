@@ -234,6 +234,7 @@ class MainController(QtCore.QObject):
         self._applyFilters(filters=filters)
 
     def _applyFilters(self, filters=None, searchText=None):
+        print("FILTER")
         # First we filter with filters tree
         if filters is None:
             filters = self._filters_tree_controller.view.getSelectedFilters()
@@ -298,9 +299,7 @@ class MainController(QtCore.QObject):
         self._file.tasks.append(task)
         self._onFileUpdated()
 
-    def _tasks_list_taskModified(self, task):
-        if task not in self._file.tasks:
-            self._file.tasks.append(task)
+    def _tasks_list_taskModified(self):
         self._onFileUpdated()
 
     def _tasks_list_taskArchived(self, task):

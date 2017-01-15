@@ -34,6 +34,8 @@ class Task(object):
         settings = QtCore.QSettings()
         self._highest_priority = 'A'
         self._lowest_priority = settings.value("lowest_priority", "D")
+        # This attribute can be set before the task in inserted in a File
+        self.new = False  
 
         # all other class attributes are defined in _reset method
         # which is called in parseLine

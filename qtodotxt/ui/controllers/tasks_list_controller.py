@@ -46,6 +46,7 @@ class TasksListController(QtCore.QObject):
         self._initIncreasePrioritySelectedTasksAction()
         self._initCreateTaskActionOnTemplate()
         self.view.taskModified.connect(self.taskModified.emit)
+        self.view.taskCreated.connect(self.taskCreated.emit)
         self.disableTaskActions()
 
     def _initEditTaskAction(self):
@@ -281,6 +282,9 @@ class TasksListController(QtCore.QObject):
         if len(tasks) != 1:
             return
         task = tasks[0]
+        if not self._useTaskDialog:
+            self.view.createTask(task)
+            return
         (text, ok) = self._task_editor_service.createTask(task)
         if ok and text:
             if int(QtCore.QSettings().value("add_created_date", 0)):
