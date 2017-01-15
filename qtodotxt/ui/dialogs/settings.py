@@ -36,7 +36,7 @@ class Settings(QtWidgets.QDialog):
         self._int_settings_to_cb("hide_to_tray", self.ui.hideToTrayCheckBox, 0)
         self._int_settings_to_cb("hide_on_startup", self.ui.hideOnStartupCheckBox, 0)
         self._int_settings_to_cb("close_to_tray", self.ui.closeToTrayCheckBox, 0)
-        #self._int_settings_to_cb("use_task_dialog", self.ui.useTaskDialogCheckBox, 0)
+        self._int_settings_to_cb("use_task_dialog", self.ui.useTaskDialogCheckBox, 0)
 
         val = int(self.settings.value("enable_tray", 0))
         self.ui.hideToTrayCheckBox.setEnabled(val)
@@ -69,12 +69,16 @@ class Settings(QtWidgets.QDialog):
         self.ui.hideOnStartupCheckBox.stateChanged.connect(self.setHideOnStartup)
         self.ui.closeToTrayCheckBox.stateChanged.connect(self.setCloseToTray)
         self.ui.colorSchemComboBox.currentIndexChanged.connect(self.setColorSchemCombo)
+        self.ui.useTaskDialogCheckBox.stateChanged.connect(self.setUseTaskDialog)
 
     def _save_int_cb(self, name, val):
         if val == 0:
             self.settings.setValue(name, 0)
         else:
             self.settings.setValue(name, 1)
+
+    def setUseTaskDialog(self, val):
+        self._save_int_cb("use_task_dialog", val)
 
     def setSingletonCheckBox(self, val):
         self._save_int_cb("singleton", val)

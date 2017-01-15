@@ -55,7 +55,6 @@ class TasksListView(QListView):
 
 
     def addTask(self, task):
-        print("APPEND", task)
         item = QStandardItem()
         item.setData(self._task_htmlizer.task2html(task), Qt.DisplayRole)
         item.setData(task, Qt.UserRole)
@@ -71,7 +70,6 @@ class TasksListView(QListView):
 
     def addListAction(self, action):
         self.addAction(action)
-
 
     def findItemByTask(self, task):
         for idx in range(self.model.rowCount()):
@@ -93,7 +91,7 @@ class TasksListView(QListView):
 
     def selectTask(self, task):
         for idx in range(self.model.rowCount()):
-            item = self.item(idx)
+            item = self.model.item(idx)
             listtask = item.data(Qt.UserRole)
             if listtask == task:
                 self.setCurrentIndex(self.model.index(idx, 0))
