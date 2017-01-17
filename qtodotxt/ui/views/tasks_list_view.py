@@ -1,5 +1,5 @@
 from PyQt5.QtCore import pyqtSignal, Qt, QSize
-from PyQt5.QtGui import QStandardItemModel, QStandardItem, QTextDocument, QAbstractTextDocumentLayout, QTextOption, QPalette
+from PyQt5.QtGui import QStandardItemModel, QStandardItem, QTextDocument, QAbstractTextDocumentLayout, QPalette
 from PyQt5.QtWidgets import QListView, QStyledItemDelegate, QWidget, QStyleOptionViewItem, QApplication, QStyle
 
 from qtodotxt.lib.task_htmlizer import TaskHtmlizer
@@ -62,14 +62,6 @@ class TasksListView(QListView):
         item = QStandardItem()
         item.setData(self._task_htmlizer.task2html(task), Qt.DisplayRole)
         item.setData(task, Qt.UserRole)
-        #label.setWordWrap(True)
-        # set minimum width to a reasonable value to get a useful
-        # sizeHint _height_ when using word wrap
-        #label.setMinimumWidth(self.width() - 20)
-        # set items size and add some space between items
-        #item.setSizeHint(QSize(label.sizeHint().width(),
-                                      #label.sizeHint().height() + 5))
-        #self.setItemWidget(item, label)
         self.model.appendRow(item)
 
     def addListAction(self, action):
@@ -153,7 +145,7 @@ class MyDelegate(QStyledItemDelegate):
         disable editing for some values, etc...
         """
         print("CREATE EDITOR")
-        editor =  self.editor(parent, *self.editor_args)
+        editor = self.editor(parent, *self.editor_args)
         print(editor, type(editor), isinstance(editor, QWidget))
         return editor
 
@@ -163,7 +155,6 @@ class MyDelegate(QStyledItemDelegate):
         editor.setText(task.text)
 
     def setModelData(self, editor, model, idx):
-        print("SET MODEL DATA")
         it = model.itemFromIndex(idx)
         task = it.data(Qt.UserRole)
         task.parseLine(editor.text())
@@ -184,16 +175,9 @@ class MyDelegate(QStyledItemDelegate):
         doc.setHtml(options.text)
 
         options.text = ""
-        style.drawControl(QStyle.CE_ItemViewItem, options, painter);
-
-        # does not worl :-(
-        #toptions = QTextOption()
-        #toptions.setWrapMode(QTextOption.WordWrap)
-        #toptions.setAlignment(Qt.AlignRight)
-        #doc.setDefaultTextOption(toptions)
+        style.drawControl(QStyle.CE_ItemViewItem, options, painter)
 
         ctx = QAbstractTextDocumentLayout.PaintContext()
-        #ctx.palette.setColor(QPalette.Text, options.palette.color(QPalette.Active, QPalette.HighlightedText))
         ctx.palette.setColor(QPalette.Text, options.palette.color(QPalette.Active, QPalette.Text))
 
         textRect = style.subElementRect(QStyle.SE_ItemViewItemText, options)
@@ -206,7 +190,7 @@ class MyDelegate(QStyledItemDelegate):
 
     def sizeHint(self, option, index):
         options = QStyleOptionViewItem(option)
-        self.initStyleOption(options,index)
+        self.initStyleOption(options, index)
 
         doc = QTextDocument()
         doc.setHtml(options.text)
@@ -214,14 +198,9 @@ class MyDelegate(QStyledItemDelegate):
         return QSize(doc.idealWidth(), doc.size().height())
 
     def destroyEditor(self, editor, idx):
-        print("DELETE")
         it = self.parent.model.item(idx.row())
-        if not it:
-            return
-        task = it.data(Qt.UserRole)
-        #if task.text != editor.text():
-            # the operation was cancelled by user
-        if not editor.text():
-            print("REMOVE ROW")
-            self.parent.model.removeRow(idx.row())
-        editor.deleteLater()
+        if it:
+            task = it.data(Qt.UserRole)
+            if not task.text:
+                self.parent.model.removeRow(idx.row())
+        QStyledItemDelegate.destroyEditor(self, editor, idx)
