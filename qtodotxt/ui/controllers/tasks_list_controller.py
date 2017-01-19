@@ -45,9 +45,17 @@ class TasksListController(QtCore.QObject):
         self._initDecreasePrioritySelectedTasksAction()
         self._initIncreasePrioritySelectedTasksAction()
         self._initCreateTaskActionOnTemplate()
-        self.view.taskModified.connect(self.taskModified.emit)
-        self.view.taskCreated.connect(self.taskCreated.emit)
+        self.view.taskCreated.connect(self._task_created)
+        self.view.taskModified.connect(self._task_modified)
         self.disableTaskActions()
+
+    def _task_created(self, task):
+        self.view.clearSelection()
+        self.view.selectTask(task)
+        self.taskCreated.emit(task)
+
+    def _task_modified(self, task):
+        self.taskModified.emit(task)
 
     def _initEditTaskAction(self):
         action = QtWidgets.QAction(QtGui.QIcon(self.style +
@@ -263,9 +271,7 @@ class TasksListController(QtCore.QObject):
                 text = self._addCreationDate(text)
         task = tasklib.Task(text)
         self.view.addTask(task)
-        self.view.clearSelection()
-        self.view.selectTask(task)
-        self.taskCreated.emit(task)
+        self._task_created(task)
         return task
 
     def createTask(self):
@@ -291,9 +297,7 @@ class TasksListController(QtCore.QObject):
                 text = self._addCreationDate(text)
             task = tasklib.Task(text)
             self.view.addTask(task)
-            self.view.clearSelection()
-            self.view.selectTask(task)
-            self.taskCreated.emit(task)
+            self._task_created(task)
 
     def editTask(self, task=None):
         print("EDIT_TASK IN TASKLISTCONTROLLER", self._useTaskDialog)
@@ -308,7 +312,7 @@ class TasksListController(QtCore.QObject):
             if text != task.text:
                 task.parseLine(text)
                 self.view.updateTask(task)
-                self.taskModified.emit(task)
+                self._task_modified(task)
 
     def _copySelectedTasks(self):
         tasks = self.view.getSelectedTasks()
