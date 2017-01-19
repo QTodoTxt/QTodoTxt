@@ -32,6 +32,7 @@ class TasksListView(QListView):
 
     def currentChanged(self, current, previous):
         it = self.model.itemFromIndex(current)
+        self.scrollTo(current)  # maybe should be in task controller
         if it:
             task = it.data(Qt.UserRole)
             self.currentTaskChanged.emit([task])
@@ -178,7 +179,10 @@ class MyDelegate(QStyledItemDelegate):
         style.drawControl(QStyle.CE_ItemViewItem, options, painter)
 
         ctx = QAbstractTextDocumentLayout.PaintContext()
-        ctx.palette.setColor(QPalette.Text, options.palette.color(QPalette.Active, QPalette.Text))
+        if option.state & QStyle.State_Selected:
+            ctx.palette.setColor(QPalette.Text, options.palette.color(QPalette.Active, QPalette.HighlightedText))
+        else:
+            ctx.palette.setColor(QPalette.Text, options.palette.color(QPalette.Active, QPalette.Text))
 
         textRect = style.subElementRect(QStyle.SE_ItemViewItemText, options)
         painter.save()
