@@ -6,7 +6,7 @@ import string
 
 from dateutil.relativedelta import relativedelta
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 
 
 def end_of_month(today=None, month=None):
@@ -244,5 +244,3 @@ class TaskEditorLineEdit(QtWidgets.QLineEdit):
         self._completer.setCompletionPrefix(completionPrefix)
         self._completer.popup().setCurrentIndex(
             self._completer.completionModel().index(0, 0))
-
-

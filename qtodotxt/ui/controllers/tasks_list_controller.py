@@ -1,6 +1,5 @@
 import os
 from datetime import date
-from datetime import date
 from datetime import timedelta
 import re
 
@@ -300,7 +299,6 @@ class TasksListController(QtCore.QObject):
             self._task_created(task)
 
     def editTask(self, task=None):
-        print("EDIT_TASK IN TASKLISTCONTROLLER", self._useTaskDialog)
         if not self._useTaskDialog:
             self.view.editCurrentTask()
             return
