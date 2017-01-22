@@ -2,8 +2,24 @@ from datetime import datetime, date, time
 import re
 
 from PyQt5 import QtCore
-
+from enum import Enum
 from qtodotxt.lib.task_htmlizer import TaskHtmlizer
+
+
+class recursiveMode(Enum):
+    completitionDate = 0    # Original due date mode: Task recurs from original due date
+    originalDueDate = 1    # Completion date mode: Task recurs from completion date
+
+
+class recursion:
+    mode = None
+    increment = None
+    interval = None
+
+    def __init__(self, arg_mode, arg_increment, arg_interval):
+        self.mode = arg_mode
+        self.increment = arg_increment
+        self.interval = arg_interval
 
 
 class Task(object):
@@ -44,11 +60,7 @@ class Task(object):
         self.due_error = ""
         self.threshold = None
         self.keywords = {}
-        self.recMode = None
-        self.recModeCompl = 0   # Original due date mode: Task recurs from original due date
-        self.recModeOrDue = 1   # Completion date mode: Task recurs from completion date
-        self.recIncr = None
-        self.recInterv = None
+        self.recursion = None
 
     def parseLine(self, line):
         """
@@ -108,18 +120,14 @@ class Task(object):
         if word[4] == '+':
             # Test if chracters have the right format
             if re.match('^[1-9][bdwmy]', word[5:7]):
-                self.recMode = self.recModeOrDue
-                self.recIncr = word[5]
-                self.recInterv = word[6]
+                self.recursion = recursion(recursiveMode.originalDueDate, word[5], word[6])
             else:
                 print("Error parsing recurrence '{}'".format(word))
         # Completion mode
         else:
             # Test if chracters have the right format
             if re.match('^[1-9][bdwmy]', word[4:6]):
-                self.recMode = self.recModeCompl
-                self.recIncr = word[4]
-                self.recInterv = word[5]
+                self.recursion = recursion(recursiveMode.completitionDate, word[4], word[5])
             else:
                 print("Error parsing recurrence '{}'".format(word))
 

@@ -1,6 +1,6 @@
 from datetime import date
 import unittest
-from qtodotxt.lib.tasklib import Task
+from qtodotxt.lib.tasklib import Task, recursiveMode
 
 
 class TestTasks(unittest.TestCase):
@@ -187,43 +187,41 @@ class TestTasks(unittest.TestCase):
     # Negative tests
     def test_recurring_task_wrong_interval(self):
         task = Task('(B) do something rec:2g')
-        self.assertIsNone(task.recMode)
-        self.assertIsNone(task.recIncr)
-        self.assertIsNone(task.recInterv)
+        self.assertIsNone(task.recursion)
 
     def test_recurring_task_wrong_increment(self):
         task = Task('(B) do something rec:0d')
-        self.assertIsNone(task.recMode)
-        self.assertIsNone(task.recIncr)
-        self.assertIsNone(task.recInterv)
+        self.assertIsNone(task.recursion)
 
     def test_recurring_task_wrong_keyword(self):
         task = Task('(B) do something rect:5d')
-        self.assertIsNone(task.recMode)
-        self.assertIsNone(task.recIncr)
-        self.assertIsNone(task.recInterv)
+        self.assertIsNone(task.recursion)
 
     # Positive tests
     def test_recurring_task_input_days(self):
         task = Task('(C) do something due:2016-09-05 rec:5d')
-        self.assertTrue(task.recMode == task.recModeCompl)
-        self.assertTrue(task.recIncr == str(5))
-        self.assertTrue(task.recInterv == 'd')
+        self.assertIsNotNone(task.recursion)
+        self.assertTrue(task.recursion.mode == recursiveMode.completitionDate)
+        self.assertTrue(task.recursion.increment == str(5))
+        self.assertTrue(task.recursion.interval == 'd')
 
     def test_recurring_task_input_weeks(self):
         task = Task('(C) do something due:2016-09-05 rec:+7w')
-        self.assertTrue(task.recMode == task.recModeOrDue)
-        self.assertTrue(task.recIncr == str(7))
-        self.assertTrue(task.recInterv == 'w')
+        self.assertIsNotNone(task.recursion)
+        self.assertTrue(task.recursion.mode == recursiveMode.originalDueDate)
+        self.assertTrue(task.recursion.increment == str(7))
+        self.assertTrue(task.recursion.interval == 'w')
 
     def test_recurring_task_input_months(self):
         task = Task('(C) do something due:2016-09-05 rec:3m')
-        self.assertTrue(task.recMode == task.recModeCompl)
-        self.assertTrue(task.recIncr == str(3))
-        self.assertTrue(task.recInterv == 'm')
+        self.assertIsNotNone(task.recursion)
+        self.assertTrue(task.recursion.mode == recursiveMode.completitionDate)
+        self.assertTrue(task.recursion.increment == str(3))
+        self.assertTrue(task.recursion.interval == 'm')
 
     def test_recurring_task_input_years(self):
         task = Task('(C) do something due:2016-09-05 rec:+1y')
-        self.assertTrue(task.recMode == task.recModeOrDue)
-        self.assertTrue(task.recIncr == str(1))
-        self.assertTrue(task.recInterv == 'y')
+        self.assertIsNotNone(task.recursion)
+        self.assertTrue(task.recursion.mode == recursiveMode.originalDueDate)
+        self.assertTrue(task.recursion.increment == str(1))
+        self.assertTrue(task.recursion.interval == 'y')

@@ -10,6 +10,7 @@ from _datetime import timedelta
 
 import os
 import re
+from qtodotxt.lib.tasklib import recursiveMode
 
 
 class TasksListController(QtCore.QObject):
@@ -107,10 +108,8 @@ class TasksListController(QtCore.QObject):
 
     def completeTask(self, task):
         if not task.is_complete:
-            # Check if task is recurrent
-            # TODO: Many variables checked here - does it work smarter, too?
-            if task.recIncr is not None and task.recInterv is not None \
-                    and task.recMode is not None and task.due is not None:
+            # Check if task is recurrent and has a due date
+            if task.recursion is not None and task.due is not None:
                 self._recurTask(task)
             task.setCompleted()
         else:
@@ -121,31 +120,31 @@ class TasksListController(QtCore.QObject):
             self.taskModified.emit(task)
 
     def _recurTask(self, task):
-        if task.recInterv == 'd':
-            if task.recMode == task.recModeOrDue:
-                next_due_date = task.due + timedelta(days=int(task.recIncr))
+        if task.recursion.interval == 'd':
+            if task.recursion.mode == recursiveMode.originalDueDate:
+                next_due_date = task.due + timedelta(days=int(task.recursion.increment))
             else:
-                next_due_date = date.today() + timedelta(days=int(task.recIncr))
-        elif task.recInterv == 'b':
-            if task.recMode == task.recModeOrDue:
-                next_due_date = self._incrWorkDays(task.due, int(task.recIncr))
+                next_due_date = date.today() + timedelta(days=int(task.recursion.increment))
+        elif task.recursion.interval == 'b':
+            if task.recursion.mode == recursiveMode.originalDueDate:
+                next_due_date = self._incrWorkDays(task.due, int(task.recursion.increment))
             else:
-                next_due_date = self._incrWorkDays(date.today(), int(task.recIncr))
-        elif task.recInterv == 'w':
-            if task.recMode == task.recModeOrDue:
-                next_due_date = task.due + timedelta(weeks=int(task.recIncr))
+                next_due_date = self._incrWorkDays(date.today(), int(task.recursion.increment))
+        elif task.recursion.interval == 'w':
+            if task.recursion.mode == recursiveMode.originalDueDate:
+                next_due_date = task.due + timedelta(weeks=int(task.recursion.increment))
             else:
-                next_due_date = date.today() + timedelta(weeks=int(task.recIncr))
-        elif task.recInterv == 'm':
-            if task.recMode == task.recModeOrDue:
-                next_due_date = task.due + timedelta(weeks=int(task.recIncr) * 4)     # 4 weeks in a month
+                next_due_date = date.today() + timedelta(weeks=int(task.recursion.increment))
+        elif task.recursion.interval == 'm':
+            if task.recursion.mode == recursiveMode.originalDueDate:
+                next_due_date = task.due + timedelta(weeks=int(task.recursion.increment) * 4)   # 4 weeks in a month
             else:
-                next_due_date = date.today() + timedelta(weeks=int(task.recIncr) * 4)     # 4 weeks in a month
-        elif task.recInterv == 'y':
-            if task.recMode == task.recModeOrDue:
-                next_due_date = task.due + timedelta(weeks=int(task.recIncr) * 52)    # 52 weeks in a year
+                next_due_date = date.today() + timedelta(weeks=int(task.recursion.increment) * 4)   # 4 weeks in a month
+        elif task.recursion.interval == 'y':
+            if task.recursion.mode == recursiveMode.originalDueDate:
+                next_due_date = task.due + timedelta(weeks=int(task.recursion.increment) * 52)  # 52 weeks in a year
             else:
-                next_due_date = date.today() + timedelta(weeks=int(task.recIncr) * 52)    # 52 weeks in a year
+                next_due_date = date.today() + timedelta(weeks=int(task.recursion.increment) * 52)  # 52 weeks in a year
         else:
             # Test already made during line parsing - shouldn't be a problem here
             None
@@ -230,8 +229,6 @@ class TasksListController(QtCore.QObject):
         tasks.sort(reverse=True)
 
     def _removeCreationDate(self, text):
-        # Find the date that has no keyword in advance just whitespaces
-        # TODO: This removes the priority of recurrent tasks
         match = re.match('^(\([A-Z]\)\s)?[0-9]{4}\-[0-9]{2}\-[0-9]{2}\s(.*)', text)
         if match:
             if match.group(1):
@@ -256,7 +253,6 @@ class TasksListController(QtCore.QObject):
             ok = True
         if ok and text:
             if int(QtCore.QSettings().value("add_created_date", 0)):
-                # TODO: Remove existing creation date first
                 text = self._removeCreationDate(text)
                 text = self._addCreationDate(text)
             task = tasklib.Task(text)
