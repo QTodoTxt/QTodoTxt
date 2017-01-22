@@ -18,6 +18,8 @@ class TasksListView(QListView):
         self.model = QStandardItemModel()
         self.setModel(self.model)
         self.setAlternatingRowColors(True)
+        self.LayoutMode = QListView.Batched
+        self.setResizeMode(QListView.Adjust)
         self._task_htmlizer = TaskHtmlizer()
         self._delegate = MyDelegate(self)
         self.setItemDelegate(self._delegate)
@@ -141,13 +143,7 @@ class MyDelegate(QStyledItemDelegate):
         self._task_htmlizer = TaskHtmlizer()
 
     def createEditor(self, parent, option, idx):
-        """
-        Called when editing starts, here can we override default editor,
-        disable editing for some values, etc...
-        """
-        print("CREATE EDITOR")
         editor = self.editor(parent, *self.editor_args)
-        print(editor, type(editor), isinstance(editor, QWidget))
         return editor
 
     def setEditorData(self, editor, idx):
@@ -174,6 +170,7 @@ class MyDelegate(QStyledItemDelegate):
 
         doc = QTextDocument()
         doc.setHtml(options.text)
+        doc.setTextWidth(options.rect.width())
 
         options.text = ""
         style.drawControl(QStyle.CE_ItemViewItem, options, painter)
