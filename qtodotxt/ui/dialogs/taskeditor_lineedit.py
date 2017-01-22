@@ -61,8 +61,6 @@ def end_of_year(day=None):
     return (date(year=day.year + 1, month=1, day=1) - timedelta(days=1)).isoformat()
 
 
-
-
 class CompleterSetup(object):
     autocomplete_pairs = collections.OrderedDict([
         ('due:Today', ''),

@@ -27,7 +27,6 @@ class TaskEditor(object):
         dialog.resize(500, 100)
         if task:
             dialog.setTextValue(task.text)
-        #dialog.setModal(True)
         if dialog.exec_():
             return dialog.textValue(), True
         return None, False

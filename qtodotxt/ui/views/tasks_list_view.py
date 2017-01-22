@@ -1,6 +1,6 @@
 from PyQt5.QtCore import pyqtSignal, Qt, QSize
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QTextDocument, QAbstractTextDocumentLayout, QPalette
-from PyQt5.QtWidgets import QListView, QStyledItemDelegate, QWidget, QStyleOptionViewItem, QApplication, QStyle
+from PyQt5.QtWidgets import QListView, QStyledItemDelegate, QStyleOptionViewItem, QApplication, QStyle
 
 from qtodotxt.lib.task_htmlizer import TaskHtmlizer
 from qtodotxt.lib import tasklib

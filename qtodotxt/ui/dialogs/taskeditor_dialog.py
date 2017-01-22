@@ -1,5 +1,5 @@
 import sys
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets
 from qtodotxt.ui.dialogs.taskeditor_lineedit import TaskEditorLineEdit
 
 
@@ -9,12 +9,6 @@ class TaskEditorDialog(QtWidgets.QDialog):
         QtWidgets.QDialog.__init__(self)
         self._mfile = mfile
         self._initUI()
-        #self.setWindowFlags(QtCore.Qt.Dialog
-                            #| QtCore.Qt.MSWindowsFixedSizeDialogHint
-                            #| QtCore.Qt.WindowStaysOnBottomHint
-                            #| QtCore.Qt.WindowSystemMenuHint
-                            #| QtCore.Qt.WindowTitleHint
-                            #| QtCore.Qt.WindowCloseButtonHint)
 
     def _initUI(self):
         self.setWindowTitle("Task Editor")
