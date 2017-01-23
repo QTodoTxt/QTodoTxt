@@ -16,7 +16,6 @@ import qtodotxt.ui.qTodoTxt_dark_style_rc  # noqa: F401
 
 from qtodotxt.ui.controllers.main_controller import MainController
 from qtodotxt.ui.dialogs.misc_dialogs import Dialogs
-from qtodotxt.ui.dialogs.taskeditor import TaskEditor
 from qtodotxt.ui.views.main_view import MainView
 from qtodotxt.lib.file import FileObserver
 from qtodotxt.lib.tendo_singleton import SingleInstance
@@ -92,8 +91,7 @@ def _setupLogging(loglevel):
 def _createController(args):
     window = MainView()
     dialogs = Dialogs(window, 'QTodoTxt')
-    taskeditor = TaskEditor(window)
-    return MainController(window, dialogs, taskeditor, args)
+    return MainController(window, dialogs, args)
 
 
 def setupAnotherInstanceEvent(controller, dir):

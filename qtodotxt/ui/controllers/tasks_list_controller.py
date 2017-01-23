@@ -1,3 +1,8 @@
+import os
+from datetime import date
+from datetime import timedelta
+import re
+
 from PyQt5 import QtCore
 from PyQt5 import QtGui
 from PyQt5 import QtWidgets
@@ -5,12 +10,10 @@ from PyQt5 import QtWidgets
 from qtodotxt.lib import tasklib
 from qtodotxt.lib.task_htmlizer import TaskHtmlizer
 
-from datetime import date
-from _datetime import timedelta
 
-import os
-import re
 from qtodotxt.lib.tasklib import recursiveMode
+from qtodotxt.ui.dialogs.taskeditor import TaskEditor
+from qtodotxt.ui.dialogs.taskeditor_lineedit import TaskEditorLineEdit
 
 
 class TasksListController(QtCore.QObject):
@@ -20,16 +23,18 @@ class TasksListController(QtCore.QObject):
     taskArchived = QtCore.pyqtSignal(tasklib.Task)
     taskDeleted = QtCore.pyqtSignal(tasklib.Task)
 
-    def __init__(self, view, task_editor_service):
+    def __init__(self, view, mfile):
         QtCore.QObject.__init__(self)
         self.style = ":/white_icons"
         if str(QtCore.QSettings().value("color_schem", "")).find("dark") >= 0:
             self.style = ":/dark_icons"
+        self._settings = QtCore.QSettings()
         self.view = view
-        self._task_editor_service = task_editor_service
         self._task_htmlizer = TaskHtmlizer()
+        self._task_editor_service = TaskEditor(self.view, mfile)
+        self.view.setEditor(TaskEditorLineEdit, [mfile])
         self.view.taskActivated.connect(self.editTask)
-        self.view.itemSelectionChanged.connect(self.updateActions)
+        self.view.currentTaskChanged.connect(self.updateActions)
         self._initCreateTaskAction()
         self._initEditTaskAction()
         self._initCopySelectedTasksAction()
@@ -39,7 +44,17 @@ class TasksListController(QtCore.QObject):
         self._initDecreasePrioritySelectedTasksAction()
         self._initIncreasePrioritySelectedTasksAction()
         self._initCreateTaskActionOnTemplate()
+        self.view.taskCreated.connect(self._task_created)
+        self.view.taskModified.connect(self._task_modified)
         self.disableTaskActions()
+
+    def _task_created(self, task):
+        self.view.clearSelection()
+        self.view.selectTask(task)
+        self.taskCreated.emit(task)
+
+    def _task_modified(self, task):
+        self.taskModified.emit(task)
 
     def _initEditTaskAction(self):
         action = QtWidgets.QAction(QtGui.QIcon(self.style +
@@ -105,6 +120,10 @@ class TasksListController(QtCore.QObject):
         action.triggered.connect(self._increasePriority)
         self.view.addListAction(action)
         self.increasePrioritySelectedTasksAction = action
+
+    @property
+    def _useTaskDialog(self):
+        return int(self._settings.value("use_task_dialog", 0))
 
     def completeTask(self, task):
         if not task.is_complete:
@@ -239,45 +258,50 @@ class TasksListController(QtCore.QObject):
 
     def _addCreationDate(self, text):
         date_string = date.today().strftime('%Y-%m-%d')
-        if text[:3] in self._task_editor_service._priorities:
+        if text[:3] in self._task_editor_service.priorities:
             text = '%s %s %s' % (text[:3], date_string, text[4:])
         else:
             text = '%s %s' % (date_string, text)
         return text
 
-    def createTask(self, arg_text=None):
-        if not arg_text:
-            (text, ok) = self._task_editor_service.createTask()
-        else:
-            text = arg_text
-            ok = True
-        if ok and text:
-            if int(QtCore.QSettings().value("add_created_date", 0)):
+    def _createTask(self, text):
+        if int(QtCore.QSettings().value("add_created_date", 0)):
                 text = self._removeCreationDate(text)
                 text = self._addCreationDate(text)
-            task = tasklib.Task(text)
-            self.view.addTask(task)
-            self.view.clearSelection()
-            self.view.selectTask(task)
-            self.taskCreated.emit(task)
+        task = tasklib.Task(text)
+        self.view.addTask(task)
+        self._task_created(task)
         return task
+
+    def createTask(self):
+        if not self._useTaskDialog:
+            self.view.createTask()
+            return
+        (text, ok) = self._task_editor_service.createTask()
+        if ok and text:
+            task = self._createTask(text)
+            return task
 
     def createTaskOnTemplate(self):
         tasks = self.view.getSelectedTasks()
         if len(tasks) != 1:
             return
         task = tasks[0]
+        if not self._useTaskDialog:
+            self.view.createTask(task)
+            return
         (text, ok) = self._task_editor_service.createTask(task)
         if ok and text:
             if int(QtCore.QSettings().value("add_created_date", 0)):
                 text = self._addCreationDate(text)
             task = tasklib.Task(text)
             self.view.addTask(task)
-            self.view.clearSelection()
-            self.view.selectTask(task)
-            self.taskCreated.emit(task)
+            self._task_created(task)
 
     def editTask(self, task=None):
+        if not self._useTaskDialog:
+            self.view.editCurrentTask()
+            return
         if not task:
             tasks = self.view.getSelectedTasks()
             task = tasks[0]
@@ -286,7 +310,7 @@ class TasksListController(QtCore.QObject):
             if text != task.text:
                 task.parseLine(text)
                 self.view.updateTask(task)
-                self.taskModified.emit(task)
+                self._task_modified(task)
 
     def _copySelectedTasks(self):
         tasks = self.view.getSelectedTasks()
@@ -295,10 +319,10 @@ class TasksListController(QtCore.QObject):
             app = QtWidgets.QApplication.instance()
             app.clipboard().setText(text)
 
-    def updateActions(self):
-        if len(self.view.getSelectedTasks()) > 0:
+    def updateActions(self, tasks):
+        if tasks:
             self.enableTaskActions()
-            if len(self.view.getSelectedTasks()) > 1:
+            if len(tasks) > 1:
                 self.editTaskAction.setEnabled(False)
                 self.createTaskActionOnTemplate.setEnabled(False)
         else:
