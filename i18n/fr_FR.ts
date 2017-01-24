@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="fr_FR" sourcelanguage="en">
+<!DOCTYPE TS>
+<TS version="2.0" language="fr_FR" sourcelanguage="en">
 <context>
     <name>MainController</name>
     <message>
         <location filename="main_controller.py" line="70"/>
         <source>Show &amp;Filters</source>
-        <translation type="unfinished"></translation>
+        <translation>Montrer &amp;Filtres</translation>
     </message>
     <message>
         <location filename="main_controller.py" line="76"/>
@@ -44,7 +45,7 @@
     </message>
     <message>
         <location filename="main_controller.py" line="413"/>
-        <source>Current file &apos;{}&apos; is not available.
+        <source>Current file '{}' is not available.
 Exception: {}</source>
         <translation type="unfinished"></translation>
     </message>
