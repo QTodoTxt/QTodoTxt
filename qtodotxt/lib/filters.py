@@ -229,12 +229,9 @@ class DueOverdueFilter(BaseFilter):
         if not task.due:
             return False
         else:
-            if not task.due:
-                return False
-            else:
-                due_date = task.due
-                today = datetime.combine(date.today(), datetime.min.time())
-                return due_date < today
+            due_date = task.due
+            today = datetime.combine(date.today(), datetime.min.time())
+            return due_date < today
 
     def __str__(self):
         return "DueOverdueFilter(%s)" % self.text
