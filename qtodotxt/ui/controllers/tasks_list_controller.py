@@ -16,6 +16,19 @@ from qtodotxt.ui.dialogs.taskeditor import TaskEditor
 from qtodotxt.ui.dialogs.taskeditor_lineedit import TaskEditorLineEdit
 
 
+class LinkDialog(QtWidgets.QFileDialog):
+    def __init__(self, parent, directory):
+        QtWidgets.QFileDialog.__init__(self, parent, caption="Select file", directory=directory)
+        self.setFileMode(QtWidgets.QFileDialog.AnyFile)
+        self.setViewMode(QtWidgets.QFileDialog.Detail)
+
+    @staticmethod
+    def getLink(parent, directory):
+        dia = LinkDialog(parent, directory=directory)
+        if dia.exec_():
+            return dia.selectedFiles()
+
+
 class TasksListController(QtCore.QObject):
 
     taskModified = QtCore.pyqtSignal(tasklib.Task)
@@ -44,6 +57,7 @@ class TasksListController(QtCore.QObject):
         self._initDecreasePrioritySelectedTasksAction()
         self._initIncreasePrioritySelectedTasksAction()
         self._initCreateTaskActionOnTemplate()
+        self._initAddLinkAction()
         self.view.taskCreated.connect(self._task_created)
         self.view.taskModified.connect(self._task_modified)
         self.disableTaskActions()
@@ -120,6 +134,25 @@ class TasksListController(QtCore.QObject):
         action.triggered.connect(self._increasePriority)
         self.view.addListAction(action)
         self.increasePrioritySelectedTasksAction = action
+
+    def _initAddLinkAction(self):
+        self.addLinkAction = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/link.png'),
+                self.tr('Add &Link to file'), self)
+        self.addLinkAction.setCheckable(True)
+        self.addLinkAction.setShortcuts(['Ctrl+Shift+L'])
+        self.view.addListAction(self.addLinkAction)
+        self.addLinkAction.triggered.connect(self._addLink)
+
+    def _addLink(self):
+        tasks = self.view.getSelectedTasks()
+        if tasks:
+            paths = LinkDialog.getLink(self.view, directory=".")
+            for path in paths:
+                for task in tasks:
+                    new_text = task.text + " file:/" + path
+                    task.parseLine(new_text)
+                    self.view.updateTask(task)
+                    self.taskModified.emit(task)
 
     @property
     def _useTaskDialog(self):

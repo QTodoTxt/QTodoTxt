@@ -128,6 +128,10 @@ class MainController(QtCore.QObject):
         toolbar.addAction(self._tasks_list_controller.decreasePrioritySelectedTasksAction)
         toolbar.addSeparator()
         toolbar.addAction(self.archiveAction)
+
+        toolbar.addSeparator()
+        toolbar.addAction(self._tasks_list_controller.addLinkAction)
+
         self._show_toolbar.connect(toolbar.setVisible)
 
     def _toggleShowToolBar(self):
