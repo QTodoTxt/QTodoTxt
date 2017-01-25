@@ -8,24 +8,24 @@
         <translation>Zeige Filter</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="325"/>
+        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="324"/>
         <source>Unsaved changes...</source>
         <translation>Ungespeicherte Änderungen...</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="399"/>
+        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="398"/>
         <source>Revert to saved file (and lose unsaved changes)?</source>
         <translation>Änderungen verwerfen und zu gespeicherter Datei zurück kehren?</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="413"/>
+        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="412"/>
         <source>Current file &apos;{}&apos; is not available.
 Exception: {}</source>
         <translation>Aktuelle Datei &apos;{}&apos; ist nicht verfügbar.
 Fehler: {}</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="416"/>
+        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="415"/>
         <source>Error opening file: {}.
  Exception:{}</source>
         <translation>Fehler beim Öffnen der Datei: {}.
@@ -118,79 +118,104 @@ Fehler:{}</translation>
 <context>
     <name>SettingsUI</name>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="100"/>
-        <source>Preferences</source>
-        <translation>Einstellungen</translation>
-    </message>
-    <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="101"/>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="107"/>
         <source>QTodoTxt Settings</source>
         <translation>QTodoTxt Einstellungen</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="102"/>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="108"/>
         <source>Autosave</source>
         <translation>Automatisches Speichern</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="103"/>
-        <source>Single instance (need restart)</source>
-        <translation>Nur eine Insatz erlauben (benötigt Neustart)</translation>
-    </message>
-    <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="104"/>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="109"/>
         <source>AutoArchive</source>
         <translation>Automatische Archivierung</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="105"/>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="110"/>
         <source>Add created date</source>
         <translation>Erstellungsdatum hinzu fügen</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="106"/>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="111"/>
         <source>Ask for confirmation before task completion</source>
         <translation>Bestätigen vor dem Abschließen der Aufgabe</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="107"/>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="113"/>
         <source>Lowest task priority</source>
         <translation>Niedrigste Aufgaben Priorität</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="108"/>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="120"/>
         <source>Close</source>
         <translation>Schließen</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="110"/>
-        <source>Show Delete action (Requires restart)</source>
-        <translation>Ermögliche Löschen (erfordert Neustart)</translation>
-    </message>
-    <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="111"/>
-        <source>Enable system tray (Requires restart)</source>
-        <translation>Taskleisten Symbol aktivieren (erfordert Neustart)</translation>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="106"/>
+        <source>SettingsUI</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="112"/>
-        <source>Show/Hide on Tray Click</source>
-        <translation>Zeigen/Verstecken beim Klick auf Taskleisten Symbol</translation>
-    </message>
-    <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="113"/>
-        <source>Hide on Startup</source>
-        <translation>Minimiert starten</translation>
+        <source>Show Delete action (Require restart)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="114"/>
-        <source>Close to Tray</source>
-        <translation>Minimieren auf die Taskleiste</translation>
+        <source>D</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="115"/>
-        <source>Color schem (Requires restart):</source>
-        <translation>Farbschema (erfordert Neustart):</translation>
+        <source>Use popup dialogs to create and modify tasks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="116"/>
+        <source>Enable system tray (Require restart)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="117"/>
+        <source>Hide to tray</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="118"/>
+        <source>Hide on startupp</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="119"/>
+        <source>CheckBox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="121"/>
+        <source>Singleton mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="122"/>
+        <source>Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="123"/>
+        <source>System</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="124"/>
+        <source>dark_blue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="125"/>
+        <source>dark_orange</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -227,67 +252,67 @@ Fehler:{}</translation>
 <context>
     <name>TasksListController</name>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="42"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="60"/>
         <source>&amp;Edit Task</source>
         <translation>&amp;Aufgabe Bearbeiten</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="127"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="198"/>
         <source>Delete</source>
         <translation>Löschen</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="134"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="205"/>
         <source>&lt;b&gt;%s the following task?&lt;/b&gt;&lt;ul&gt;</source>
         <translation>&lt;b&gt;%s die folgende Aufgabe?&lt;/b&gt;&lt;ul&gt;</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="136"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="207"/>
         <source>&lt;b&gt;%s the following tasks?&lt;/b&gt;&lt;ul&gt;</source>
         <translation>&lt;b&gt;%s die folgenden Aufgaben?&lt;/b&gt;&lt;ul&gt;</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="140"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="211"/>
         <source>Confirm</source>
         <translation>Bestätigen</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="51"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="69"/>
         <source>&amp;Create new task</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="59"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="77"/>
         <source>&amp;Create a new task based on current task</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="67"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="85"/>
         <source>Copy selected tasks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="75"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="93"/>
         <source>&amp;Delete selected tasks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="83"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="101"/>
         <source>C&amp;omplete selected tasks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="91"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="109"/>
         <source>Decrease priority</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="99"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="117"/>
         <source>Increase priority</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="120"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="191"/>
         <source>Toggle completeness of</source>
         <translation type="unfinished"></translation>
     </message>
@@ -295,17 +320,17 @@ Fehler:{}</translation>
 <context>
     <name>TrayIcon</name>
     <message>
-        <location filename="../qtodotxt/app.py" line="42"/>
+        <location filename="../qtodotxt/app.py" line="41"/>
         <source>Create New Task</source>
         <translation>Neue Aufgabe erstellen</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/app.py" line="45"/>
+        <location filename="../qtodotxt/app.py" line="44"/>
         <source>Show/Hide Window</source>
         <translation>Fenster Zeigen/Verstecken</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/app.py" line="47"/>
+        <location filename="../qtodotxt/app.py" line="46"/>
         <source>Exit</source>
         <translation>Beenden</translation>
     </message>
