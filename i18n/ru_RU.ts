@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="ru_RU" sourcelanguage="en">
+<!DOCTYPE TS>
+<TS version="2.1" language="ru_RU" sourcelanguage="en">
 <context>
     <name>MainController</name>
     <message>
@@ -54,7 +55,7 @@ Exception: {}</source>
     <message>
         <location filename="../qtodotxt/ui/controllers/main_controller.py" line="98"/>
         <source>Show search bar</source>
-        <translation>Показать строку &amp;поиска</translation>
+        <translation>Показать строку поиска</translation>
     </message>
 </context>
 <context>

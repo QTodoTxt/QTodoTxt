@@ -16,13 +16,13 @@
     <message>
         <location filename="../qtodotxt/ui/controllers/main_controller.py" line="398"/>
         <source>Revert to saved file (and lose unsaved changes)?</source>
-        <translation>Rétablir à partir d'un fichier (et perdre les modifications non sauvegardées) ?</translation>
+        <translation>Rétablir à partir d&apos;un fichier (et perdre les modifications non sauvegardées) ?</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/main_controller.py" line="412"/>
-        <source>Current file '{}' is not available.
+        <source>Current file &apos;{}&apos; is not available.
 Exception: {}</source>
-        <translation>Le fichier '{}' n'est pas disponible.
+        <translation>Le fichier &apos;{}&apos; n&apos;est pas disponible.
 Exception: {}</translation>
     </message>
     <message>
@@ -50,7 +50,7 @@ Exception: {}</translation>
     <message>
         <location filename="../qtodotxt/ui/controllers/main_controller.py" line="93"/>
         <source>Show tool&amp;Bar</source>
-        <translation>Afficher &amp;Barre d'outils</translation>
+        <translation>Afficher &amp;Barre d&apos;outils</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/main_controller.py" line="98"/>

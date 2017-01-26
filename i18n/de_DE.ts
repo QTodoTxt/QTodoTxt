@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="de_DE" sourcelanguage="en">
+<!DOCTYPE TS>
+<TS version="2.1" language="de_DE" sourcelanguage="en">
 <context>
     <name>MainController</name>
     <message>
         <location filename="../qtodotxt/ui/controllers/main_controller.py" line="70"/>
         <source>Show &amp;Filters</source>
-        <translation>Zeige Filter</translation>
+        <translation>Zeige &amp;Filter</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/main_controller.py" line="324"/>
@@ -62,57 +63,57 @@ Fehler:{}</translation>
     <message>
         <location filename="../qtodotxt/ui/controllers/menu_controller.py" line="26"/>
         <source>&amp;File</source>
-        <translation>Datei</translation>
+        <translation>&amp;Datei</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/menu_controller.py" line="67"/>
         <source>&amp;Edit</source>
-        <translation>Bearbeiten</translation>
+        <translation>&amp;Bearbeiten</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/menu_controller.py" line="82"/>
         <source>&amp;View</source>
-        <translation>Ansicht</translation>
+        <translation>&amp;Ansicht</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/menu_controller.py" line="91"/>
         <source>&amp;Help</source>
-        <translation>Hilfe</translation>
+        <translation>&amp;Hilfe</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/menu_controller.py" line="103"/>
         <source>&amp;Shortcuts list</source>
-        <translation>Liste der Tastaturkürzel</translation>
+        <translation>&amp;Liste der Tastaturkürzel</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/menu_controller.py" line="119"/>
         <source>&amp;New</source>
-        <translation>Neu</translation>
+        <translation>&amp;Neu</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/menu_controller.py" line="128"/>
         <source>&amp;Open</source>
-        <translation>Öffnen</translation>
+        <translation>&amp;Öffnen</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/menu_controller.py" line="136"/>
         <source>&amp;Save</source>
-        <translation>Speichern</translation>
+        <translation>&amp;Speichern</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/menu_controller.py" line="144"/>
         <source>&amp;Revert</source>
-        <translation>Zurück</translation>
+        <translation>&amp;Zurück</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/menu_controller.py" line="151"/>
         <source>&amp;Preferences</source>
-        <translation>Einstellungen</translation>
+        <translation>&amp;Einstellungen</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/menu_controller.py" line="159"/>
         <source>E&amp;xit</source>
-        <translation>Beenden</translation>
+        <translation>&amp;Beenden</translation>
     </message>
 </context>
 <context>
@@ -165,7 +166,7 @@ Fehler:{}</translation>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="114"/>
         <source>D</source>
-        <translation type="unfinished"></translation>
+        <translation>D</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="115"/>
@@ -190,7 +191,7 @@ Fehler:{}</translation>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="119"/>
         <source>CheckBox</source>
-        <translation type="unfinished"></translation>
+        <translation>CheckBox</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="121"/>
@@ -205,17 +206,17 @@ Fehler:{}</translation>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="123"/>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>System</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="124"/>
         <source>dark_blue</source>
-        <translation type="unfinished"></translation>
+        <translation>dark_blue</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="125"/>
         <source>dark_orange</source>
-        <translation type="unfinished"></translation>
+        <translation>dark_orange</translation>
     </message>
 </context>
 <context>
