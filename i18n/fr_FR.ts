@@ -35,27 +35,27 @@ Exception: {}</translation>
     <message>
         <location filename="../qtodotxt/ui/controllers/main_controller.py" line="76"/>
         <source>Show future &amp;Tasks</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher &amp;Tâches à réaliser</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/main_controller.py" line="82"/>
         <source>Show &amp;Completed tasks</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher les tâches &amp;Complétées</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/main_controller.py" line="88"/>
         <source>&amp;Archive completed tasks</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Archiver les tâches terminées</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/main_controller.py" line="93"/>
         <source>Show tool&amp;Bar</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher &amp;Barre d&apos;outils</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/main_controller.py" line="98"/>
         <source>Show search bar</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher barre de recherche</translation>
     </message>
 </context>
 <context>
@@ -156,67 +156,67 @@ Exception: {}</translation>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="106"/>
         <source>SettingsUI</source>
-        <translation type="unfinished"></translation>
+        <translation>SettingsUI</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="112"/>
         <source>Show Delete action (Require restart)</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher action supprimer (Nécessite un redémarrage)</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="114"/>
         <source>D</source>
-        <translation type="unfinished"></translation>
+        <translation>D</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="115"/>
         <source>Use popup dialogs to create and modify tasks</source>
-        <translation type="unfinished"></translation>
+        <translation>Utiliser des fenêtres popup pour créer et modifier des tâches</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="116"/>
         <source>Enable system tray (Require restart)</source>
-        <translation type="unfinished"></translation>
+        <translation>Activer la barre système (Nécessite un redémarrage)</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="117"/>
         <source>Hide to tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Réduire la fenêtre</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="118"/>
         <source>Hide on startupp</source>
-        <translation type="unfinished"></translation>
+        <translation>Cacher au démarrage</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="119"/>
         <source>CheckBox</source>
-        <translation type="unfinished"></translation>
+        <translation>CheckBox</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="121"/>
         <source>Singleton mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Mode Instance Unique</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="122"/>
         <source>Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Thème</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="123"/>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>Système</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="124"/>
         <source>dark_blue</source>
-        <translation type="unfinished"></translation>
+        <translation>dark_blue</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="125"/>
         <source>dark_orange</source>
-        <translation type="unfinished"></translation>
+        <translation>dark_orange</translation>
     </message>
 </context>
 <context>
@@ -280,42 +280,42 @@ Exception: {}</translation>
     <message>
         <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="69"/>
         <source>&amp;Create new task</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Créer nouvelle tâche</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="77"/>
         <source>&amp;Create a new task based on current task</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Créer une nouvelle tâche à partir de la tâche active</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="85"/>
         <source>Copy selected tasks</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier les tâches sélectionnées</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="93"/>
         <source>&amp;Delete selected tasks</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer les tâches sélectionnées (&amp;D)</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="101"/>
         <source>C&amp;omplete selected tasks</source>
-        <translation type="unfinished"></translation>
+        <translation>C&amp;ompléter les tâches sélectionnées</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="109"/>
         <source>Decrease priority</source>
-        <translation type="unfinished"></translation>
+        <translation>Réduire la priorité</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="117"/>
         <source>Increase priority</source>
-        <translation type="unfinished"></translation>
+        <translation>Augmenter la priorité</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="191"/>
         <source>Toggle completeness of</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher la complétion de</translation>
     </message>
 </context>
 <context>
