@@ -2,7 +2,7 @@ from PyQt5 import QtCore, QtGui
 from PyQt5 import QtWidgets
 from qtodotxt.lib.filters import ContextFilter, CompleteTasksFilter, DueFilter, DueOverdueFilter, DueThisMonthFilter, \
     DueThisWeekFilter, DueTodayFilter, DueTomorrowFilter, HasContextsFilter, HasDueDateFilter, HasProjectsFilter, \
-    ProjectFilter, UncategorizedTasksFilter, AllTasksFilter
+    ProjectFilter, UncategorizedTasksFilter, AllTasksFilter, PriorityFilter
 
 
 class FiltersTreeView(QtWidgets.QWidget):
@@ -76,6 +76,8 @@ class FiltersTreeView(QtWidgets.QWidget):
         nbProjCompl = counters['ProjCompl']
         nbDueCompl = counters['DueCompl']
         nbUncatCompl = counters['UncatCompl']
+        nbPriority = counters['Priority']
+        nbPrioCompl = counters['PrioCompl']
 
         self._completeTasksItem.setText(0, "Complete (%d)" % nbComplete)
         if (show_completed is True):
@@ -83,12 +85,14 @@ class FiltersTreeView(QtWidgets.QWidget):
             self._dueItem.setText(0, "Due ({0}; {1})".format(nbDue, nbDueCompl))
             self._contextsItem.setText(0, "Contexts ({0}; {1})".format(nbContexts, nbContCompl))
             self._projectsItem.setText(0, "Projects ({0}; {1})".format(nbProjects, nbProjCompl))
+            self._priorityItem.setText(0, "Priority ({0}; {1})".format(nbPriority, nbPrioCompl))
             self._uncategorizedTasksItem.setText(0, "Uncategorized ({0}; {1})".format(nbUncategorized, nbUncatCompl))
         else:
             self._allTasksItem.setText(0, "All (%d)" % nbPending)
             self._contextsItem.setText(0, "Contexts (%d)" % nbContexts)
             self._projectsItem.setText(0, "Projects (%d)" % nbProjects)
             self._dueItem.setText(0, "Due (%d)" % nbDue)
+            self._priorityItem.setText(0, "Priority (%d)" % nbPriority)
             self._uncategorizedTasksItem.setText(0, "Uncategorized (%d)" % nbUncategorized)
 
     def selectAllTasksFilter(self):
@@ -109,6 +113,10 @@ class FiltersTreeView(QtWidgets.QWidget):
 
     def _selectDueRange(self, due):
         item = self._findItem(due, self._dueItem)
+        self._selectItem(item)
+
+    def _selectPriority(self, priority):
+        item = self._findItem(priority, self._priorityItem)
         self._selectItem(item)
 
     def _findItem(self, text, parentItem):
@@ -160,6 +168,10 @@ class FiltersTreeView(QtWidgets.QWidget):
                                                   ['Projects'],
                                                   HasProjectsFilter(),
                                                   QtGui.QIcon(self.style + '/resources/FilterProjects.png'))
+        self._priorityItem = FilterTreeWidgetItem(None,
+                                                       ['Priorities'],
+                                                       PriorityFilter(),
+                                                       QtGui.QIcon(self.style + '/resources/FilterComplete.png'))
         self._completeTasksItem = FilterTreeWidgetItem(None,
                                                        ['Complete'],
                                                        CompleteTasksFilter(),
@@ -170,6 +182,7 @@ class FiltersTreeView(QtWidgets.QWidget):
             self._dueItem,
             self._contextsItem,
             self._projectsItem,
+            self._priorityItem,
             self._completeTasksItem
         ])
 
@@ -193,6 +206,7 @@ class FiltersTreeView(QtWidgets.QWidget):
         self._treeItemByFilterType[HasProjectsFilter] = self._projectsItem
         self._treeItemByFilterType[HasDueDateFilter] = self._dueItem
         self._treeItemByFilterType[HasContextsFilter] = self._contextsItem
+        self._treeItemByFilterType[PriorityFilter] = self._priorityItem
 
     def _tree_itemSelectionChanged(self):
         self.filterSelectionChanged.emit(self.getSelectedFilters())
@@ -214,6 +228,8 @@ class FiltersTreeView(QtWidgets.QWidget):
             self._selectDueRange(filter.text)
         elif isinstance(filter, DueOverdueFilter):
             self._selectDueRange(filter.text)
+        elif isinstance(filter, PriorityFilter):
+            self._selectPriority(filter.text)
         else:
             item = self._treeItemByFilterType[type(filter)]
             self._selectItem(item)
