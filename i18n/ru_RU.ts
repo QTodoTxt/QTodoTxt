@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru_RU" sourcelanguage="en">
+<TS version="2.0" language="ru_RU" sourcelanguage="en">
 <context>
     <name>MainController</name>
     <message>
@@ -20,9 +20,9 @@
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/main_controller.py" line="412"/>
-        <source>Current file &apos;{}&apos; is not available.
+        <source>Current file '{}' is not available.
 Exception: {}</source>
-        <translation>Текущий файл &apos;{}&apos; не доступен.
+        <translation>Текущий файл '{}' не доступен.
 Ошибка: {}</translation>
     </message>
     <message>
@@ -156,7 +156,7 @@ Exception: {}</source>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="106"/>
         <source>SettingsUI</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">SettingsUI</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="112"/>
@@ -166,7 +166,7 @@ Exception: {}</source>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="114"/>
         <source>D</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">D</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="115"/>
@@ -191,7 +191,7 @@ Exception: {}</source>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="119"/>
         <source>CheckBox</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CheckBox</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="121"/>
@@ -315,7 +315,7 @@ Exception: {}</source>
     <message>
         <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="191"/>
         <source>Toggle completeness of</source>
-        <translation>Изменить статус </translation>
+        <translation type="unfinished">Изменить статус</translation>
     </message>
 </context>
 <context>
