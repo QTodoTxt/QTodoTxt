@@ -11,7 +11,7 @@
     <message>
         <location filename="../qtodotxt/ui/controllers/main_controller.py" line="76"/>
         <source>Show future &amp;Tasks</source>
-        <translation>Zobrazit budoucí úkoly</translation>
+        <translation>Zobrazit &amp;budoucí úkoly</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/controllers/main_controller.py" line="82"/>
