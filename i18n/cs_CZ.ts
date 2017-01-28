@@ -196,7 +196,7 @@ Exception: {}</translation>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="121"/>
         <source>Singleton mode</source>
-        <translation>Singleton mode</translation>
+        <translation>Mód jednoho okna</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="122"/>
