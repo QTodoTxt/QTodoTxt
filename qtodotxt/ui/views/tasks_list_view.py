@@ -1,207 +1,196 @@
 from PyQt5.QtCore import pyqtSignal, Qt, QSize
-from PyQt5.QtGui import QStandardItemModel, QStandardItem, QTextDocument, QAbstractTextDocumentLayout, QPalette
-from PyQt5.QtWidgets import QListView, QStyledItemDelegate, QStyleOptionViewItem, QApplication, QStyle
+from PyQt5.QtWidgets import QWidget, QStackedLayout, QHBoxLayout, QListWidget, QLabel, QListView, QListWidgetItem, QSizePolicy
 
-from qtodotxt.lib.task_htmlizer import TaskHtmlizer
 from qtodotxt.lib import tasklib
+from qtodotxt.ui.dialogs.taskeditor_lineedit import TaskEditorLineEdit
 
 
-class TasksListView(QListView):
+class TaskWidget(QWidget):
+
+    taskModified = pyqtSignal(tasklib.Task)
+    taskDeleted = pyqtSignal(tasklib.Task)
+    taskCreated = pyqtSignal(tasklib.Task)
+
+    def __init__(self, parent, task, new=False):
+        QWidget.__init__(self, parent)
+        self.task = task
+        self.new = new
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.layout = QStackedLayout(self)
+
+        self.label = QLabel(self)
+        self.label.setTextFormat(Qt.RichText)
+        self.label.setOpenExternalLinks(True)
+        self._update()
+        self.label.setWordWrap(True)
+        # set minimum width to a reasonable value to get a useful
+        # sizeHint _height_ when using word wrap
+        #self.label.setMinimumWidth(self.width() - 20)
+        self.layout.addWidget(self.label)
+
+        self.editor = TaskEditorLineEdit(self, parent.mfile)
+        self.layout.addWidget(self.editor)
+        self.setLayout(self.layout)
+        self.layout.setCurrentIndex(0)
+        self.editor.editingFinished.connect(self.editFinished)
+        self.task.modified.connect(self._update)
+
+    def sizeHint(self):
+        #return QSize(self.label., 60)
+        return self.label.size()
+
+    def edit(self):
+        self.editor.setText(self.task.text)
+        self.layout.setCurrentIndex(1)
+        self.editor.setFocus()
+
+    def editFinished(self):
+        # qt bug, this method may be called several times for one edit
+        self.layout.setCurrentIndex(0)
+        text = self.editor.text()
+        if not text:
+            self.taskDeleted.emit(self.task)
+        elif self.new:
+            self.task.text = text
+            self.new = False
+            self.taskCreated.emit(self.task)
+        elif text != self.task.text:
+            self.task.text = text
+            self.taskModified.emit(self)
+        self.parent().setFocus()
+
+    def _update(self):
+        self.label.setText(self.task.toHtml())
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Escape:
+            self.editor.setText(self.task.text)
+            self.layout.setCurrentIndex(0)
+            self.parent().setFocus()
+
+
+class TasksListView(QListWidget):
 
     taskActivated = pyqtSignal(tasklib.Task)
     currentTaskChanged = pyqtSignal(list)
     taskModified = pyqtSignal(tasklib.Task)
     taskCreated = pyqtSignal(tasklib.Task)
+    taskDeleted = pyqtSignal(tasklib.Task)
 
     def __init__(self, parent):
-        QListView.__init__(self)
-        self.model = QStandardItemModel()
-        self.setModel(self.model)
+        QListWidget.__init__(self, parent)
+        self.mfile = None
         self.setAlternatingRowColors(True)
         self.LayoutMode = QListView.Batched
         self.setResizeMode(QListView.Adjust)
-        self._task_htmlizer = TaskHtmlizer()
-        self._delegate = MyDelegate(self)
-        self.setItemDelegate(self._delegate)
         self.activated.connect(self._taskActivated)
-        self._delegate.taskModified.connect(self.taskModified.emit)
-        self._delegate.taskCreated.connect(self.taskCreated.emit)
+
+    def setFileObject(self, mfile):
+        self.mfile = mfile
 
     def _taskActivated(self, idx):
-        it = self.model.itemFromIndex(idx)
-        task = it.data(Qt.UserRole)
-        self.taskActivated.emit(task)
+        self.taskActivated.emit(self.taskFromIndex(idx))
+
+    def taskFromIndex(self, idx):
+        it = self.itemFromIndex(idx)
+        if it:
+            return self.itemWidget(it).task
 
     def currentChanged(self, current, previous):
-        it = self.model.itemFromIndex(current)
+        it = self.itemFromIndex(current)
         self.scrollTo(current)  # maybe should be in task controller
-        if it:
-            task = it.data(Qt.UserRole)
-            self.currentTaskChanged.emit([task])
-
-    def setEditor(self, editor_type, editor_args):
-        self._delegate.editor = editor_type
-        self._delegate.editor_args = editor_args
+        widg = self.itemWidget(it)
+        if widg:
+            self.currentTaskChanged.emit([widg.task])
 
     def createTask(self, template_task=None):
-        if template_task is not None:
+        """
+        Add a task and start editing it with inline editor
+        """
+        if isinstance(template_task, tasklib.Task):
             task = tasklib.Task(template_task.text)
         else:
             task = tasklib.Task("")
-        task.new = True
-        item = QStandardItem()
-        item.setData(task, Qt.UserRole)
-        item.setData(self._task_htmlizer.task2html(task), Qt.DisplayRole)
         idxs = self.selectedIndexes()
+        item = self.addTask(task, idxs, new=True)
+        self.scrollToItem(item)
+        self.itemWidget(item).edit()
+
+    def items(self):
+        """
+        iterate over all items
+        """
+        for i in range(self.count()):
+            yield self.item(i)
+
+    def tasks(self):
+        """
+        iterate over all tasks
+        """
+        for i in range(self.count()):
+            yield self.indexWidget(i).task
+
+    def addTask(self, task, idxs=None, new=False):
+        """
+        add a new task to the view
+        """
+        item = QListWidgetItem()
+        twidget = TaskWidget(self, task, new=new)
+        ## set items size and add some space between items
+        item.setSizeHint(twidget.sizeHint())
         if not idxs:
-            self.model.appendRow(item)
-            self.edit(self.model.index(self.model.rowCount()-1, 0))
+            self.addItem(item)
         else:
-            idx = idxs[-1].row()
-            self.model.insertRow(idx, item)
-            self.edit(self.model.index(idx, 0))
-
-    def addTask(self, task):
-        item = QStandardItem()
-        item.setData(self._task_htmlizer.task2html(task), Qt.DisplayRole)
-        item.setData(task, Qt.UserRole)
-        self.model.appendRow(item)
-
-    def addListAction(self, action):
-        self.addAction(action)
+            row = idxs[-1].row()
+            row += 1
+            self.insertItem(row, item)
+        self.setItemWidget(item, twidget)
+        twidget.taskModified.connect(self.taskModified.emit)
+        twidget.taskDeleted.connect(self._taskDeleted)
+        twidget.taskCreated.connect(self.taskCreated.emit)
+        return item
 
     def findItemByTask(self, task):
-        for idx in range(self.model.rowCount()):
-            item = self.model.item(idx)
-            listtask = item.data(Qt.UserRole)
-            if listtask == task:
-                return item
+        for it in self.items():
+            if task == self.itemWidget(it).task:
+                return it
         return None
 
-    def updateTask(self, task):
-        item = self.findItemByTask(task)
-        html = self._task_htmlizer.task2html(task)
-        item.setData(html, Qt.DisplayRole)
-
-    def _selectItem(self, item):
-        if item:
-            item.setSelected(True)
-            self.setCurrentItem(item)
-
     def selectTask(self, task):
-        for idx in range(self.model.rowCount()):
-            item = self.model.item(idx)
-            listtask = item.data(Qt.UserRole)
-            if listtask == task:
-                self.setCurrentIndex(self.model.index(idx, 0))
-
-    def selectTaskByText(self, text):
-        for idx in range(self.model.rowCount()):
-            item = self.model.item(idx)
-            task = item.data(Qt.UserRole)
-            if task.text == text:
-                self.setCurrentIndex(self.model.index(idx, 0))
-
-    def removeTask(self, task):
-        for idx in range(self.model.rowCount()):
-            item = self.model.item(idx)
-            listtask = item.data(Qt.UserRole)
-            if listtask == task:
-                self.model.removeRow(idx)
+        for item in self.items():
+            if self.itemWidget(item).task == task:
+                self.setCurrentItem(item)
                 return
 
-    def _list_itemActivated(self, item):
-        self.taskActivated.emit(item.task)
+    def selectTaskByText(self, text):
+        for item in self.items():
+            if self.itemWidget(item).task.text == text:
+                self.setCurrentItem(item)
+                return
+
+    def removeTask(self, task):
+        for item in self.items():
+            if self.itemWidget(item).task == task:
+                self.takeItem(self.indexFromItem(item).row())
+                return
+
+    def _taskDeleted(self, task):
+        emit = False
+        it = self.findItemByTask(task)
+        widg = self.itemWidget(it)
+        if not widg:  # can happen due to qt bug mentiooned above
+            return
+        if not self.itemWidget(it).new:
+            emit = True
+        self.removeTask(task)
+        if emit:
+            self.taskDeleted.emit(task)
 
     def getSelectedTasks(self):
         idxs = self.selectedIndexes()
-        return [self.model.itemFromIndex(idx).data(Qt.UserRole) for idx in idxs]
-
-    def getCurrentItem(self):
-        idx = self.currentItem()
-        it = self.model.itemFromIndex(idx)
-        return it
+        return [self.indexWidget(idx).task for idx in idxs]
 
     def editCurrentTask(self):
-        self.edit(self.currentIndex())
-
-    def clear(self):
-        self.model.clear()
-
-
-class MyDelegate(QStyledItemDelegate):
-
-    error = pyqtSignal(Exception)
-    taskModified = pyqtSignal(tasklib.Task)
-    taskCreated = pyqtSignal(tasklib.Task)
-
-    def __init__(self, parent):
-        QStyledItemDelegate.__init__(self, parent)
-        self.parent = parent
-        self.editor = None
-        self.editor_args = None
-        self._task_htmlizer = TaskHtmlizer()
-
-    def createEditor(self, parent, option, idx):
-        editor = self.editor(parent, *self.editor_args)
-        return editor
-
-    def setEditorData(self, editor, idx):
-        it = self.parent.model.itemFromIndex(idx)
-        task = it.data(Qt.UserRole)
-        editor.setText(task.text)
-
-    def setModelData(self, editor, model, idx):
-        it = model.itemFromIndex(idx)
-        task = it.data(Qt.UserRole)
-        task.parseLine(editor.text())
-        it.setData(self._task_htmlizer.task2html(task), Qt.DisplayRole)
-        if task.new and editor.text():
-            self.taskCreated.emit(task)
-            task.new = False
-        else:
-            self.taskModified.emit(task)
-
-    def paint(self, painter, option, index):
-        options = QStyleOptionViewItem(option)
-        self.initStyleOption(options, index)
-
-        style = QApplication.style() if options.widget is None else options.widget.style()
-
-        doc = QTextDocument()
-        doc.setHtml(options.text)
-        doc.setTextWidth(options.rect.width())
-
-        options.text = ""
-        style.drawControl(QStyle.CE_ItemViewItem, options, painter)
-
-        ctx = QAbstractTextDocumentLayout.PaintContext()
-        if option.state & QStyle.State_Selected:
-            ctx.palette.setColor(QPalette.Text, options.palette.color(QPalette.Active, QPalette.HighlightedText))
-        else:
-            ctx.palette.setColor(QPalette.Text, options.palette.color(QPalette.Active, QPalette.Text))
-
-        textRect = style.subElementRect(QStyle.SE_ItemViewItemText, options)
-        painter.save()
-        painter.translate(textRect.topLeft())
-        painter.setClipRect(textRect.translated(-textRect.topLeft()))
-        doc.documentLayout().draw(painter, ctx)
-
-        painter.restore()
-
-    def sizeHint(self, option, index):
-        options = QStyleOptionViewItem(option)
-        self.initStyleOption(options, index)
-
-        doc = QTextDocument()
-        doc.setHtml(options.text)
-        doc.setTextWidth(options.rect.width())
-        return QSize(doc.idealWidth(), doc.size().height())
-
-    def destroyEditor(self, editor, idx):
-        it = self.parent.model.item(idx.row())
+        it = self.currentItem()
         if it:
-            task = it.data(Qt.UserRole)
-            if not task.text:
-                self.parent.model.removeRow(idx.row())
-        QStyledItemDelegate.destroyEditor(self, editor, idx)
+            self.itemWidget(it).edit()

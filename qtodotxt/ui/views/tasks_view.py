@@ -5,8 +5,8 @@ from qtodotxt.ui.views.tasks_list_view import TasksListView
 
 class TasksView(QtWidgets.QWidget):
 
-    def __init__(self, parent=None):
-        super(TasksView, self).__init__(parent)
+    def __init__(self, parent):
+        QtWidgets.QWidget.__init__(self, parent)
         self.style = ":/white_icons"
         if str(QtCore.QSettings().value("color_schem", "")).find("dark") >= 0:
             self.style = ":/dark_icons"

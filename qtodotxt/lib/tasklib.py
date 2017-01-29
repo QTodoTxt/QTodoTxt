@@ -22,7 +22,7 @@ class recursion:
         self.interval = arg_interval
 
 
-class Task(object):
+class Task(QtCore.QObject):
     """
     Represent a task as defined in todo.txt format
     Take a line in todo.txt format as argument
@@ -30,22 +30,23 @@ class Task(object):
     use one the modification methods such as setCompleted()
     """
 
+    modified = QtCore.pyqtSignal(object)
+
     def __init__(self, line):
+        QtCore.QObject.__init__(self)
         settings = QtCore.QSettings()
         self._highest_priority = 'A'
         self._lowest_priority = settings.value("lowest_priority", "D")
-        # This attribute can be set before the task in inserted in a File
-        self.new = False
 
         # all other class attributes are defined in _reset method
-        # which is called in parseLine
-        self.parseLine(line)
+        # which is called in _parse
+        self._parse(line)
 
     def __str__(self):
-        return self.text
+        return self._text
 
     def __repr__(self):
-        return "Task({})".format(self.text)
+        return "Task({})".format(self._text)
 
     def _reset(self):
         self.contexts = []
@@ -56,7 +57,7 @@ class Task(object):
         self.creation_date = None
         self.is_future = False
         self.threshold_error = ""
-        self.text = ''
+        self._text = ''
         self.description = ''
         self.due = None
         self.due_error = ""
@@ -64,7 +65,7 @@ class Task(object):
         self.keywords = {}
         self.recursion = None
 
-    def parseLine(self, line):
+    def _parse(self, line):
         """
         parse a task formated as string in todo.txt format
         """
@@ -90,7 +91,16 @@ class Task(object):
         self.description = " ".join(words)
         for word in words:
             self._parseWord(word)
-        self.text = line
+        self._text = line
+    
+    @property
+    def text(self):
+        return self._text
+
+    @text.setter
+    def text(self, txt):
+        self._parse(txt)
+        self.modified.emit(self)
 
     def _parseWord(self, word):
         if len(word) > 1:
@@ -151,8 +161,10 @@ class Task(object):
     @property
     def dueString(self):
         return dateString(self.due)
-
+    
+    @staticmethod
     def updateDateInTask(self, text, newDate):
+        #FIXME: This method has nothing to do in this class, move womewhere else
         # (A) 2016-12-08 Feed Schrodinger's Cat rec:9w due:2016-11-23
         text = re.sub('\sdue\:[0-9]{4}\-[0-9]{2}\-[0-9]{2}', ' due:' + str(newDate)[0:10], text)
         return text
@@ -169,8 +181,9 @@ class Task(object):
             return
         self.completion_date = date.today()
         date_string = self.completion_date.strftime('%Y-%m-%d')
-        self.text = 'x %s %s' % (date_string, self.text)
+        self._text = 'x %s %s' % (date_string, self._text)
         self.is_complete = True
+        self.modified.emit(self)
 
     def setPending(self):
         """
@@ -178,14 +191,15 @@ class Task(object):
         """
         if not self.is_complete:
             return
-        words = self.text.split(" ")
+        words = self._text.split(" ")
         d = self._parseDate(words[1])
         if d:
-            self.text = " ".join(words[2:])
+            self._text = " ".join(words[2:])
         else:
-            self.text = " ".join(words[1:])
+            self._text = " ".join(words[1:])
         self.is_complete = False
         self.completion_date = None
+        self.modified.emit(self)
 
     def toHtml(self):
         """
@@ -199,25 +213,27 @@ class Task(object):
             return
         if not self.priority:
             self.priority = self._lowest_priority
-            self.text = "({}) {}".format(self.priority, self.text)
+            self._text = "({}) {}".format(self.priority, self._text)
         elif self.priority != self._highest_priority:
             self.priority = chr(ord(self.priority) - 1)
-            self.text = "({}) {}".format(self.priority, self.text[4:])
+            self._text = "({}) {}".format(self.priority, self._text[4:])
+        self.modified.emit(self)
 
     def decreasePriority(self):
         if self.is_complete:
             return
         if self.priority >= self._lowest_priority:
             self.priority = ""
-            self.text = self.text[4:]
-            self.text = self.text.replace("({})".format(self.priority), "", 1)
+            self._text = self._text[4:]
+            self._text = self._text.replace("({})".format(self.priority), "", 1)
         elif self.priority:
             oldpriority = self.priority
             self.priority = chr(ord(self.priority) + 1)
-            self.text = self.text.replace("({})".format(oldpriority), "({})".format(self.priority), 1)
+            self._text = self._text.replace("({})".format(oldpriority), "({})".format(self.priority), 1)
+        self.modified.emit(self)
 
     def __eq__(self, other):
-        return self.text == other.text
+        return self._text == other.text
 
     def __lt__(self, other):
         if self.is_complete != other.is_complete:
@@ -229,7 +245,7 @@ class Task(object):
                 return False
             return self.priority > other.priority
         # order the other tasks alphabetically
-        return self.text > other.text
+        return self._text > other.text
 
     def _lowerCompleteness(self, other):
         if self.is_complete and not other.is_complete:

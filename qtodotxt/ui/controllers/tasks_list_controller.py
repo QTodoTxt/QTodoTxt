@@ -30,11 +30,12 @@ class TasksListController(QtCore.QObject):
             self.style = ":/dark_icons"
         self._settings = QtCore.QSettings()
         self.view = view
+        self.view.setFileObject(mfile)
         self._task_htmlizer = TaskHtmlizer()
         self._task_editor_service = TaskEditor(self.view, mfile)
-        self.view.setEditor(TaskEditorLineEdit, [mfile])
         self.view.taskActivated.connect(self.editTask)
         self.view.currentTaskChanged.connect(self.updateActions)
+        self.view.taskDeleted.connect(self.taskDeleted.emit)
         self._initCreateTaskAction()
         self._initEditTaskAction()
         self._initCopySelectedTasksAction()
@@ -62,7 +63,7 @@ class TasksListController(QtCore.QObject):
         action.setShortcuts(['Ctrl+E', 'Enter'])
         action.setDisabled(True)
         action.triggered.connect(self.editTask)
-        self.view.addListAction(action)
+        self.view.addAction(action)
         self.editTaskAction = action
 
     def _initCreateTaskAction(self):
@@ -70,7 +71,7 @@ class TasksListController(QtCore.QObject):
                                    self.tr('&Create new task'), self)
         action.setShortcuts(['Insert', 'Ctrl+I', 'Ctrl+N'])
         action.triggered.connect(self.createTask)
-        self.view.addListAction(action)
+        self.view.addAction(action)
         self.createTaskAction = action
 
     def _initCreateTaskActionOnTemplate(self):
@@ -78,7 +79,7 @@ class TasksListController(QtCore.QObject):
                                    self.tr('&Create a new task based on current task'), self)
         action.setShortcuts(['Shift+Insert', 'Ctrl+Shift+I'])
         action.triggered.connect(self.createTaskOnTemplate)
-        self.view.addListAction(action)
+        self.view.addAction(action)
         self.createTaskActionOnTemplate = action
 
     def _initCopySelectedTasksAction(self):
@@ -86,7 +87,7 @@ class TasksListController(QtCore.QObject):
                                    self.tr('Copy selected tasks'), self)
         action.setShortcuts([QtGui.QKeySequence.Copy])
         action.triggered.connect(self._copySelectedTasks)
-        self.view.addListAction(action)
+        self.view.addAction(action)
         self.copySelectedTasksAction = action
 
     def _initDeleteSelectedTasksAction(self):
@@ -94,7 +95,7 @@ class TasksListController(QtCore.QObject):
                                    self.tr('&Delete selected tasks'), self)
         action.setShortcut('Delete')
         action.triggered.connect(self._deleteSelectedTasks)
-        self.view.addListAction(action)
+        self.view.addAction(action)
         self.deleteSelectedTasksAction = action
 
     def _initCompleteSelectedTasksAction(self):
@@ -102,7 +103,7 @@ class TasksListController(QtCore.QObject):
                                    self.tr('C&omplete selected tasks'), self)
         action.setShortcuts(['x', 'c'])
         action.triggered.connect(self._completeSelectedTasks)
-        self.view.addListAction(action)
+        self.view.addAction(action)
         self.completeSelectedTasksAction = action
 
     def _initDecreasePrioritySelectedTasksAction(self):
@@ -110,7 +111,7 @@ class TasksListController(QtCore.QObject):
                                    self.tr('Decrease priority'), self)
         action.setShortcuts(['-', '<'])
         action.triggered.connect(self._decreasePriority)
-        self.view.addListAction(action)
+        self.view.addAction(action)
         self.decreasePrioritySelectedTasksAction = action
 
     def _initIncreasePrioritySelectedTasksAction(self):
@@ -118,7 +119,7 @@ class TasksListController(QtCore.QObject):
                                    self.tr('Increase priority'), self)
         action.setShortcuts(['+', '>'])
         action.triggered.connect(self._increasePriority)
-        self.view.addListAction(action)
+        self.view.addAction(action)
         self.increasePrioritySelectedTasksAction = action
 
     @property
@@ -166,17 +167,17 @@ class TasksListController(QtCore.QObject):
                 next_due_date = date.today() + timedelta(weeks=int(task.recursion.increment) * 52)  # 52 weeks in a year
         else:
             # Test already made during line parsing - shouldn't be a problem here
-            None
+            pass
         # Set new due date in old task text
         rec_text = task.updateDateInTask(task.text, next_due_date)
         # create a new task duplicate
         return self.createTask(rec_text)
 
     def _incrWorkDays(self, startDate, daysToIncrement):
-        while (daysToIncrement > 0):
-            if (startDate.weekday() == 4):    # Friday
+        while daysToIncrement > 0:
+            if startDate.weekday() == 4:    # Friday
                 startDate = startDate + timedelta(days=3)
-            elif (startDate.weekday() == 5):    # Saturday
+            elif startDate.weekday() == 5:    # Saturday
                 startDate = startDate + timedelta(days=2)
             else:
                 startDate = startDate + timedelta(days=1)
@@ -208,12 +209,13 @@ class TasksListController(QtCore.QObject):
         for task in tasks:
             message += '<li>%s</li>' % self._task_htmlizer.task2html(task)
         message += '</ul>'
-        result = QtWidgets.QMessageBox.question(self.view,
-                                                self.tr('Confirm'),
-                                                message,
-                                                buttons=QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-                                                defaultButton=QtWidgets.QMessageBox.Yes
-                                                )
+        result = QtWidgets.QMessageBox.question(
+                self.view,
+                self.tr('Confirm'),
+                message,
+                buttons=QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                defaultButton=QtWidgets.QMessageBox.Yes
+                )
         return result == QtWidgets.QMessageBox.Yes
 
     def _decreasePriority(self):
@@ -248,7 +250,7 @@ class TasksListController(QtCore.QObject):
         tasks.sort(reverse=True)
 
     def _removeCreationDate(self, text):
-        match = re.match('^(\([A-Z]\)\s)?[0-9]{4}\-[0-9]{2}\-[0-9]{2}\s(.*)', text)
+        match = re.match(r'^(\([A-Z]\)\s)?[0-9]{4}\-[0-9]{2}\-[0-9]{2}\s(.*)', text)
         if match:
             if match.group(1):
                 text = match.group(1) + match.group(2)
@@ -266,18 +268,18 @@ class TasksListController(QtCore.QObject):
 
     def _createTask(self, text):
         if int(QtCore.QSettings().value("add_created_date", 0)):
-                text = self._removeCreationDate(text)
-                text = self._addCreationDate(text)
+            text = self._removeCreationDate(text)
+            text = self._addCreationDate(text)
         task = tasklib.Task(text)
         self.view.addTask(task)
         self._task_created(task)
         return task
 
-    def createTask(self):
+    def createTask(self, task=None):
         if not self._useTaskDialog:
-            self.view.createTask()
+            self.view.createTask(task)
             return
-        (text, ok) = self._task_editor_service.createTask()
+        (text, ok) = self._task_editor_service.createTask(task)
         if ok and text:
             task = self._createTask(text)
             return task
@@ -287,16 +289,7 @@ class TasksListController(QtCore.QObject):
         if len(tasks) != 1:
             return
         task = tasks[0]
-        if not self._useTaskDialog:
-            self.view.createTask(task)
-            return
-        (text, ok) = self._task_editor_service.createTask(task)
-        if ok and text:
-            if int(QtCore.QSettings().value("add_created_date", 0)):
-                text = self._addCreationDate(text)
-            task = tasklib.Task(text)
-            self.view.addTask(task)
-            self._task_created(task)
+        return self.createTask(task)
 
     def editTask(self, task=None):
         if not self._useTaskDialog:
@@ -307,10 +300,7 @@ class TasksListController(QtCore.QObject):
             task = tasks[0]
         (text, ok) = self._task_editor_service.editTask(task)
         if ok and text:
-            if text != task.text:
-                task.parseLine(text)
-                self.view.updateTask(task)
-                self._task_modified(task)
+            task.text = text
 
     def _copySelectedTasks(self):
         tasks = self.view.getSelectedTasks()
