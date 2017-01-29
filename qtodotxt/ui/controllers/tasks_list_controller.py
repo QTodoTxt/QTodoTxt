@@ -223,7 +223,6 @@ class TasksListController(QtCore.QObject):
         if tasks:
             for task in tasks:
                 task.decreasePriority()
-                self.view.updateTask(task)
                 self.taskModified.emit(task)
 
     def _increasePriority(self):
@@ -231,7 +230,6 @@ class TasksListController(QtCore.QObject):
         if tasks:
             for task in tasks:
                 task.increasePriority()
-                self.view.updateTask(task)
                 self.taskModified.emit(task)
 
     def showTasks(self, tasks):
