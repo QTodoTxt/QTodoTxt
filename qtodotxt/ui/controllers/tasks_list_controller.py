@@ -10,10 +10,22 @@ from PyQt5 import QtWidgets
 from qtodotxt.lib import tasklib
 from qtodotxt.lib.task_htmlizer import TaskHtmlizer
 
-
 from qtodotxt.lib.tasklib import recursiveMode
 from qtodotxt.ui.dialogs.taskeditor import TaskEditor
 from qtodotxt.ui.dialogs.taskeditor_lineedit import TaskEditorLineEdit
+
+
+class LinkDialog(QtWidgets.QFileDialog):
+    def __init__(self, parent, directory):
+        QtWidgets.QFileDialog.__init__(self, parent, caption="Select file", directory=directory)
+        self.setFileMode(QtWidgets.QFileDialog.AnyFile)
+        self.setViewMode(QtWidgets.QFileDialog.Detail)
+
+    @staticmethod
+    def getLink(parent, directory):
+        dia = LinkDialog(parent, directory=directory)
+        if dia.exec_():
+            return dia.selectedFiles()
 
 
 class TasksListController(QtCore.QObject):
@@ -44,6 +56,7 @@ class TasksListController(QtCore.QObject):
         self._initDecreasePrioritySelectedTasksAction()
         self._initIncreasePrioritySelectedTasksAction()
         self._initCreateTaskActionOnTemplate()
+        self._initAddLinkAction()
         self.view.taskCreated.connect(self._task_created)
         self.view.taskModified.connect(self._task_modified)
         self.disableTaskActions()
@@ -57,8 +70,7 @@ class TasksListController(QtCore.QObject):
         self.taskModified.emit(task)
 
     def _initEditTaskAction(self):
-        action = QtWidgets.QAction(QtGui.QIcon(self.style +
-                                               '/resources/TaskEdit.png'), self.tr('&Edit Task'), self)
+        action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskEdit.png'), self.tr('&Edit Task'), self)
         action.setShortcuts(['Ctrl+E', 'Enter'])
         action.setDisabled(True)
         action.triggered.connect(self.editTask)
@@ -66,60 +78,80 @@ class TasksListController(QtCore.QObject):
         self.editTaskAction = action
 
     def _initCreateTaskAction(self):
-        action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskCreate.png'),
-                                   self.tr('&Create new task'), self)
+        action = QtWidgets.QAction(
+            QtGui.QIcon(self.style + '/resources/TaskCreate.png'), self.tr('&Create new task'), self)
         action.setShortcuts(['Insert', 'Ctrl+I', 'Ctrl+N'])
         action.triggered.connect(self.createTask)
         self.view.addListAction(action)
         self.createTaskAction = action
 
     def _initCreateTaskActionOnTemplate(self):
-        action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskAddOnTem.png'),
-                                   self.tr('&Create a new task based on current task'), self)
+        action = QtWidgets.QAction(
+            QtGui.QIcon(self.style + '/resources/TaskAddOnTem.png'),
+            self.tr('&Create a new task based on current task'), self)
         action.setShortcuts(['Shift+Insert', 'Ctrl+Shift+I'])
         action.triggered.connect(self.createTaskOnTemplate)
         self.view.addListAction(action)
         self.createTaskActionOnTemplate = action
 
     def _initCopySelectedTasksAction(self):
-        action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskCopy.png'),
-                                   self.tr('Copy selected tasks'), self)
+        action = QtWidgets.QAction(
+            QtGui.QIcon(self.style + '/resources/TaskCopy.png'), self.tr('Copy selected tasks'), self)
         action.setShortcuts([QtGui.QKeySequence.Copy])
         action.triggered.connect(self._copySelectedTasks)
         self.view.addListAction(action)
         self.copySelectedTasksAction = action
 
     def _initDeleteSelectedTasksAction(self):
-        action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskDelete.png'),
-                                   self.tr('&Delete selected tasks'), self)
+        action = QtWidgets.QAction(
+            QtGui.QIcon(self.style + '/resources/TaskDelete.png'), self.tr('&Delete selected tasks'), self)
         action.setShortcut('Delete')
         action.triggered.connect(self._deleteSelectedTasks)
         self.view.addListAction(action)
         self.deleteSelectedTasksAction = action
 
     def _initCompleteSelectedTasksAction(self):
-        action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskComplete.png'),
-                                   self.tr('C&omplete selected tasks'), self)
+        action = QtWidgets.QAction(
+            QtGui.QIcon(self.style + '/resources/TaskComplete.png'), self.tr('C&omplete selected tasks'), self)
         action.setShortcuts(['x', 'c'])
         action.triggered.connect(self._completeSelectedTasks)
         self.view.addListAction(action)
         self.completeSelectedTasksAction = action
 
     def _initDecreasePrioritySelectedTasksAction(self):
-        action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskPriorityDecrease.png'),
-                                   self.tr('Decrease priority'), self)
+        action = QtWidgets.QAction(
+            QtGui.QIcon(self.style + '/resources/TaskPriorityDecrease.png'), self.tr('Decrease priority'), self)
         action.setShortcuts(['-', '<'])
         action.triggered.connect(self._decreasePriority)
         self.view.addListAction(action)
         self.decreasePrioritySelectedTasksAction = action
 
     def _initIncreasePrioritySelectedTasksAction(self):
-        action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskPriorityIncrease.png'),
-                                   self.tr('Increase priority'), self)
+        action = QtWidgets.QAction(
+            QtGui.QIcon(self.style + '/resources/TaskPriorityIncrease.png'), self.tr('Increase priority'), self)
         action.setShortcuts(['+', '>'])
         action.triggered.connect(self._increasePriority)
         self.view.addListAction(action)
         self.increasePrioritySelectedTasksAction = action
+
+    def _initAddLinkAction(self):
+        self.addLinkAction = QtWidgets.QAction(
+            QtGui.QIcon(self.style + '/resources/link.png'), self.tr('Add &Link to file'), self)
+        self.addLinkAction.setCheckable(True)
+        self.addLinkAction.setShortcuts(['Ctrl+Shift+L'])
+        self.view.addListAction(self.addLinkAction)
+        self.addLinkAction.triggered.connect(self._addLink)
+
+    def _addLink(self):
+        tasks = self.view.getSelectedTasks()
+        if tasks:
+            paths = LinkDialog.getLink(self.view, directory=".")
+            for path in paths:
+                for task in tasks:
+                    new_text = task.text + " file:/" + path
+                    task.parseLine(new_text)
+                    self.view.updateTask(task)
+                    self.taskModified.emit(task)
 
     @property
     def _useTaskDialog(self):
@@ -156,9 +188,9 @@ class TasksListController(QtCore.QObject):
                 next_due_date = date.today() + timedelta(weeks=int(task.recursion.increment))
         elif task.recursion.interval == 'm':
             if task.recursion.mode == recursiveMode.originalDueDate:
-                next_due_date = task.due + timedelta(weeks=int(task.recursion.increment) * 4)   # 4 weeks in a month
+                next_due_date = task.due + timedelta(weeks=int(task.recursion.increment) * 4)  # 4 weeks in a month
             else:
-                next_due_date = date.today() + timedelta(weeks=int(task.recursion.increment) * 4)   # 4 weeks in a month
+                next_due_date = date.today() + timedelta(weeks=int(task.recursion.increment) * 4)  # 4 weeks in a month
         elif task.recursion.interval == 'y':
             if task.recursion.mode == recursiveMode.originalDueDate:
                 next_due_date = task.due + timedelta(weeks=int(task.recursion.increment) * 52)  # 52 weeks in a year
@@ -174,9 +206,9 @@ class TasksListController(QtCore.QObject):
 
     def _incrWorkDays(self, startDate, daysToIncrement):
         while (daysToIncrement > 0):
-            if (startDate.weekday() == 4):    # Friday
+            if (startDate.weekday() == 4):  # Friday
                 startDate = startDate + timedelta(days=3)
-            elif (startDate.weekday() == 5):    # Saturday
+            elif (startDate.weekday() == 5):  # Saturday
                 startDate = startDate + timedelta(days=2)
             else:
                 startDate = startDate + timedelta(days=1)
@@ -208,12 +240,12 @@ class TasksListController(QtCore.QObject):
         for task in tasks:
             message += '<li>%s</li>' % self._task_htmlizer.task2html(task)
         message += '</ul>'
-        result = QtWidgets.QMessageBox.question(self.view,
-                                                self.tr('Confirm'),
-                                                message,
-                                                buttons=QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-                                                defaultButton=QtWidgets.QMessageBox.Yes
-                                                )
+        result = QtWidgets.QMessageBox.question(
+            self.view,
+            self.tr('Confirm'),
+            message,
+            buttons=QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+            defaultButton=QtWidgets.QMessageBox.Yes)
         return result == QtWidgets.QMessageBox.Yes
 
     def _decreasePriority(self):
@@ -266,8 +298,8 @@ class TasksListController(QtCore.QObject):
 
     def _createTask(self, text):
         if int(QtCore.QSettings().value("add_created_date", 0)):
-                text = self._removeCreationDate(text)
-                text = self._addCreationDate(text)
+            text = self._removeCreationDate(text)
+            text = self._addCreationDate(text)
         task = tasklib.Task(text)
         self.view.addTask(task)
         self._task_created(task)
