@@ -394,3 +394,18 @@ class FutureFilter(BaseFilter):
 
     def __str__(self):
         return "FutureFilter " % self.text
+
+class PriorityFilter(BaseFilter):
+    """
+    Task list filter that removes any completed tasks.
+
+    """
+    def __init__(self):
+        BaseFilter.__init__(self, 'Priority')
+
+    def isMatch(self, task):
+        return task.priority != ""
+
+    def __str__(self):
+        return "PriorityFilter " % self.text
+

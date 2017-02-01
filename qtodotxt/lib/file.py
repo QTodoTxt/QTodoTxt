@@ -182,10 +182,12 @@ class File(object):
                          'Contexts': 0,
                          'Projects': 0,
                          'Complete': 0,
+                         'Priority': 0,
                          'DueCompl': 0,
                          'ProjCompl': 0,
                          'ContCompl': 0,
                          'UncatCompl': 0,
+                         'PrioCompl': 0,
                          'Due': 0})
         for task in self.tasks:
             nbProjects = len(task.projects)
@@ -200,6 +202,8 @@ class File(object):
                     counters['Uncategorized'] += 1
                 if task.due:
                     counters['Due'] += 1
+                if task.priority != "":
+                    counters['Priority'] += 1
             else:
                 counters['Complete'] += 1
                 if nbProjects > 0:
@@ -210,6 +214,8 @@ class File(object):
                     counters['UncatCompl'] += 1
                 if task.due:
                     counters['DueCompl'] += 1
+                if task.priority != "":
+                    counters['PrioCompl'] += 1
         return counters
 
 

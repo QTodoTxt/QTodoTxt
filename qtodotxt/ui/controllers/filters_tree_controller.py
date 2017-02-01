@@ -1,6 +1,6 @@
 from PyQt5 import QtCore
 from qtodotxt.lib.filters import ContextFilter, ProjectFilter, DueTodayFilter, DueTomorrowFilter, DueThisWeekFilter, \
-    DueThisMonthFilter, DueOverdueFilter
+    DueThisMonthFilter, DueOverdueFilter, PriorityFilter
 
 # class IFiltersTreeView(object):
 #    def addFilter(self, filter): pass
