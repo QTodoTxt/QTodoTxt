@@ -7,6 +7,7 @@ class BaseFilter(object):
     The abstract base class for different kind of task-list filters.
 
     """
+
     def __init__(self, text):
         """
         Initialize a new BaseFilter objects.
@@ -19,6 +20,7 @@ class BaseFilter(object):
 
     def __str__(self):
         return "Filter:{}".format(self.__class__.__name__)
+
     __repr__ = __str__
 
     def isMatch(self, task):
@@ -47,6 +49,7 @@ class AllTasksFilter(BaseFilter):
     Task list filter that returns all tasks.
 
     """
+
     def __init__(self):
         BaseFilter.__init__(self, 'All')
 
@@ -56,6 +59,7 @@ class IncompleteTasksFilter(BaseFilter):
     Task list filter that removes any completed tasks.
 
     """
+
     def __init__(self):
         BaseFilter.__init__(self, 'Incomplete')
 
@@ -68,6 +72,7 @@ class UncategorizedTasksFilter(BaseFilter):
     Task list filter permitting incomplete tasks without project or context.
 
     """
+
     def __init__(self):
         BaseFilter.__init__(self, 'Uncategorized')
 
@@ -80,6 +85,7 @@ class CompleteTasksFilter(BaseFilter):
     Task list filter that removes any uncompleted tasks from the list.
 
     """
+
     def __init__(self):
         BaseFilter.__init__(self, 'Complete')
 
@@ -108,6 +114,7 @@ class ProjectFilter(BaseFilter):
     Task list filter allowing only incomplete tasks with the selected project.
 
     """
+
     def __init__(self, project):
         BaseFilter.__init__(self, project)
 
@@ -123,6 +130,7 @@ class DueFilter(BaseFilter):
     Due list filter for ranges
 
     """
+
     def __init__(self, dueRange):
         BaseFilter.__init__(self, dueRange)
 
@@ -138,6 +146,7 @@ class DueTodayFilter(BaseFilter):
     Task list filter allowing only incomplete tasks that are due today.
 
     """
+
     def __init__(self, dueRange):
         BaseFilter.__init__(self, dueRange)
 
@@ -158,6 +167,7 @@ class DueTomorrowFilter(BaseFilter):
     Task list filter allowing only incomplete tasks that are due tomorrow.
 
     """
+
     def __init__(self, dueRange):
         BaseFilter.__init__(self, dueRange)
 
@@ -178,6 +188,7 @@ class DueThisWeekFilter(BaseFilter):
     Task list filter allowing only incomplete tasks that are due this week.
 
     """
+
     def __init__(self, dueRange):
         BaseFilter.__init__(self, dueRange)
 
@@ -198,6 +209,7 @@ class DueThisMonthFilter(BaseFilter):
     Task list filter allowing only incomplete tasks that are due this month.
 
     """
+
     def __init__(self, dueRange):
         BaseFilter.__init__(self, dueRange)
 
@@ -222,6 +234,7 @@ class DueOverdueFilter(BaseFilter):
     Task list filter allowing only incomplete tasks that are overdue.
 
     """
+
     def __init__(self, dueRange):
         BaseFilter.__init__(self, dueRange)
 
@@ -308,7 +321,7 @@ def simpleTextFilterRepl(matchObj):
     Replace function used in SimpleTextFilter isMatch, needed to allow for inverted(not) searching
 
     """
-    if(matchObj.group(1)):
+    if (matchObj.group(1)):
         return "^(?!.*" + matchObj.group(2) + ")"
     else:
         return "^(?=.*" + matchObj.group(2) + ")"
@@ -385,7 +398,6 @@ class SimpleTextFilter(BaseFilter):
 
 
 class FutureFilter(BaseFilter):
-
     def __init__(self):
         BaseFilter.__init__(self, 'Future')
 
@@ -395,11 +407,13 @@ class FutureFilter(BaseFilter):
     def __str__(self):
         return "FutureFilter " % self.text
 
+
 class PriorityFilter(BaseFilter):
     """
     Task list filter that removes any completed tasks.
 
     """
+
     def __init__(self):
         BaseFilter.__init__(self, 'Priority')
 
@@ -408,4 +422,3 @@ class PriorityFilter(BaseFilter):
 
     def __str__(self):
         return "PriorityFilter " % self.text
-

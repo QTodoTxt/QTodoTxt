@@ -132,8 +132,7 @@ class FiltersTreeView(QtWidgets.QWidget):
         layout = QtWidgets.QGridLayout()
         self.setLayout(layout)
         offset = QtCore.QSettings().value("ui_margin_offset", -4)
-        self.setContentsMargins(offset, offset,
-                                2 * offset, offset)
+        self.setContentsMargins(offset, offset, 2 * offset, offset)
         self._tree = self._createTreeWidget()
         layout.addWidget(self._tree)
 
@@ -147,43 +146,29 @@ class FiltersTreeView(QtWidgets.QWidget):
         return tree
 
     def _addDefaultTreeItems(self, tree):
-        self._allTasksItem = FilterTreeWidgetItem(None,
-                                                  ['All'],
+        self._allTasksItem = FilterTreeWidgetItem(None, ['All'],
                                                   AllTasksFilter(),
                                                   QtGui.QIcon(self.style + '/resources/FilterAll.png'))
-        self._dueItem = FilterTreeWidgetItem(None,
-                                             ['Due'],
-                                             HasDueDateFilter(),
-                                             QtGui.QIcon(self.style + '/resources/FilterDue.png'))
-        self._uncategorizedTasksItem = FilterTreeWidgetItem(None,
-                                                            ['Uncategorized'],
-                                                            UncategorizedTasksFilter(),
-                                                            QtGui.QIcon(
-                                                                self.style + '/resources/FilterUncategorized.png'))
-        self._contextsItem = FilterTreeWidgetItem(None,
-                                                  ['Contexts'],
+        self._dueItem = FilterTreeWidgetItem(None, ['Due'],
+                                             HasDueDateFilter(), QtGui.QIcon(self.style + '/resources/FilterDue.png'))
+        self._uncategorizedTasksItem = FilterTreeWidgetItem(
+            None, ['Uncategorized'],
+            UncategorizedTasksFilter(), QtGui.QIcon(self.style + '/resources/FilterUncategorized.png'))
+        self._contextsItem = FilterTreeWidgetItem(None, ['Contexts'],
                                                   HasContextsFilter(),
                                                   QtGui.QIcon(self.style + '/resources/FilterContexts.png'))
-        self._projectsItem = FilterTreeWidgetItem(None,
-                                                  ['Projects'],
+        self._projectsItem = FilterTreeWidgetItem(None, ['Projects'],
                                                   HasProjectsFilter(),
                                                   QtGui.QIcon(self.style + '/resources/FilterProjects.png'))
-        self._priorityItem = FilterTreeWidgetItem(None,
-                                                       ['Priorities'],
-                                                       PriorityFilter(),
-                                                       QtGui.QIcon(self.style + '/resources/FilterComplete.png'))
-        self._completeTasksItem = FilterTreeWidgetItem(None,
-                                                       ['Complete'],
+        self._priorityItem = FilterTreeWidgetItem(None, ['Priorities'],
+                                                  PriorityFilter(),
+                                                  QtGui.QIcon(self.style + '/resources/FilterComplete.png'))
+        self._completeTasksItem = FilterTreeWidgetItem(None, ['Complete'],
                                                        CompleteTasksFilter(),
                                                        QtGui.QIcon(self.style + '/resources/FilterComplete.png'))
         tree.addTopLevelItems([
-            self._allTasksItem,
-            self._uncategorizedTasksItem,
-            self._dueItem,
-            self._contextsItem,
-            self._projectsItem,
-            self._priorityItem,
-            self._completeTasksItem
+            self._allTasksItem, self._uncategorizedTasksItem, self._dueItem, self._contextsItem, self._projectsItem,
+            self._priorityItem, self._completeTasksItem
         ])
 
     def _initFilterTypeMappings(self):

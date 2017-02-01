@@ -7,8 +7,8 @@ from qtodotxt.lib.task_htmlizer import TaskHtmlizer
 
 
 class recursiveMode(Enum):
-    completitionDate = 0    # Original due date mode: Task recurs from original due date
-    originalDueDate = 1    # Completion date mode: Task recurs from completion date
+    completitionDate = 0  # Original due date mode: Task recurs from original due date
+    originalDueDate = 1  # Completion date mode: Task recurs from completion date
 
 
 class recursion:
@@ -92,7 +92,7 @@ class Task(QtCore.QObject):
         for word in words:
             self._parseWord(word)
         self._text = line
-    
+
     @property
     def text(self):
         return self._text
@@ -161,10 +161,10 @@ class Task(QtCore.QObject):
     @property
     def dueString(self):
         return dateString(self.due)
-    
+
     @staticmethod
     def updateDateInTask(self, text, newDate):
-        #FIXME: This method has nothing to do in this class, move womewhere else
+        # FIXME: This method has nothing to do in this class, move womewhere else
         # (A) 2016-12-08 Feed Schrodinger's Cat rec:9w due:2016-11-23
         text = re.sub('\sdue\:[0-9]{4}\-[0-9]{2}\-[0-9]{2}', ' due:' + str(newDate)[0:10], text)
         return text

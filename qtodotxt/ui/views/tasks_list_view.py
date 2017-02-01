@@ -1,5 +1,5 @@
-from PyQt5.QtCore import pyqtSignal, Qt, QSize
-from PyQt5.QtWidgets import QWidget, QStackedLayout, QHBoxLayout, QListWidget, QLabel, QListView, QListWidgetItem, QSizePolicy
+from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtWidgets import QWidget, QStackedLayout, QListWidget, QLabel, QListView, QListWidgetItem, QSizePolicy
 
 from qtodotxt.lib import tasklib
 from qtodotxt.ui.dialogs.taskeditor_lineedit import TaskEditorLineEdit
@@ -23,9 +23,6 @@ class TaskWidget(QWidget):
         self.label.setOpenExternalLinks(True)
         self._update()
         self.label.setWordWrap(True)
-        # set minimum width to a reasonable value to get a useful
-        # sizeHint _height_ when using word wrap
-        #self.label.setMinimumWidth(self.width() - 20)
         self.layout.addWidget(self.label)
 
         self.editor = TaskEditorLineEdit(self, parent.mfile)
@@ -36,7 +33,6 @@ class TaskWidget(QWidget):
         self.task.modified.connect(self._update)
 
     def sizeHint(self):
-        #return QSize(self.label., 60)
         return self.label.size()
 
     def edit(self):
@@ -136,7 +132,7 @@ class TasksListView(QListWidget):
         """
         item = QListWidgetItem()
         twidget = TaskWidget(self, task, new=new)
-        ## set items size and add some space between items
+        # set items size and add some space between items
         item.setSizeHint(twidget.sizeHint())
         if not idxs:
             self.addItem(item)
