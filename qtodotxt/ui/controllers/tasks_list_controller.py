@@ -139,7 +139,7 @@ class TasksListController(QtCore.QObject):
             QtGui.QIcon(self.style + '/resources/link.png'), self.tr('Add &Link to file'), self)
         self.addLinkAction.setCheckable(True)
         self.addLinkAction.setShortcuts(['Ctrl+Shift+L'])
-        self.view.addListAction(self.addLinkAction)
+        self.view.addAction(self.addLinkAction)
         self.addLinkAction.triggered.connect(self._addLink)
 
     def _addLink(self):
