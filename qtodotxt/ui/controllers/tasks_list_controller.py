@@ -47,6 +47,7 @@ class TasksListController(QtCore.QObject):
         self.view.taskActivated.connect(self.editTask)
         self.view.currentTaskChanged.connect(self.updateActions)
         self.view.taskDeleted.connect(self.taskDeleted.emit)
+        self.view.itemSelectionChanged.connect(self.updateActions)
         self._initCreateTaskAction()
         self._initEditTaskAction()
         self._initCopySelectedTasksAction()
@@ -335,7 +336,8 @@ class TasksListController(QtCore.QObject):
             app = QtWidgets.QApplication.instance()
             app.clipboard().setText(text)
 
-    def updateActions(self, tasks):
+    def updateActions(self):
+        tasks = self.view.selectedItems()
         if tasks:
             self.enableTaskActions()
             if len(tasks) > 1:

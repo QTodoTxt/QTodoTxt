@@ -1,6 +1,6 @@
 from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtWidgets import QWidget, QStackedLayout, QListWidget, QLabel, QListView, QListWidgetItem, QSizePolicy\
-    , QAbstractItemView
+from PyQt5.QtWidgets import QWidget, QStackedLayout, QListWidget, QLabel, QListView, QListWidgetItem, QSizePolicy,\
+     QAbstractItemView
 
 from qtodotxt.lib import tasklib
 from qtodotxt.ui.dialogs.taskeditor_lineedit import TaskEditorLineEdit
