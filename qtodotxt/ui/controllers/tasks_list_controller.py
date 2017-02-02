@@ -137,7 +137,6 @@ class TasksListController(QtCore.QObject):
     def _initAddLinkAction(self):
         self.addLinkAction = QtWidgets.QAction(
             QtGui.QIcon(self.style + '/resources/link.png'), self.tr('Add &Link to file'), self)
-        self.addLinkAction.setCheckable(True)
         self.addLinkAction.setShortcuts(['Ctrl+Shift+L'])
         self.view.addAction(self.addLinkAction)
         self.addLinkAction.triggered.connect(self._addLink)
@@ -340,12 +339,14 @@ class TasksListController(QtCore.QObject):
             self.enableTaskActions()
             if len(tasks) > 1:
                 self.editTaskAction.setEnabled(False)
+                self.addLinkAction.setEnabled(False)
                 self.createTaskActionOnTemplate.setEnabled(False)
         else:
             self.disableTaskActions()
 
     def enableTaskActions(self):
         self.editTaskAction.setEnabled(True)
+        self.addLinkAction.setEnabled(True)
         self.createTaskActionOnTemplate.setEnabled(True)
         self.deleteSelectedTasksAction.setEnabled(True)
         self.completeSelectedTasksAction.setEnabled(True)
@@ -355,6 +356,7 @@ class TasksListController(QtCore.QObject):
 
     def disableTaskActions(self):
         self.editTaskAction.setEnabled(False)
+        self.addLinkAction.setEnabled(False)
         self.createTaskActionOnTemplate.setEnabled(False)
         self.deleteSelectedTasksAction.setEnabled(False)
         self.completeSelectedTasksAction.setEnabled(False)
