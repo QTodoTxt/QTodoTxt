@@ -24,7 +24,7 @@ class LinkDialog(QtWidgets.QFileDialog):
     def getLink(parent, directory):
         dia = LinkDialog(parent, directory=directory)
         if dia.exec_():
-            return dia.selectedFiles()
+            return [uri.toString() for uri in dia.selectedUrls()]
 
 
 class TasksListController(QtCore.QObject):
@@ -144,10 +144,10 @@ class TasksListController(QtCore.QObject):
     def _addLink(self):
         tasks = self.view.getSelectedTasks()
         if tasks:
-            paths = LinkDialog.getLink(self.view, directory=".")
-            for path in paths:
+            uris = LinkDialog.getLink(self.view, directory=".")
+            for uri in uris:
                 for task in tasks:
-                    task.text = task.text + " file:/" + path
+                    task.text = task.text + " " + uri
                     self.taskModified.emit(task)
 
     @property
