@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ru_RU" sourcelanguage="en">
+<TS version="2.1" language="ru_RU" sourcelanguage="en">
 <context>
     <name>MainController</name>
     <message>
-        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="398"/>
+        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="402"/>
         <source>Revert to saved file (and lose unsaved changes)?</source>
         <translation>Закрыть и отказаться от изменений?</translation>
     </message>
@@ -14,19 +14,19 @@
         <translation>Показывать &amp;фильтры</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="324"/>
+        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="328"/>
         <source>Unsaved changes...</source>
         <translation>Не сохраненные изменения...</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="412"/>
-        <source>Current file '{}' is not available.
+        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="416"/>
+        <source>Current file &apos;{}&apos; is not available.
 Exception: {}</source>
-        <translation>Текущий файл '{}' не доступен.
+        <translation>Текущий файл &apos;{}&apos; не доступен.
 Ошибка: {}</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="415"/>
+        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="419"/>
         <source>Error opening file: {}.
  Exception:{}</source>
         <translation>Ошибка открытия файла: {}.
@@ -119,32 +119,32 @@ Exception: {}</source>
 <context>
     <name>SettingsUI</name>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="107"/>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="108"/>
         <source>QTodoTxt Settings</source>
         <translation>QTodoTxt Настройки</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="108"/>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="109"/>
         <source>Autosave</source>
         <translation>АвтоCохранение</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="109"/>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="110"/>
         <source>AutoArchive</source>
         <translation>АвтоАрхивирование</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="110"/>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="111"/>
         <source>Add created date</source>
         <translation>Добавлять дату создания</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="111"/>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="112"/>
         <source>Ask for confirmation before task completion</source>
         <translation>Спрашивать подтверждение при завершении задачи</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="113"/>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="114"/>
         <source>Lowest task priority</source>
         <translation>Наименьший приоритет задачи</translation>
     </message>
@@ -154,19 +154,14 @@ Exception: {}</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="106"/>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="107"/>
         <source>SettingsUI</source>
-        <translation type="unfinished">SettingsUI</translation>
+        <translation>Настройка программы</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="112"/>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="113"/>
         <source>Show Delete action (Require restart)</source>
         <translation>Показать кнопку Удалить (требуется перезапуск)</translation>
-    </message>
-    <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="114"/>
-        <source>D</source>
-        <translation type="unfinished">D</translation>
     </message>
     <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="115"/>
@@ -189,11 +184,6 @@ Exception: {}</source>
         <translation>Скрывать при запуске</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="119"/>
-        <source>CheckBox</source>
-        <translation type="unfinished">CheckBox</translation>
-    </message>
-    <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="121"/>
         <source>Singleton mode</source>
         <translation>Исключить повторный запуск</translation>
@@ -204,19 +194,9 @@ Exception: {}</source>
         <translation>Тема</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="123"/>
-        <source>System</source>
-        <translation>Система</translation>
-    </message>
-    <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="124"/>
-        <source>dark_blue</source>
-        <translation>темно-голубой</translation>
-    </message>
-    <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="125"/>
-        <source>dark_orange</source>
-        <translation>темно-оранжевый</translation>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="119"/>
+        <source>Close to tray</source>
+        <translation>Закрывать в трей</translation>
     </message>
 </context>
 <context>
@@ -253,69 +233,74 @@ Exception: {}</source>
 <context>
     <name>TasksListController</name>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="60"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="73"/>
         <source>&amp;Edit Task</source>
         <translation>&amp;Редактировать задачу</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="198"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="228"/>
         <source>Delete</source>
         <translation>Удаление</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="205"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="235"/>
         <source>&lt;b&gt;%s the following task?&lt;/b&gt;&lt;ul&gt;</source>
         <translation>&lt;b&gt;%s следующих задач?&lt;/b&gt;&lt;ul&gt;</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="207"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="237"/>
         <source>&lt;b&gt;%s the following tasks?&lt;/b&gt;&lt;ul&gt;</source>
         <translation>&lt;b&gt;%s следующих задач?&lt;/b&gt;&lt;ul&gt;</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="211"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="241"/>
         <source>Confirm</source>
         <translation>Подтверждение</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="69"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="81"/>
         <source>&amp;Create new task</source>
         <translation>&amp;Создать новую задачу</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="77"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="89"/>
         <source>&amp;Create a new task based on current task</source>
         <translation>Создать новую задачу на &amp;основе текущей</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="85"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="98"/>
         <source>Copy selected tasks</source>
         <translation>Скопировать выделенные задачи</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="93"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="106"/>
         <source>&amp;Delete selected tasks</source>
         <translation>&amp;Удалить выделенные задачи</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="101"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="114"/>
         <source>C&amp;omplete selected tasks</source>
         <translation>&amp;Выполнить выбранную задачу</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="109"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="122"/>
         <source>Decrease priority</source>
         <translation>Уменьшить приоритет</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="117"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="130"/>
         <source>Increase priority</source>
         <translation>Увеличить приоритет</translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="191"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="221"/>
         <source>Toggle completeness of</source>
         <translation type="unfinished">Изменить статус</translation>
+    </message>
+    <message>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="138"/>
+        <source>Add &amp;Link to file</source>
+        <translation>Добавить &amp;ссылку на файл</translation>
     </message>
 </context>
 <context>
