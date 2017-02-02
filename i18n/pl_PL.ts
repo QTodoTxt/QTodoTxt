@@ -8,23 +8,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="324"/>
+        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="328"/>
         <source>Unsaved changes...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="398"/>
+        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="402"/>
         <source>Revert to saved file (and lose unsaved changes)?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="412"/>
+        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="416"/>
         <source>Current file &apos;{}&apos; is not available.
 Exception: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="415"/>
+        <location filename="../qtodotxt/ui/controllers/main_controller.py" line="419"/>
         <source>Error opening file: {}.
  Exception:{}</source>
         <translation type="unfinished"></translation>
@@ -116,32 +116,32 @@ Exception: {}</source>
 <context>
     <name>SettingsUI</name>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="107"/>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="108"/>
         <source>QTodoTxt Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="108"/>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="109"/>
         <source>Autosave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="109"/>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="110"/>
         <source>AutoArchive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="110"/>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="111"/>
         <source>Add created date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="111"/>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="112"/>
         <source>Ask for confirmation before task completion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="113"/>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="114"/>
         <source>Lowest task priority</source>
         <translation type="unfinished"></translation>
     </message>
@@ -151,18 +151,13 @@ Exception: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="106"/>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="107"/>
         <source>SettingsUI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="112"/>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="113"/>
         <source>Show Delete action (Require restart)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="114"/>
-        <source>D</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -186,11 +181,6 @@ Exception: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="119"/>
-        <source>CheckBox</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="121"/>
         <source>Singleton mode</source>
         <translation type="unfinished"></translation>
@@ -201,18 +191,8 @@ Exception: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="123"/>
-        <source>System</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="124"/>
-        <source>dark_blue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="125"/>
-        <source>dark_orange</source>
+        <location filename="../qtodotxt/ui/dialogs/settingsui.py" line="119"/>
+        <source>Close to tray</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -250,68 +230,73 @@ Exception: {}</source>
 <context>
     <name>TasksListController</name>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="60"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="73"/>
         <source>&amp;Edit Task</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="198"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="228"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="205"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="235"/>
         <source>&lt;b&gt;%s the following task?&lt;/b&gt;&lt;ul&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="207"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="237"/>
         <source>&lt;b&gt;%s the following tasks?&lt;/b&gt;&lt;ul&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="211"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="241"/>
         <source>Confirm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="69"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="81"/>
         <source>&amp;Create new task</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="77"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="89"/>
         <source>&amp;Create a new task based on current task</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="85"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="98"/>
         <source>Copy selected tasks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="93"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="106"/>
         <source>&amp;Delete selected tasks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="101"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="114"/>
         <source>C&amp;omplete selected tasks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="109"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="122"/>
         <source>Decrease priority</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="117"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="130"/>
         <source>Increase priority</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="191"/>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="221"/>
         <source>Toggle completeness of</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qtodotxt/ui/controllers/tasks_list_controller.py" line="138"/>
+        <source>Add &amp;Link to file</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
