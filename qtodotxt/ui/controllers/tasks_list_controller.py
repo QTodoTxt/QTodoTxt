@@ -147,7 +147,8 @@ class TasksListController(QtCore.QObject):
             paths = LinkDialog.getLink(self.view, directory=".")
             for path in paths:
                 for task in tasks:
-                    task.text = task.text + " file:/" + path
+                    name = os.path.basename(path)
+                    task.text = task.text + " <a href=file:/" + path + ">" + name + "</a>"
                     self.taskModified.emit(task)
 
     @property
