@@ -1,5 +1,6 @@
 from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtWidgets import QWidget, QStackedLayout, QListWidget, QLabel, QListView, QListWidgetItem, QSizePolicy
+from PyQt5.QtWidgets import QWidget, QStackedLayout, QListWidget, QLabel, QListView, QListWidgetItem, QSizePolicy,\
+     QAbstractItemView
 
 from qtodotxt.lib import tasklib
 from qtodotxt.ui.dialogs.taskeditor_lineedit import TaskEditorLineEdit
@@ -79,6 +80,7 @@ class TasksListView(QListWidget):
         self.setAlternatingRowColors(True)
         self.LayoutMode = QListView.Batched
         self.setResizeMode(QListView.Adjust)
+        self.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.activated.connect(self._taskActivated)
 
     def setFileObject(self, mfile):
