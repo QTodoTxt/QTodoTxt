@@ -163,7 +163,7 @@ class Task(QtCore.QObject):
         return dateString(self.due)
 
     @staticmethod
-    def updateDateInTask(self, text, newDate):
+    def updateDateInTask(text, newDate):
         # FIXME: This method has nothing to do in this class, move womewhere else
         # (A) 2016-12-08 Feed Schrodinger's Cat rec:9w due:2016-11-23
         text = re.sub('\sdue\:[0-9]{4}\-[0-9]{2}\-[0-9]{2}', ' due:' + str(newDate)[0:10], text)
