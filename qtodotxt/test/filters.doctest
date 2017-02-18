@@ -7,154 +7,147 @@ To run tests: python run-tests.py
 >>> from qtodotxt.lib import filters,tasklib
 >>> from qtodotxt.lib.filters import SimpleTextFilter, FutureFilter
 
+>>> def match(filterText, taskText):
+...     task = tasklib.Task(taskText)
+...     filter = SimpleTextFilter(filterText)
+...     resultTasks = tasklib.filterTasks([filter],[task])
+...     return len(resultTasks) > 0
+... 
+
 ========================================
 1. SimpleTextFilter
 ========================================
 
->>> task = tasklib.Task('do Something')
->>> filterSTF = SimpleTextFilter("Som")
->>> resultTasks = tasklib.filterTasks([filterSTF],[task])
->>> len(resultTasks)
-1
->>> resultTasks[0].text
-'do Something'
+>>> match("Som", 'do Something')
+True
 
 ========================================
 1. SimpleTextFilter with parentheses
 ========================================
 
->>> task_parenth = tasklib.Task('(A) do Something')
->>> filterSTF_par1 = SimpleTextFilter("(A")
->>> resultTasks = tasklib.filterTasks([filterSTF],[task_parenth])
->>> len(resultTasks)
-1
->>> resultTasks[0].text
-'(A) do Something'
-
->>> filterSTF_par2 = SimpleTextFilter("(A)")
->>> resultTasks = tasklib.filterTasks([filterSTF_par2],[task_parenth])
->>> len(resultTasks)
-1
->>> resultTasks[0].text
-'(A) do Something'
+>>> match("(A", '(A) do Something')
+True
+>>> match("(A)", '(A) do Something')
+True
 
 ========================================
 2. SimpleTextFilter empty filter string
 ========================================
 
->>> filterSTF_or11 = SimpleTextFilter("")
->>> resultTasks = tasklib.filterTasks([filterSTF_or11], [task])
->>> len(resultTasks)
-1
->>> resultTasks[0].text
-'do Something'
+>>> match("", '(A) do Something')
+True
 
 ========================================
 3. SimpleTextFilter case insensitive
 ========================================
 
->>> filterSTFi = SimpleTextFilter("som")
->>> resultTasks = tasklib.filterTasks([filterSTFi],[task])
->>> len(resultTasks)
-1
->>> resultTasks[0].text
-'do Something'
+>>> match("som", '(A) do Something')
+True
 
 ========================================
 4. SimpleTextFilter OR condition
 ========================================
 
->>> filterSTF_or1 = SimpleTextFilter("Som | zzz")
->>> resultTasks = tasklib.filterTasks([filterSTF_or1], [task])
->>> len(resultTasks)
-1
->>> resultTasks[0].text
-'do Something'
-
->>> filterSTF_or2 = SimpleTextFilter("yyy | zzz")
->>> resultTasks = tasklib.filterTasks([filterSTF_or2], [task])
->>> len(resultTasks)
-0
+>>> match("Som | zzz", '(A) do Something')
+True
+>>> match("yyy | zzz", '(A) do Something')
+False
 
 ========================================
 5. SimpleTextFilter AND condition (case insensitive)
 ========================================
 
->>> filterSTF_or3 = SimpleTextFilter("som thing")
->>> resultTasks = tasklib.filterTasks([filterSTF_or3], [task])
->>> len(resultTasks)
-1
->>> resultTasks[0].text
-'do Something'
-
->>> filterSTF_or4 = SimpleTextFilter("som, thing")
->>> resultTasks = tasklib.filterTasks([filterSTF_or4], [task])
->>> len(resultTasks)
-1
->>> resultTasks[0].text
-'do Something'
-
->>> filterSTF_or5 = SimpleTextFilter("zzz thing")
->>> resultTasks = tasklib.filterTasks([filterSTF_or5], [task])
->>> len(resultTasks)
-0
+>>> match("do some", '(A) do Something')
+True
+>>> match("do, some", '(A) do Something')
+True
+>>> match("zzz some", '(A) do Something')
+False
 
 ========================================
 6. SimpleTextFilter AND and NOT conditions 
 ========================================
 
->>> filterSTF_or6 = SimpleTextFilter("!zzz thing")
->>> resultTasks = tasklib.filterTasks([filterSTF_or6], [task])
->>> len(resultTasks)
-1
->>> resultTasks[0].text
-'do Something'
-
->>> filterSTF_or7 = SimpleTextFilter("~zzz thing")
->>> resultTasks = tasklib.filterTasks([filterSTF_or7], [task])
->>> len(resultTasks)
-1
->>> resultTasks[0].text
-'do Something'
-
->>> filterSTF_or8 = SimpleTextFilter("~zzz !thing")
->>> resultTasks = tasklib.filterTasks([filterSTF_or8], [task])
->>> len(resultTasks)
-0
+>>> match("!zzz some", '(A) do Something')
+True
+>>> match("~zzz some", '(A) do Something')
+True
+>>> match("~zzz !some", '(A) do Something')
+False
 
 ========================================
 7. SimpleTextFilter AND, OR, and NOT conditions 
 ========================================
 
->>> filterSTF_or9 = SimpleTextFilter("zzz | thing ~yyy")
->>> resultTasks = tasklib.filterTasks([filterSTF_or9], [task])
->>> len(resultTasks)
-1
->>> resultTasks[0].text
-'do Something'
-
->>> filterSTF_or10 = SimpleTextFilter("zzz | !thing yyy")
->>> resultTasks = tasklib.filterTasks([filterSTF_or10], [task])
->>> len(resultTasks)
-0
+>>> match("zzz | some ~yyy", '(A) do Something')
+True
+>>> match("zzz | !some yyy", '(A) do Something')
+False
 
 ========================================
 8. SimpleTextFilter NOT condition
 ========================================
 
->>> filterSTF_or12 = SimpleTextFilter("~som")
->>> resultTasks = tasklib.filterTasks([filterSTF_or12], [task])
->>> len(resultTasks)
-0
+>>> match("~som", '(A) do Something')
+False
+>>> match("!som", '(A) do Something')
+False
+>>> match("!zzz", '(A) do Something')
+True
 
->>> filterSTF_or12 = SimpleTextFilter("!som")
->>> resultTasks = tasklib.filterTasks([filterSTF_or12], [task])
->>> len(resultTasks)
-0
+==============================================
+9. SimpleTextFilter on projects and categories
+==============================================
 
->>> filterSTF_or12 = SimpleTextFilter("!zzz")
->>> resultTasks = tasklib.filterTasks([filterSTF_or12], [task])
->>> len(resultTasks)
-1
->>> resultTasks[0].text
-'do Something'
+>>> match("some +proj", 'do Something +project @context')
+True
+>>> match("xxx | @context", 'do Something +project @context')
+True
+>>> match("do !+project", 'do Something +project @context')
+False
+
+==============================================
+9. SimpleTextFilter test for user doc examples
+==============================================
+
+>>> match("work job1 | @home", 'work')
+False
+>>> match("work job1 | @home", 'job1')
+False
+>>> match("work job1 | @home", '@home')
+True
+
+>>> match("norweigan blue ~dead | !parrot", 'norweigan')
+True
+>>> match("norweigan blue ~dead | !parrot", 'blue')
+True
+>>> match("norweigan blue ~dead | !parrot", 'dead')
+True
+>>> match("norweigan blue ~dead | !parrot", 'parrot')
+False
+
+>>> match("cleese", 'johncleese')
+False
+
+>>> match(r"johncleese\b", 'johncleese')
+True
+>>> match(r"john\b", 'johncleese')
+False
+
+>>> match(r"2014-\d\d-07", '2014-03-07')
+True
+>>> match(r"2014-\d\d-07", '2014-ja-07')
+False
+
+>>> match("(B)", '(B) nail its feet to the perch')
+True
+
+==============================================
+10. SimpleTextFilter - weird search strings
+==============================================
+
+>>> match('joe\\', r'joe\jack')
+True
+
+==============================================
+==============================================
