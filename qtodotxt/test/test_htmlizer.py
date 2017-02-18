@@ -237,7 +237,7 @@ class TestHtmlizer(unittest.TestCase):
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;Download '
                          '<a style="color:none;" href="https://github.com/mNantern/QTodoTxt/archive/master.zip">'
-                         'github.com/mNantern/QTodoTxt/archive/master.zip</a> and extract')
+                         'https://github.com/...</a> and extract')
 
     def test_32(self):
         # Test task with solely an URL
@@ -245,7 +245,7 @@ class TestHtmlizer(unittest.TestCase):
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;'
                          '<a style="color:none;" href="https://github.com/mNantern/QTodoTxt/archive/master.zip">'
-                         'github.com/mNantern/QTodoTxt/archive/master.zip</a>')
+                         'https://github.com/...</a>')
 
     def test_33(self):
         # Test task with an URL in context
@@ -253,7 +253,7 @@ class TestHtmlizer(unittest.TestCase):
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;Test <font style="color:green">'
                          '@<a style="color:green;" href="https://github.com/mNantern/QTodoTxt/">'
-                         'github.com/mNantern/QTodoTxt/</a></font>')
+                         'https://github.com/...</a></font>')
 
     def test_34(self):
         # Test task with an URL in project
@@ -261,4 +261,4 @@ class TestHtmlizer(unittest.TestCase):
         self.assertEqual(self.htmlizer.task2html(task),
                          '<tt>&nbsp;&nbsp;&nbsp;</tt>&nbsp;Test <font style="color:#64AAD0">'
                          '+<a style="color:#64AAD0;" href="https://github.com/mNantern/QTodoTxt/">'
-                         'github.com/mNantern/QTodoTxt/</a></font>')
+                         'https://github.com/...</a></font>')

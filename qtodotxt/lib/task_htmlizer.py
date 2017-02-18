@@ -54,12 +54,14 @@ class TaskHtmlizer(object):
         return html
 
     def _addUrl(self, word, color="none"):
+        print("HERE", word)
         if ("http" in word) or ("www." in word):
+            print(2)
             parts = word.split('//', 1)
             parts2 = parts[1].split('/')
             end = parts2[0]
             if len(parts2) > 1:
-                end += "..."
+                end += "/..."
             cleanWord = parts[0] + '//' + end
         else:
             parts = word.split('/')
@@ -69,6 +71,7 @@ class TaskHtmlizer(object):
                 cleanWord = parts[-2]
             cleanWord = "../" + cleanWord
         word = '<a style="color:{2!s};" href="{0!s}">{1!s}</a>'.format(word, cleanWord, color)
+        print("RETURN", word)
         return word
 
     def _htmlizeContext(self, context):

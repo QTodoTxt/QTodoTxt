@@ -5,6 +5,6 @@
 2016-12-12 +GalacticaRepairs Check hull integrity rec:+7b due:2016-12-12
 Check for <b>DRADIS</b> contact @CIC
 Check if http://google.com is available
-Download code from <br/>https://github.com/QTodoTxt/QTodoTxt/archive/master.zip <br/>and give it a try!
+Download code from <br/> https://github.com/QTodoTxt/QTodoTxt/archive/master.zip <br/>and give it a try!
 Think about <u>future</u> t:2099-12-31
 x 2016-02-21 (B) Seal ship's cracks with biomatter +GalacticaRepairs
