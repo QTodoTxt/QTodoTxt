@@ -1,5 +1,5 @@
 from PyQt5.QtCore import pyqtSignal, Qt, QSize
-from PyQt5.QtWidgets import QWidget, QStackedLayout, QListWidget, QLabel, QListView, QListWidgetItem, QSizePolicy,\
+from PyQt5.QtWidgets import QWidget, QStackedLayout, QListWidget, QLabel, QListView, QListWidgetItem,\
      QAbstractItemView
 
 from qtodotxt.lib import tasklib
@@ -37,7 +37,7 @@ class TaskWidget(QWidget):
         new_height = self.label.heightForWidth(self.parent().size().width())
         new_height += 10
         return QSize(self.parent().size().width(), new_height)
-        
+
     def edit(self):
         self.editor.setText(self.task.text)
         self.layout.setCurrentIndex(1)
