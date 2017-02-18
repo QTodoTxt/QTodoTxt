@@ -1,4 +1,4 @@
-from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtCore import pyqtSignal, Qt, QSize
 from PyQt5.QtWidgets import QWidget, QStackedLayout, QListWidget, QLabel, QListView, QListWidgetItem, QSizePolicy,\
      QAbstractItemView
 
@@ -16,7 +16,6 @@ class TaskWidget(QWidget):
         QWidget.__init__(self, parent)
         self.task = task
         self.new = new
-        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.layout = QStackedLayout(self)
 
         self.label = QLabel(self)
@@ -29,13 +28,16 @@ class TaskWidget(QWidget):
         self.editor = TaskEditorLineEdit(self, parent.mfile)
         self.layout.addWidget(self.editor)
         self.setLayout(self.layout)
+
         self.layout.setCurrentIndex(0)
         self.editor.editingFinished.connect(self.editFinished)
         self.task.modified.connect(self._update)
 
     def sizeHint(self):
-        return self.label.size()
-
+        new_height = self.label.heightForWidth(self.parent().size().width())
+        new_height += 10
+        return QSize(self.parent().size().width(), new_height)
+        
     def edit(self):
         self.editor.setText(self.task.text)
         self.layout.setCurrentIndex(1)
@@ -64,6 +66,10 @@ class TaskWidget(QWidget):
             self.editor.setText(self.task.text)
             self.layout.setCurrentIndex(0)
             self.parent().setFocus()
+            return
+        elif event.key() in (Qt.Key_Enter, Qt.Key_Return):
+            return
+        QWidget.keyPressEvent(self, event)
 
 
 class TasksListView(QListWidget):
@@ -78,10 +84,22 @@ class TasksListView(QListWidget):
         QListWidget.__init__(self, parent)
         self.mfile = None
         self.setAlternatingRowColors(True)
-        self.LayoutMode = QListView.Batched
+        self.setLayoutMode(QListView.Batched)
         self.setResizeMode(QListView.Adjust)
         self.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.activated.connect(self._taskActivated)
+        self.setUniformItemSizes(False)
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+
+    def resizeEvent(self, ev):
+        """
+        Why do we need to do that???
+        """
+        for i in range(self.count()):
+            item = self.item(i)
+            widg = self.itemWidget(item)
+            if widg:
+                item.setSizeHint(widg.sizeHint())
 
     def setFileObject(self, mfile):
         self.mfile = mfile
@@ -134,7 +152,6 @@ class TasksListView(QListWidget):
         """
         item = QListWidgetItem()
         twidget = TaskWidget(self, task, new=new)
-        # set items size and add some space between items
         item.setSizeHint(twidget.sizeHint())
         if not idxs:
             self.addItem(item)
