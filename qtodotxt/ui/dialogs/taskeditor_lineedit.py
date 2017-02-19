@@ -91,7 +91,7 @@ class CompleterSetup(object):
         ('t:EndOfNextMonth', ''),
         ('t:EndOfYear', ''),
         ('due:December', '')
-    ])
+    ])  # yapf: disable
 
     def __init__(self, editor):
 
@@ -184,10 +184,7 @@ class TaskEditorLineEdit(QtWidgets.QTextEdit):
         self._completer.setWidget(self)
         self._completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
         self._completer.activated.connect(self._insertCompletion)
-        self._keysToIgnore = [QtCore.Qt.Key_Enter,
-                              QtCore.Qt.Key_Return,
-                              QtCore.Qt.Key_Escape,
-                              QtCore.Qt.Key_Tab]
+        self._keysToIgnore = [QtCore.Qt.Key_Enter, QtCore.Qt.Key_Return, QtCore.Qt.Key_Escape, QtCore.Qt.Key_Tab]
 
     def text(self):
         return self.toPlainText()
@@ -243,8 +240,8 @@ class TaskEditorLineEdit(QtWidgets.QTextEdit):
         if len(event.text()) > 0 and len(completionPrefix) > 0:
             if event.key() not in self._keysToIgnore:
                 cr = self.cursorRect()
-                cr.setWidth(self._completer.popup().sizeHintForColumn(0) +
-                        self._completer.popup().verticalScrollBar().sizeHint().width())
+                cr.setWidth(self._completer.popup().sizeHintForColumn(0) + self._completer.popup().verticalScrollBar()
+                            .sizeHint().width())
                 self._completer.complete(cr)
         if len(completionPrefix) == 0:
             self._completer.popup().hide()
@@ -255,5 +252,4 @@ class TaskEditorLineEdit(QtWidgets.QTextEdit):
         with the given prefix.
         """
         self._completer.setCompletionPrefix(completionPrefix)
-        self._completer.popup().setCurrentIndex(
-            self._completer.completionModel().index(0, 0))
+        self._completer.popup().setCurrentIndex(self._completer.completionModel().index(0, 0))
