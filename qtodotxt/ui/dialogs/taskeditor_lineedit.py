@@ -198,18 +198,20 @@ class TaskEditorLineEdit(QtWidgets.QTextEdit):
         it is called when the user selects an item in the completer popup.
         """
         currentText = self.text()
+        cursor = self.textCursor()
         completionPrefixSize = len(self._completer.completionPrefix())
-        textFirstPart = self.textCursor().position() - completionPrefixSize
+        textFirstPart = cursor.position() - completionPrefixSize
         textLastPart = textFirstPart + completionPrefixSize
 
         if completion in self._completerSetup.autocomplete_pairs:
             completion = self.replaceAutocompleteKeys(completion)
 
         newtext = currentText[:textFirstPart] + completion + " " + currentText[textLastPart:]
-        newCursorPos = self.textCursor().position() + (len(completion) - completionPrefixSize) + 1
+        newCursorPos = cursor.position() + (len(completion) - completionPrefixSize) + 1
 
         self.setText(newtext)
-        self.textCursor().setPosition(newCursorPos)
+        cursor.setPosition(newCursorPos)
+        self.setTextCursor(cursor)
 
     def replaceAutocompleteKeys(self, completion):
         if completion in self._completerSetup.autocomplete_pairs.keys():
