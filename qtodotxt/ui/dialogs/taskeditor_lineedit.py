@@ -170,9 +170,12 @@ class ValuesGenerator(object):
         return sorted(list(OrderedDict.fromkeys(self._completedValues + self._values))) + self._dates
 
 
-class TaskEditorLineEdit(QtWidgets.QLineEdit):
+class TaskEditorLineEdit(QtWidgets.QTextEdit):
+
+    focusOut = QtCore.pyqtSignal()
+
     def __init__(self, parent, mfile):
-        QtWidgets.QLineEdit.__init__(self, parent)
+        QtWidgets.QTextEdit.__init__(self, parent)
         self.mfile = mfile
         self._values_generator = ValuesGenerator(mfile, list(CompleterSetup.autocomplete_pairs.keys()))
         model = self._values_generator.get_values()
@@ -186,6 +189,9 @@ class TaskEditorLineEdit(QtWidgets.QLineEdit):
                               QtCore.Qt.Key_Escape,
                               QtCore.Qt.Key_Tab]
 
+    def text(self):
+        return self.toPlainText()
+
     def updateValues(self):
         self._values_generator.updateValues()
 
@@ -196,17 +202,17 @@ class TaskEditorLineEdit(QtWidgets.QLineEdit):
         """
         currentText = self.text()
         completionPrefixSize = len(self._completer.completionPrefix())
-        textFirstPart = self.cursorPosition() - completionPrefixSize
+        textFirstPart = self.textCursor().position() - completionPrefixSize
         textLastPart = textFirstPart + completionPrefixSize
 
         if completion in self._completerSetup.autocomplete_pairs:
             completion = self.replaceAutocompleteKeys(completion)
 
         newtext = currentText[:textFirstPart] + completion + " " + currentText[textLastPart:]
-        newCursorPos = self.cursorPosition() + (len(completion) - completionPrefixSize) + 1
+        newCursorPos = self.textCursor().position() + (len(completion) - completionPrefixSize) + 1
 
         self.setText(newtext)
-        self.setCursorPosition(newCursorPos)
+        self.textCursor().setPosition(newCursorPos)
 
     def replaceAutocompleteKeys(self, completion):
         if completion in self._completerSetup.autocomplete_pairs.keys():
@@ -215,24 +221,31 @@ class TaskEditorLineEdit(QtWidgets.QLineEdit):
     def textUnderCursor(self):
         text = self.text()
         textUnderCursor = ''
-        i = self.cursorPosition() - 1
+        i = self.textCursor().position() - 1
         while i >= 0 and text[i] != " ":
             textUnderCursor = text[i] + textUnderCursor
             i -= 1
         return textUnderCursor
 
+    def focusOutEvent(self, ev):
+        super(TaskEditorLineEdit, self).focusOutEvent(ev)
+        self.focusOut.emit()
+
     def keyPressEvent(self, event):
-        if self._completer.popup().isVisible():
-            if event.key() in self._keysToIgnore:
-                event.ignore()
-                return
+        #if self._completer.popup().isVisible():
+        if event.key() in self._keysToIgnore:
+            event.ignore()
+            return
         super(TaskEditorLineEdit, self).keyPressEvent(event)
         completionPrefix = self.textUnderCursor()
         if completionPrefix != self._completer.completionPrefix():
             self._updateCompleterPopupItems(completionPrefix)
         if len(event.text()) > 0 and len(completionPrefix) > 0:
             if event.key() not in self._keysToIgnore:
-                self._completer.complete()
+                cr = self.cursorRect()
+                cr.setWidth(self._completer.popup().sizeHintForColumn(0) +
+                        self._completer.popup().verticalScrollBar().sizeHint().width())
+                self._completer.complete(cr)
         if len(completionPrefix) == 0:
             self._completer.popup().hide()
 
