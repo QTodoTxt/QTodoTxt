@@ -30,7 +30,7 @@ class TaskWidget(QWidget):
         self.setLayout(self.layout)
 
         self.layout.setCurrentIndex(0)
-        self.editor.editingFinished.connect(self.editFinished)
+        self.editor.focusOut.connect(self.editFinished)
         self.task.modified.connect(self._update)
 
     def sizeHint(self):
@@ -68,6 +68,7 @@ class TaskWidget(QWidget):
             self.parent().setFocus()
             return
         elif event.key() in (Qt.Key_Enter, Qt.Key_Return):
+            self.editFinished()
             return
         QWidget.keyPressEvent(self, event)
 
