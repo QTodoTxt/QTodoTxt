@@ -231,7 +231,6 @@ class TaskEditorLineEdit(QtWidgets.QTextEdit):
         self.focusOut.emit()
 
     def keyPressEvent(self, event):
-        #if self._completer.popup().isVisible():
         if event.key() in self._keysToIgnore:
             event.ignore()
             return
