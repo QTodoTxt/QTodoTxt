@@ -163,6 +163,7 @@ class TasksListController(QtCore.QObject):
             task.setCompleted()
         else:
             task.setPending()
+        self.view.selectNext()
         if int(QtCore.QSettings().value("auto_archive", 0)):
             self.taskArchived.emit(task)
         else:
@@ -229,6 +230,7 @@ class TasksListController(QtCore.QObject):
                 for task in tasks:
                     self.view.removeTask(task)
                     self.taskDeleted.emit(task)
+                    self.view.selectNext()
 
     def _confirmTasksAction(self, tasks, messagePrefix):
         if len(tasks) == 1:
