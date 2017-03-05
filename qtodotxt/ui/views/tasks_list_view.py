@@ -210,3 +210,20 @@ class TasksListView(QListWidget):
         it = self.currentItem()
         if it:
             self.itemWidget(it).edit()
+
+    def currentTask(self):
+        it = self.currentItem()
+        if it:
+            return self.itemWidget(it).task
+        return None
+
+    def selectNext(self):
+        idx = self.currentIndex()
+        row = idx.row() + 1
+        print("ROW", row, self.count())
+        if row >= self.count():
+            print("HERE")
+            row = self.count() - 2
+        idx = idx.sibling(row, 0)
+        self.setCurrentIndex(idx)
+        print(self.currentTask())

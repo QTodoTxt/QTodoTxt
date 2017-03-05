@@ -160,7 +160,8 @@ class TasksListController(QtCore.QObject):
             # Check if task is recurrent and has a due date
             if task.recursion is not None and task.due is not None:
                 self._recurTask(task)
-            task.setCompleted()
+            task.setCompleted()  # maybe we should not do that is show_completed is True....
+            self.view.selectNext()
         else:
             task.setPending()
         if int(QtCore.QSettings().value("auto_archive", 0)):
@@ -229,6 +230,7 @@ class TasksListController(QtCore.QObject):
                 for task in tasks:
                     self.view.removeTask(task)
                     self.taskDeleted.emit(task)
+                    self.view.selectNext()
 
     def _confirmTasksAction(self, tasks, messagePrefix):
         if len(tasks) == 1:
