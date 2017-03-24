@@ -130,6 +130,11 @@ class File(object):
                         projects[project] = count
         return projects
 
+    def getAllPriorities(self, return_completed=False):
+
+        priorities = { "A" : 1, "B" : 1 , "C" : 1, "D" : 1}
+        return priorities
+
     def getAllDueRanges(self, return_completed=False):
         dueRanges = dict()
         # This determines the sorting of the ranges in the tree view. Lowest value first.

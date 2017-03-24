@@ -281,6 +281,21 @@ class HasContextsFilter(BaseFilter):
     def __str__(self):
         return "HasContextsFilter" % self.text
 
+class HasPriorityFilter(BaseFilter):
+    """
+    Task list filter allowing only tasks tagged with some project.
+
+    """
+
+    def __init__(self):
+        BaseFilter.__init__(self, 'Priorities')
+
+    def isMatch(self, task):
+        return task.priority
+
+    def __str__(self):
+        return "HasPriorityFilter" % self.text
+
 
 class HasDueDateFilter(BaseFilter):
     """
@@ -435,11 +450,11 @@ class PriorityFilter(BaseFilter):
 
     """
 
-    def __init__(self):
-        BaseFilter.__init__(self, 'Priority')
+    def __init__(self, priority):
+        BaseFilter.__init__(self, priority) 
 
     def isMatch(self, task):
-        return task.priority != ""
+        return self.text in task.priority
 
     def __str__(self):
         return "PriorityFilter " % self.text

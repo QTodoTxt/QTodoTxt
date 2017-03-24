@@ -1,6 +1,6 @@
 from PyQt5 import QtCore
 from qtodotxt.lib.filters import ContextFilter, ProjectFilter, DueTodayFilter, DueTomorrowFilter, DueThisWeekFilter, \
-    DueThisMonthFilter, DueOverdueFilter
+    DueThisMonthFilter, DueOverdueFilter, PriorityFilter
 
 # class IFiltersTreeView(object):
 #    def addFilter(self, filter): pass
@@ -34,6 +34,7 @@ class FiltersTreeController(QtCore.QObject):
         self._addAllContexts(file, show_completed)
         self._addAllProjects(file, show_completed)
         self._addAllDueRanges(file, show_completed)
+        self._addAllPriorities(file, show_completed)
         self._updateCounter(file, show_completed)
         self._is_showing_filters = False
         self._reselect(previouslySelectedFilters)
@@ -52,6 +53,12 @@ class FiltersTreeController(QtCore.QObject):
         projects = file.getAllProjects(show_completed)
         for project, number in projects.items():
             filter = ProjectFilter(project)
+            self.view.addFilter(filter, number)
+
+    def _addAllPriorities(self, file, show_completed):
+        priorities = file.getAllPriorities(show_completed)
+        for priority, number in priorities.items():
+            filter = PriorityFilter(priority)
             self.view.addFilter(filter, number)
 
     def _addAllDueRanges(self, file, show_completed):
