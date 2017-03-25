@@ -201,7 +201,8 @@ class TasksListController(QtCore.QObject):
         # Set new due date in old task text
         rec_text = task.updateDateInTask(task.text, next_due_date)
         # create a new task duplicate
-        return self.createTask(rec_text)
+        self._createTask(rec_text)
+        return
 
     def _incrWorkDays(self, startDate, daysToIncrement):
         while daysToIncrement > 0:
