@@ -283,7 +283,7 @@ class HasContextsFilter(BaseFilter):
 
 class HasPriorityFilter(BaseFilter):
     """
-    Task list filter allowing only tasks tagged with some project.
+    Task list filter allowing only tasks with a priority set
 
     """
 
@@ -446,7 +446,7 @@ class FutureFilter(BaseFilter):
 
 class PriorityFilter(BaseFilter):
     """
-    Task list filter that removes any completed tasks.
+    Task list filter allowing only tasks with a certain priority 
 
     """
 
