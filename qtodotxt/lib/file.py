@@ -132,7 +132,7 @@ class File(object):
 
     def getAllPriorities(self, return_completed=False):
 
-        priorities = {"A" : 0, "B" : 0, "C" : 0, "D" : 0}
+        priorities = {"A": 0, "B": 0, "C": 0, "D": 0}
         for task in self.tasks:
             if return_completed or not task.is_complete:
                 if task.priority in priorities.keys():

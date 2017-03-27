@@ -281,6 +281,7 @@ class HasContextsFilter(BaseFilter):
     def __str__(self):
         return "HasContextsFilter" % self.text
 
+
 class HasPriorityFilter(BaseFilter):
     """
     Task list filter allowing only tasks with a priority set
@@ -446,12 +447,12 @@ class FutureFilter(BaseFilter):
 
 class PriorityFilter(BaseFilter):
     """
-    Task list filter allowing only tasks with a certain priority 
+    Task list filter allowing only tasks with a certain priority
 
     """
 
     def __init__(self, priority):
-        BaseFilter.__init__(self, priority) 
+        BaseFilter.__init__(self, priority)
 
     def isMatch(self, task):
         return self.text in task.priority
