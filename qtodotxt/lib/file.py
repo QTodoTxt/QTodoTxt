@@ -132,7 +132,11 @@ class File(object):
 
     def getAllPriorities(self, return_completed=False):
 
-        priorities = { "A" : 1, "B" : 1 , "C" : 1, "D" : 1}
+        priorities = {"A" : 0, "B" : 0, "C" : 0, "D" : 0}
+        for task in self.tasks:
+            if return_completed or not task.is_complete:
+                if task.priority in priorities.keys():
+                    priorities[task.priority] += 1
         return priorities
 
     def getAllDueRanges(self, return_completed=False):
