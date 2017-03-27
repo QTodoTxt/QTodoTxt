@@ -1,4 +1,5 @@
 import os
+import string
 from datetime import date
 from datetime import timedelta
 import re
@@ -11,7 +12,6 @@ from qtodotxt.lib import tasklib
 from qtodotxt.lib.task_htmlizer import TaskHtmlizer
 
 from qtodotxt.lib.tasklib import recursiveMode
-from qtodotxt.ui.dialogs.taskeditor import TaskEditor
 
 
 class LinkDialog(QtWidgets.QFileDialog):
@@ -43,8 +43,8 @@ class TasksListController(QtCore.QObject):
         self.view = view
         self.view.setFileObject(mfile)
         self._task_htmlizer = TaskHtmlizer()
-        self._task_editor_service = TaskEditor(self.view, mfile)
-        self.view.taskActivated.connect(self.editTask)
+        self._priorities = ["(" + i + ")" for i in string.ascii_uppercase]  # FIXME: why do we have this?
+        self.view.taskActivated.connect(self.view.editCurrentTask)
         self.view.currentTaskChanged.connect(self.updateActions)
         self.view.taskDeleted.connect(self.taskDeleted.emit)
         self.view.itemSelectionChanged.connect(self.updateActions)
@@ -74,7 +74,7 @@ class TasksListController(QtCore.QObject):
         action = QtWidgets.QAction(QtGui.QIcon(self.style + '/resources/TaskEdit.png'), self.tr('&Edit Task'), self)
         action.setShortcuts(['Ctrl+E', 'Enter'])
         action.setDisabled(True)
-        action.triggered.connect(self.editTask)
+        action.triggered.connect(self.view.editCurrentTask)
         self.view.addAction(action)
         self.editTaskAction = action
 
@@ -82,7 +82,7 @@ class TasksListController(QtCore.QObject):
         action = QtWidgets.QAction(
             QtGui.QIcon(self.style + '/resources/TaskCreate.png'), self.tr('&Create new task'), self)
         action.setShortcuts(['Insert', 'Ctrl+I', 'Ctrl+N'])
-        action.triggered.connect(self.createTask)
+        action.triggered.connect(self.view.createTask)
         self.view.addAction(action)
         self.createTaskAction = action
 
@@ -150,10 +150,6 @@ class TasksListController(QtCore.QObject):
                 for task in tasks:
                     task.text = task.text + " " + uri
                     self.taskModified.emit(task)
-
-    @property
-    def _useTaskDialog(self):
-        return int(self._settings.value("use_task_dialog", 0))
 
     def completeTask(self, task):
         if not task.is_complete:
@@ -289,7 +285,7 @@ class TasksListController(QtCore.QObject):
 
     def _addCreationDate(self, text):
         date_string = date.today().strftime('%Y-%m-%d')
-        if text[:3] in self._task_editor_service.priorities:
+        if text[:3] in self._priorities:
             text = '%s %s %s' % (text[:3], date_string, text[4:])
         else:
             text = '%s %s' % (date_string, text)
@@ -304,32 +300,12 @@ class TasksListController(QtCore.QObject):
         self._task_created(task)
         return task
 
-    def createTask(self, task=None):
-        if not self._useTaskDialog:
-            self.view.createTask(task)
-            return
-        (text, ok) = self._task_editor_service.createTask(task)
-        if ok and text:
-            task = self._createTask(text)
-            return task
-
     def createTaskOnTemplate(self):
         tasks = self.view.getSelectedTasks()
         if len(tasks) != 1:
             return
         task = tasks[0]
-        return self.createTask(task)
-
-    def editTask(self, task=None):
-        if not self._useTaskDialog:
-            self.view.editCurrentTask()
-            return
-        if not task:
-            tasks = self.view.getSelectedTasks()
-            task = tasks[0]
-        (text, ok) = self._task_editor_service.editTask(task)
-        if ok and text:
-            task.text = text
+        return self.view.createTask(task)
 
     def _copySelectedTasks(self):
         tasks = self.view.getSelectedTasks()
