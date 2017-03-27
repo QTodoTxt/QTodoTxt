@@ -130,6 +130,17 @@ class File(object):
                         projects[project] = count
         return projects
 
+    def getAllPriorities(self, return_completed=False):
+        priorities = {}
+        for task in self.tasks:
+            if return_completed or not task.is_complete:
+                if task.priority in priorities:
+                    priorities[task.priority] += 1
+                elif task.priority != "":
+                    priorities[task.priority] = 1
+
+        return priorities
+
     def getAllDueRanges(self, return_completed=False):
         dueRanges = dict()
         # This determines the sorting of the ranges in the tree view. Lowest value first.

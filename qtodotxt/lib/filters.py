@@ -282,6 +282,22 @@ class HasContextsFilter(BaseFilter):
         return "HasContextsFilter" % self.text
 
 
+class HasPriorityFilter(BaseFilter):
+    """
+    Task list filter allowing only tasks with a priority set
+
+    """
+
+    def __init__(self):
+        BaseFilter.__init__(self, 'Priorities')
+
+    def isMatch(self, task):
+        return task.priority
+
+    def __str__(self):
+        return "HasPriorityFilter" % self.text
+
+
 class HasDueDateFilter(BaseFilter):
     """
     Task list filter allowing only complete tasks with due date in due ranges.
@@ -431,15 +447,15 @@ class FutureFilter(BaseFilter):
 
 class PriorityFilter(BaseFilter):
     """
-    Task list filter that removes any completed tasks.
+    Task list filter allowing only tasks with a certain priority
 
     """
 
-    def __init__(self):
-        BaseFilter.__init__(self, 'Priority')
+    def __init__(self, priority):
+        BaseFilter.__init__(self, priority)
 
     def isMatch(self, task):
-        return task.priority != ""
+        return self.text in task.priority
 
     def __str__(self):
         return "PriorityFilter " % self.text
