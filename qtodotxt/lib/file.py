@@ -131,12 +131,14 @@ class File(object):
         return projects
 
     def getAllPriorities(self, return_completed=False):
-
-        priorities = {"A": 0, "B": 0, "C": 0, "D": 0}
+        priorities = {}
         for task in self.tasks:
             if return_completed or not task.is_complete:
-                if task.priority in priorities.keys():
+                if task.priority in priorities:
                     priorities[task.priority] += 1
+                elif task.priority != "":
+                    priorities[task.priority] = 1
+
         return priorities
 
     def getAllDueRanges(self, return_completed=False):
