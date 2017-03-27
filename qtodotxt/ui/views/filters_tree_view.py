@@ -185,7 +185,7 @@ class FiltersTreeView(QtWidgets.QWidget):
         self._filterIconByFilterType[DueThisWeekFilter] = QtGui.QIcon(self.style + '/resources/FilterDueWeek.png')
         self._filterIconByFilterType[DueThisMonthFilter] = QtGui.QIcon(self.style + '/resources/FilterDueMonth.png')
         self._filterIconByFilterType[DueOverdueFilter] = QtGui.QIcon(self.style + '/resources/FilterDueOverdue.png')
-        self._filterIconByFilterType[PriorityFilter] = QtGui.QIcon(self.style + '/resources/FilterDueOverdue.png')
+        self._filterIconByFilterType[PriorityFilter] = QtGui.QIcon(self.style + '/resources/FilterComplete.png')
 
         self._treeItemByFilterType[AllTasksFilter] = self._allTasksItem
         self._treeItemByFilterType[UncategorizedTasksFilter] = self._uncategorizedTasksItem
