@@ -1,56 +1,73 @@
-# C extensions
-*.so
+# This file is used to ignore files which are generated
+# ----------------------------------------------------------------------------
 
-# Eric IDE
-*.e4p
-.eric5project/
-.issues/
-
-# PyCharm IDE
-.idea/
-
-# Miscellaneous
 *~
-*.*~
-*.py[cod]
-*.sw[op]
-.venv
-
+*.autosave
+*.a
+*.core
+*.moc
+*.o
+*.obj
+*.orig
+*.rej
+*.so
+*.so.*
+*_pch.h.cpp
+*_resource.rc
+*.qm
+.#*
+*.*#
+core
+!core/
+tags
 .DS_Store
+.directory
+*.debug
+Makefile*
+*.prl
+*.app
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+Thumbs.db
+*.res
+*.rc
+/.qmake.cache
+/.qmake.stash
 
-# Mr Developer
-.mr.developer.cfg
-.project
-.pydevproject
-.settings
+# qtcreator generated files
+*.pro.user*
 
-# Packages
-__pycache__
-build/
-develop-eggs
-dist/
-*.egg
-*.egg-info
-eggs/
-.installed.cfg
-parts
-pip-log.txt
-sdist
-var
+# xemacs temporary files
+*.flc
 
-# Rope
-.ropeproject/
+# Vim temporary files
+.*.swp
 
-# Translations
-*.mo
+# Visual Studio generated files
+*.ib_pdb_index
+*.idb
+*.ilk
+*.pdb
+*.sln
+*.suo
+*.vcproj
+*vcproj.*.*.user
+*.ncb
+*.sdf
+*.opensdf
+*.vcxproj
+*vcxproj.*
 
-# Unit test / coverage reports
-.cache
-.coverage
-nosetests.xml
-tempfile.txt
-.testOutput
-.tox
+# MinGW generated files
+*.Debug
+*.Release
 
-# Visual Studio Code IDE
-.vscode
+# Python byte code
+*.pyc
+
+# Binaries
+# --------
+*.dll
+*.exe
+
