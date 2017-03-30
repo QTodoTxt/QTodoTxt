@@ -15,7 +15,7 @@ class TaskWidget(QWidget):
     def __init__(self, parent, task, new=False):
         QWidget.__init__(self, parent)
         self.task = task
-        self.new = new
+        self.new = nw
         self.layout = QStackedLayout(self)
 
         self.label = QLabel(self)

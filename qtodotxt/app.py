@@ -8,6 +8,8 @@ import os
 
 from PyQt5 import QtCore, QtGui
 from PyQt5 import QtWidgets
+from PyQt5.QtQml import qmlRegisterType, QQmlComponent, QQmlApplicationEngine
+
 # import resource for darkstyle
 # taken from https://github.com/ColinDuquesnoy/QDarkStyleSheet
 import qtodotxt.ui.pyqt5_style_rc  # noqa: F401
@@ -142,6 +144,13 @@ def run():
     _setupLogging(args.loglevel)
     #    logger = logging.getLogger(__file__[:-3]) # in case someone wants to log here
     controller = _createController(args)
+
+    qmlRegisterType(MainController, 'MC', 1, 0, 'MC')
+    engine = QQmlApplicationEngine()
+    engine.load('../qml/QTodoTxt.qml')
+    #component = QQmlComponent(engine)
+    #component.loadUrl(QUrl('../qml/QTodoTxt.qml'))
+
 
     # Connecting to a processor reading TMP file
     if needSingleton:

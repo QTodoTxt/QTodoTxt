@@ -4,11 +4,17 @@ import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.1
 
+//import MC 1.0
+
 ApplicationWindow {
     visible: true
     width: 640
     height: 480
     title: qsTr("QTodoTxt")
+
+//    MC {
+//
+//    }
 
     Action {
         id: fileOpen
