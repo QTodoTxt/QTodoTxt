@@ -49,6 +49,16 @@ class MainController(QtCore.QObject):
         self.hasTrayIcon = False
         self._menu_controller.updateRecentFileActions()
 
+    @QtCore.pyqtProperty('QString')
+    def test(self):
+        return "test Property"
+
+    tlChanged = QtCore.pyqtSignal()
+
+    @QtCore.pyqtProperty('QVariant')
+    def taskList(self):
+        return self._file.tasks
+
     def auto_save(self):
         if int(self._settings.value("auto_save", 1)):
             self.save()
@@ -238,6 +248,7 @@ class MainController(QtCore.QObject):
         self._applyFilters(filters=filters)
 
     def _applyFilters(self, filters=None, searchText=None):
+        self.taskListChanged.emit()
         # First we filter with filters tree
         if filters is None:
             filters = self._filters_tree_controller.view.getSelectedFilters()

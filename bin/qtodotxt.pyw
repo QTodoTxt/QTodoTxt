@@ -10,7 +10,7 @@ except NameError:
   __file__ = sys.argv[0]
 
 def reroute_py2exe_logs():
-    appdata = os.path.expandvars("%AppData%\\QTodoTxt")
+    appdata = os.path.expandvars("%AppData%\\QTodoTxt.dev")
     if not os.path.isdir(appdata):
         os.makedirs(appdata)
     sys.stdout = open(appdata + "\\stdout.log", "w")

@@ -22,6 +22,8 @@ from qtodotxt.ui.views.main_view import MainView
 from qtodotxt.lib.file import FileObserver
 from qtodotxt.lib.tendo_singleton import SingleInstance
 
+from qtodotxt.qml_class import MainControllerQml
+
 
 class TrayIcon(QtWidgets.QSystemTrayIcon):
     def __init__(self, main_controller):
@@ -125,6 +127,7 @@ def run():
     QtCore.QCoreApplication.setApplicationName("QTodoTxt")
     # Now set up our application and start
     app = QtWidgets.QApplication(sys.argv)
+    #app = QtGui.QGuiApplication(sys.argv)
 
     name = QtCore.QLocale.system().name()
     translator = QtCore.QTranslator()
@@ -145,9 +148,12 @@ def run():
     #    logger = logging.getLogger(__file__[:-3]) # in case someone wants to log here
     controller = _createController(args)
 
-    qmlRegisterType(MainController, 'MC', 1, 0, 'MC')
+    qmlRegisterType(MainControllerQml, 'MCQ', 1, 0, 'MCQ')
+#    qmlRegisterType(MainController, 'MC', 1, 0, 'MC')
     engine = QQmlApplicationEngine()
     engine.load('../qml/QTodoTxt.qml')
+    engine.rootContext().setContextProperty("mc", controller)
+#    rc.setContextProperty("mc", controller)
     #component = QQmlComponent(engine)
     #component.loadUrl(QUrl('../qml/QTodoTxt.qml'))
 

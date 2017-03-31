@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.1
 
+import MCQ 1.0
 //import MC 1.0
 
 ApplicationWindow {
@@ -12,8 +13,16 @@ ApplicationWindow {
     height: 480
     title: qsTr("QTodoTxt")
 
+    MCQ {
+        id: mcq
+        Component.onCompleted: console.log("hallo")
+    }
+
+
 //    MC {
-//
+//        id: mc
+//        view: parent
+//        Component.onCompleted: console.log("hallo mc")
 //    }
 
     Action {
@@ -117,22 +126,25 @@ ApplicationWindow {
             Layout.fillWidth: true
             TextField {
                 Layout.fillWidth: true
-                placeholderText: "Search"
+                placeholderText: mc.test + mc.length//mcq.name
             }
-            TableView {
+            ListView {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                alternatingRowColors: true
-                headerVisible: false
-                model: ListModel {
-                    ListElement { text: "Task 1" }
-                    ListElement { text: "Task 2" }
-                    ListElement { text: "Task 3" }
-                    ListElement { text: "Task 4" }
-                }
-                TableViewColumn {
-                    role: text
-                }
+//                alternatingRowColors: true
+//                headerVisible: false
+                model: mc.taskList
+//                    ListModel {
+//                    ListElement { text: "Task 2" }
+//                    ListElement { text: "Task 2" }
+//                    ListElement { text: "Task 3" }
+//                    ListElement { text: "Task 4" }
+//                }
+//                TableViewColumn {
+//                    role: "text"
+//                }
+                delegate: Label { text: model.index }
+                Component.onCompleted: console.log(mc.taskList)
             }
         }
     }
