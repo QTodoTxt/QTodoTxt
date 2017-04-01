@@ -126,7 +126,7 @@ ApplicationWindow {
             Layout.fillWidth: true
             TextField {
                 Layout.fillWidth: true
-                placeholderText: mc.test + mc.length//mcq.name
+                placeholderText: mc.test + mc.taskList.length + typeof mc.taskList//mcq.name
             }
             ListView {
                 Layout.fillHeight: true
@@ -143,7 +143,7 @@ ApplicationWindow {
 //                TableViewColumn {
 //                    role: "text"
 //                }
-                delegate: Label { text: model.index }
+                delegate: Label { text: mc.taskList[model.index].text }
                 Component.onCompleted: console.log(mc.taskList)
             }
         }

@@ -53,11 +53,15 @@ class MainController(QtCore.QObject):
     def test(self):
         return "test Property"
 
-    tlChanged = QtCore.pyqtSignal()
+    taskListChanged = QtCore.pyqtSignal()
 
-    @QtCore.pyqtProperty('QVariant')
+    @QtCore.pyqtProperty('QVariant', notify=taskListChanged)
     def taskList(self):
-        return self._file.tasks
+        return self._tasksListQml
+
+    @taskList.setter
+    def taskList(self, taskList):
+        self._tasksListQml = taskList
 
     def auto_save(self):
         if int(self._settings.value("auto_save", 1)):
@@ -248,7 +252,6 @@ class MainController(QtCore.QObject):
         self._applyFilters(filters=filters)
 
     def _applyFilters(self, filters=None, searchText=None):
-        self.taskListChanged.emit()
         # First we filter with filters tree
         if filters is None:
             filters = self._filters_tree_controller.view.getSelectedFilters()
@@ -264,6 +267,8 @@ class MainController(QtCore.QObject):
         if not CompleteTasksFilter() in filters and not self.showCompletedAction.isChecked():
             tasks = tasklib.filterTasks([IncompleteTasksFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
+        self.taskList = tasks
+        self.taskListChanged.emit()
 
     def _initSearchText(self):
         self.view.tasks_view.tasks_search_view.searchTextChanged.connect(

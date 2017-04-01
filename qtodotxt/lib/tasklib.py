@@ -93,7 +93,7 @@ class Task(QtCore.QObject):
             self._parseWord(word)
         self._text = line
 
-    @property
+    @QtCore.pyqtProperty('QString')
     def text(self):
         return self._text
 
