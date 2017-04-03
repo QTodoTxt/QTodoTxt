@@ -8,6 +8,7 @@ import os
 
 from PyQt5 import QtCore, QtGui
 from PyQt5 import QtWidgets
+#imports for QML integration
 from PyQt5.QtQml import qmlRegisterType, QQmlComponent, QQmlApplicationEngine
 
 # import resource for darkstyle
@@ -22,6 +23,7 @@ from qtodotxt.ui.views.main_view import MainView
 from qtodotxt.lib.file import FileObserver
 from qtodotxt.lib.tendo_singleton import SingleInstance
 
+#(Just for testing how to communicate between python and qml, see also below)
 from qtodotxt.qml_class import MainControllerQml
 
 
@@ -127,6 +129,8 @@ def run():
     QtCore.QCoreApplication.setApplicationName("QTodoTxt")
     # Now set up our application and start
     app = QtWidgets.QApplication(sys.argv)
+    #it is said, that this is lighter:
+    #(without qwidgets, as we probably don't need them anymore, when transition to qml is done)
     #app = QtGui.QGuiApplication(sys.argv)
 
     name = QtCore.QLocale.system().name()
@@ -148,15 +152,14 @@ def run():
     #    logger = logging.getLogger(__file__[:-3]) # in case someone wants to log here
     controller = _createController(args)
 
+#the MainControllerQml class gets exported to qml: (rather for testing now)
     qmlRegisterType(MainControllerQml, 'MCQ', 1, 0, 'MCQ')
 #    qmlRegisterType(MainController, 'MC', 1, 0, 'MC')
     engine = QQmlApplicationEngine()
+    #the main qml file containing the root element gets loaded:
     engine.load('../qml/QTodoTxt.qml')
+    #here we export an instance of a class to qml
     engine.rootContext().setContextProperty("mc", controller)
-#    rc.setContextProperty("mc", controller)
-    #component = QQmlComponent(engine)
-    #component.loadUrl(QUrl('../qml/QTodoTxt.qml'))
-
 
     # Connecting to a processor reading TMP file
     if needSingleton:

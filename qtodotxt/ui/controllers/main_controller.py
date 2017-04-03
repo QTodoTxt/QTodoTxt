@@ -49,10 +49,12 @@ class MainController(QtCore.QObject):
         self.hasTrayIcon = False
         self._menu_controller.updateRecentFileActions()
 
+    #a dummy property for testing
     @QtCore.pyqtProperty('QString')
     def test(self):
         return "test Property"
 
+    #------- the property for the list of tasks -------
     taskListChanged = QtCore.pyqtSignal()
 
     @QtCore.pyqtProperty('QVariant', notify=taskListChanged)
@@ -62,6 +64,7 @@ class MainController(QtCore.QObject):
     @taskList.setter
     def taskList(self, taskList):
         self._tasksListQml = taskList
+    #------- the property for the list of tasks -------
 
     def auto_save(self):
         if int(self._settings.value("auto_save", 1)):
@@ -267,6 +270,7 @@ class MainController(QtCore.QObject):
         if not CompleteTasksFilter() in filters and not self.showCompletedAction.isChecked():
             tasks = tasklib.filterTasks([IncompleteTasksFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
+        #here i chose to set the tasklist property, maybe its not 100% correct
         self.taskList = tasks
         self.taskListChanged.emit()
 

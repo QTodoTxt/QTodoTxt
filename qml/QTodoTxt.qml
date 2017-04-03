@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.1
 
+//this imports the MainControllerQml class which is exported in python
 import MCQ 1.0
 //import MC 1.0
 
@@ -13,11 +14,11 @@ ApplicationWindow {
     height: 480
     title: qsTr("QTodoTxt")
 
+    //This instanciates the MainControllerQml class:
     MCQ {
         id: mcq
         Component.onCompleted: console.log("hallo")
     }
-
 
 //    MC {
 //        id: mc
@@ -25,6 +26,7 @@ ApplicationWindow {
 //        Component.onCompleted: console.log("hallo mc")
 //    }
 
+    //the Actions are already defined in python, we just need to make them available to qml
     Action {
         id: fileOpen
         iconName: "document-open"
@@ -126,6 +128,7 @@ ApplicationWindow {
             Layout.fillWidth: true
             TextField {
                 Layout.fillWidth: true
+                //here the controller instance which is exported in python gets used (for testing):
                 placeholderText: mc.test + mc.taskList.length + typeof mc.taskList//mcq.name
             }
             ListView {
@@ -133,7 +136,9 @@ ApplicationWindow {
                 Layout.fillWidth: true
 //                alternatingRowColors: true
 //                headerVisible: false
+                //here the controller instance which is exported in python gets used:
                 model: mc.taskList
+                //a dummy listmodel
 //                    ListModel {
 //                    ListElement { text: "Task 2" }
 //                    ListElement { text: "Task 2" }
@@ -143,8 +148,11 @@ ApplicationWindow {
 //                TableViewColumn {
 //                    role: "text"
 //                }
-                delegate: Label { text: mc.taskList[model.index].text }
-                Component.onCompleted: console.log(mc.taskList)
+                delegate: Label {
+//                    here comes the text from tasklib.py
+                    text: mc.taskList[model.index].text
+                }
+//                Component.onCompleted: console.log(mc.taskList)
             }
         }
     }
