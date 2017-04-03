@@ -132,6 +132,7 @@ ApplicationWindow {
                 placeholderText: mc.test + mc.taskList.length + typeof mc.taskList//mcq.name
             }
             ListView {
+                id: lv
                 Layout.fillHeight: true
                 Layout.fillWidth: true
 //                alternatingRowColors: true
@@ -148,9 +149,11 @@ ApplicationWindow {
 //                TableViewColumn {
 //                    role: "text"
 //                }
-                delegate: Label {
+                delegate: TaskLine {
 //                    here comes the text from tasklib.py
+                    width: lv.width
                     text: mc.taskList[model.index].text
+                    html: text
                 }
 //                Component.onCompleted: console.log(mc.taskList)
             }
