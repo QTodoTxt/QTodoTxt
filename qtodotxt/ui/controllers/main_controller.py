@@ -50,7 +50,7 @@ class MainController(QtCore.QObject):
         self._menu_controller.updateRecentFileActions()
 
     #a dummy property for testing
-    @QtCore.pyqtProperty('QString')
+    @QtCore.pyqtProperty('QString', constant=True)
     def test(self):
         return "test Property"
 
@@ -64,7 +64,14 @@ class MainController(QtCore.QObject):
     @taskList.setter
     def taskList(self, taskList):
         self._tasksListQml = taskList
-    #------- the property for the list of tasks -------
+        self.taskListChanged.emit()
+
+    actionsChanged = QtCore.pyqtSignal()
+
+    @QtCore.pyqtProperty('QVariant', notify=actionsChanged)
+    def actions(self):
+        return self._actions
+
 
     def auto_save(self):
         if int(self._settings.value("auto_save", 1)):
@@ -84,8 +91,10 @@ class MainController(QtCore.QObject):
         self._menu_controller = MenuController(self, menu)
 
     def _initActions(self):
+        self._actions = {}
         self.filterViewAction = QtWidgets.QAction(QtGui.QIcon(self.view.style + '/resources/sidepane.png'),
                                                   self.tr('Show &Filters'), self)
+        self._actions['filterViewAction'] = self.filterViewAction
         self.filterViewAction.setCheckable(True)
         self.filterViewAction.setShortcuts(['Ctrl+Shift+F'])
         self.filterViewAction.triggered.connect(self._toggleFilterView)
@@ -117,6 +126,8 @@ class MainController(QtCore.QObject):
         self.showSearchAction.setCheckable(True)
         self.showSearchAction.setShortcuts(['Ctrl+F'])
         self.showSearchAction.triggered.connect(self._toggleShowSearch)
+        self._actions['showSearchAction'] = self.showSearchAction
+        self.actionsChanged.emit()
 
     def _initToolBar(self):
         toolbar = self.view.addToolBar("Main Toolbar")

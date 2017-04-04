@@ -6,21 +6,29 @@ Loader {
     id: loader
     property string text: ""
     property string html: ""
+    property bool current: false
+    onCurrentChanged: if (!current) state = "show"
+    signal activated()
     height: item.height
 
     state: "show"
-    sourceComponent: label
+    sourceComponent: labelComp
 
     Component {
-        id: label
+        id: labelComp
         Label {
+            id: label
             text: loader.html
             width: loader.width
             textFormat: Qt.RichText
             wrapMode: Text.Wrap
             MouseArea {
                 anchors.fill: parent
-                onClicked: loader.state = "edit"
+                onDoubleClicked: {
+                    loader.activated()
+                    loader.state = "edit"
+                }
+                onClicked: loader.activated()
             }
         }
     }
@@ -33,6 +41,7 @@ Loader {
             onEditingFinished: {
                 loader.state = "show"
             }
+            onActiveFocusChanged: if (!activeFocus) loader.state = "show"
         }
     }
 
@@ -41,8 +50,7 @@ Loader {
             name: "show"
             PropertyChanges {
                 target: loader
-                sourceComponent: label
-
+                sourceComponent: labelComp
             }
         },
         State {

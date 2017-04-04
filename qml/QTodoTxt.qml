@@ -1,5 +1,5 @@
-import QtQuick 2.2
-import QtQuick.Controls 1.2
+import QtQuick 2.7
+import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.1
@@ -52,7 +52,7 @@ ApplicationWindow {
 
     Action {
         id: editNewTask
-        iconName: "task-plus"
+        iconName: "list-add"
         text: qsTr("Create New Task")
         shortcut: "Ins"
         onTriggered: {        }
@@ -60,7 +60,7 @@ ApplicationWindow {
 
     Action {
         id: editEditTask
-        iconName: "task-edit"
+        iconName: "document-edit"
         text: qsTr("Edit Task")
         shortcut: "Ctrl+E"
         onTriggered: {        }
@@ -68,10 +68,18 @@ ApplicationWindow {
 
     Action {
         id: editCompleteTasks
-        iconName: "task-check"
+        iconName: "document-edit"
         text: qsTr("Complete Selected Tasks")
         shortcut: "X"
         onTriggered: {        }
+    }
+
+    Action {
+        id: showSearchAction
+        iconName: "search"
+        text: qsTr("Show Search Field")
+        shortcut: "Ctrl+F"
+        checkable: true
     }
 
     menuBar: MenuBar {
@@ -94,6 +102,10 @@ ApplicationWindow {
             MenuItem { action: editCompleteTasks}
         }
         Menu {
+            title: qsTr("View")
+            MenuItem { action: showSearchAction}
+        }
+        Menu {
             title: qsTr("Help")
             MenuItem { }
         }
@@ -108,6 +120,7 @@ ApplicationWindow {
             //ToolBarSeparator { }
             ToolButton { action: editNewTask }
             ToolButton { action: editEditTask }
+            ToolButton { action:  mc.actions['showSearchAction']}
             Item { Layout.fillWidth: true }
         }
     }
@@ -128,35 +141,12 @@ ApplicationWindow {
             Layout.fillWidth: true
             TextField {
                 Layout.fillWidth: true
-                //here the controller instance which is exported in python gets used (for testing):
-                placeholderText: mc.test + mc.taskList.length + typeof mc.taskList//mcq.name
+                visible: showSearchAction.checked
+                placeholderText: "Search"
             }
-            ListView {
-                id: lv
-                spacing: 10
+            TaskListView {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-//                alternatingRowColors: true
-//                headerVisible: false
-                //here the controller instance which is exported in python gets used:
-                model: mc.taskList
-                //a dummy listmodel
-//                    ListModel {
-//                    ListElement { text: "Task 2" }
-//                    ListElement { text: "Task 2" }
-//                    ListElement { text: "Task 3" }
-//                    ListElement { text: "Task 4" }
-//                }
-//                TableViewColumn {
-//                    role: "text"
-//                }
-                delegate: TaskLine {
-//                    here comes the text from tasklib.py
-                    width: lv.width
-                    text: mc.taskList[model.index].text
-                    html: mc.taskList[model.index].html
-                }
-//                Component.onCompleted: console.log(mc.taskList)
             }
         }
     }
