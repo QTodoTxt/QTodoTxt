@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>763</width>
-    <height>484</height>
+    <height>527</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -93,21 +93,14 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="1" colspan="2">
-       <widget class="QCheckBox" name="useTaskDialogCheckBox">
-        <property name="text">
-         <string>Use popup dialogs to create and modify tasks</string>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="1" colspan="2">
+      <item row="9" column="1" colspan="2">
        <widget class="QCheckBox" name="trayCheckBox">
         <property name="text">
          <string>Enable system tray (Require restart)</string>
         </property>
        </widget>
       </item>
-      <item row="11" column="1">
+      <item row="10" column="1">
        <widget class="QFrame" name="frame">
         <property name="frameShape">
          <enum>QFrame::NoFrame</enum>
@@ -149,7 +142,7 @@
         </layout>
        </widget>
       </item>
-      <item row="11" column="4">
+      <item row="10" column="4">
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -162,7 +155,7 @@
         </property>
        </spacer>
       </item>
-      <item row="12" column="3">
+      <item row="11" column="3">
        <spacer name="horizontalSpacer_2">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -175,28 +168,21 @@
         </property>
        </spacer>
       </item>
-      <item row="13" column="4">
+      <item row="12" column="4">
        <widget class="QPushButton" name="closeButton">
         <property name="text">
          <string>Close</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="1">
+      <item row="6" column="1">
        <widget class="QCheckBox" name="singletonCheckBox">
         <property name="text">
          <string>Singleton mode</string>
         </property>
        </widget>
       </item>
-      <item row="9" column="1">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Theme</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="2">
+      <item row="8" column="2">
        <widget class="QComboBox" name="colorSchemComboBox">
         <item>
          <property name="text">
@@ -213,6 +199,13 @@
           <string>dark_orange</string>
          </property>
         </item>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Theme</string>
+        </property>
        </widget>
       </item>
      </layout>
