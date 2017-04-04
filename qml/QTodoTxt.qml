@@ -5,7 +5,7 @@ import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.1
 
 //this imports the MainControllerQml class which is exported in python
-import MCQ 1.0
+//import MCQ 1.0
 //import MC 1.0
 
 ApplicationWindow {
@@ -15,10 +15,10 @@ ApplicationWindow {
     title: qsTr("QTodoTxt")
 
     //This instanciates the MainControllerQml class:
-    MCQ {
-        id: mcq
-        Component.onCompleted: console.log("hallo")
-    }
+//    MCQ {
+//        id: mcq
+//        Component.onCompleted: console.log("hallo")
+//    }
 
 //    MC {
 //        id: mc
@@ -27,6 +27,14 @@ ApplicationWindow {
 //    }
 
     //the Actions are already defined in python, we just need to make them available to qml
+    Action {
+        id: fileNew
+        iconName: "document-new"
+        text: qsTr("New")
+        shortcut: StandardKey.New
+        onTriggered: {        }
+    }
+
     Action {
         id: fileOpen
         iconName: "document-open"
@@ -45,7 +53,7 @@ ApplicationWindow {
 
     Action {
         id: fileRevert
-        iconName: "document-save"
+        iconName: "document-revert"
         text: qsTr("Revert")
         onTriggered: {        }
     }
@@ -63,7 +71,8 @@ ApplicationWindow {
         iconName: "document-edit"
         text: qsTr("Edit Task")
         shortcut: "Ctrl+E"
-        onTriggered: {        }
+        enabled: taskListView.currentIndex > -1
+        onTriggered: { taskListView.editCurrentTask() }
     }
 
     Action {
@@ -85,7 +94,7 @@ ApplicationWindow {
     menuBar: MenuBar {
         Menu {
             title: qsTr("File")
-            MenuItem { text: qsTr("New"); shortcut: "Ctrl+Shift+N" }
+            MenuItem { action: fileNew }
             MenuItem { action: fileOpen}
             MenuItem { action: fileSave }
             MenuItem { action: fileRevert }
@@ -145,6 +154,7 @@ ApplicationWindow {
                 placeholderText: "Search"
             }
             TaskListView {
+                id: taskListView
                 Layout.fillHeight: true
                 Layout.fillWidth: true
             }

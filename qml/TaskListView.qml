@@ -1,7 +1,14 @@
-import QtQuick 2.5
+import QtQuick 2.7
+import QtQuick.Controls 1.4
 
 ListView {
-    currentIndex: -1
+    id: lv
+    function editCurrentTask() {
+        if (currentItem !== null) {
+            currentItem.state = "edit"
+        }
+    }
+
     highlight:
         Rectangle {
         width: 180; height: 40
@@ -15,8 +22,11 @@ ListView {
         }
     }
     highlightFollowsCurrentItem: true
-    id: lv
+//    currentIndex: -1
     spacing: 10
+    interactive: true
+//    keyNavigationEnabled: true
+
     model: mc.taskList
     delegate: TaskLine {
         width: lv.width
@@ -24,6 +34,16 @@ ListView {
         html: mc.taskList[model.index].html
         current: (currentIndex === model.index)
         onActivated: lv.currentIndex = model.index
+        onShowContextMenu: {
+            console.log("rightclick")
+            contextMenu.popup()
+        }
+    }
+
+    Menu {
+        id: contextMenu
+        MenuItem { action: editNewTask }
+        MenuItem { action: editEditTask }
     }
 }
 
