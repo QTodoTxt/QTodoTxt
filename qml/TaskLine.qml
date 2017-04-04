@@ -2,26 +2,25 @@ import QtQuick 2.2
 import QtQuick.Controls 1.2
 
 
-Item {
-    id: root
-    state: "show"
+Loader {
+    id: loader
     property string text: ""
     property string html: ""
-    Loader {
-        id: loader
-        sourceComponent: label
-    }
+    height: item.height
+
+    state: "show"
+    sourceComponent: label
 
     Component {
         id: label
         Label {
-            text: root.html
-            width: root.width
+            text: loader.html
+            width: loader.width
             textFormat: Qt.RichText
             wrapMode: Text.Wrap
             MouseArea {
                 anchors.fill: parent
-                onClicked: root.state = "edit"
+                onClicked: loader.state = "edit"
             }
         }
     }
@@ -29,8 +28,11 @@ Item {
     Component {
         id: editor
         TextField {
-            text: root.text
-            width: root.width
+            text: loader.text
+            width: loader.width
+            onEditingFinished: {
+                loader.state = "show"
+            }
         }
     }
 

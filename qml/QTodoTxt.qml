@@ -133,6 +133,7 @@ ApplicationWindow {
             }
             ListView {
                 id: lv
+                spacing: 10
                 Layout.fillHeight: true
                 Layout.fillWidth: true
 //                alternatingRowColors: true
@@ -153,7 +154,7 @@ ApplicationWindow {
 //                    here comes the text from tasklib.py
                     width: lv.width
                     text: mc.taskList[model.index].text
-                    html: text
+                    html: mc.taskList[model.index].html
                 }
 //                Component.onCompleted: console.log(mc.taskList)
             }

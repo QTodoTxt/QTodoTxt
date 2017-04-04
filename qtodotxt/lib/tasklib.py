@@ -94,7 +94,7 @@ class Task(QtCore.QObject):
         self._text = line
 
     #its a qt property now to be available in qml
-    @QtCore.pyqtProperty('QString')
+    @QtCore.pyqtProperty('QString', notify=modified)
     def text(self):
         return self._text
 
@@ -102,6 +102,11 @@ class Task(QtCore.QObject):
     def text(self, txt):
         self._parse(txt)
         self.modified.emit(self)
+
+    @QtCore.pyqtProperty('QString', notify=modified)
+    def html(self):
+        return self.toHtml()
+
 
     def _parseWord(self, word):
         if len(word) > 1:
