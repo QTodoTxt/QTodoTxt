@@ -6,11 +6,11 @@ Loader {
     id: loader
     property string text: ""
     property string html: ""
+
     property bool current: false
     onCurrentChanged: if (!current) state = "show"
     signal activated()
-    signal showContextMenu(real x, real y)
-    height: item.height
+    signal showContextMenu()
 
     state: "show"
     sourceComponent: labelComp
@@ -26,18 +26,22 @@ Loader {
             MouseArea {
                 //                enabled: false
                 anchors.fill: parent
+                acceptedButtons: Qt.LeftButton | Qt.RightButton
+                propagateComposedEvents: true
+                onClicked: {
+                    loader.activated()
+                    if (mouse.button === Qt.RightButton) loader.showContextMenu()
+                    mouse.accepted = false
+                }
                 onDoubleClicked: {
                     loader.activated()
                     loader.state = "edit"
                 }
-                onClicked: {
-//                    if (mouse.button === Qt.LeftButton)
-                        loader.activated()
-                    console.log("rightclick")
-                    if (mouse.button === Qt.RightButton) loader.showContextMenu(mouse.x, mouse.y)
-                }
             }
-            onLinkActivated: Qt.openUrlExternally(link)
+            onLinkActivated: {
+                console.log(link)
+                Qt.openUrlExternally(link)
+            }
         }
     }
 
