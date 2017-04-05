@@ -21,18 +21,20 @@ ListView {
             }
         }
     }
+
     highlightFollowsCurrentItem: true
-//    currentIndex: -1
     spacing: 10
-    interactive: true
-//    keyNavigationEnabled: true
+    focus: true
 
     model: mc.taskList
     delegate: TaskLine {
         width: lv.width
+
         text: mc.taskList[model.index].text
         html: mc.taskList[model.index].html
+
         current: (currentIndex === model.index)
+
         onActivated: lv.currentIndex = model.index
         onShowContextMenu: {
             console.log("rightclick")

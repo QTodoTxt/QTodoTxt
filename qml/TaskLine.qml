@@ -18,15 +18,12 @@ Loader {
     Component {
         id: labelComp
         MouseArea {
-            //                enabled: false
-            //anchors.fill: parent
-            height: label.implicitHeight
+            anchors.fill: parent
+            property alias lblHeight: label.height
             acceptedButtons: Qt.LeftButton | Qt.RightButton
-//            propagateComposedEvents: true
             onClicked: {
                 loader.activated()
                 if (mouse.button === Qt.RightButton) loader.showContextMenu()
-//                mouse.accepted = false
             }
             onDoubleClicked: {
                 loader.activated()
@@ -34,6 +31,7 @@ Loader {
             }
             Label {
                 id: label
+                anchors.verticalCenter: parent.verticalCenter
                 text: loader.html
                 width: loader.width
                 textFormat: Qt.RichText
@@ -47,10 +45,14 @@ Loader {
     }
 
     Component {
-        id: editor
+        id: editorComp
         TextField {
+            id: editor
+//            width: loader.width
+//            anchors.verticalCenter: parent.verticalCenter
+
             text: loader.text
-            width: loader.width
+            focus: true
             onEditingFinished: {
                 loader.state = "show"
             }
@@ -64,13 +66,15 @@ Loader {
             PropertyChanges {
                 target: loader
                 sourceComponent: labelComp
+                height: loader.item.lblHeight + 10
             }
         },
         State {
             name: "edit"
             PropertyChanges {
                 target: loader
-                sourceComponent: editor
+                sourceComponent: editorComp
+                height: loader.item.implicitHeight + 10
             }
         }
     ]
