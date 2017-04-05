@@ -17,30 +17,31 @@ Loader {
 
     Component {
         id: labelComp
-        Label {
-            id: label
-            text: loader.html
-            width: loader.width
-            textFormat: Qt.RichText
-            wrapMode: Text.Wrap
-            MouseArea {
-                //                enabled: false
-                anchors.fill: parent
-                acceptedButtons: Qt.LeftButton | Qt.RightButton
-                propagateComposedEvents: true
-                onClicked: {
-                    loader.activated()
-                    if (mouse.button === Qt.RightButton) loader.showContextMenu()
-                    mouse.accepted = false
-                }
-                onDoubleClicked: {
-                    loader.activated()
-                    loader.state = "edit"
-                }
+        MouseArea {
+            //                enabled: false
+            //anchors.fill: parent
+            height: label.implicitHeight
+            acceptedButtons: Qt.LeftButton | Qt.RightButton
+//            propagateComposedEvents: true
+            onClicked: {
+                loader.activated()
+                if (mouse.button === Qt.RightButton) loader.showContextMenu()
+//                mouse.accepted = false
             }
-            onLinkActivated: {
-                console.log(link)
-                Qt.openUrlExternally(link)
+            onDoubleClicked: {
+                loader.activated()
+                loader.state = "edit"
+            }
+            Label {
+                id: label
+                text: loader.html
+                width: loader.width
+                textFormat: Qt.RichText
+                wrapMode: Text.Wrap
+                onLinkActivated: {
+                    console.log(link)
+                    Qt.openUrlExternally(link)
+                }
             }
         }
     }
