@@ -146,10 +146,11 @@ class TasksListController(QtCore.QObject):
         tasks = self.view.getSelectedTasks()
         if tasks:
             uris = LinkDialog.getLink(self.view, directory=".")
-            for uri in uris:
-                for task in tasks:
-                    task.text = task.text + " " + uri
-                    self.taskModified.emit(task)
+            if uris:
+                for uri in uris:
+                    for task in tasks:
+                        task.text = task.text + " " + uri
+                        self.taskModified.emit(task)
 
     def completeTask(self, task):
         if not task.is_complete:
