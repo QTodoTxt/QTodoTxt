@@ -49,6 +49,30 @@ class MainController(QtCore.QObject):
         self.hasTrayIcon = False
         self._menu_controller.updateRecentFileActions()
 
+    #a dummy property for testing
+    @QtCore.pyqtProperty('QString', constant=True)
+    def test(self):
+        return "test Property"
+
+    #------- the property for the list of tasks -------
+    taskListChanged = QtCore.pyqtSignal()
+
+    @QtCore.pyqtProperty('QVariant', notify=taskListChanged)
+    def taskList(self):
+        return self._tasksListQml
+
+    @taskList.setter
+    def taskList(self, taskList):
+        self._tasksListQml = taskList
+        self.taskListChanged.emit()
+
+    actionsChanged = QtCore.pyqtSignal()
+
+    @QtCore.pyqtProperty('QVariant', notify=actionsChanged)
+    def actions(self):
+        return self._actions
+
+
     def auto_save(self):
         if int(self._settings.value("auto_save", 1)):
             self.save()
@@ -67,8 +91,10 @@ class MainController(QtCore.QObject):
         self._menu_controller = MenuController(self, menu)
 
     def _initActions(self):
+        self._actions = {}
         self.filterViewAction = QtWidgets.QAction(QtGui.QIcon(self.view.style + '/resources/sidepane.png'),
                                                   self.tr('Show &Filters'), self)
+        self._actions['filterViewAction'] = self.filterViewAction
         self.filterViewAction.setCheckable(True)
         self.filterViewAction.setShortcuts(['Ctrl+Shift+F'])
         self.filterViewAction.triggered.connect(self._toggleFilterView)
@@ -100,6 +126,8 @@ class MainController(QtCore.QObject):
         self.showSearchAction.setCheckable(True)
         self.showSearchAction.setShortcuts(['Ctrl+F'])
         self.showSearchAction.triggered.connect(self._toggleShowSearch)
+        self._actions['showSearchAction'] = self.showSearchAction
+        self.actionsChanged.emit()
 
     def _initToolBar(self):
         toolbar = self.view.addToolBar("Main Toolbar")
@@ -253,6 +281,9 @@ class MainController(QtCore.QObject):
         if not CompleteTasksFilter() in filters and not self.showCompletedAction.isChecked():
             tasks = tasklib.filterTasks([IncompleteTasksFilter()], tasks)
         self._tasks_list_controller.showTasks(tasks)
+        #here i chose to set the tasklist property, maybe its not 100% correct
+        self.taskList = tasks
+        self.taskListChanged.emit()
 
     def _initSearchText(self):
         self.view.tasks_view.tasks_search_view.searchTextChanged.connect(
