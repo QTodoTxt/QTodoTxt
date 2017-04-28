@@ -161,6 +161,7 @@ class TasksListController(QtCore.QObject):
             self.view.selectNext()
         else:
             task.setPending()
+        self.view.selectNext()
         if int(QtCore.QSettings().value("auto_archive", 0)):
             self.taskArchived.emit(task)
         else:

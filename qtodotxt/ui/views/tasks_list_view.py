@@ -43,6 +43,12 @@ class TaskWidget(QWidget):
         self.layout.setCurrentIndex(1)
         self.editor.setFocus()
 
+    def selectNext(self):
+        idx = self.view.currentIndex()
+        idx = idx.sibling(idx.row() +1, 0)
+        self.view.setCurrentIndex(idx)
+        #self.view.setSelected(idx)
+
     def editFinished(self):
         # qt bug, this method may be called several times for one edit
         self.layout.setCurrentIndex(0)
