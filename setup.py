@@ -4,7 +4,7 @@ import sys
 
 
 setup(name="qtodotxt", 
-      version="1.8.0alpha1",
+      version="1.9.0",
       description="Cross Platform todo.txt GUI",
       author="QTT Development Team",
       author_email="qtodotxt@googlegroups.com",
