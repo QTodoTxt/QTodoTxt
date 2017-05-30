@@ -9,12 +9,14 @@ QTodoTxt is a cross-platform UI client for todo.txt files (see [todo.txt](http:/
 [more screenshots..](https://github.com/QTodoTxt/QTodoTxt/wiki/Screenshots)
 
 
-### Latest alpha/beta relase:
+### Latest alpha/beta relase and QTodotTxt2:
 
 Download code from git or use pip: pip install qtodotxt --upgrade --pre
 
 We have also started work on QTodoTxt2 https://github.com/QTodoTxt/QTodoTxt2/
 Much much much cleaner code and a new interface based on qml that offer a lot of new possibilities. Try it and give us feedback
+
+Now also available using pip:  pip install qtodotxt2 --upgrade --pre
 
 And please report bugs to github!
 
