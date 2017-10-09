@@ -12,7 +12,7 @@ from qtodotxt.lib import tasklib
 from qtodotxt.lib.task_htmlizer import TaskHtmlizer
 
 from qtodotxt.lib.tasklib import recursiveMode
-
+from qtodotxt.lib.tasklib import dateIdentifier
 
 class LinkDialog(QtWidgets.QFileDialog):
     def __init__(self, parent, directory):
@@ -167,6 +167,8 @@ class TasksListController(QtCore.QObject):
             self.taskModified.emit(task)
 
     def _recurTask(self, task):
+        # Calculate delta of due date and threshold date
+        deltaDueThreshold = task.threshold - task.due 
         if task.recursion.interval == 'd':
             if task.recursion.mode == recursiveMode.originalDueDate:
                 next_due_date = task.due + timedelta(days=int(task.recursion.increment))
@@ -196,7 +198,10 @@ class TasksListController(QtCore.QObject):
             # Test already made during line parsing - shouldn't be a problem here
             pass
         # Set new due date in old task text
-        rec_text = task.updateDateInTask(task.text, next_due_date)
+        rec_text = task.updateDateInTask(dateIdentifier.dueDate ,task.text, next_due_date)
+        next_threshold_date = next_due_date + deltaDueThreshold
+        # Set new threshold date in old task text
+        rec_text = task.updateDateInTask(dateIdentifier.thresholdDate, rec_text, next_threshold_date)
         # create a new task duplicate
         self._createTask(rec_text)
         return

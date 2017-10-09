@@ -5,6 +5,9 @@ from PyQt5 import QtCore
 from enum import Enum
 from qtodotxt.lib.task_htmlizer import TaskHtmlizer
 
+class dateIdentifier(Enum):
+    dueDate = 'due' # Identifies the due date in task
+    thresholdDate = 't' # identifies the threshold date in task
 
 class recursiveMode(Enum):
     completitionDate = 0  # Original due date mode: Task recurs from original due date
@@ -163,10 +166,10 @@ class Task(QtCore.QObject):
         return dateString(self.due)
 
     @staticmethod
-    def updateDateInTask(text, newDate):
+    def updateDateInTask(dateIdentifier, text, newDate):
         # FIXME: This method has nothing to do in this class, move womewhere else
         # (A) 2016-12-08 Feed Schrodinger's Cat rec:9w due:2016-11-23
-        text = re.sub('\sdue\:[0-9]{4}\-[0-9]{2}\-[0-9]{2}', ' due:' + str(newDate)[0:10], text)
+        text = re.sub('\s' + dateIdentifier.value + '\:[0-9]{4}\-[0-9]{2}\-[0-9]{2}', ' ' + dateIdentifier.value + ':' + str(newDate)[0:10], text)
         return text
 
     @property
