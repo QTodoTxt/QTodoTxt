@@ -20,7 +20,7 @@ Now also available using pip:  pip install qtodotxt2 --upgrade --pre
 
 And please report bugs to github!
 
-###Latest stable release:
+### Latest stable release:
 
 V1.9.0 is released but not all binary packages have been created yet and the following links may point to older versions (pip should alway point to latest release). If you want a missing binary release, generate it then contact the authors to upload the file and update the link in this README
 
