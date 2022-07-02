@@ -39,8 +39,9 @@ class TasksSearchView(QtWidgets.QLineEdit):
         sz = self.clearButton.sizeHint()
         frameWidth = self.style().pixelMetric(QtWidgets.QStyle.PM_DefaultFrameWidth)
         self.clearButton.move(self.rect().right() - frameWidth - sz.width(),
-                              (self.rect().bottom() + 1 - sz.height()) / 2)
-        self.searchButton.move(self.rect().left() + 1, (self.rect().bottom() + 1 - sz.height()) / 2)
+                              int((self.rect().bottom() + 1 - sz.height()) / 2))
+        self.searchButton.move(self.rect().left() + 1,
+                               int((self.rect().bottom() + 1 - sz.height()) / 2))
 
     def getSearchText(self):
         return self._searchText
