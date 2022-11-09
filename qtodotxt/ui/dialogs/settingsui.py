@@ -111,7 +111,7 @@ class Ui_SettingsUI(object):
         self.lowestPriorityLineEdit.setText(_translate("SettingsUI", "D"))
         self.trayCheckBox.setText(_translate("SettingsUI", "Enable system tray (Require restart)"))
         self.hideToTrayCheckBox.setText(_translate("SettingsUI", "Hide to tray"))
-        self.hideOnStartupCheckBox.setText(_translate("SettingsUI", "Hide on startupp"))
+        self.hideOnStartupCheckBox.setText(_translate("SettingsUI", "Hide on startup"))
         self.closeToTrayCheckBox.setText(_translate("SettingsUI", "CheckBox"))
         self.closeButton.setText(_translate("SettingsUI", "Close"))
         self.singletonCheckBox.setText(_translate("SettingsUI", "Singleton mode"))
